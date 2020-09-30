@@ -1,0 +1,1505 @@
+			<?xml version="1.0" ?> 
+			<?mso-application progid="Excel.Sheet"?> 
+			<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">
+			 	<Worksheet ss:Name="Parts">
+					<Table>
+					<Row> 
+        				<Cell ss:Index="1">
+          				<Data ss:Type="String">Lfd. Nr.</Data>
+        				</Cell>
+        				<Cell ss:Index="2">
+          				<Data ss:Type="String">Stueckzahl</Data>
+        				</Cell>
+        				<Cell ss:Index="3">
+          				<Data ss:Type="String">Benennung</Data>
+        				</Cell>
+        				<Cell ss:Index="4">
+          				<Data ss:Type="String">Referenzkennzeichen</Data>
+        				</Cell>
+        				<Cell ss:Index="5">
+          				<Data ss:Type="String">Lieferant</Data>
+        				</Cell>
+        				<Cell ss:Index="6">
+          				<Data ss:Type="String">Bestellnummer</Data>
+        				</Cell>
+        				<Cell ss:Index="7">
+          				<Data ss:Type="String">RoHS</Data>
+        				</Cell>
+        				<Cell ss:Index="8">
+          				<Data ss:Type="String">Preis / VE</Data>
+        				</Cell>
+        				<Cell ss:Index="9">
+          				<Data ss:Type="String">VE</Data>
+        				</Cell>
+        				<Cell ss:Index="10">
+     					<Data ss:Type="String">Bemerkung</Data>
+        				</Cell>
+      			</Row>
+					<Row> 
+        				<Cell ss:Index="1">
+          				<Data ss:Type="Number">1</Data>
+        				</Cell>
+        				<Cell ss:Index="2">
+          				<Data ss:Type="Number">1</Data>
+        				</Cell>
+        				<Cell ss:Index="3">
+          				<Data ss:Type="String">WID </Data>
+        				</Cell>
+        				<Cell ss:Index="4">
+          				<Data ss:Type="String">B0</Data>
+        				</Cell>
+        				<Cell ss:Index="5">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="6">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="7">
+          				<Data ss:Type="String">J</Data>
+        				</Cell>
+        				<Cell ss:Index="8">
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell ss:Index="9">
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell ss:Index="10">
+     					<Data ss:Type="String">VC16-1 </Data>
+        				</Cell>
+      			</Row>
+						<Row> 
+        				<Cell ss:Index="1">
+          				<Data ss:Type="Number">2</Data>
+        				</Cell>
+        				<Cell ss:Index="2">
+          				<Data ss:Type="Number">1</Data>
+        				</Cell>
+        				<Cell ss:Index="3">
+          				<Data ss:Type="String">WID 1k2</Data>
+        				</Cell>
+        				<Cell ss:Index="4">
+          				<Data ss:Type="String">R1</Data>
+        				</Cell>
+        				<Cell ss:Index="5">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="6">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="7">
+          				<Data ss:Type="String">J</Data>
+        				</Cell>
+        				<Cell ss:Index="8">
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell ss:Index="9">
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell ss:Index="10">
+     					<Data ss:Type="String">0204 RM7.5 </Data>
+        				</Cell>
+      			</Row>
+						<Row> 
+        				<Cell ss:Index="1">
+          				<Data ss:Type="Number">3</Data>
+        				</Cell>
+        				<Cell ss:Index="2">
+          				<Data ss:Type="Number">1</Data>
+        				</Cell>
+        				<Cell ss:Index="3">
+          				<Data ss:Type="String">ELKO 100u</Data>
+        				</Cell>
+        				<Cell ss:Index="4">
+          				<Data ss:Type="String">C2</Data>
+        				</Cell>
+        				<Cell ss:Index="5">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="6">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="7">
+          				<Data ss:Type="String">J</Data>
+        				</Cell>
+        				<Cell ss:Index="8">
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell ss:Index="9">
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell ss:Index="10">
+     					<Data ss:Type="String">13 mm radial RM5.08 </Data>
+        				</Cell>
+      			</Row>
+						<Row> 
+        				<Cell ss:Index="1">
+          				<Data ss:Type="Number">4</Data>
+        				</Cell>
+        				<Cell ss:Index="2">
+          				<Data ss:Type="Number">1</Data>
+        				</Cell>
+        				<Cell ss:Index="3">
+          				<Data ss:Type="String">ELKO 1500u</Data>
+        				</Cell>
+        				<Cell ss:Index="4">
+          				<Data ss:Type="String">C1</Data>
+        				</Cell>
+        				<Cell ss:Index="5">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="6">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="7">
+          				<Data ss:Type="String">J</Data>
+        				</Cell>
+        				<Cell ss:Index="8">
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell ss:Index="9">
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell ss:Index="10">
+     					<Data ss:Type="String">13 mm radial RM5.08 </Data>
+        				</Cell>
+      			</Row>
+						<Row> 
+        				<Cell ss:Index="1">
+          				<Data ss:Type="Number">5</Data>
+        				</Cell>
+        				<Cell ss:Index="2">
+          				<Data ss:Type="Number">1</Data>
+        				</Cell>
+        				<Cell ss:Index="3">
+          				<Data ss:Type="String">IND gn</Data>
+        				</Cell>
+        				<Cell ss:Index="4">
+          				<Data ss:Type="String">L0</Data>
+        				</Cell>
+        				<Cell ss:Index="5">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="6">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="7">
+          				<Data ss:Type="String">J</Data>
+        				</Cell>
+        				<Cell ss:Index="8">
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell ss:Index="9">
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell ss:Index="10">
+     					<Data ss:Type="String">LED3MM </Data>
+        				</Cell>
+      			</Row>
+						<Row> 
+        				<Cell ss:Index="1">
+          				<Data ss:Type="Number">6</Data>
+        				</Cell>
+        				<Cell ss:Index="2">
+          				<Data ss:Type="Number">1</Data>
+        				</Cell>
+        				<Cell ss:Index="3">
+          				<Data ss:Type="String">IND </Data>
+        				</Cell>
+        				<Cell ss:Index="4">
+          				<Data ss:Type="String">L1</Data>
+        				</Cell>
+        				<Cell ss:Index="5">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="6">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="7">
+          				<Data ss:Type="String">J</Data>
+        				</Cell>
+        				<Cell ss:Index="8">
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell ss:Index="9">
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell ss:Index="10">
+     					<Data ss:Type="String">W237-132 </Data>
+        				</Cell>
+      			</Row>
+						<Row> 
+        				<Cell ss:Index="1">
+          				<Data ss:Type="Number">7</Data>
+        				</Cell>
+        				<Cell ss:Index="2">
+          				<Data ss:Type="Number">1</Data>
+        				</Cell>
+        				<Cell ss:Index="3">
+          				<Data ss:Type="String">VREG </Data>
+        				</Cell>
+        				<Cell ss:Index="4">
+          				<Data ss:Type="String">N1</Data>
+        				</Cell>
+        				<Cell ss:Index="5">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="6">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="7">
+          				<Data ss:Type="String">J</Data>
+        				</Cell>
+        				<Cell ss:Index="8">
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell ss:Index="9">
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell ss:Index="10">
+     					<Data ss:Type="String">78XXS</Data>
+        				</Cell>
+      			</Row>
+						<Row> 
+        				<Cell ss:Index="1">
+          				<Data ss:Type="Number">8</Data>
+        				</Cell>
+        				<Cell ss:Index="2">
+          				<Data ss:Type="Number">1</Data>
+        				</Cell>
+        				<Cell ss:Index="3">
+          				<Data ss:Type="String">CON </Data>
+        				</Cell>
+        				<Cell ss:Index="4">
+          				<Data ss:Type="String">X1</Data>
+        				</Cell>
+        				<Cell ss:Index="5">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="6">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="7">
+          				<Data ss:Type="String">J</Data>
+        				</Cell>
+        				<Cell ss:Index="8">
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell ss:Index="9">
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell ss:Index="10">
+     					<Data ss:Type="String">USB</Data>
+        				</Cell>
+      			</Row>
+						<Row> 
+        				<Cell ss:Index="1">
+          				<Data ss:Type="Number">9</Data>
+        				</Cell>
+        				<Cell ss:Index="2">
+          				<Data ss:Type="Number">1</Data>
+        				</Cell>
+        				<Cell ss:Index="3">
+          				<Data ss:Type="String">SICH </Data>
+        				</Cell>
+        				<Cell ss:Index="4">
+          				<Data ss:Type="String">F1</Data>
+        				</Cell>
+        				<Cell ss:Index="5">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="6">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="7">
+          				<Data ss:Type="String">J</Data>
+        				</Cell>
+        				<Cell ss:Index="8">
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell ss:Index="9">
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell ss:Index="10">
+     					<Data ss:Type="String">19560</Data>
+        				</Cell>
+      			</Row>
+						<Row> 
+        				<Cell ss:Index="1">
+          				<Data ss:Type="Number">10</Data>
+        				</Cell>
+        				<Cell ss:Index="2">
+          				<Data ss:Type="Number">1</Data>
+        				</Cell>
+        				<Cell ss:Index="3">
+          				<Data ss:Type="String">SICH </Data>
+        				</Cell>
+        				<Cell ss:Index="4">
+          				<Data ss:Type="String">F2</Data>
+        				</Cell>
+        				<Cell ss:Index="5">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="6">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="7">
+          				<Data ss:Type="String">J</Data>
+        				</Cell>
+        				<Cell ss:Index="8">
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell ss:Index="9">
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell ss:Index="10">
+     					<Data ss:Type="String">P660A</Data>
+        				</Cell>
+      			</Row>
+						<Row> 
+        				<Cell ss:Index="1">
+          				<Data ss:Type="Number">11</Data>
+        				</Cell>
+        				<Cell ss:Index="2">
+          				<Data ss:Type="Number">1</Data>
+        				</Cell>
+        				<Cell ss:Index="3">
+          				<Data ss:Type="String">QU </Data>
+        				</Cell>
+        				<Cell ss:Index="4">
+          				<Data ss:Type="String">B1</Data>
+        				</Cell>
+        				<Cell ss:Index="5">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="6">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="7">
+          				<Data ss:Type="String">J</Data>
+        				</Cell>
+        				<Cell ss:Index="8">
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell ss:Index="9">
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell ss:Index="10">
+     					<Data ss:Type="String">FB32</Data>
+        				</Cell>
+      			</Row>
+						<Row> 
+        				<Cell ss:Index="1">
+          				<Data ss:Type="Number">12</Data>
+        				</Cell>
+        				<Cell ss:Index="2">
+          				<Data ss:Type="Number">1</Data>
+        				</Cell>
+        				<Cell ss:Index="3">
+          				<Data ss:Type="String"> SK104</Data>
+        				</Cell>
+        				<Cell ss:Index="4">
+          				<Data ss:Type="String">K0</Data>
+        				</Cell>
+        				<Cell ss:Index="5">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="6">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="7">
+          				<Data ss:Type="String">J</Data>
+        				</Cell>
+        				<Cell ss:Index="8">
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell ss:Index="9">
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell ss:Index="10">
+     					<Data ss:Type="String">SK104</Data>
+        				</Cell>
+      			</Row>
+						<Row> 
+        				<Cell ss:Index="1">
+          				<Data ss:Type="Number">13</Data>
+        				</Cell>
+        				<Cell ss:Index="2">
+          				<Data ss:Type="Number">2</Data>
+        				</Cell>
+        				<Cell ss:Index="3">
+          				<Data ss:Type="String"> 100n</Data>
+        				</Cell>
+        				<Cell ss:Index="4">
+          				<Data ss:Type="String">C3,C4</Data>
+        				</Cell>
+        				<Cell ss:Index="5">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="6">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="7">
+          				<Data ss:Type="String">J</Data>
+        				</Cell>
+        				<Cell ss:Index="8">
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell ss:Index="9">
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell ss:Index="10">
+     					<Data ss:Type="String">C050-024X044</Data>
+        				</Cell>
+      			</Row>
+							</Table>
+  			</Worksheet>
+			<Worksheet ss:Name="Advanced">
+				<Table>
+					<Row> 
+        				<Cell ss:Index="1">
+          				<Data ss:Type="String">Lfd. Nr.</Data>
+        				</Cell>
+        				<Cell ss:Index="2">
+          				<Data ss:Type="String">Stueckzahl</Data>
+        				</Cell>
+        				<Cell ss:Index="3">
+          				<Data ss:Type="String">Benennung</Data>
+        				</Cell>
+        				<Cell ss:Index="4">
+          				<Data ss:Type="String">Referenzkennzeichen</Data>
+        				</Cell>
+        				<Cell ss:Index="5">
+          				<Data ss:Type="String">Lieferant</Data>
+        				</Cell>
+        				<Cell ss:Index="6">
+          				<Data ss:Type="String">Bestellnummer</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">Hersteller</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">Teilnummer</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">Referenznummer</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">Frei 1</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">Frei 2</Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="String">RoHS</Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="String">Preis / VE</Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="String">VE</Data>
+        				</Cell>
+        				<Cell >
+     					<Data ss:Type="String">Bemerkung</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">GP1</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">GP2</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">GP3</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">GP4</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">Part ID</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">Parsed Value</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">Package</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">Device</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">Description</Data>
+        				</Cell>
+      			</Row>
+					<Row> 
+        				<Cell ss:Index="1">
+          				<Data ss:Type="Number">1</Data>
+        				</Cell>
+        				<Cell ss:Index="2">
+          				<Data ss:Type="Number">1</Data>
+        				</Cell>
+        				<Cell ss:Index="3">
+          				<Data ss:Type="String">WID </Data>
+        				</Cell>
+        				<Cell ss:Index="4">
+          				<Data ss:Type="String">B0</Data>
+        				</Cell>
+        				<Cell ss:Index="5">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="6">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="String">J</Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">VC16-1 </Data>
+        				</Cell>
+				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="Number">0</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="Number">0.000000e+00</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">VC16-1</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">VC16-1</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">&lt;b&gt;TRANSFORMER&lt;/b&gt;&lt;p&gt;
+1 primary winding, 1 secondary winding</Data>
+        				</Cell>
+      			</Row>
+						<Row> 
+        				<Cell ss:Index="1">
+          				<Data ss:Type="Number">2</Data>
+        				</Cell>
+        				<Cell ss:Index="2">
+          				<Data ss:Type="Number">1</Data>
+        				</Cell>
+        				<Cell ss:Index="3">
+          				<Data ss:Type="String">WID 1k2</Data>
+        				</Cell>
+        				<Cell ss:Index="4">
+          				<Data ss:Type="String">R1</Data>
+        				</Cell>
+        				<Cell ss:Index="5">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="6">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="String">J</Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">0204 RM7.5 </Data>
+        				</Cell>
+				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="Number">0</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="Number">1.200000e+03</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">0204/7</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">R-H_0204/7</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">&lt;b&gt;RESISTOR&lt;/b&gt;&lt;p&gt;
+type 0204, grid 7.5 mm</Data>
+        				</Cell>
+      			</Row>
+						<Row> 
+        				<Cell ss:Index="1">
+          				<Data ss:Type="Number">3</Data>
+        				</Cell>
+        				<Cell ss:Index="2">
+          				<Data ss:Type="Number">1</Data>
+        				</Cell>
+        				<Cell ss:Index="3">
+          				<Data ss:Type="String">ELKO 100u</Data>
+        				</Cell>
+        				<Cell ss:Index="4">
+          				<Data ss:Type="String">C2</Data>
+        				</Cell>
+        				<Cell ss:Index="5">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="6">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="String">J</Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">13 mm radial RM5.08 </Data>
+        				</Cell>
+				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="Number">3</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="Number">1.000000e-04</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">E5-13</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">CPOL-V_E5-13</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">&lt;b&gt;ELECTROLYTIC CAPACITOR&lt;/b&gt;&lt;p&gt;
+grid 5.08 mm, diameter 13 mm</Data>
+        				</Cell>
+      			</Row>
+						<Row> 
+        				<Cell ss:Index="1">
+          				<Data ss:Type="Number">4</Data>
+        				</Cell>
+        				<Cell ss:Index="2">
+          				<Data ss:Type="Number">1</Data>
+        				</Cell>
+        				<Cell ss:Index="3">
+          				<Data ss:Type="String">ELKO 1500u</Data>
+        				</Cell>
+        				<Cell ss:Index="4">
+          				<Data ss:Type="String">C1</Data>
+        				</Cell>
+        				<Cell ss:Index="5">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="6">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="String">J</Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">13 mm radial RM5.08 </Data>
+        				</Cell>
+				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="Number">3</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="Number">1.500000e-03</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">E5-13</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">CPOL-V_E5-13</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">&lt;b&gt;ELECTROLYTIC CAPACITOR&lt;/b&gt;&lt;p&gt;
+grid 5.08 mm, diameter 13 mm</Data>
+        				</Cell>
+      			</Row>
+						<Row> 
+        				<Cell ss:Index="1">
+          				<Data ss:Type="Number">5</Data>
+        				</Cell>
+        				<Cell ss:Index="2">
+          				<Data ss:Type="Number">1</Data>
+        				</Cell>
+        				<Cell ss:Index="3">
+          				<Data ss:Type="String">IND gn</Data>
+        				</Cell>
+        				<Cell ss:Index="4">
+          				<Data ss:Type="String">L0</Data>
+        				</Cell>
+        				<Cell ss:Index="5">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="6">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="String">J</Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">LED3MM </Data>
+        				</Cell>
+				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="Number">4</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="Number">0.000000e+00</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">LED3MM</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">TLLG4400</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">&lt;B&gt;LED&lt;/B&gt;&lt;p&gt;
+3 mm, round</Data>
+        				</Cell>
+      			</Row>
+						<Row> 
+        				<Cell ss:Index="1">
+          				<Data ss:Type="Number">6</Data>
+        				</Cell>
+        				<Cell ss:Index="2">
+          				<Data ss:Type="Number">1</Data>
+        				</Cell>
+        				<Cell ss:Index="3">
+          				<Data ss:Type="String">IND </Data>
+        				</Cell>
+        				<Cell ss:Index="4">
+          				<Data ss:Type="String">L1</Data>
+        				</Cell>
+        				<Cell ss:Index="5">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="6">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="String">J</Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">W237-132 </Data>
+        				</Cell>
+				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="Number">4</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="Number">0.000000e+00</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">W237-132</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">W237-02P</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">&lt;b&gt;WAGO SREW CLAMP&lt;/b&gt;</Data>
+        				</Cell>
+      			</Row>
+						<Row> 
+        				<Cell ss:Index="1">
+          				<Data ss:Type="Number">7</Data>
+        				</Cell>
+        				<Cell ss:Index="2">
+          				<Data ss:Type="Number">1</Data>
+        				</Cell>
+        				<Cell ss:Index="3">
+          				<Data ss:Type="String">VREG </Data>
+        				</Cell>
+        				<Cell ss:Index="4">
+          				<Data ss:Type="String">N1</Data>
+        				</Cell>
+        				<Cell ss:Index="5">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="6">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="String">J</Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">78XXS</Data>
+        				</Cell>
+				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="Number">17</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="Number">0.000000e+00</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">78XXS</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">78XXS</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">&lt;b&gt;VOLTAGE REGULATOR&lt;/b&gt;</Data>
+        				</Cell>
+      			</Row>
+						<Row> 
+        				<Cell ss:Index="1">
+          				<Data ss:Type="Number">8</Data>
+        				</Cell>
+        				<Cell ss:Index="2">
+          				<Data ss:Type="Number">1</Data>
+        				</Cell>
+        				<Cell ss:Index="3">
+          				<Data ss:Type="String">CON </Data>
+        				</Cell>
+        				<Cell ss:Index="4">
+          				<Data ss:Type="String">X1</Data>
+        				</Cell>
+        				<Cell ss:Index="5">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="6">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="String">J</Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">USB</Data>
+        				</Cell>
+				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="Number">26</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="Number">0.000000e+00</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">USB</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">USB-787616</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">&lt;b&gt;USB connector&lt;/b&gt;</Data>
+        				</Cell>
+      			</Row>
+						<Row> 
+        				<Cell ss:Index="1">
+          				<Data ss:Type="Number">9</Data>
+        				</Cell>
+        				<Cell ss:Index="2">
+          				<Data ss:Type="Number">1</Data>
+        				</Cell>
+        				<Cell ss:Index="3">
+          				<Data ss:Type="String">SICH </Data>
+        				</Cell>
+        				<Cell ss:Index="4">
+          				<Data ss:Type="String">F1</Data>
+        				</Cell>
+        				<Cell ss:Index="5">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="6">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="String">J</Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">19560</Data>
+        				</Cell>
+				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="Number">30</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="Number">0.000000e+00</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">19560</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">19560</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">&lt;b&gt;FUSE HOLDER&lt;/b&gt;&lt;p&gt;
+TR5 Fuse Holder Wickmann</Data>
+        				</Cell>
+      			</Row>
+						<Row> 
+        				<Cell ss:Index="1">
+          				<Data ss:Type="Number">10</Data>
+        				</Cell>
+        				<Cell ss:Index="2">
+          				<Data ss:Type="Number">1</Data>
+        				</Cell>
+        				<Cell ss:Index="3">
+          				<Data ss:Type="String">SICH </Data>
+        				</Cell>
+        				<Cell ss:Index="4">
+          				<Data ss:Type="String">F2</Data>
+        				</Cell>
+        				<Cell ss:Index="5">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="6">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="String">J</Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">P660A</Data>
+        				</Cell>
+				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="Number">30</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="Number">0.000000e+00</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">P660A</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">PTC660A</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">&lt;b&gt;PHILIPS PTC&lt;/b&gt;</Data>
+        				</Cell>
+      			</Row>
+						<Row> 
+        				<Cell ss:Index="1">
+          				<Data ss:Type="Number">11</Data>
+        				</Cell>
+        				<Cell ss:Index="2">
+          				<Data ss:Type="Number">1</Data>
+        				</Cell>
+        				<Cell ss:Index="3">
+          				<Data ss:Type="String">QU </Data>
+        				</Cell>
+        				<Cell ss:Index="4">
+          				<Data ss:Type="String">B1</Data>
+        				</Cell>
+        				<Cell ss:Index="5">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="6">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="String">J</Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">FB32</Data>
+        				</Cell>
+				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="Number">36</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="Number">0.000000e+00</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">FB32</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">FB32</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">&lt;b&gt;FAGOR RECTIFIER&lt;/b&gt;&lt;p&gt;
+grid 1 x 10,2 x 7,5 mm</Data>
+        				</Cell>
+      			</Row>
+						<Row> 
+        				<Cell ss:Index="1">
+          				<Data ss:Type="Number">12</Data>
+        				</Cell>
+        				<Cell ss:Index="2">
+          				<Data ss:Type="Number">1</Data>
+        				</Cell>
+        				<Cell ss:Index="3">
+          				<Data ss:Type="String"> SK104</Data>
+        				</Cell>
+        				<Cell ss:Index="4">
+          				<Data ss:Type="String">K0</Data>
+        				</Cell>
+        				<Cell ss:Index="5">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="6">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="String">J</Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">SK104</Data>
+        				</Cell>
+				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="Number">50</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="Number">0.000000e+00</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">SK104</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">SK104</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">&lt;b&gt;HEATSINK&lt;/b&gt;&lt;p&gt; manufacturer Fischer/distributor Buerklin</Data>
+        				</Cell>
+      			</Row>
+						<Row> 
+        				<Cell ss:Index="1">
+          				<Data ss:Type="Number">13</Data>
+        				</Cell>
+        				<Cell ss:Index="2">
+          				<Data ss:Type="Number">2</Data>
+        				</Cell>
+        				<Cell ss:Index="3">
+          				<Data ss:Type="String"> 100n</Data>
+        				</Cell>
+        				<Cell ss:Index="4">
+          				<Data ss:Type="String">C3,C4</Data>
+        				</Cell>
+        				<Cell ss:Index="5">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell ss:Index="6">
+          				<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="String">J</Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell>
+          				<Data ss:Type="Number"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">C050-024X044</Data>
+        				</Cell>
+				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String"></Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="Number">50</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="Number">0.000000e+00</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">C050-024X044</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">C-V_050-024X044</Data>
+        				</Cell>
+        				<Cell>
+     					<Data ss:Type="String">&lt;b&gt;CAPACITOR&lt;/b&gt;&lt;p&gt;
+grid 5 mm, outline 2.4 x 4.4 mm</Data>
+        				</Cell>
+      			</Row>
+							</Table>
+  			</Worksheet>
+			</Workbook>
+		

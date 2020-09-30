@@ -1,0 +1,1181 @@
+/************************************************************/
+/* HTLExportPro.ulp                                         */
+/* - Generiert die Bemaßung des Boards                      */
+/* - Generiert den Drill Table                              */
+/* - Exportiert Images von:                                 */
+/*           - Layout TOP                                   */
+/*           - Layout BOTTOM                                */
+/*           - Bestückungsplan TOP                          */
+/*           - Bestückungsplan BOTTOM                       */
+/*           - Bohrplan                                     */
+/* - Spiegel Bottom Layer Images                            */
+/* - Exportiert die Stückliste                              */
+/************************************************************/
+/* (c) Copyright 2009, Bernhard Wörndl-Aichriedler          */
+/* Schüler der 5HNc(5cHELi) 2008/09 HTL Salzburg Elektronik */
+/* E-Mail: bwa@berniwa.com                                  */
+/* Homepage: www.berniwa.com                                */
+/************************************************************/
+/* Letzte Änderung am 28.01.2009                            */
+/* Version 3.3                                              */
+/************************************************************/
+/* Letzte Änderung am 11.12.2009                            */
+/* Version 4                                                */
+/************************************************************/
+/* Letzte Änderung am 19.02.2010                            */
+/* Version 5                                                */
+/************************************************************/
+/* Letzte Änderung am 18.02.2011                            */
+/* Version 6                                                */
+/************************************************************/
+/* Letzte Änderung am 06.06.2013                            */
+/* Version 7                                                */
+/************************************************************/
+
+#include "Include_Download.ulp";
+
+string include_path = "Include_";
+
+
+string ULP_VERSION = "HTLExportPro 7.0";
+string UPDATE_SERVER = "http://eagle.berniwa.com/update/";
+int ULP_REVISION_FORMAT_REVISION = 7;
+
+
+string cmd = "", bname = "", layers = "", palette_name = "BLACK", config_file = "-exportpro.cfg";
+
+int 
+layout_bot = 1, layout_top = 1, layout_l3 = 0, layout_l2 = 0, parts_top = 1, parts_bot = 1, drills = 1, measure = 1, drilltable = 1, 
+construction = 1, enable_export = 1, bom = 1, mirror_bot = 1, crop_all = 1, no_measures = 0, auto_project = 1,
+bom_xls = 1, bom_xlsx = 1, bom_csv = 0, bom_dbase3 = 1, bom_farnell = 1, bom_shorten_names = 1, bom_display_package_type = 1, 
+parts_display_names = 1, parts_display_values = 1, pricing = 1, sat_export = 1, pcbimage_top = 1, 
+pcbimage_bottom = 1, pcbimage_resolution = 2, pcbimage_crop = 1, pcbimage_mirror = 1, pcbimage_color = 0,
+pcbimage_silkscreen_color = 0, pcbimage_plating = 0,
+silkscreen_top = 1, silkscreen_tplace = 1, silkscreen_tnames = 1, silkscreen_tvalues = 1, silkscreen_tdocu = 1,
+silkscreen_bottom = 1, silkscreen_bplace = 1, silkscreen_bnames = 1, silkscreen_bvalues = 1, silkscreen_bdocu = 1,
+silkscreen_width = 8, silkscreen_enable = 1, renumber = 1,
+output_date_folder = 0, 
+schematic_export = 1, schematic_format = 1, schematic_bw = 1, schematic_color = 1, 
+layout_inner_layer = 1, 
+board_layer[] = {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+format_revision = 0,
+gerber_export = 0, 
+gerber_copper = 1, gerber_stc = 1, gerber_sts = 1, gerber_plc = 1, 
+gerber_pls = 1, gerber_crc = 1, gerber_crs = 1, gerber_drd = 1,
+board_thickness = 0, board_copper_thickness = 0, board_type = 0,
+eagle_export;
+
+
+
+real bom_quantity;
+
+string output_folder = "./";
+
+string output_file_lb, output_file_lt, output_file_li, 
+output_file_pb, output_file_pt, output_file_cs, 
+output_file_drl, output_file_sat, output_file_pcbt, 
+output_file_pcbb, output_file_schematic_bw, 
+output_file_schematic_color,
+output_file_gerber_copper_top,  output_file_gerber_copper_bottom, output_file_gerber_copper_other,
+output_file_gerber_st, output_file_gerber_sb,
+output_file_gerber_pt, output_file_gerber_pb,
+output_file_gerber_ct, output_file_gerber_cb,
+output_file_gerber_drill, output_file_gerber_spec,
+output_folder_eagle, output_file_eagle_spec
+;
+
+string layer_fill[];
+
+string boardname = "output";
+
+
+int pcbImageResolutions[]		= {150, 300, 600};
+string pcbImagePcbColors[] 	= {"0xFF007800", "0xFF660000", "0xFF010101"};
+string pcbImageCopperColors[] 	= {"0xFF00CA00", "0xFF990000", "0xFF111111"};
+string pcbImageSilkscreenColors[] 	= {"0xFFFFFFFF", "0xFFFFFF00", "0xFFAA0000"};
+string pcbImagePlating[] 		= {"0xFFC0C0C0", "0xFFE4CA42"};
+
+string PcbColor[] = {
+	"Grüne PCB",
+	"Rote PCB", 
+	"Schwarze PCB"
+};
+
+string pcbSpecColor[] = {
+	"green",
+	"red", 
+	"black"
+};
+
+string PcbSilkscreenColor[] = {
+	"Weißer Bestückungsdruck",
+	"Gelber Bestückungsdruck", 
+	"Roter Bestückungsdruck"
+};
+
+string pcbSpecSilkscreenColor[] = {
+	"white",
+	"yellow", 
+	"red"
+};
+	
+string PcbPlating[] = {
+	"Verzint",
+	"Vergoldet"
+};
+
+string pcbSpecPlating[] = {
+	"tin-platting",
+	"gold-plating"
+};
+
+string PcbThickness[]		= {"1.4mm", "1mm", "0.8mm"};	
+string PcbType[]			= {"FR4", "Roggers", "Aluminium"};	
+string PcbCopperThickness[] 	= {"35.0um", "70.0um"};
+
+string getSystemFilename(string ends_with)
+{
+	return filesetext(bname + boardname,ends_with);
+}
+
+string getFilename(string basename, string ends_with)
+{
+	return filesetext(basename,ends_with);
+}
+
+project.board(B)
+{
+	bname = filedir(B.name);
+	boardname = filesetext(filename(B.name), "");
+	
+	
+	B.layers(L)
+	{
+		sprintf(layer_fill[L.number], "%d", L.fill);	
+
+		if(L.visible)
+		{
+			sprintf(layers, layers + " %d", L.number);
+		}
+	}
+}
+
+if(palette(-1) == PALETTE_BLACK)
+{
+	palette_name = "BLACK";
+}
+else if(palette(-1) == PALETTE_WHITE)
+{
+	palette_name = "WHITE";
+}
+else
+{
+	palette_name = "COLORED";
+}
+
+void loadUsersettings()
+{
+	string data[];
+	if(filesize(getSystemFilename(config_file)))
+	{
+		int lines = fileread(data, getSystemFilename(config_file));
+		layout_bot = strtol(data[0]);
+		layout_top = strtol(data[1]);
+		parts_top = strtol(data[2]);
+		parts_bot = strtol(data[3]);
+		drills = strtol(data[4]);
+		measure = strtol(data[5]);
+		drilltable = strtol(data[6]);
+		enable_export = strtol(data[7]);
+		construction = strtol(data[8]);
+		bom = strtol(data[9]);
+		mirror_bot = strtol(data[10]);
+		crop_all = strtol(data[11]);
+		bom_xls = strtol(data[12]);
+		bom_xlsx = strtol(data[13]);
+		bom_csv = strtol(data[14]);
+		bom_dbase3 = strtol(data[15]);
+		bom_shorten_names = strtol(data[16]);	
+		bom_display_package_type = strtol(data[17]);
+		no_measures = strtol(data[18]);
+		auto_project = strtol(data[19]);
+		output_folder = data[20];
+		layout_inner_layer = strtol(data[21]);
+		// = strtol(data[22]); //Removed in version 7
+		parts_display_names = strtol(data[23]);
+		parts_display_values = strtol(data[24]);
+		pricing = strtol(data[25]);
+		sat_export = strtol(data[26]);
+		pcbimage_top = strtol(data[27]);
+		pcbimage_bottom = strtol(data[28]);
+		pcbimage_resolution = strtol(data[29]);
+		pcbimage_crop = strtol(data[30]);
+		pcbimage_mirror = strtol(data[31]);
+		pcbimage_color = strtol(data[32]);
+		pcbimage_silkscreen_color = strtol(data[33]);
+		pcbimage_plating = strtol(data[34]);
+		silkscreen_top = strtol(data[35]);
+		silkscreen_tnames = strtol(data[36]);
+		silkscreen_tvalues = strtol(data[37]);
+		silkscreen_tdocu = strtol(data[38]);
+		silkscreen_bottom = strtol(data[39]);
+		silkscreen_bnames = strtol(data[40]);
+		silkscreen_bvalues = strtol(data[41]);
+		silkscreen_bdocu = strtol(data[42]);
+		silkscreen_width = strtol(data[43]);
+		silkscreen_enable = strtol(data[44]);
+		bom_farnell = strtol(data[45]);
+		bom_quantity = strtod(data[46]);
+		renumber = strtol(data[47]);
+		output_date_folder = strtol(data[48]);
+		schematic_export = strtol(data[49]);
+		schematic_bw = strtol(data[50]);
+		schematic_color = strtol(data[51]);
+		schematic_format = strtol(data[52]);
+		silkscreen_tplace = strtol(data[53]);
+		silkscreen_bplace = strtol(data[54]);
+		board_layer[0] = strtol(data[55]);
+		board_layer[1] = strtol(data[56]);
+		board_layer[2] = strtol(data[57]);
+		board_layer[3] = strtol(data[58]);
+		board_layer[4] = strtol(data[59]);
+		board_layer[5] = strtol(data[60]);
+		board_layer[6] = strtol(data[61]);
+		board_layer[7] = strtol(data[62]);
+		board_layer[8] = strtol(data[63]);
+		board_layer[9] = strtol(data[64]);
+		board_layer[10] = strtol(data[65]);
+		board_layer[11] = strtol(data[66]);
+		board_layer[12] = strtol(data[67]);
+		board_layer[13] = strtol(data[68]);
+		board_layer[14] = strtol(data[69]);
+		board_layer[15] = strtol(data[70]);		
+		format_revision = strtol(data[71]);	
+
+		gerber_export 	= strtol(data[72]);
+		gerber_copper 	= strtol(data[73]);
+		gerber_stc 	= strtol(data[74]);
+		gerber_sts 	= strtol(data[75]);
+		gerber_plc 	= strtol(data[76]);
+		gerber_pls 	= strtol(data[77]);
+		gerber_crc 	= strtol(data[78]);
+		gerber_crs 	= strtol(data[79]);
+		gerber_drd 	= strtol(data[80]);
+
+		board_thickness 	= strtol(data[81]);
+		board_type		= strtol(data[82]);
+		board_copper_thickness= strtol(data[83]);
+
+		eagle_export 	= strtol(data[84]);
+
+		if(format_revision == 0)	
+		//If the format revision was not set, the version is < 7
+		{
+			//So we assume a 2 layer or 4 layer PCB
+			board_layer[0] = layout_top;
+			board_layer[1] = strtol(data[21]);
+			board_layer[2] = strtol(data[22]);
+			board_layer[15] = layout_bot;
+			silkscreen_tplace = 1;
+			silkscreen_bplace = 1;
+		}
+	}	
+}
+
+void saveUsersettings()
+{
+	output(getSystemFilename(config_file))
+	{
+		printf("%d\n", layout_bot);
+		printf("%d\n", layout_top);
+		printf("%d\n", parts_top);
+		printf("%d\n", parts_bot);
+		printf("%d\n", drills);
+		printf("%d\n", measure);
+		printf("%d\n", drilltable);
+		printf("%d\n", enable_export);
+		printf("%d\n", construction);
+		printf("%d\n", bom);
+		printf("%d\n", mirror_bot);
+		printf("%d\n", crop_all);
+		printf("%d\n", bom_xls);
+		printf("%d\n", bom_xlsx);
+		printf("%d\n", bom_csv);
+		printf("%d\n", bom_dbase3);
+		printf("%d\n", bom_shorten_names);
+		printf("%d\n", bom_display_package_type);
+		printf("%d\n", no_measures);
+		printf("%d\n", auto_project);
+		printf("%s\n", output_folder);
+		printf("%d\n", layout_inner_layer);
+		printf("%d\n", layout_inner_layer);
+		printf("%d\n", parts_display_names);
+		printf("%d\n", parts_display_values);
+		printf("%d\n", pricing);
+		printf("%d\n", sat_export);
+
+		printf("%d\n", pcbimage_top);
+		printf("%d\n", pcbimage_bottom);
+		printf("%d\n", pcbimage_resolution);
+		printf("%d\n", pcbimage_crop);
+		printf("%d\n", pcbimage_mirror);
+		printf("%d\n", pcbimage_color);
+		printf("%d\n", pcbimage_silkscreen_color);
+		printf("%d\n", pcbimage_plating);
+
+		printf("%d\n", silkscreen_top);
+		printf("%d\n", silkscreen_tnames);
+		printf("%d\n", silkscreen_tvalues);
+		printf("%d\n", silkscreen_tdocu);
+		printf("%d\n", silkscreen_bottom);
+		printf("%d\n", silkscreen_bnames);
+		printf("%d\n", silkscreen_bvalues);
+		printf("%d\n", silkscreen_bdocu);
+		printf("%d\n", silkscreen_width);
+		printf("%d\n", silkscreen_enable);
+
+		printf("%d\n", bom_farnell);
+		printf("%f\n", bom_quantity);
+		
+		printf("%d\n", renumber);
+		printf("%d\n", output_date_folder);
+		printf("%d\n", schematic_export);
+		printf("%d\n", schematic_bw);
+		printf("%d\n", schematic_color);
+		printf("%d\n", schematic_format);
+
+		printf("%d\n", silkscreen_tplace);
+		printf("%d\n", silkscreen_bplace);
+
+		printf("%d\n", board_layer[0]);
+		printf("%d\n", board_layer[1]);
+		printf("%d\n", board_layer[2]);
+		printf("%d\n", board_layer[3]);
+		printf("%d\n", board_layer[4]);
+		printf("%d\n", board_layer[5]);
+		printf("%d\n", board_layer[6]);
+		printf("%d\n", board_layer[7]);
+		printf("%d\n", board_layer[8]);
+		printf("%d\n", board_layer[9]);
+		printf("%d\n", board_layer[10]);
+		printf("%d\n", board_layer[11]);
+		printf("%d\n", board_layer[12]);
+		printf("%d\n", board_layer[13]);
+		printf("%d\n", board_layer[14]);
+		printf("%d\n", board_layer[15]);
+
+		printf("%d\n", ULP_REVISION_FORMAT_REVISION);	
+		
+		printf("%d\n", gerber_export);
+		printf("%d\n", gerber_copper);
+		printf("%d\n", gerber_stc);
+		printf("%d\n", gerber_sts);
+		printf("%d\n", gerber_plc);
+		printf("%d\n", gerber_pls);
+		printf("%d\n", gerber_crc);
+		printf("%d\n", gerber_crs);
+		printf("%d\n", gerber_drd);
+
+		printf("%d\n", board_thickness);
+		printf("%d\n", board_type);
+		printf("%d\n", board_copper_thickness);
+
+		printf("%d\n", eagle_export);
+
+	}
+}
+
+void export()
+{
+	if(strstr(output_folder, "./") == 0)
+	{
+		output_folder = bname + strsub(output_folder, 2);
+	}
+
+	string tmp[];
+
+	if(fileglob(tmp, output_folder) == 0) //Empty folder - ulp never run before
+	{
+		system("mkdir \"" + output_folder + "\""); //Make new folder
+	}
+
+	string image_folder = "", gerber_folder = "", eagle_folder = "", cad_folder = "";
+
+	if(output_date_folder)	//If a date folder and subfolders should be created
+	{
+		string date_folder 	= t2string(time(), "yyyy-MM-dd") + "/";
+		image_folder 		= "images";
+		gerber_folder 		= "gerber";
+		eagle_folder 		= "eagle";
+		cad_folder 		= "cad";
+		
+		output_folder = output_folder + date_folder;
+			
+		if(fileglob(tmp, output_folder) <= 0)
+		{
+			system("mkdir \"" + output_folder + "\""); //Make new folder
+		}
+		if(fileglob(tmp, output_folder + image_folder) <= 0)
+		{
+			system("mkdir \"" + output_folder + image_folder + "\""); 
+		}
+		if(fileglob(tmp, output_folder + gerber_folder) <= 0)
+		{
+			system("mkdir \"" + output_folder + gerber_folder + "\""); 
+		}
+		if(fileglob(tmp, output_folder + eagle_folder) <= 0)
+		{
+			system("mkdir \"" + output_folder + eagle_folder + "\""); 
+		}
+		if(fileglob(tmp, output_folder + cad_folder) <= 0)
+		{
+			system("mkdir \"" + output_folder + cad_folder + "\""); 
+		}
+
+		image_folder 	+= "/";
+		gerber_folder 	+= "/";
+		eagle_folder 	+= "/";
+		cad_folder 	+= "/";
+	}
+
+	//Output files to image directory
+	string	output_file = output_folder + image_folder + boardname;
+	output_file_lb = getFilename(output_file, "-layout-bot.bmp");
+	output_file_lt = getFilename(output_file, "-layout-top.bmp");	
+	output_file_li = getFilename(output_file, "-layout-layer"); 
+	output_file_pb = getFilename(output_file, "-parts-bot.bmp");
+	output_file_pt = getFilename(output_file, "-parts-top.bmp");
+	output_file_cs = getFilename(output_file, "-construction.bmp");
+	output_file_drl = getFilename(output_file, "-drills.bmp");
+	output_file_pcbt = getFilename(output_file, "-pcb-top.bmp");
+	output_file_pcbb = getFilename(output_file, "-pcb-bot.bmp");
+	
+	//Output files to gerber directory
+	output_file = output_folder + gerber_folder + boardname;
+	output_file_gerber_copper_top 	= getFilename(output_file, ".cmp");
+	output_file_gerber_copper_other 	= getFilename(output_file, ".g");
+	output_file_gerber_copper_bottom 	= getFilename(output_file, ".sol");
+	output_file_gerber_st		= getFilename(output_file, ".stc");
+	output_file_gerber_sb		= getFilename(output_file, ".sts");
+	output_file_gerber_pt		= getFilename(output_file, ".plc");
+	output_file_gerber_pb		= getFilename(output_file, ".pls");
+	output_file_gerber_ct		= getFilename(output_file, ".crc");
+	output_file_gerber_cb		= getFilename(output_file, ".crs");
+	output_file_gerber_drill		= getFilename(output_file, ".drd");
+	output_file_gerber_spec		= getFilename(output_file, "-specifications.txt");
+	
+	//Output files to CAD directory
+	output_file = output_folder + cad_folder + boardname;
+	output_file_sat = getFilename(output_file, ".sat");
+
+	//Output files in eagle directory (Eagle + Spec file)
+	output_file = output_folder + eagle_folder + boardname;
+	output_folder_eagle 		= output_folder + eagle_folder;
+	output_file_eagle_spec 	 	= getFilename(output_file, "-specifications+layer.txt");
+	
+	
+	//Output files main directory (BOM + schematic PDF)
+	output_file = output_folder + boardname;
+	output_file_schematic_bw = getFilename(output_file, "-schematic-print.pdf");
+	output_file_schematic_color = getFilename(output_file, "-schematic.pdf");		
+
+	cmd += "SET PALETTE WHITE;";
+
+	string measure_layer_top = "48 ";
+	string measure_layer_bottom = "112 ";
+	string names_layer_top = "25 ";
+	string names_layer_bottom = "26 ";
+	string values_layer_top = "27 ";
+	string values_layer_bottom = "28 ";
+
+	if(no_measures)
+	{
+		measure_layer_top = "";
+		measure_layer_bottom = "";
+	}
+
+	if(!parts_display_names)
+	{
+		names_layer_top = "-" + names_layer_top;
+		names_layer_bottom = "-" + names_layer_bottom;		
+	}
+	if(!parts_display_values)
+	{
+		values_layer_top = "-" + values_layer_top;
+		values_layer_bottom = "-" + values_layer_bottom;		
+	}
+
+
+	cmd += "EDIT .sch;";
+
+	if(EAGLE_VERSION > 5 || (EAGLE_VERSION == 5 && EAGLE_RELEASE >= 11) ) //Support for SET CONFIRM form Eagle 5.11 on
+	{
+		cmd += "SET CONFIRM YES;";
+	}
+
+	if(renumber)
+	{
+		cmd += "RUN "  + include_path + "Renumber.ulp;";
+	}
+
+	if(schematic_export)
+	{
+		string format = "A4 portrait ";
+		if(schematic_format == 1)
+		{
+			format = "A3 landscape";
+		}
+		
+		if(schematic_bw)
+		{
+			cmd += "PRINT SHEETS 1-99 PAPER " + format + " BLACK FILE '" + output_file_schematic_bw + "';";
+		}
+		if(schematic_color)
+		{
+			cmd += "PRINT SHEETS 1-99 PAPER " + format + " -BLACK FILE '" + output_file_schematic_color + "';";
+		}
+	}
+
+	cmd += "WRITE;";
+	cmd += "EDIT .brd;";
+	
+
+	if(measure)
+	{
+		cmd += "RUN "  + include_path + "Measure.ulp;";
+	}
+	if(drilltable)
+	{
+		cmd += "RUN " + include_path + "DrillTable.ulp;";
+	}
+	if(silkscreen_enable)
+	{
+		sprintf(cmd, "%s RUN "  + include_path + "SilkGen.ulp %d %d %d %d %d %d %d %d %d;", cmd, silkscreen_width, silkscreen_top, silkscreen_tnames, silkscreen_tvalues, silkscreen_tdocu, silkscreen_bottom, silkscreen_bnames, silkscreen_bvalues, silkscreen_bdocu);
+		cmd += "DISPLAY -121 -122 -123;";
+	}
+
+	if(EAGLE_VERSION > 5 || (EAGLE_VERSION == 5 && EAGLE_RELEASE >= 11) ) //Support for SET CONFIRM form Eagle 5.11 on
+	{
+		cmd += "SET CONFIRM YES;";
+	}
+
+	if(enable_export && layout_bot)
+	{
+		cmd += "DISPLAY NONE;DISPLAY 16 17 18 20 " + measure_layer_bottom + "; RATSNEST;EXPORT IMAGE '" + output_file_lb + "' MONOCHROME 600;";
+	}
+	if(enable_export && layout_top)
+	{
+		cmd += "DISPLAY NONE;DISPLAY 1 17 18 20 " + measure_layer_top + "; RATSNEST; EXPORT IMAGE '" + output_file_lt + "' MONOCHROME 600;";
+	}
+	if(enable_export && layout_inner_layer)
+	{
+		for(int i = 1; i < 15; i++)
+		{
+			if(board_layer[i] == 1)
+			{
+				sprintf(cmd, "%s DISPLAY NONE;DISPLAY %d 17 18 20 " + measure_layer_top + "; SET FILL_LAYER %d SOLID; RATSNEST;EXPORT IMAGE '%s%d.bmp' MONOCHROME 600; SET FILL_LAYER %d %s; RATSNEST;", cmd, i+1, i+1, output_file_li, i+1, i+1, layer_fill[i+1]);
+			}
+		}
+	}
+	if(enable_export && parts_top)
+	{
+		cmd += "DISPLAY NONE;DISPLAY 121 123 " + measure_layer_top + ";EXPORT IMAGE '" + output_file_pt + "' MONOCHROME 600;";
+	}
+	if(enable_export && parts_bot)
+	{	
+		cmd += "DISPLAY NONE;DISPLAY 122 123 " + measure_layer_bottom + ";EXPORT IMAGE '" + output_file_pb + "' MONOCHROME 600;";
+	}
+	if(enable_export && drills)
+	{
+		cmd += "DISPLAY NONE;DISPLAY 44 45 20 " + measure_layer_top + ";EXPORT IMAGE '" + output_file_drl + "' MONOCHROME 600;";
+	}
+	if(enable_export && construction)
+	{
+		cmd += "DISPLAY NONE;DISPLAY 111 20;EXPORT IMAGE '" + output_file_cs + "' MONOCHROME 600;";		
+	}
+
+	if(EAGLE_VERSION > 5 || (EAGLE_VERSION == 5 && EAGLE_RELEASE >= 11) ) //Support for SET CONFIRM form Eagle 5.11 on
+	{
+		cmd += "SET CONFIRM NO;";
+	}
+
+
+	if(enable_export && crop_all)
+	{
+		if(layout_bot)
+		{
+			cmd += "RUN "  + include_path + "Crop.ulp '" + output_file_lb + "';";
+		}
+		if(layout_top)
+		{
+			cmd += "RUN "  + include_path + "Crop.ulp '" + output_file_lt + "';";
+		}
+		if(layout_inner_layer)
+		{
+			for(int i = 1; i < 15; i++)
+			{
+				if(board_layer[i] == 1)
+				{	
+					string tfname = "";
+					sprintf(tfname, "%s%d.bmp", output_file_li, i+1); 		
+					cmd += "RUN "  + include_path + "Crop.ulp '" + tfname + "';";
+				}
+			}
+		}
+		if(parts_top)
+		{
+			cmd += "RUN "  + include_path + "Crop.ulp '" + output_file_pt + "';";
+		}
+		if(parts_bot)
+		{
+			cmd += "RUN "  + include_path + "Crop.ulp '" + output_file_pb + "';";
+		}
+		if(drills)
+		{
+			cmd += "RUN "  + include_path + "Crop.ulp '" + output_file_drl + "';";
+		}
+		if(construction)
+		{
+			cmd += "RUN "  + include_path + "Crop.ulp '" + output_file_cs + "';";
+		}	
+	}	
+	if(enable_export && mirror_bot)
+	{
+		if(layout_bot)
+		{
+			cmd += "RUN "  + include_path + "Mirror.ulp '" + output_file_lb + "';";
+		}
+		if(parts_bot)
+		{
+			cmd += "RUN "  + include_path + "Mirror.ulp '" + output_file_pb + "';";
+		}
+	}
+	if(enable_export)
+	{
+		cmd += "DISPLAY NONE; DISPLAY " + layers + ";";
+		cmd += "SET PALETTE " + palette_name + ";";
+		cmd += "RATSNEST;";
+	}
+
+	if(enable_export && (pcbimage_top || pcbimage_bottom))
+	{
+		sprintf(cmd, "%s RUN "  + include_path + "ImageExport.ulp '%s' %d '%s' %d %d %d %d %s %s %s %s;", cmd, output_file_pcbb, pcbimage_bottom, output_file_pcbt, pcbimage_top, pcbImageResolutions[pcbimage_resolution], pcbimage_crop, pcbimage_mirror, pcbImagePcbColors[pcbimage_color],pcbImageCopperColors[pcbimage_color], pcbImageSilkscreenColors[pcbimage_silkscreen_color], pcbImagePlating[pcbimage_plating]);
+	}
+
+	if(sat_export)
+	{
+		cmd += "RUN "  + include_path + "Sat.ulp '" + output_file_sat + "';";
+	}	
+
+
+	if(pricing)
+	{
+		cmd += "EDIT .sch;";
+		string tmp = "";
+		sprintf(tmp, "RUN "  + include_path + "PriceRequest.ulp;");
+		cmd += tmp;		
+	}
+	if(bom)
+	{
+		string tmp = "";
+		sprintf(tmp, "RUN "  + include_path + "BOM.ulp '%s' -multiplier %f %s %s %s %s %s %s %s;", getFilename(output_file, "-bom"), bom_quantity,  bom_xls?"-xls":"", bom_xlsx?"-xlsx":"", bom_csv?"-csv":"", bom_dbase3?"-dbase3":"", bom_farnell?"-farnell":"", bom_shorten_names?"-short_names":"", (!bom_display_package_type)?"-display_package_type":"");
+		cmd += tmp;
+		
+	}
+
+	if(gerber_export)
+	{
+		//Let the ulp retrieve the eagle executeable path once
+		sprintf(cmd, "%s RUN "  + include_path + "Gerber.ulp -1;", cmd); 
+
+		int count = 0;
+		if(gerber_copper)
+		{
+			for(int i = 0; i < 16; i++)
+			{
+				if(board_layer[i] == 1)
+				{
+					if(i == 0)
+					{	
+						sprintf(cmd, "%s RUN "  + include_path + "Gerber.ulp 0 '%s' '%s' %d;", cmd,  getSystemFilename(".brd"), output_file_gerber_copper_top,  i+1);
+					}
+					else if(i == 15)
+					{
+						sprintf(cmd, "%s RUN "  + include_path + "Gerber.ulp 0 '%s' '%s' %d;", cmd,  getSystemFilename(".brd"), output_file_gerber_copper_bottom,  i+1);
+					}
+					else
+					{
+						string tfname = "";
+						sprintf(tfname, "%s%d", output_file_gerber_copper_other, i+1); 			
+						sprintf(cmd, "%s RUN "  + include_path + "Gerber.ulp 0 '%s' '%s' %d;", cmd,  getSystemFilename(".brd"), tfname ,  i+1);					
+					}
+					count++;
+				}			
+			}
+		}
+		if(gerber_stc){ sprintf(cmd, "%s RUN "  + include_path + "Gerber.ulp 1 '%s' '%s' 1;", cmd,  getSystemFilename(".brd"), output_file_gerber_st); }
+		if(gerber_sts){ sprintf(cmd, "%s RUN "  + include_path + "Gerber.ulp 1 '%s' '%s' 0;", cmd,  getSystemFilename(".brd"), output_file_gerber_sb); }
+		if(gerber_crc){ sprintf(cmd, "%s RUN "  + include_path + "Gerber.ulp 2 '%s' '%s' 1;", cmd,  getSystemFilename(".brd"), output_file_gerber_ct); }
+		if(gerber_crs){ sprintf(cmd, "%s RUN "  + include_path + "Gerber.ulp 2 '%s' '%s' 0;", cmd,  getSystemFilename(".brd"), output_file_gerber_cb); }
+		if(gerber_plc){ sprintf(cmd, "%s RUN "  + include_path + "Gerber.ulp 3 '%s' '%s' 1 %d %d %d %d;", cmd,  getSystemFilename(".brd"), output_file_gerber_pt, silkscreen_tplace, silkscreen_tnames, silkscreen_tvalues, silkscreen_tdocu); }
+		if(gerber_pls){ sprintf(cmd, "%s RUN "  + include_path + "Gerber.ulp 3 '%s' '%s' 0 %d %d %d %d;", cmd,  getSystemFilename(".brd"), output_file_gerber_pb, silkscreen_bplace, silkscreen_bnames, silkscreen_bvalues, silkscreen_bdocu); }
+		if(gerber_drd){ sprintf(cmd, "%s RUN "  + include_path + "Gerber.ulp 4 '%s' '%s';", cmd,  getSystemFilename(".brd"), output_file_gerber_drill); }		
+				
+
+	
+		//Generate specification file
+		sprintf(cmd, "%s RUN "  + include_path + "Specification.ulp '%s' '%s' '%s' %d '%s' '%s' '%s' '%s';", cmd, output_file_gerber_spec, PcbThickness[board_thickness], PcbType[board_type], count, PcbCopperThickness[board_copper_thickness], pcbSpecColor[pcbimage_color], pcbSpecSilkscreenColor[pcbimage_silkscreen_color], pcbSpecPlating[pcbimage_plating]); 		
+	}
+
+	cmd += "WRITE;";
+
+	if(eagle_export)
+	{
+		sprintf(cmd, "%s RUN "  + include_path + "Eagle.ulp '%s' '%s';", cmd,  getSystemFilename(".brd"), output_folder_eagle);
+		sprintf(cmd, "%s RUN "  + include_path + "Eagle.ulp '%s' '%s';", cmd,  getSystemFilename(".sch"), output_folder_eagle);
+
+		//Count all used layers
+		int count = 0;
+		for(int i = 0; i < 16; i++)
+		{
+			if(board_layer[i] == 1)
+			{
+	
+				count++;
+			}			
+		}
+		//Generate list of all layers for the silk screen
+		string tsilk_layers = "";
+		if(silkscreen_tplace){ tsilk_layers += "tPlace "; } 
+		if(silkscreen_tnames){ tsilk_layers += "tNames "; } 
+		if(silkscreen_tvalues){ tsilk_layers += "tValues "; } 
+		if(silkscreen_tdocu){ tsilk_layers += "tDocu "; } 
+
+		string bsilk_layers = "";
+		if(silkscreen_bplace){ bsilk_layers += "bPlace "; } 
+		if(silkscreen_bnames){ bsilk_layers += "bNames "; } 
+		if(silkscreen_bvalues){ bsilk_layers += "bValues "; } 
+		if(silkscreen_bdocu){ bsilk_layers += "bDocu "; } 
+		
+
+		//Generate specification file
+		sprintf(cmd, "%s RUN "  + include_path + "Specification.ulp '%s' '%s' '%s' %d '%s' '%s' '%s' '%s' '%s' '%s';", cmd, output_file_eagle_spec, PcbThickness[board_thickness], PcbType[board_type], count, PcbCopperThickness[board_copper_thickness], pcbSpecColor[pcbimage_color], pcbSpecSilkscreenColor[pcbimage_silkscreen_color], pcbSpecPlating[pcbimage_plating], tsilk_layers, bsilk_layers); 		
+
+	}	
+	
+	exit(cmd);
+}
+
+
+void update()
+{
+	//string dlog = downloadGetTempFile("update.log");
+	//download(UPDATE_SERVER + "update.log", dlog, "");
+	
+	string lines[];
+	int nlines = netpost(lines, UPDATE_SERVER + "update.log", "");
+
+	if(nlines >= 0)
+	{
+		if(ULP_VERSION != lines[0])
+		{
+			if(dlgMessageBox("A new version of this ULP is available! \nNew version: " + lines[0] + "\nCurrent version: " + ULP_VERSION + "\nDo you want to download the new version?", "Ja", "Nein") == 0)
+			{
+				if(downloadGetUlpDir("") != "")
+				{
+					for(int i = 1; i < nlines; i++)
+					{
+						download(UPDATE_SERVER + lines[i], downloadGetUlpDir(lines[i]), "");
+					}
+					exit("RUN HTLExportPro.ulp");
+				}
+				else
+				{
+					dlgMessageBox("Unable to update the ULP, please add this ULP to your standard ULP path!");
+				}
+			}	
+		}
+		else
+		{
+			dlgMessageBox("Your ULP is up-to-date");
+		}
+	}
+	else
+	{
+		dlgMessageBox("Unable to connect to update server!");
+	}
+}
+
+void dialogSilkscreenSettings()
+{
+	dlgDialog("Bestückungsdruck Einstellungen")
+	{
+		dlgGroup("Bestückungsdruck Top:") 
+		{
+			dlgCheckBox("Top Bestückungsdruck", silkscreen_top);
+		};
+		dlgGroup("Bestückungsdruck Bottom:") 
+		{
+			dlgCheckBox("Bottom Bestückungsdruck", silkscreen_bottom);
+		};
+		dlgHBoxLayout
+		{
+			dlgLabel("Minimale Breite (mil):");
+			dlgIntEdit(silkscreen_width, 1, 20);
+		};
+		dlgGroup("Info") 
+		{
+			dlgLabel("Beim Erstellen des Bestückungsdrucks werden alle auf die \nLayer 121 (Top), 122 (Bottom) und 123 (Dimension) kopiert, \ndies erleichtert den späteren Export und ermöglicht das einfachere \nErstellen eines Mehrfachnutzen. Das Ratio des kopierten \nTextes wird wenn möglich so bearbeitet um die erfoderliche\n minimale Breite zu erreichen");
+		}
+		dlgPushButton("OK") {
+			dlgAccept();
+		};
+	};
+}
+
+void dialogImageSettings()
+{
+	dlgDialog("Export Einstellungen")
+	{
+		dlgGroup("Ansichten:") 
+		{
+			dlgHBoxLayout
+			{
+				dlgCheckBox("Layout Bot.", layout_bot);
+				dlgCheckBox("Layout Top", layout_top);
+			};
+			dlgCheckBox("Layout innerer Lagen (2 - 15)", layout_inner_layer);
+
+			dlgHBoxLayout
+			{
+				dlgCheckBox("Bestückung Top", parts_top);
+ 				dlgCheckBox("Bestückung Bot.", parts_bot);
+			};
+
+			dlgHBoxLayout
+			{
+	 			dlgCheckBox("Bohrungen", drills);
+				dlgCheckBox("Konstruktion", construction);
+			};		
+		};
+		dlgGroup("Erweitert:")
+		{			
+			dlgCheckBox("Ansichten spiegeln* (Layout Bottom, Bestückung Bottom)", mirror_bot);
+			dlgCheckBox("Bilder beschneiden* (entfernen des weißen Randes)", crop_all);
+			dlgCheckBox("Keine Bemassungen (außer Leiterplattenkonstruktion)", no_measures);	
+			dlgLabel("* Dies kann je nach Boardgröße einige Zeit \n(bis zu mehreren Minuten) dauern.");
+		};
+		dlgGroup("Leiterplatten Ansicht: ")
+		{
+			dlgHBoxLayout
+			{
+				dlgCheckBox("Top Ansicht", pcbimage_top);
+				dlgCheckBox("Bottom Ansicht", pcbimage_bottom);
+			}
+
+			string Resolutions[] = {
+				"150dpi - niedrige Auslösung - schnell", 
+				"300dpi - mittlere Auflösung - moderat", 
+				"600dpi - hohe Auflösung - langsam"
+			};
+			dlgComboBox(Resolutions, pcbimage_resolution);
+
+			dlgGroup("Nachbearbeitung")
+			{
+				dlgCheckBox("Ansicht beschneiden", pcbimage_crop);
+				dlgCheckBox("Ansicht spiegeln", pcbimage_mirror);
+			}
+		}
+		dlgPushButton("OK") {
+			dlgAccept();
+		};
+	};		
+}
+
+void dialogBomSettings()
+{
+	dlgDialog("Stücklisten Einstellungen")
+	{
+		dlgGroup("Stückliste:")
+		{
+			
+			dlgCheckBox("Stückliste exportieren", bom);
+			dlgGroup("Dateitypen:") 
+			{
+				dlgHBoxLayout
+				{
+					dlgCheckBox("XLS", bom_xls);
+					dlgCheckBox("XLSX", bom_xlsx);
+				}
+				dlgHBoxLayout
+				{
+					dlgCheckBox("CSV", bom_csv);
+					dlgCheckBox("DBF(DBASE III)", bom_dbase3);
+				}
+				dlgHBoxLayout
+				{
+					dlgCheckBox("Farnell Bom", bom_farnell);
+				}
+			}
+			dlgGroup("Optionen:") 
+			{
+				dlgHBoxLayout
+				{
+					dlgCheckBox("R1,R2,R3,R4 -> R1-4", bom_shorten_names);
+					dlgCheckBox("SMD 0805 -> 0805", bom_display_package_type);
+				}
+				dlgHBoxLayout
+				{
+					dlgLabel("Order Quantity");
+					dlgRealEdit(bom_quantity);
+				}
+
+				
+					
+			}		
+		};
+		dlgPushButton("OK") {
+			dlgAccept();
+		};
+	};
+}
+
+void dialogSchematicSettings()
+{
+	dlgDialog("Stromlaufplan Einstellungen")
+	{
+		dlgGroup("Stromlaufplan Einstellungen:")
+		{
+			dlgGroup("Format:") 
+			{
+				dlgRadioButton("A4", schematic_format);
+				dlgRadioButton("A3", schematic_format);
+			}
+			dlgGroup("Optionen:") 
+			{
+				dlgCheckBox("In Schwarz - Weiß exportieren", schematic_bw);	
+				dlgCheckBox("In Farbe exportieren", schematic_color);		
+			}		
+		};
+		dlgPushButton("OK") {
+			dlgAccept();
+		};
+	};
+}
+
+void dialogBoardSettings()
+{
+
+	dlgDialog("Board Einstellungen")
+	{
+		dlgGroup("Verwendete Kupferlagen:") 
+		{
+			dlgHBoxLayout
+			{
+				dlgCheckBox("Kupfer Top", board_layer[0]);
+				dlgCheckBox("Kupfer Layer 2", board_layer[1]);
+				dlgCheckBox("Kupfer Layer 3", board_layer[2]);
+				dlgCheckBox("Kupfer Layer 4", board_layer[3]);
+			}
+			dlgHBoxLayout
+			{
+				dlgCheckBox("Kupfer Layer 5", board_layer[4]);
+				dlgCheckBox("Kupfer Layer 6", board_layer[5]);
+				dlgCheckBox("Kupfer Layer 7", board_layer[6]);
+				dlgCheckBox("Kupfer Layer 8", board_layer[7]);
+			}
+			dlgHBoxLayout
+			{
+				dlgCheckBox("Kupfer Layer 9", board_layer[8]);
+				dlgCheckBox("Kupfer Layer 10", board_layer[9]);
+				dlgCheckBox("Kupfer Layer 11", board_layer[10]);
+				dlgCheckBox("Kupfer Layer 12", board_layer[11]);
+			}
+			dlgHBoxLayout
+			{
+				dlgCheckBox("Kupfer Layer 13", board_layer[12]);
+				dlgCheckBox("Kupfer Layer 14", board_layer[13]);
+				dlgCheckBox("Kupfer Layer 15", board_layer[14]);
+				dlgCheckBox("Kupfer Bottom", board_layer[15]);
+			}	
+		}
+		dlgGroup("Lagen für Top Bestückungsdruck:") 
+		{		
+			dlgHBoxLayout
+			{
+				dlgCheckBox("Markierung anzeigen", silkscreen_tplace);
+				dlgCheckBox("Name anzeigen", silkscreen_tnames);
+ 				dlgCheckBox("Werte anzeigen", silkscreen_tvalues);
+ 				dlgCheckBox("Doc anzeigen", silkscreen_tdocu);
+			};
+		}
+		dlgGroup("Lagen für Bottom Bestückungsdruck:") 
+		{
+			dlgHBoxLayout
+			{
+				dlgCheckBox("Markierung anzeigen", silkscreen_bplace);
+				dlgCheckBox("Name anzeigen", silkscreen_bnames);
+ 				dlgCheckBox("Werte anzeigen", silkscreen_bvalues);
+ 				dlgCheckBox("Doc anzeigen", silkscreen_bdocu);
+			};			
+		}
+		dlgGroup("Ausführung:") 
+		{
+			dlgHBoxLayout 	{ dlgLabel("Dicke der Leiterplatte (mm): ");  	dlgComboBox(PcbThickness, board_thickness);};
+			dlgHBoxLayout 	{ dlgLabel("Basismaterial: ");  			dlgComboBox(PcbType, board_type);};
+			dlgHBoxLayout 	{ dlgLabel("Dicke der Kupferschicht (um): ");  	dlgComboBox(PcbCopperThickness, board_copper_thickness);};
+			dlgHBoxLayout 	{ dlgLabel("Farbe der PCB: ");  			dlgComboBox(PcbColor, pcbimage_color);};
+			dlgHBoxLayout 	{ dlgLabel("Farbe des Bestückungsdrucks: ");  	dlgComboBox(PcbSilkscreenColor, pcbimage_silkscreen_color);};
+			dlgHBoxLayout 	{ dlgLabel("Oberfläche: ");  				dlgComboBox(PcbPlating, pcbimage_plating);};								
+		}		
+
+		dlgPushButton("OK") {
+			dlgAccept();
+		};
+	};	
+
+}
+
+void dialogGerberSettings()
+{
+	dlgDialog("Gerber Einstellungen")
+	{
+		dlgGroup("Gerber RS274X:") 
+		{
+			dlgCheckBox("Alle Kupferlagen (.sol, .gXX, .cmp) ", 	gerber_copper);
+			dlgCheckBox("Lötstopmaske Top (.stc)", 			gerber_stc);	
+			dlgCheckBox("Lötstopmaske Bottom (.sts)", 			gerber_sts);
+			dlgCheckBox("Bestückungsdruck Top (.plc)", 			gerber_plc);	
+			dlgCheckBox("Bestückungsdruck Bottom (.pls)", 		gerber_pls);
+			dlgCheckBox("Lötpaste Top (.crc)", 				gerber_crc);	
+			dlgCheckBox("Lötpaste Bottom (.crs)", 			gerber_crs);			
+		}
+		dlgGroup("Excellon:") 
+		{		
+	 		dlgCheckBox("Bohrungen (.drd, .drl)", 			gerber_drd);	
+		};		
+		dlgPushButton("OK") {
+			dlgAccept();
+		};
+	};
+}
+
+void dialogHelpView()
+{
+	string text;
+	int nchars = fileread(text, downloadGetUlpDir("help/help.htm"));
+	
+	dlgDialog("Funktionen / HowTo")
+	{	
+		//Do some magic to stretch the TextView
+		dlgHBoxLayout{dlgSpacing(550);};
+		dlgHBoxLayout{
+			dlgVBoxLayout{dlgSpacing(550);};
+			dlgTextView(text);
+		};
+		dlgHBoxLayout{
+			dlgStretch(1);
+			dlgPushButton("Schließen")    dlgAccept();
+			dlgStretch(1);
+		}	
+	};
+}
+
+loadUsersettings();
+
+int dialog = dlgDialog(ULP_VERSION)
+{
+	dlgHBoxLayout
+	{
+		dlgGroup("")
+		{
+		dlgLabel("\
+An meine lieben HTLer und HTLerinnen =):\n\
+Ich hoffe es hilft euch schnell ans Ziel zu kommen ^^\n\
+Bei Fragen, Problemen oder Wünschen könnt ihr mich jederzeit unter \n\
+bwa@berniwa.com erreichen. \n\
+\n\
+Liebe Grüße BWA\
+");
+	dlgHBoxLayout
+	{
+
+		dlgPushButton("Nutzungsbedingungen") 
+		{
+		dlgMessageBox("\
+\n\
+Dieses ULP ist NUR für die Verwendung an der HTL-Salzburg gedacht!\n\
+Sollten Sie diese ULP anderweitig (kommerziell oder nicht-kommerziell)\n\
+verwenden wollen, kontaktieren Sie mich unter bwa@berniwa.com\n\
+Copyright 2013, Bernhard Wörndl-Aichriedler\n\
+");
+		}
+		
+		dlgPushButton("Funktionen") 
+		{
+			dialogHelpView();
+		}
+	}
+		}
+	}
+	dlgGroup("Updates")
+	{
+		dlgHBoxLayout {
+			dlgLabel(ULP_VERSION); dlgPushButton("Auf Updates prüfen."){update();}; 
+		};
+	}
+	dlgGroup("Board Einstellungen")
+	{
+		dlgHBoxLayout {dlgLabel("Allgemeine Einstellungen"); dlgPushButton("Einstellungen"){dialogBoardSettings();}; };
+	}
+	dlgGroup("Schritte")
+	{
+		dlgHBoxLayout {dlgCheckBox("Bauteile neu nummerieren", renumber); dlgStretch(1);}
+		dlgHBoxLayout {dlgCheckBox("Bemaßung erstellen", measure);  dlgStretch(1); };
+		dlgHBoxLayout {dlgCheckBox("Bohrertabelle erstellen", drilltable); dlgStretch(1); };
+		dlgHBoxLayout {dlgCheckBox("Bestückungsdruck erstellen", silkscreen_enable); dlgPushButton("Einstellungen"){dialogSilkscreenSettings();}; };
+		dlgHBoxLayout {dlgCheckBox("Bilder exportieren", enable_export); dlgPushButton("Einstellungen"){dialogImageSettings();}; };
+		dlgHBoxLayout {dlgCheckBox("Preise abfragen", pricing); dlgStretch(1); };
+		dlgHBoxLayout {dlgCheckBox("Stückliste exportieren", bom); dlgPushButton("Einstellungen"){dialogBomSettings();}; };
+		dlgHBoxLayout {dlgCheckBox("Cad Dateien exportieren", sat_export); dlgStretch(1); };
+		dlgHBoxLayout {dlgCheckBox("Stromlaufplan exportieren", schematic_export); dlgPushButton("Einstellungen"){dialogSchematicSettings();}; };
+		dlgHBoxLayout {dlgCheckBox("Gerber Dateien exportieren", gerber_export); dlgPushButton("Einstellungen"){dialogGerberSettings();}; };
+		dlgHBoxLayout {dlgCheckBox("Eagle Dateien exportieren", eagle_export); dlgStretch(1); };
+	}
+	dlgGroup("Ausgabeordner")
+	{
+		dlgHBoxLayout {
+ 			dlgLabel("Ausgabeordner");
+  			dlgStringEdit(output_folder);
+			dlgPushButton("Auswählen")
+			{
+				if(output_folder == "./")
+				{
+					output_folder = bname;
+				}
+				output_folder = dlgDirectory("Ausgabeordner wählen", output_folder);
+				output_folder += "/";
+			}
+  		}
+		dlgHBoxLayout {dlgCheckBox("Unterordner mit aktuellem Datum, sowie Einzelordner erstellen", output_date_folder); dlgStretch(1);}		
+	}
+	dlgHBoxLayout
+	{
+		dlgStretch(1); 
+		dlgPushButton("OK") {
+			saveUsersettings();
+			export();
+		};
+		dlgPushButton("Abbrechen") 
+		{
+			exit(EXIT_SUCCESS);
+		};
+		dlgStretch(1); 
+	}
+	dlgHBoxLayout
+	{
+		dlgStretch(1); 
+		dlgLabel("(c) Copyright 2007-2013, Bernhard Wörndl-Aichriedler");
+		dlgStretch(1); 
+	}
+};

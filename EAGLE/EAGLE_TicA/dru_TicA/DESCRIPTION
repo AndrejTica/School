@@ -1,0 +1,11 @@
+<h2>Design-Regeln von Andrej Tica</h2><hr>
+<p>
+In den Design-Regeln ("Design Rules") legt man alle für die Platine und deren
+Fertigung relevanten Parameter fest. <br>
+Die Überprüfung eines Layouts kann jederzeit mit dem <b>Design-Rule-Check</b> (<b>DRC</b>-Befehl)
+erfolgen.<br>
+Bei Verwendung des Autorouters, sind diese Regeln
+ebenfalls gültig.<hr>
+HTBLuVA Salzburg<br>
+Schuljahr 2016/17<br>
+ab Eagle_Ver.7.4.0<br>

@@ -1,0 +1,47 @@
+[Eagle]
+Version="07 07 00"
+Platform="Linux"
+Serial="62191E841E-LSR-WLM-1EL"
+Globals="Globals"
+Desktop="Desktop"
+
+[Globals]
+AutoSaveProject=1
+UsedLibrary="/home/andrej/Dokumente/EAGLE_TicA/lbr_TicA/Battery_TicA.lbr"
+UsedLibrary="/home/andrej/Dokumente/EAGLE_TicA/lbr_TicA/Frames_HTL.lbr"
+UsedLibrary="/home/andrej/Dokumente/EAGLE_TicA/lbr_TicA/baustelle_v.lbr"
+UsedLibrary="/home/andrej/Dokumente/EAGLE_TicA/lbr_TicA/con_TicA.lbr"
+UsedLibrary="/home/andrej/Dokumente/EAGLE_TicA/lbr_TicA/diode_TicA.lbr"
+UsedLibrary="/home/andrej/Dokumente/EAGLE_TicA/lbr_TicA/display_TicA.lbr"
+UsedLibrary="/home/andrej/Dokumente/EAGLE_TicA/lbr_TicA/frames_TicA.lbr"
+UsedLibrary="/home/andrej/Dokumente/EAGLE_TicA/lbr_TicA/fuse_TicA.lbr"
+UsedLibrary="/home/andrej/Dokumente/EAGLE_TicA/lbr_TicA/heatsink_TicA.lbr"
+UsedLibrary="/home/andrej/Dokumente/EAGLE_TicA/lbr_TicA/ic-linear_TicA.lbr"
+UsedLibrary="/home/andrej/Dokumente/EAGLE_TicA/lbr_TicA/ic-logik_TicA.lbr"
+UsedLibrary="/home/andrej/Dokumente/EAGLE_TicA/lbr_TicA/ic-processor_TicA.lbr"
+UsedLibrary="/home/andrej/Dokumente/EAGLE_TicA/lbr_TicA/ic-vreg_TicA.lbr"
+UsedLibrary="/home/andrej/Dokumente/EAGLE_TicA/lbr_TicA/inductor_TicA.lbr"
+UsedLibrary="/home/andrej/Dokumente/EAGLE_TicA/lbr_TicA/jumper_TicA.lbr"
+UsedLibrary="/home/andrej/Dokumente/EAGLE_TicA/lbr_TicA/led_TicA.lbr"
+UsedLibrary="/home/andrej/Dokumente/EAGLE_TicA/lbr_TicA/optocoupler_TicA.lbr"
+UsedLibrary="/home/andrej/Dokumente/EAGLE_TicA/lbr_TicA/rcl_TicA.lbr"
+UsedLibrary="/home/andrej/Dokumente/EAGLE_TicA/lbr_TicA/relay_TicA.lbr"
+UsedLibrary="/home/andrej/Dokumente/EAGLE_TicA/lbr_TicA/solpad_TicA.lbr"
+UsedLibrary="/home/andrej/Dokumente/EAGLE_TicA/lbr_TicA/supply_TicA.lbr"
+UsedLibrary="/home/andrej/Dokumente/EAGLE_TicA/lbr_TicA/switch_TicA.lbr"
+UsedLibrary="/home/andrej/Dokumente/EAGLE_TicA/lbr_TicA/testpad_TicA.lbr"
+UsedLibrary="/home/andrej/Dokumente/EAGLE_TicA/lbr_TicA/trafo_TicA.lbr"
+UsedLibrary="/home/andrej/Dokumente/EAGLE_TicA/lbr_TicA/transistor_TicA.lbr"
+UsedLibrary="/home/andrej/Dokumente/EAGLE_TicA/lbr_TicA/triac_TicA.lbr"
+UsedLibrary="/home/andrej/Dokumente/EAGLE_TicA/projects_TicA/HWE/Wetterstation/measure.lbr"
+UsedLibrary="measure.lbr"
+
+[Win_1]
+Type="Control Panel"
+Loc="773 28 1731 1053"
+State=1
+Number=0
+
+[Desktop]
+Screen="1920 1080"
+Window="Win_1"
