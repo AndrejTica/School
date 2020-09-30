@@ -1,0 +1,112 @@
+//Aufgabe: LED blinkt und wenn ein taster gedrückt wird soll eine 2 gleichzeitig aufleuchten
+
+
+
+#define F_CPU 8000000UL
+#include <avr/io.h>
+#include <util/delay.h>
+#include <avr/interrupt.h>
+ 
+#define LED1 5
+#define LED2 6
+#define BUT1 2
+ 
+int main(void)
+{
+    DDRD = 0b01100000;
+    PORTD = 0b00000100;
+   
+    while(1)
+    {
+        PORTD |= (1<<LED2);
+        _delay_ms(1500);		//PROBLEM: während der sleep phase kann man nicht ins if hineinkommen weil die cpu "nichts" tut.
+        PORTD &= ~(1<<LED2);		//mit einem interrupt wollen wir diesen sleep unterbrechen wenn taster gedrückt wird
+        _delay_ms(1500);
+       
+       
+        if (!(PIND & (1<<BUT1)))
+        {
+            PORTD |= (1<<LED1);
+        }
+        else
+        {
+            PORTD &= ~(1<<LED1);
+        }
+    }
+}
+
+
+//LÖSUNG
+#define LED1 5
+#define LED2 6
+#define BUT1 2
+int main(void)
+{
+    DDRD = 0b01100000;
+    PORTD = 0b00000100;
+
+    EIMSK = (1<<INT0);	//jedes mal wenn der pin wo INT0 ein LOW bekommt, ist auch gleichzeitig der PIN wo unser BUT1 ist. Im schaltbild kann man sehen es ist am PD2
+			//wenn das passiert wird der Interupt vecotor aufgerufen(ISR funktion wird ausgeführt)
+    sei();	//interrupts anschalten
+   
+    while(1)
+    {
+        PORTD |= (1<<LED2);
+        _delay_ms(1500);		
+        PORTD &= ~(1<<LED2);		
+        _delay_ms(1500);
+       
+       
+       
+    }
+}
+
+ ISR(INT0_vect){
+   PORTD ^= (1<<LED1);	
+}
+
+
+//Wir möchten jz für interrupt irgendein pin nehmen.
+
+
+#define LED1 5
+#define LED2 6
+#define BUT1 2
+int main(void)
+{
+    DDRD = 0b01100000;
+    PORTD = 0b00010100;
+
+    PCICR = (1<<PCIE2);		//4 bit, bestimmen in welche gruppe sich mein interrupt pin befindet
+    PCMSK2 = (1<<PCINT20);	//8bit, die genaue position. PCMSKn (n 0-3 wieder die Gruppenzahl) und dann noch mit PCINTn (n genaue pin position)
+				
+    sei();	
+   
+    while(1)
+    {
+        PORTD |= (1<<LED2);
+        _delay_ms(1500);		
+        PORTD &= ~(1<<LED2);		
+        _delay_ms(1500);
+       
+       
+       
+    }
+}
+
+ ISR(PCINT2_vect){		//wieder dem vector vom Interrupt pin richtig schreiben 
+   PORTD ^= (1<<LED1);	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

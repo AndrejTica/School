@@ -1,0 +1,27 @@
+#include <avr/io.h>
+ 
+#define LED1 5
+#define BUT1 2
+ 
+int main(void)
+{
+    DDRD = 0b00100000;	//dieser pin ist ausgang 
+    PORTD = 0b00000100;	//dieser pin ist ein Eingang mit pull up -> aktiv low
+  
+	//Im PIN register werden die pins angezeigt die grad HIGH sind
+
+    while(1)
+    {
+        if (!(PIND & (1<<BUT1)))	//PIND hat immer am pin 3 HIGH wegen dem Pullup, geschloßener Schalter zieht dem Pin gegen GND also LOW wirds.
+        {				//BUT1 ist einfach ein festes BIT muster mit 3ten PIN ebenfalls immer high. Damit LED nicht immer lechtet 
+            PORTD |= (1<<LED1);		//müssen wir alles negieren	
+        }
+        else
+        {
+            PORTD &= ~(1<<LED1);
+        }  
+    }
+}
+
+//& bit weise und. 
+//&& logische und sobald irgendwelche bits in beiden 1 sind ist ausgang 1
