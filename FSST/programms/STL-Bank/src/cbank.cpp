@@ -12,33 +12,32 @@ CBank::CBank(string powner){
 }
 
 
-void CBank::add(const CKonto& pkonto){
+void CBank::add(const CKonto& pkonto){ //ein object von konto wird übergeben
 
-    m_konten.push_back(pkonto);
+    m_konten.push_back(pkonto); //push_back an dem vektor wird hinten was dranngefügt
 
 }
 
 void CBank::display()const{
 
 
-    for(int i = 0; i < m_konten.size(); i++){
+    vector<CKonto>::iterator it; //iterator deklaration, pointer auf ein vektor element,
 
-        m_konten[i].display();
+
+    for(it = m_konten.begin(); it < m_konten.end(); it++){ //in der schleife wird pointer verschoben, m_konten.begin ist pointer auf erste element, .end ist pointer auf letzte element +1
+
+      it->display(); //für jedes element des vektors display funkt aufrufen
 
     }
+
 
 }
 
-ostream& operator<<(ostream& o, const CBank& e){
-
-    for(int i = 0; i < e.m_konten.size(); i++){
+ostream& operator<<(ostream& o, const CBank& e){ //damit cout weiß, was es ausgeben soll in unserer klasse
 
 
-        o << "Bank Konto " << i+1 << ":\n" << e.m_konten[i];
 
-    }
 
-    return o;
 }
 
 

@@ -13,7 +13,7 @@ using namespace std;
 
 class CBank {
 	private:
-		vector<CKonto> m_konten;
+		vector<CKonto> m_konten; //in den vector kann ich jeden datentyp schreiben weil template
 		vector<int> m_konten_idx;
 		string m_name;
 
@@ -30,6 +30,6 @@ class CBank {
 		friend ostream& operator<<(ostream& o, const CBank& e);
 
 		// Destruktor
-		~CBank();
+		~CBank();  //wenn objekt gelöscht wird
 };
 #endif
