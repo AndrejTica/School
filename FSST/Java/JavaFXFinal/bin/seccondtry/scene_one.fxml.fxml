@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.text.Text?>
+<VBox fx:id="vBoxScene1" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1"
+      alignment="CENTER"
+      spacing="10"
+      fx:controller="Controller"
+>
+    <Text text="Scene One"/>
+
+    <Button text="change scene"
+            onAction="#ch"
+            fx:id="button1"
+            />
+</VBox>

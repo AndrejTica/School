@@ -1,0 +1,12 @@
+*TL084.301 Datei in den Ordner, in welchem ihr eure Beispiele sichert, abspeichern
+
+1) "universal opamp2" in schematic einfügen
+2) rechte Maustaste auf Symbol
+3) value ändern auf TL084
+
+
+4)edit spice directive öffnen und den Text 
+".include TL084.301", ohne "" Zeichen eintragen.
+
+Sollte die Einbindung mit dem OPV "universal opamp2" nicht funktionieren, dann 
+verwendet "opamp2" und führt die Punkte 2 bis 4 durch
