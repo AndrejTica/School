@@ -1,0 +1,103 @@
+<!-- This comment will put IE 6, 7 and 8 in quirks mode -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>ADB1: /Users/ahofmann/home/htl/ab/4tinf/aufgaben/03-adb-bsearch-qsort-btree/adb1/adb1.h Quellcode</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javaScript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css"/>
+</head>
+<body onload='searchBox.OnSelectItem(0);'>
+<!-- Erzeugt von Doxygen 1.6.1 -->
+<script type="text/javascript"><!--
+var searchBox = new SearchBox("searchBox", "search",false,'Suchen');
+--></script>
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul>
+      <li><a href="index.html"><span>Hauptseite</span></a></li>
+      <li><a href="pages.html"><span>Zusätzliche&nbsp;Informationen</span></a></li>
+      <li><a href="annotated.html"><span>Datenstrukturen</span></a></li>
+      <li class="current"><a href="files.html"><span>Dateien</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <img id="MSearchSelect" src="search/search.png"
+             onmouseover="return searchBox.OnSearchSelectShow()"
+             onmouseout="return searchBox.OnSearchSelectHide()"
+             alt=""/>
+        <input type="text" id="MSearchField" value="Suchen" accesskey="S"
+             onfocus="searchBox.OnSearchFieldFocus(true)" 
+             onblur="searchBox.OnSearchFieldFocus(false)" 
+             onkeyup="searchBox.OnSearchFieldChange(event)"/>
+        <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="tabs">
+    <ul>
+      <li><a href="files.html"><span>Auflistung&nbsp;der&nbsp;Dateien</span></a></li>
+      <li><a href="globals.html"><span>Datei-Elemente</span></a></li>
+    </ul>
+  </div>
+<h1>/Users/ahofmann/home/htl/ab/4tinf/aufgaben/03-adb-bsearch-qsort-btree/adb1/adb1.h</h1><a href="adb1_8h.html">gehe zur Dokumentation dieser Datei</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 
+<a name="l00026"></a>00026 <span class="comment">// --------------- MAKROS und TYPVereinbarungen ----------------</span>
+<a name="l00027"></a><a class="code" href="adb1_8h.html#a3e937c42922f7601edb17b747602c471">00027</a> <span class="preprocessor">#define MAXLINE 128                     //Max. Laenge einer Zeile (nickname,email,comment)</span>
+<a name="l00028"></a><a class="code" href="adb1_8h.html#ae4e29e84cea10f0c94f0f89ac1d090e8">00028</a> <span class="preprocessor"></span><span class="preprocessor">#define MAXELEMENTS 1024                //Max. Anzahl v. datensaetzen</span>
+<a name="l00029"></a><a class="code" href="adb1_8h.html#a714b2485a6dd312e37226e1f833728a9">00029</a> <span class="preprocessor"></span><span class="preprocessor">#define MAXFILE 128                     // MAx. laenge eiens Dateinamens</span>
+<a name="l00030"></a>00030 <span class="preprocessor"></span>
+<a name="l00035"></a><a class="code" href="struct_a_d_b___i_d_x.html">00035</a> <span class="keyword">typedef</span> <span class="keyword">struct  </span>{
+<a name="l00036"></a><a class="code" href="struct_a_d_b___i_d_x.html#a2a55a77bb7113a61d4c798d9d6a587a8">00036</a>         <span class="keywordtype">char</span> nickname[<a class="code" href="adb1_8h.html#a3e937c42922f7601edb17b747602c471">MAXLINE</a>];
+<a name="l00037"></a><a class="code" href="struct_a_d_b___i_d_x.html#adcce6ee751c1469525aec834a4d37ea8">00037</a>         <span class="keywordtype">long</span> offset;
+<a name="l00038"></a>00038         } <a class="code" href="struct_a_d_b___i_d_x.html">ADB_IDX</a>;                         <span class="comment">// TYP: Record der Index-tabelle</span>
+<a name="l00039"></a>00039 
+<a name="l00040"></a>00040 
+<a name="l00041"></a>00041 <span class="comment">// --------------- Tabellen -------------------------------------</span>
+<a name="l00042"></a>00042 <span class="keyword">static</span> <a class="code" href="struct_a_d_b___i_d_x.html">ADB_IDX</a> adb_idx_tabelle[<a class="code" href="adb1_8h.html#ae4e29e84cea10f0c94f0f89ac1d090e8">MAXELEMENTS</a>]; <span class="comment">// Indextabelle: nickname und offset</span>
+<a name="l00043"></a>00043 <span class="keyword">static</span> <span class="keywordtype">int</span>  adb_nrecords;                   <span class="comment">//anzahl der gelesenen Datensaetze</span>
+<a name="l00044"></a>00044 
+<a name="l00045"></a>00045 <span class="comment">// --------------- File: ADressbuch ------------------------------</span>
+<a name="l00046"></a>00046 <span class="keyword">static</span> FILE * adb_fp;                       <span class="comment">//adb_open() und adb_close() adb_get_email()</span>
+<a name="l00047"></a>00047 
+<a name="l00048"></a>00048 
+<a name="l00049"></a>00049 <span class="comment">// --------------- Funktionen intern -----------------------------</span>
+<a name="l00050"></a>00050 <span class="keyword">static</span> <span class="keywordtype">int</span> cmp (<a class="code" href="struct_a_d_b___i_d_x.html">ADB_IDX</a>* a, <a class="code" href="struct_a_d_b___i_d_x.html">ADB_IDX</a>* b);    <span class="comment">//Vergleichsfunktion f. qsort() und bsearch()</span>
+<a name="l00051"></a>00051 
+<a name="l00052"></a>00052 
+<a name="l00053"></a>00053 <span class="comment">// --------------- Funktionen Interface -----------------------------</span>
+<a name="l00054"></a>00054 
+<a name="l00055"></a>00055 
+<a name="l00065"></a>00065 <span class="keywordtype">int</span> <a class="code" href="adb1_8c.html#a8e7157ccae731571df635df607009cb1">adb_open</a> (<span class="keyword">const</span> <span class="keywordtype">char</span> * filename);
+<a name="l00066"></a>00066 
+<a name="l00067"></a>00067 
+<a name="l00068"></a>00068 
+<a name="l00073"></a>00073 <span class="keywordtype">void</span> <a class="code" href="adb1_8c.html#ace316c0b59acbaedc419d0fd1fa58034">adb_list</a> (FILE *fp);
+<a name="l00074"></a>00074 
+<a name="l00075"></a>00075 
+<a name="l00076"></a>00076 
+<a name="l00085"></a>00085 <span class="keywordtype">void</span> <a class="code" href="adb1_8c.html#af49e0d691dff3ac95da2cf92828223ee">adb_get_email</a> (<span class="keyword">const</span> <span class="keywordtype">char</span>* nickname, <span class="keywordtype">char</span>* email);
+<a name="l00086"></a>00086 
+<a name="l00087"></a>00087 
+<a name="l00092"></a>00092 <span class="keywordtype">void</span> <a class="code" href="adb1_8c.html#afa6cdd276335f77030dabfbb6d9b51ce">adb_close</a>(<span class="keywordtype">void</span>);
+</pre></div></div>
+<!--- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&nbsp;</span>Alle</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&nbsp;</span>Datenstrukturen</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&nbsp;</span>Dateien</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&nbsp;</span>Funktionen</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&nbsp;</span>Variablen</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&nbsp;</span>Makrodefinitionen</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<hr size="1"/><address style="text-align: right;"><small>Erzeugt am Tue Oct 13 22:55:07 2009 für ADB1 von&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
+</body>
+</html>

@@ -1,0 +1,35 @@
+//pow.stk
+//a.hofmann
+//
+push 1
+assign ergebnis
+read x hoch n:  x ?
+assign x
+read x hoch n: n ?
+assign n
+//
+push 1
+assign i
+// ------------------------------------------------
+while
+vpush i
+vpush n
+le
+//--------- aufmultiplizieren
+vpush ergebnis
+vpush x
+mul
+assign ergebnis
+// ----------------- i++ increment
+vpush i
+push 1
+add
+assign i
+//
+//debug
+endwhile
+// -----------------------------------------------
+vpush ergebnis
+write DAS ERGEBNIS IST: 
+//debug
+quit

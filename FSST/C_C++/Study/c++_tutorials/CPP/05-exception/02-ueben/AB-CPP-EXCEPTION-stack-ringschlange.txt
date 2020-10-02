@@ -1,0 +1,149 @@
+﻿# AB-CPP-EXCEPTION-stack-ringschlange.txt
+===================================================================
+
+
+# Aufgabe: Studieren Sie die folgenden Beispiele:
+-------------------------------------------------------------------
+* http://www.cplusplus.com/reference/new/bad_alloc/
+* http://www.cplusplus.com/reference/stdexcept/
+* http://www.cplusplus.com/reference/stdexcept/out_of_range/
+* http://www.cplusplus.com/reference/stdexcept/overflow_error/
+* http://www.cplusplus.com/reference/stdexcept/underflow_error/
+
+
+
+
+# Augabe: streams und exceptions
+-------------------------------------------------------------------
+Um einen aussagekräftigen Fehlertext auszugeben, verwenden Sie z.B.:
+~~~
+#include <sstream>
+using namespace std;
+
+	ostringstream oErr;
+	oErr << __FILE__ <<":" << __LINE__ << ":ERROR: underflow_error ";
+	oErr << "sp= " << this->sp << " size= " << size<< endl; 
+
+	throw std::underflow_error(oErr.str());
+~~~
+
+
+
+
+## Aufgabe: stack-exception
+-------------------------------------------------------------------
+Gegeben sind:
+	* stack.h (siehe Ordner: 01-stack-exception) und
+	* test-stack-exception.cpp
+
+Gesucht ist:
+	* stack.cpp
+	
+
+~~~
+// test-stack-exception.cpp
+#include <cstdio>
+#include <cstdlib>		// size_t
+#include <iostream>
+using namespace std;
+
+#include <new>				// !!!!!!!!!! std::bad_alloc
+#include <stdexcept>      	// !!!!!!!!!! std::out_of_range
+							// !!!!!!!!!! std::overflow_error
+							// !!!!!!!!!! std::underflow_error
+
+#include "stack.h"		//Die eigene Klasse Stack
+
+// ---------------------------------------------------------------------
+int  main(){
+
+	Stack stack(5);
+
+	cout << "*** Test 1: top mit leerem stack ..." << endl;
+	try{
+		double v= stack.top();
+	}catch (underflow_error& ex){ cerr << ex.what() << endl;}
+
+	cout << "*** Test 2: Stack Überlauf ..." << endl;
+	try{
+		stack.push(1);
+		stack.push(2);
+		stack.push(3);
+		stack.push(4);
+		stack.push(5);
+		stack.push(6);
+	}catch (overflow_error& ex){ cerr << ex.what() << endl;}
+
+
+	return 0;
+}
+~~~
+
+
+Das Programm liefert folg. Ausgabe:
+	/*Ausgabe
+	*** Test 1: top mit leerem stack ...
+	stack.cpp:31:ERROR: underflow_error sp= 0 size= 5
+
+	*** Test 2: Stack Überlauf ...
+	stack.cpp:43:ERROR: overflow_error sp= 5 size= 5 value= 6 cannot be pushed!
+	*/
+
+
+Gesucht ist:
+* stack.cpp
+
+
+
+
+## Aufgabe: ringschlange-exception
+-------------------------------------------------------------------
+Passen Sie analog zum obigen Programm stack Ihren Ringschlangenspeicher an, 
+sodass das folg. Programm funktioniert, und eine entsprechende Ausgabe
+liefert.
+
+* test-ringschlange-exception.cpp
+~~~
+#include <iostream>
+using namespace std;
+
+#include "ringschlange.h"
+
+#include <new>				// !!!!!!!!!! std::bad_alloc
+#include <stdexcept>      	// !!!!!!!!!! std::out_of_range
+							// !!!!!!!!!! std::overflow_error
+							// !!!!!!!!!! std::underflow_error
+
+int main(){
+
+    Ringschlange rs(5); // 5 Stück müssen Platz haben
+  	
+	cout << "*** Test 1: dequeue mit leerer Ringschlange ..." << endl;
+	try{
+		int v= rs.dequeue();
+	}catch (underflow_error& ex){ cerr << ex.what() << endl;}
+
+	cout << "*** Test 2: Ringschlange Überlauf ..." << endl;
+	try{
+		rs.enqueue(1);
+		rs.enqueue(2);
+		rs.enqueue(3);
+		rs.enqueue(4);
+		rs.enqueue(5);
+		rs.enqueue(6);
+	}catch (overflow_error& ex){ cerr << ex.what() << endl;}
+
+
+	cout << endl<< endl;
+	
+    return 0;
+}
+~~~
+
+Das Programm liefert folg. Ausgabe:
+	*** Test 1: dequeue mit leerer Ringschlange ...
+	ringschlange.cpp:45:ERROR: underflow_error 
+
+	*** Test 2: Ringschlange Überlauf ...
+	ringschlange.cpp:30:ERROR: overflow_error
+

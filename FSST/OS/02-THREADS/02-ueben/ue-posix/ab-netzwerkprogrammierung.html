@@ -1,0 +1,318 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>ab-netzwewrkprogrammierung</title>
+</head>
+<body>
+<h1><span style="font-weight: bold; text-decoration: underline;">Arbeitsblatt:
+Netzwerkprogrammierung</span></h1>
+<h1><span style="font-weight: bold; text-decoration: underline;"></span></h1>
+<span style="font-weight: bold; text-decoration: underline;"></span>
+Wir wollen hier die Netzwerkprogrammierung am Beispiel der
+Socket-Programmierung &uuml;ben. Nach einer Einschulung&nbsp; in die
+Grundlagen der Programmierung sollten Sie in der Lage sein folgende
+Aufgaben zu l&ouml;sen:<br>
+<br>
+<ul>
+  <li>OSI-Modell beschreiben k&ouml;nnen</li>
+  <li>Netzwerkklassen/Netzwerkadressen beschreiben k&ouml;nnen</li>
+  <li>Namensaufl&ouml;sung verstehen</li>
+  <li>Unix-Befehle (ifconfig, netstat, ping, nslookup, whois,
+traceroute...) anwenden k&ouml;nnen</li>
+  <li>Client/Server Architekturen beschreiben k&ouml;nnen</li>
+  <li>Inet-Strukturen, Socket-Strukturen, hostentry-Strukturen
+beschreiben k&ouml;nnen</li>
+  <li>Funktionen der Namensaufl&ouml;sung anwenden k&ouml;nnen
+(t_host.c)</li>
+  <li>Einfaches TCP-Client Programm schreiben k&ouml;nnen</li>
+  <li>Einfaches TCP-Server Programm schreiben k&ouml;nnen</li>
+  <li>Einfachen Port-Scanner schreiben k&ouml;nnen</li>
+  <li>HTTP-Server erweitern k&ouml;nnen (Logging auf eine
+MYSQL-Datenbank)</li>
+  <li>Einfache Window-Anwendungen (Qt) als Client-Programm erstellen
+k&ouml;nnen</li>
+</ul>
+<br>
+<span style="text-decoration: underline;">Grundlagen:</span><br
+ style="text-decoration: underline;">
+Einf&uuml;hrung in die Netzwerkprogrammierung<br>
+<ul>
+  <li>Herdt: VB.Net Fortgeschrittene Programmierung</li>
+  <li>Skriptum: Netzwerkprogrammierung<br>
+  </li>
+</ul>
+<br>
+<br>
+<table style="width: 100%; text-align: left;" border="0" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td
+ style="background-color: rgb(204, 204, 204); vertical-align: top;">Aufgabe:
+TCP-Client /TCP-Server<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<span style="text-decoration: underline;">Aufgabe: (ping-pong)</span><br>
+siehe Arbeitsbl&auml;tter: Skriptum: Netzwerkprogrammierung <br>
+<br>
+<span style="text-decoration: underline;">Aufgabe:
+(fileclient-fileserver)</span><br>
+siehe Arbeitsbl&auml;tter: Skriptum: Netzwerkprogrammierung <br>
+<br>
+<span style="text-decoration: underline;">Aufgabe: (popen() remote
+Prozesse starten)</span><br>
+siehe Arbeitsbl&auml;tter: Skriptum: Netzwerkprogrammierung <br>
+<br>
+<br>
+<table style="width: 100%; text-align: left;" border="0" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td
+ style="background-color: rgb(204, 204, 204); vertical-align: top;">Aufgabe:
+Portscanner<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<span style="text-decoration: underline;">Aufgabe:</span><br>
+Bringen Sie folgendes Programm zum Laufen.<br>
+<pre>#include &lt;stdio.h&gt;<br>#include &lt;stdlib.h&gt;<br>#include &lt;string.h&gt;<br>#include &lt;sys/types.h&gt;<br>#include &lt;sys/socket.h&gt;<br>#include &lt;netinet/in.h&gt;<br>#include &lt;arpa/inet.h&gt;<br>#include &lt;unistd.h&gt;<br>#include &lt;netdb.h&gt;<br><br>int main(int argc, char *argv[])<br>{<br>	struct sockaddr_in addr;<br>	struct servent *serv;<br>	int s, i;<br>	unsigned long begin, end, curr;<br><br>	if (argc &lt; 3)<br>	{<br>		fprintf(stderr, "usage: %s &lt;begin&gt; &lt;end&gt;\n", argv[0]);<br>		return 1;<br>	}<br><br>	begin = ntohl(?????argv[1]);<br>	end = ntohl(??????argv[2]);<br><br>	if (begin &gt; end)<br>	{<br>		curr = end;<br>		end = begin;<br>		begin = curr;<br>	}<br><br>	for (curr = begin; curr &lt;= end; curr++)<br>	{<br>		addr.?????? = htonl(curr);<br>		printf("%s:\n", ????????(addr.???????));<br><br>		for (i = 0; i &lt; 1024; i++)<br>		{<br>			s = socket(?????, SOCK_??????, ?????);<br>			if (s == ??????)<br>			{<br>				perror("socket() failed");<br>				return 3;<br>			}<br><br>			addr.??????? = htonl(curr);<br>			addr.sin_port = htons(??????);<br>			addr.sin_family = AF_INET;<br><br>			printf("%i\r", i);<br>			fflush(stdout);<br><br>			if (!connect(s, (struct sockaddr*)&amp;addr, sizeof(addr)))<br>			{<br>				serv = getservbyport(addr.sin_port, "tcp");<br>				if (serv)<br>					printf("%i (%s) open\n", i, serv-&gt;s_name);<br>				else<br>					printf("%i (unknown) open\n", i);<br>			}<br><br>			close(s);<br>		}<br><br>		puts("----");<br>	}<br><br>	return 0;<br>}<br></pre>
+<br>
+<br>
+<br>
+<span style="text-decoration: underline;">Aufgabe:
+(listener-signale-filelog)</span><br>
+Schreiben sie einen TCP-Listener, der auf einem Port (Argument aus der
+Kommandozeile) horcht und alles in ein logfile protokolliert.<br>
+<br>
+<span style="text-decoration: underline;">Aufgabe: (C++:
+Textadventuregame via socket-API und fork)</span><br>
+Client: t_fileclient.c<br>
+Server: t_room.c<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<table style="width: 100%; text-align: left;" border="0" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td
+ style="background-color: rgb(204, 204, 204); vertical-align: top;">Aufgabe:
+Ein HTTP-Server mit Logging auf MySQL<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<span style="text-decoration: underline;">Grundlagen:</span><br>
+HTTP-Server: www.zotteljedi.de<br>
+Zugriff auf Mysql-Datenbank: www.pronix.de<br>
+<br>
+<span style="text-decoration: underline;">Aufgabe: (http mit Mysql)</span><br>
+Schreiben Sie folgenden HTTP-Server derart um, dass der jeweilige
+Zugriff nicht in einer Log-Datei (access*.log) gespeichert wird,
+sondern in eine MYSQL-Datenbank. Der Datenbankname soll schuelerdb
+lauten. Die Tabelle soll access_log lauten. Entwerfen Sie ein passendes
+CREATE TABLE access_log ....... Statement.<br>
+<br>
+<br>
+<br>
+<span style="text-decoration: underline;">Hinweis:</span><br
+ style="text-decoration: underline;">
+Zugriff auf Mysql<br>
+<br>
+<br>
+<span style="text-decoration: underline;">Hinweis: (Ein Server mit
+fork() aus www.zotteljedi.de)</span><br>
+<pre>#include &lt;stdio.h&gt;<br>#include &lt;stdlib.h&gt;<br>#include &lt;string.h&gt;<br>#include &lt;sys/types.h&gt;<br>#include &lt;sys/socket.h&gt;<br>#include &lt;netinet/in.h&gt;<br>#include &lt;arpa/inet.h&gt;<br>#include &lt;signal.h&gt;<br>#include &lt;unistd.h&gt;<br>#include &lt;sys/wait.h&gt;<br><br>int handle_client(int sock)<br>{<br>	char *msg = "Hello, World!\r\n";<br><br>	send(sock, msg, strlen(msg), 0);<br><br>	return 0;<br>}<br><br>void sigchld_handler(int n)<br>{<br>	int status;<br>	pid_t pid;<br><br>	pid = wait(&amp;status);<br><br>	printf("%i exited with %i\n", pid, WEXITSTATUS(status));<br>}<br><br>int main(void)<br>{<br>	int sock, client;<br>	pid_t pid;<br>	struct sockaddr_in addr;<br>	struct sigaction sa;<br><br>	if ((sock = socket(PF_INET, SOCK_STREAM, 0)) &lt; 0)<br>	{<br>		perror("socket() failed");<br>		return 1;<br>	}<br><br>	addr.sin_addr.s_addr = INADDR_ANY;<br>	addr.sin_family = AF_INET;<br>	addr.sin_port = htons(1234);<br><br>	if (bind(sock, (struct sockaddr*)&amp;addr, sizeof(addr)) &lt; 0)<br>	{<br>		perror("bind() failed");<br>		return 2;<br>	}<br><br>	if (listen(sock, 3) &lt; 0)<br>	{<br>		perror("listen() failed");<br>		return 3;<br>	}<br><br>	memset(&amp;sa, 0, sizeof(sa));<br>	sa.sa_handler = sigchld_handler;<br>	sigaction(SIGCHLD, &amp;sa, NULL);<br><br>	for(;;)<br>	{<br>		client = accept(sock, NULL, 0);<br><br>		pid = fork();<br><br>		if (pid &lt; 0)<br>		{<br>			perror("fork() failed");<br>			return 5;<br>		}<br><br>		if (pid == 0)<br>			exit(handle_client(client));<br><br>		printf("Client has PID %i\n", pid);<br><br>		close(client);<br>	}<br><br>	return 0;<br>}<br></pre>
+<br>
+<br>
+<br>
+<span style="text-decoration: underline;">Zusatz-Aufgabe:</span><br>
+t_mysql.exe host datenbank sqlstatement<br>
+<br>
+<span style="text-decoration: underline;">Zusatz-Aufgabe: (Qt-Anwendung)</span><br>
+t_mysql.exe host datenbank sqlstatement<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<table style="width: 100%; text-align: left;" border="0" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td
+ style="background-color: rgb(204, 204, 204); vertical-align: top;">Aufgabe:
+Ein spezieller HTTP-Server </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+Es ist ein einfacher HTTP-Server zu implementieren, der durch die
+folgenden Eigenschaften charakterisiert ist: <br>
+<br>
+Er wird an einen frei w&auml;hlbaren Port (z.B. 2000) gebunden <br>
+Er wird von einem Client beispielsweise &uuml;ber die URL
+"http://server.domain:2000" erreicht<br>
+Er ignoriert Pfadangaben in der URL <br>
+Er erf&uuml;llt nur eine Funktion: Er gibt die Auslastung von Rechner
+in tabellarischer Form aus <br>
+<br>
+Hinweis: <br>
+Es empfiehlt sich, zuerst ein Skript zu implementieren, das die
+Auslastung der Laborrechner in kurzen Abst&auml;nden ermittelt. Dies
+geschieht beispielsweise mit: <br>
+<br>
+<br>
+"rsh rechner cat /proc/loadavg" - wobei rechner = ti1 bis ti8. <br>
+<br>
+<br>
+Diese Daten schreibt es in eine Hilfsdatei (z.B. "load.dat~"). Nach dem
+Beschreiben dieser Datei ist sie umzubenennen (z.B. in "load.dat"),
+damit andere Programme nun ungest&ouml;rt darauf zugreifen k&ouml;nnen.
+<br>
+<br>
+Der eigentliche HTTP-Server legt einen Internet-Server-Socket unter der
+angegebenen Portnummer an und wartet auf Verbindungsw&uuml;nsche.
+Trifft ein Verbindungswunsch ein, so sind die entsprechenden Daten
+einzulesen und auf dem Bildschirm zu Testzwecken darzustellen.
+Andernfalls ist die Datei zu &uuml;bertragen, die von dem oben
+erw&auml;hnten zyklisch laufenden Programm erzeugt wurde. <br>
+<br>
+Die zum Client &uuml;bertragenen Daten sollten die folgende Form haben
+(damit sie die Mindestanforderungen des HTTP-Protokolls erf&uuml;llen):
+<br>
+&nbsp;&nbsp; <br>
+<br>
+HTTP/1.1 200 OK <br>
+Server: MyServer <br>
+Connection: close <br>
+<br>
+&lt;HTML&gt; <br>
+<br>
+<br>
+... ihre Daten (in HTML-Format) <br>
+<br>
+<br>
+&lt;/HTML&gt; <br>
+&nbsp; <br>
+<br>
+&nbsp;<br>
+Die Daten sollten im Browser etwa wie folgt erscheinen: <br>
+&nbsp;&nbsp; <br>
+<table style="width: 50%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top; font-weight: bold;">Rechner</td>
+      <td style="vertical-align: top; font-weight: bold;">Auslastung</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">install-server<br>
+      </td>
+      <td style="vertical-align: top;">0.2<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">schueler-server<br>
+      </td>
+      <td style="vertical-align: top;">0.6<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">video-server<br>
+      </td>
+      <td style="vertical-align: top;">0.5<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+&nbsp;<br>
+<span style="text-decoration: underline;">&nbsp;Hinweis:<br>
+</span>Socket-Programmierung<br>
+www.zotteljedi.de<br>
+<br>
+<br>
+<br>
+<table style="width: 100%; text-align: left;" border="0" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td
+ style="background-color: rgb(204, 204, 204); vertical-align: top;">Aufgabe:
+Implementation eines "Load-Balancers" </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+Es ist ein "Load-Balancer" als UDP-Server zu implementieren, der
+permanent dar&uuml;ber Buch f&uuml;hrt, welcher Rechner im Netz
+momentan die geringste Auslastung hat. Auf Anfrage eines Clients ist
+diesem der Name des betreffenden Rechners mitzuteilen. <br>
+<br>
+Auf der Client-Seite ist ein Kommando "lb command par1 par2..." zu
+implementieren, das zuerst eine Anfrage an den "Load-Balancer" startet.
+Wenn innerhalb 1 Sekunde eine Antwort kommt, so ist das Kommando
+"command par1 par2..." auf dem Rechner auszuf&uuml;hren, den der
+"Load-Balancer" empfiehlt. Andernfalls ist es lokal auszuf&uuml;hren. <br>
+<br>
+Falls der "Load-Balancer" mit der Option "-v" gestartet wird, soll er <br>
+<ul>
+  <li>den jeweils am wenigsten ausgelasteten Rechner auf dem Terminal
+melden (immer dann, wenn sich etwas ge&auml;ndert hat) </li>
+</ul>
+<ul>
+  <li>Anfragen von Clients protokollieren </li>
+</ul>
+Wird bei der L&ouml;sung dieser Aufgabe auf der Server-Seite das
+Kommando "rsh" benutzt, um die Auslastung der Rechner zyklisch
+abzufragen, dann dauert ein solcher Zyklus bekanntlich relativ lange
+(jedesmal einloggen - ausloggen). Besser ist es, auf allen
+Client-Rechnern zus&auml;tzlich einen kleinen D&auml;mon-Prozess zu
+starten, der die aktuelle Auslastung zyklisch an den "Load-Balancer"
+meldet. <br>
+<br>
+Dabei empfiehlt es sich, Meldungen und Anfragen &uuml;ber
+unterschiedliche Ports abzuwickeln. Der Load-Balancer kann sich dann in
+zwei Threads aufspalten, von denen der eine f&uuml;r Meldungen und der
+andere f&uuml;r die Anfragen zust&auml;ndig ist. Damit kann eine
+schnelle Antwort auf Anfragen garantiert werden, auch wenn gerade
+gleichzeitig mehrere Meldungen eintreffen.<br>
+<br>
+<span style="text-decoration: underline;"></span><br>
+<table style="width: 100%; text-align: left;" border="0" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td
+ style="background-color: rgb(204, 204, 204); vertical-align: top;">Weitere
+Themen:<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<br>
+<br>
+<table style="width: 100%; text-align: left;" border="0" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td
+ style="background-color: rgb(204, 204, 204); vertical-align: top;">Fragen:<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<br>
+</body>
+</html>

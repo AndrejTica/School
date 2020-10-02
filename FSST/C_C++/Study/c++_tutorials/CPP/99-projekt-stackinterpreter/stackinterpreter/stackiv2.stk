@@ -1,0 +1,12 @@
+push 100
+push 4
+add
+assign x
+push 2
+push 5
+mul
+assign y
+vpush x
+vpush y
+add
+quit

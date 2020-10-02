@@ -1,0 +1,63 @@
+﻿Mab-BOOST-REGEX-ip-anonym-double.txt (6)
+--------------------------------------------------------------------
+
+Aufgabe: regex-ip-anonym (u, m)
+--------------------------------------------------------------------
+Gegeben ist
+/* regex-ip-anonym.cpp
+g++ -I /media/informatik/APP/boost/include -L/media/informatik/APP/boost/lib  regex-ip-anonym.cpp -o regex-ip-anonym.exe -l boost_regex
+*/
+#include <boost/regex.hpp> 
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main(){
+  string log="66.249.64.13 - - [18/Sep/2012:11:07:48 +1000] GET /robots.txt HTTP/1.0 200 468 - Googlebot/2.1\n"
+             "66.249.64.13 - - [18/Sep/2012:11:07:48 +1000] GET / HTTP/1.0 200 6433 - Googlebot/2.1";
+
+  cout << log << "\n\n";
+  // anonymize IPs
+  // ENTER CODE HERE ...
+  
+  cout <<  anonymizeLog << endl;
+
+  cout << endl;
+  return 0;
+}
+/*Ausgabe:
+66.249.64.13 - - [18/Sep/2012:11:07:48 +1000] GET /robots.txt HTTP/1.0 200 468 - Googlebot/2.1
+66.249.64.13 - - [18/Sep/2012:11:07:48 +1000] GET / HTTP/1.0 200 6433 - Googlebot/2.1
+
+XXX.XXX.XXX.XXX - - [18/Sep/2012:11:07:48 +1000] GET /robots.txt HTTP/1.0 200 468 - Googlebot/2.1
+XXX.XXX.XXX.XXX - - [18/Sep/2012:11:07:48 +1000] GET / HTTP/1.0 200 6433 - Googlebot/2.1
+*/
+
+Aufgabe: regex-double (u,m)
+--------------------------------------------------------------------
+/* regex-double.cpp
+g++ -I /media/informatik/APP/boost/include -L/media/informatik/APP/boost/lib  regex-double.cpp -o regex-double.exe -l boost_regex
+*/
+#include <boost/regex.hpp> 
+#include <iostream>
+#include <iomanip>
+#include <string>
+using namespace std;
+
+int main(){
+  string germanDoubles= "+0,85 -13,2 1,0 ,45 -13,7 1,03425 10134,25";
+  cout << germanDoubles << endl;
+
+  // replace "," with "."
+  // ENTER CODE HERE ............
+
+  cout << englishDoubles << endl;
+
+  cout << endl;
+  return 0;
+}
+/*
+Ausgabe:
++0,85 -13,2 1,0 ,45 -13,7 1,03425 10134,25
++0.85 -13.2 1.0 .45 -13.7 1.03425 10134.25
+*/

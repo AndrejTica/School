@@ -1,0 +1,111 @@
+﻿Aufgabe: C Häufigste Fehler
+--------------------------------------------------------------
+Erstellen Sie ein C-Programm, das mindestens 3 schwer zu findende Fehler ausweist.
+Das Programm wird dann in den kommenden Wochen veröffentlicht werden. 
+Geben Sie also ihren Namen, Jahrgang an.
+
+
+
+
+Frage:
+--------------------------------------------------------------
+http://www.cplusplus.com/reference/clibrary/cassert/
+
+Präsentieren Sie die Verwendung von assert, perror, ...
+
+
+
+
+
+Aufgabe: Buffer Overflow
+--------------------------------------------------------------
+http://insecure.org/stf/smashstack.html
+
+Ändern Sie das folgende Programm so, dass printf() den Wert 0
+ausgibt. (Ändern der Rücksprungadresse)
+
+
+// example3.c:
+// -----------
+void function(int a, int b, int c) {
+   char buffer1[5];
+   char buffer2[10];
+   int *ret;
+
+   ret = buffer1 + 12;
+   (*ret) += 8;
+}
+
+void main() {
+  int x;
+
+  x = 0;
+  function(1,2,3);
+  x = 1;
+  printf("%d\n",x);
+}
+
+
+Aufgabe: GDB
+--------------------------------------------------------------
+1. Studieren Sie die GDB-Befehle und 
+2. geben Sie eine kurze Einführung.
+	
+3. Installieren Sie das Programm ddd  und
+4. geben Sie eine kurze Einführung anhand des Programmes
+	gdb_fakt.c, das ja nicht korrekt arbeitet.
+	
+5. Nutzen Sie gdb oder ddd um die Programm-Fehler zu analysieren
+    #include <stdlib.h>
+
+    int main( void )
+    { char * x = malloc( 10 ); int y;
+      x[ 10 ]= 0;
+      if( y )y = 0;
+      return 0; }
+      	
+
+Aufgabe: gprof
+--------------------------------------------------------------
+1. Studieren Sie die gprof und 
+2. geben Sie eine kurze Einführung.
+
+
+3. gegeben sei:
+/*
+    gcc -pg -g2 -o test test.c
+
+Nach dem Start des erzeugten Programms (hier also »test«) wird die Datei »gmon.out« angelegt. Sie kann mit »gprof« angezeigt werden.
+
+Aufruf (Kurzform)
+
+    gprof test
+
+Aufruf (Langform)
+
+    gprof test gmon.out
+    
+*/
+
+// Initialisierung einer quadratischen Matrix
+    #define N 1000
+
+    int a[ N ][ N ]={ 0 };
+
+    void l0( void )
+    { int i; for( i = 0; i < N; ++i )
+      { int j; for( j=0; j < N; ++j )a[ j ][ i ] = 1; }}
+
+    void l1( void )
+    { int i; for( i = 0; i < N; ++i )
+      { int j; for( j=0; j < N; ++j )a[ i ][ j ] = 1; }}
+
+    int main( void ){ l1(); l0(); l0(); l1(); }
+
+3. Untersuchen Sie mit »gprof« welche der beiden 
+	Funktionen »l0« und »l1« aus dem obigen Programm schneller läuft.
+4. Kann das Ergebnis bestätigt werden, wenn die Aufrufe dieser beiden 
+	Funktionen vertauscht werden?
+5. Falls sich ein Unterschied in der Laufzeit ergeben sollte, wie 
+	könnte man diesen erklären? 	
+

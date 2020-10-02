@@ -1,0 +1,56 @@
+MAB: (6) exception in cpp
+---------------------------------------------------------------
+
+
+1) (2)Beantworten Sie folgende Fragen
+---------------------------------------------------------------
+1.1.(1) Wann sind in CPP Fehlermeldungen über Rückgabewerte nicht 
+		möglich? 
+1.2.(1) Ist es korrekt, die Liste der möglichen auftretenden 
+		Ausnahmen nur im Prototyp einer Funktion anzugeben 
+		und im Funktionskopf bei der Implementierung wegzulassen? 
+			a) Ja
+			b) Nein
+			
+
+
+2) (4) 
+---------------------------------------------------------------
+Gegeben:
+	ist in der Klasse Intarray folgendes:
+	* intarray.h
+		...
+		Intarray* getSubArray(int von_idx, int bis_idx);
+	
+	* intarray.cpp
+		...
+		﻿Intarray* Intarray::getSubArray(int von_idx, int bis_idx){
+			int len= bis_idx - von_idx + 1;
+			int* arr= new int[len];
+		
+			for (int i= 0; i < len; i++)
+				arr[i]= this->a[i + von_idx];
+		
+			Intarray* p= new Intarray(arr,len);
+			return p;
+		}
+
+	* main.cpp
+		...
+	﻿    Intarray *id= new Intarray(10, 99);
+	
+	﻿ 	Intarray* p= id->getSubArray(1,5);
+		cout << "p isA subArray from id (1,5)= " << p->toString()<<endl;
+		delete p;
+
+
+Aufgabe:
+	Wenn von_idx bzw. bis_idx falsche Werte haben, soll die
+	Exception ﻿VektorOutOfRange zum Einsatz kommen.
+Frage:
+	Welche Änderungen müssen vorgenommen werden?
+
+Antwort:
+2.1. (1) intarray.h
+2.2. (1) intarray.cpp
+2.3. (2) main.cpp

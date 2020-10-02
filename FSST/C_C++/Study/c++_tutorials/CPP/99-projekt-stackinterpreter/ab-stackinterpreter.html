@@ -1,0 +1,989 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1"
+ http-equiv="content-type">
+  <title>Arbeitsblatt: Listen und Stackinterpreter</title>
+</head>
+<body>
+<h1><span style="font-weight: bold; text-decoration: underline;">Arbeitsblatt:
+Stackinterpreter</span></h1>
+<br>
+Dynamische Speicherverwaltung, Listen, Stack, STL, Rekursion,
+Compilerbau,<br>
+VB, C, C++<br>
+<br>
+In diesem Arbeitsblatt wird ein Stack-Interpreter gebaut, der <br>
+<ul>
+  <li>Variablen verwalten kann</li>
+  <li>Verzweigungen verwalten kann</li>
+  <li>Ein/Ausgabe durchf&uuml;hren kann</li>
+  <li>Schleifen verwalten kann</li>
+</ul>
+<br>
+Der Stackinterpreter soll z.B. folg. Programme abarbeiten k&ouml;nnen:<br>
+<ul>
+  <li>Summe der Zahlen von 1 bis N. Wobei N eingelesen werden soll.</li>
+  <li>n! brechnen</li>
+  <li>n einlesen und alle Primmzahlen bis n ausgeben</li>
+</ul>
+<br>
+<br>
+<table style="width: 100%; text-align: left;" border="0" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td
+ style="background-color: rgb(204, 204, 204); vertical-align: top;">Minishell
+und Taschenrechner</td>
+    </tr>
+  </tbody>
+</table>
+Studieren Sie das Skriptum: Dynamische Datenstrukturen in C<br>
+<br>
+Bringen sie folg. Programme zum Laufen:<br>
+<div style="margin-left: 40px;"><a href="t_minish.c">t_minish.c</a>, <a
+ href="o_strlist.c">o_strlist.c</a>, <a href="o_strlist.h">o_strlist.h</a><br>
+</div>
+<br>
+<div style="margin-left: 40px;">gcc t_minish.c o_strlist.c -o
+t_minish.exe<br>
+</div>
+<br>
+Bringen sie folg. Programme zum Laufen:<br>
+<div style="margin-left: 40px;"><a href="t_taschenrechner.c">t_taschenrechner.c</a>
+, <a href="doubleStack.c">doubleStack.c</a> , <a href="doubleStack.h">doubleStack.h</a><br>
+</div>
+<br>
+<div style="margin-left: 40px;">gcc t_taschenrechner.c doubleStack.c -o
+t_taschenrechner.exe<br>
+<br>
+</div>
+Erweitern Sie das Minishell-Programm um den Befehl !expr<br>
+<div style="margin-left: 40px;">t_minish&gt; !expr 12 2 * 4 + 2 / =<br>
+<br>
+gcc u_minish.c o_strlist.c u_taschenrechner.c doubleStack.c -o
+minish.exe<br>
+<br>
+Hinweis: Passen Sie auch die Hilfe an<br>
+</div>
+<br>
+Erstellen Sie den Modul doublelist (doubleList.c, doubleList.h) mit
+folgenden<br>
+Zugriffsroutinen:<br>
+<div style="margin-left: 40px;">DLIST_HAEDER*
+createDList(void)&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; //erzeugt Header<br>
+void* insertLast(DLIST_HEADER*, double)<br>
+double deleteLast(DLIST_HEADER*)<br>
+void listDList(DLIST_HEADER*, FILE*)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; //listet die einz. Listenelemente<br>
+void removeDList(DLIST_HEADER*)&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; //l&ouml;scht gesamte Liste inkl. Header<br>
+<br>
+</div>
+&Auml;ndern Sie den Stack-Modul (doubleStack.c, doubleStack.h) des
+obigen Programmes&nbsp; derart, dass der Modul doubleList verwendet
+wird. D.h. das Minishell-Programm arbeitet mit einem Stack, der
+dynamisch (d.h. zur Laufzeit) arbeitet.<br>
+<div style="margin-left: 40px;"><br>
+<br>
+</div>
+<table style="width: 100%; text-align: left;" border="0" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td
+ style="background-color: rgb(204, 204, 204); vertical-align: top;">Stackengine:
+Der Stack als Rechenwerk&nbsp;&nbsp; (2h)<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Studieren Sie das Skriptum: Dyn. Datenstrukturen in C++.<br>
+<br>
+Erstellen Sie die Klasse CStackengine (stackengine.cpp, stackengine.h):<br>
+...<br>
+<code>class CStackengine {<br>
+&nbsp;&nbsp;&nbsp; private:<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Stack&lt;double&gt; m_stack;<br>
+&nbsp;&nbsp;&nbsp; public:<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; void push(double);<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; void pop();<br>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; double top();<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; bool empty();<br>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; //addiert die obersten 2
+Stackelemente. Ergebnis liegt wieder on top&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; void add();&nbsp;&nbsp;
+&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; void sub();<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; void mul();<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; void div();<br>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; // Listet alle Stackelemente<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ostream&amp; list(ostream&amp;
+o); <br>
+};<br>
+<br>
+<br>
+</code>
+Erstellen Sie das Programm t_stackengine.cpp, das ihre Klassee
+CStackengine testet. Als Eingabe verwenden Sie z.B: folgenden Text:<br>
+<div style="margin-left: 40px;">push 12<br>
+push 2 <br>
+mul<br>
+push 4<br>
+add<br>
+push 2<br>
+div<br>
+<br>
+(Ergebnis: 12)<br>
+Die Eingabe von list soll den gesamten Stack ausgeben.<br>
+<br>
+</div>
+<span style="text-decoration: underline;">Hinweis:</span> Die Klasse
+stack aus der STL<br>
+<div style="margin-left: 40px;"><code>#include &lt;stack&gt;</code><br>
+<code>#include &lt;iostream&gt;</code><br>
+<code>using namespace std;</code><br>
+<code>int main(){</code><br>
+<code>&nbsp;&nbsp;&nbsp; stack&lt;int&gt;&nbsp;&nbsp; s;</code><br>
+<code></code><code></code><code>&nbsp;&nbsp;&nbsp; cout &lt;&lt;
+"+++push: ";</code><br>
+<code>&nbsp;&nbsp;&nbsp; for (int i = 0; i &lt; 10; ++i) {</code><br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+s.push( i);</code><br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+cout &lt;&lt; i &lt;&lt; " ";</code><br>
+<code>&nbsp;&nbsp;&nbsp; }</code><br>
+<code>&nbsp;&nbsp;&nbsp; cout &lt;&lt; endl;</code><br>
+<code></code><br>
+<code>&nbsp;&nbsp;&nbsp; cout &lt;&lt; "---pop:&nbsp; ";</code><br>
+<code>&nbsp;&nbsp;&nbsp; while (! s.empty()) {</code><br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+cout &lt;&lt; s.top() &lt;&lt; " ";</code><br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+s.pop();</code><br>
+<code>&nbsp;&nbsp;&nbsp; }</code><br>
+<code>&nbsp;&nbsp;&nbsp; cout &lt;&lt; endl;</code><br>
+<code>}</code><br>
+<code></code></div>
+<br>
+<span style="text-decoration: underline;">Zusatzaufgabe:</span><br>
+Das Programm convert.cpp wandelt einen Infix-Ausdruck in einen
+Postfix-Ausdruck um. Gelesen wird von der Standardeingabe und
+geschrieben wird in die Standardausgabe.<br>
+Studieren Sie dieses Programm genau und schreiben Sie es so um, dass es
+als eine Art "Pr&auml;prozessor" f&uuml;r ihre Stackengine dient. D.h.
+bei der Eingabe von (10+20)*30 soll convert folgenden Output liefern:<br>
+push 10<br>
+push 20<br>
+add<br>
+push 30<br>
+mul<br>
+quit<br>
+<br>
+Ein kleines Shellscript k&ouml;nnte nun folg. Aussehen haben:<br>
+<code>echo "Stackengine mit infix2postfix"<br>
+echo "Geben Sie z.B: folgendes ein: (30+20)*2+100"<br>
+./convert.exe | ./stackengine.exe<br>
+</code><br>
+Wir haben also mit 2 kleinen Programmen einen Rechner geschaffen, der
+die Grundrechnungsarten und Klammerung beherrscht.<br>
+<br>
+<br>
+<table style="width: 100%; text-align: left;" border="0" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td
+ style="background-color: rgb(204, 204, 204); vertical-align: top;">Stackinterpreter
+V1.0:&nbsp; In den Code-Speicher lesen mittels Streams (2h) </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+Erstellen Sie die Klasse CStackinterpreter (stackinterpreterv1.cpp,
+stackinterpreterv1.h), die folgende Elemente hat:<br>
+<span style="text-decoration: underline;"></span><br>
+<code>#ifndef stackinterpreter_h<br>
+#define stackinterpreter_h stackinterpreter_h<br>
+#include "stackengine.h"<br>
+#include &lt;iostream&gt;<br>
+using namespace std;<br>
+<br>
+class CStackinterpreter {<br>
+&nbsp;&nbsp;&nbsp; private:<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; int
+m_pc;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; //ProgrammCounter<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; int
+m_nol;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; //Number of Lines<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; string
+m_code[1024];&nbsp;&nbsp;&nbsp;
+//Code-Speicher<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; CStackengine m_stackengine;<br>
+&nbsp;&nbsp;&nbsp; public:<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+CStackinterpreter(){m_pc=m_nol=0;};<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; CStackinterpreter(char*
+pFilename);<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; //Memberzugriff<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; void set_pc(); &nbsp;&nbsp;&nbsp;
+//??????<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; int get_pc();
+&nbsp;&nbsp;&nbsp;&nbsp; //??????<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; int get_nol(); &nbsp;&nbsp;&nbsp;
+//??????<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; //&ouml;ffnet eine Textdatei
+(s.u.) und liest zeilenweise in den Code-Speicher<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; bool open(char* pFilename);<br>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; //gibt eine kleine
+&Uuml;berschrift, den Codespeicher, den Stack, ...&nbsp; aus<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; friend ostream&amp;
+operator&lt;&lt;(ostream&amp; o, const CStackinterpreter&amp; e);<br>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; //arbeitet den Code-Speicher
+schritt f. schritt ab<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; //und gibt im Fehlerfall einen
+negativen Fehlercode zur&uuml;ck<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; //sonst wird der Programmcounter
+(m_pc) zur&uuml;ckgegeben<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; int run();<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; //f&uuml;hrt den Befehl auf den
+der PC zeigt aus<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; //und gibt im Fehlerfall einen
+negativen Fehlercode zur&uuml;ck<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; //sonst wird der Programmcounter
+(m_pc) zur&uuml;ckgegeben<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; int step();&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; //??? <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; void reset();&nbsp;&nbsp;&nbsp;
+//???? setzt den PC auf 0, d.h. den Programmstart<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; //gibt das oberste Element der
+stackengine zur&uuml;ck<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; double top();<br>
+&nbsp;&nbsp; };<br>
+&nbsp;&nbsp; <br>
+&nbsp;&nbsp; //TODO: <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; //??? fertigprogrammieren, <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; //BREAKPOINT
+verwaltung, <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; //STACKengine anzeigen lassen
+(vgl. Watch)<br>
+#endif<br>
+<br>
+</code>Erstellen Sie ein Testprogramm t_stackinterpreterv1.cc und
+testen Sie vollst&auml;ndig.<br>
+<span style="text-decoration: underline;">Beispiel:</span><br
+ style="text-decoration: underline;">
+<code>// a.hofmann jan 2005<br>
+// t_stackinterpreterv1.cc<br>
+// g++ t_stackinterpreterv1.cc stackinterpreterv1.cc stackengine.cpp
+-DDEBUG<br>
+<br>
+#include "stackinterpreterv1.h"<br>
+#include &lt;iostream&gt;<br>
+using namespace std;<br>
+<br>
+int main(){<br>
+&nbsp;&nbsp;&nbsp; CStackinterpreter myInterpreter("prog1.stk");<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; myInterpreter.run();<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; cout &lt;&lt; endl;<br>
+&nbsp;&nbsp;&nbsp; cout&lt;&lt; myInterpreter;<br>
+<br>
+&nbsp;&nbsp;&nbsp; cout &lt;&lt; endl;<br>
+&nbsp;&nbsp;&nbsp; cout &lt;&lt;"Ergebnis: "
+&lt;&lt;myInterpreter.top() &lt;&lt; endl;<br>
+&nbsp;&nbsp;&nbsp; <br>
+}<br>
+</code><br>
+<span style="text-decoration: underline;">Hinweis zur Methode run()</span><br
+ style="text-decoration: underline;">
+<code></code><code>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; #include
+&lt;strstream&gt;<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; ...<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; int CStackinterpreter::run(){<br>
+</code>
+<div style="margin-left: 40px;"><code>&nbsp;&nbsp;&nbsp; // ...<br>
+&nbsp;&nbsp;&nbsp; //while (m_pc &lt; m_nol)<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; // hole n&auml;chsten Befehl<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; // parse Befehl<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; // execute Befehl<br>
+</code><span style="text-decoration: underline;"><code><span
+ style="text-decoration: underline;"></span></code></span><code>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; ...</code><span
+ style="text-decoration: underline;"><code><br>
+</code></span><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+string str;<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; double dblValue;<br>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; while (m_pc
+&lt; m_nol) {<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ style="font-weight: bold;">istrstream
+sin(m_code[m_pc].c_str());</span>&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; sin &gt;&gt; str;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; if (str=="push"){<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; sin &gt;&gt; dblValue;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; m_stackengine.push(dblValue);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+else if (str=="add")<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+m_stackengine.add();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp; ....<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; else if (str=="quit")<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return m_pc;<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+else<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; return -1; &nbsp;&nbsp;&nbsp; //UNKNOWN COMMAND<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; m_pc++;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; //PC
+erh&ouml;hen: zum n&auml;chsten Befehl<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return m_pc;<br>
+&nbsp;&nbsp; }<br>
+<br>
+</code><span style="text-decoration: underline;"><code><br>
+<br>
+<br>
+</code>Hinweis: Files in C++:</span><br
+ style="text-decoration: underline;">
+<code>#include &lt;fstream&gt;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br>
+...<br>
+<br>
+ifstream fin;&nbsp;&nbsp; //fin ist eine Instanz der Klasse ifstream
+(InputFileStream)<br>
+<br>
+fin.open("world.txt");&nbsp;&nbsp;&nbsp; <br>
+if(fin.fail()) {<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; cout &lt;&lt; "Konnte " &lt;&lt;
+pFilename &lt;&lt; " nicht finden" &lt;&lt; endl;<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return -1;<br>
+}<br>
+<br>
+<br>
+</code><code>//getline():<br>
+//liest alles von der aktuellen Dateiposition bis zum ersten Auftreffen
+des Zeichens '*' in strLine<br>
+</code><code></code><code>ifstream fin;<br>
+string strLine;<br>
+getline (fin, strLine, '*');&nbsp;&nbsp; &nbsp;&nbsp; <br>
+<br>
+//Beispiel:<br>
+</code><code>while(getline(fin, strLine, '\n')){<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if(strLine == strRoom){<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; getline(fin,
+strRoomDescription, '*');&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; ...<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; fin &gt;&gt;
+strTemp &gt;&gt; strRoomNorth;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; fin &gt;&gt;
+strTemp &gt;&gt; strRoomEast;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; fin &gt;&gt;
+strTemp &gt;&gt; strRoomSouth;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; fin &gt;&gt;
+strTemp &gt;&gt; strRoomWest;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; ...<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+}<br>
+</code><br>
+<code><br>
+<br>
+fin &gt;&gt; strInput &gt;&gt; strInput;<br>
+//liest das zweite Wort aus der Datei in die Variable strInput<br>
+//Bsp: <br>
+//&lt;nord&gt; Garderobe <br>
+//in strInput steht Garderobe, d.h. das erste Wort wird einfach
+&uuml;berlesen<br>
+<br>
+</code>
+<br>
+<code>//setze den Filepointer auf den Beginn und l&ouml;sche das
+EOF-Flag<br>
+fin.seekg(NULL,ios::beg);&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <br>
+fin.clear();&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <br>
+</code><br>
+<code></code><br>
+<br>
+</div>
+<table style="width: 100%; text-align: left;" border="0" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td
+ style="background-color: rgb(204, 204, 204); vertical-align: top;">Stackinterpreter
+V2.0:&nbsp; Variablen in den Daten-Speicher mittels STL-map&nbsp;&nbsp;
+(2h) <br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<span style="text-decoration: underline;">Aufgabe:</span><br>
+Studieren Sie folgendes Programm, welches die Verwendung der Klasse map
+(s. STL) zeigt:<br>
+<br>
+<div style="margin-left: 40px;"><code></code><code>//map.cpp</code><br>
+<code>#include &lt;iostream&gt;</code><br>
+<code>#include &lt;map&gt;</code><br>
+<code>using namespace std;</code><br>
+<code><br>
+int main(){</code><br>
+<code>map &lt;string, double, less&lt;string&gt; &gt; m_varlist;</code><br>
+<code>map &lt;string, double, less&lt;string&gt; &gt;::iterator i;</code><br>
+<code></code><br>
+<code>string aVar;</code><br>
+<code>double aDbl;</code><br>
+<code>cout &lt;&lt; "\n*** Map-Demo: map &lt;string, double,
+less&lt;string&gt;&gt; m_varlist;\n";</code><br>
+<code>cout &lt;&lt; "Eingabe: string (ende mit quit)"&lt;&lt;endl;</code><br>
+<code>cin &gt;&gt;aVar;</code><br>
+<code>cout &lt;&lt; "Eingabe: double (ende mit 0)"&lt;&lt;endl;</code><br>
+<code>cin &gt;&gt;aDbl;</code><br>
+<code></code><br>
+<code>while (aVar != "quit"){</code><br>
+<code>&nbsp;&nbsp;&nbsp; m_varlist.insert (make_pair(aVar,aDbl));</code><br>
+<code>&nbsp;&nbsp;&nbsp; cout &lt;&lt; "Eingabe: string (ende mit
+quit)"&lt;&lt;endl;</code><br>
+<code>&nbsp;&nbsp;&nbsp; cin &gt;&gt;aVar;</code><br>
+<code>&nbsp;&nbsp;&nbsp; cout &lt;&lt; "Eingabe: double (ende mit
+0)"&lt;&lt;endl;</code><br>
+<code>&nbsp;&nbsp;&nbsp; cin &gt;&gt;aDbl;</code><br>
+<code>}<br>
+<br>
+</code><code>//auch das geht<br>
+m_varlist["hofmann"]= 99.0;<br>
+</code><br>
+<code>cout &lt;&lt;"*** Liste ausgeben\n";</code><br>
+<code>for(i= m_varlist.begin(); i != m_varlist.end(); i++)</code><br>
+<code>&nbsp;&nbsp;&nbsp; cout &lt;&lt; i-&gt;first&lt;&lt;
+"\t\t:&lt;--&gt;"&lt;&lt; i-&gt;second&lt;&lt;endl;</code><br>
+<code></code><code></code><br>
+<code>cout &lt;&lt;"*** Suche nach einem bestimmten String\n";</code><br>
+<code>cin&gt;&gt;aVar;</code><br>
+<code>i= m_varlist.find(aVar);</code><br>
+<code>if (i == m_varlist.end())</code><br>
+<code>&nbsp;&nbsp;&nbsp; cout &lt;&lt; "nicht gefunden"&lt;&lt;endl;</code><br>
+<code>else{</code><br>
+<code>&nbsp;&nbsp;&nbsp; cout &lt;&lt;"String="&lt;&lt;
+i-&gt;first&lt;&lt;endl;</code><br>
+<code>&nbsp;&nbsp;&nbsp; cout &lt;&lt;"Double="&lt;&lt;
+i-&gt;second&lt;&lt;endl;</code><br>
+<code>&nbsp;&nbsp;&nbsp; //cout &lt;&lt;"Double="&lt;&lt;
+m_varlist[aVar]&lt;&lt;endl;</code><br>
+<code>}</code><br>
+<code></code><br>
+<code>}</code><br>
+<code></code></div>
+<code><br>
+</code><br>
+<span style="text-decoration: underline;">Aufgabe
+(CStackinterpreterv2.cpp,</span><span
+ style="text-decoration: underline;">CStackinterpreterv2.h)</span><span
+ style="text-decoration: underline;"> :</span><br>
+Vervollst&auml;ndigen Sie den CStackinterpreterV1 mit einer
+Variablenliste
+und testen Sie ausgiebig. D.h unser Interpreter hat neben einem
+Code-Speicher nun auch einen Daten-Speicher.&nbsp; Wir wollen diesen
+Daten-Speicher als map (s. oben: STL) realisieren.<br>
+<br>
+Ihr Stackinterpreter soll nun folgende Dateien verarbeiten k&ouml;nnen:<br>
+<span style="text-decoration: underline;"><br>
+Beispiel: stackiv2.stk</span><br>
+<code>push 10<br>
+push 4<br>
+add<br>
+assign x<br>
+push 2<br>
+push 5<br>
+mul<br>
+assign y<br>
+vpush x<br>
+vpush y<br>
+add<br>
+quit<br>
+</code><br>
+x hat den Wert 14 <br>
+y hat den Wert 10<br>
+<br>
+<span style="text-decoration: underline;">Hinweis:</span><br
+ style="text-decoration: underline;">
+assign, ... nimmt das oberste Element vom Stack und legt es in den
+Datenspeicher<br>
+<br>
+<br>
+<span style="text-decoration: underline;">Aufgabe:
+(t_stackinterpreterv2.cpp)</span><br>
+Verwenden Sie folgendes Testprogramm, um ihren Stackinterpreterv2 und
+ihre Stackengine zu testen:<br>
+<code><br>
+// a.hofmann jan 2005<br>
+// t_stackinterpreterv2.cc<br>
+// g++ t_stackinterpreterv2.cc stackinterpreterv2.cc stackengine.cpp
+-DDEBUG<br>
+#include "stackinterpreterv2.h"<br>
+#include &lt;iostream&gt;<br>
+using namespace std;<br>
+<br>
+int main(){<br>
+&nbsp;&nbsp;&nbsp; CStackinterpreter myInterpreter("stackiv2.stk");<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; myInterpreter.run();<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; cout &lt;&lt; endl;<br>
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; cout&lt;&lt;
+myInterpreter;</span><br style="font-weight: bold;">
+<br>
+&nbsp;&nbsp;&nbsp; cout &lt;&lt; endl;<br>
+&nbsp;&nbsp;&nbsp; cout &lt;&lt;"Ergebnis: "
+&lt;&lt;myInterpreter.top() &lt;&lt; endl;<br>
+&nbsp;&nbsp;&nbsp; <br>
+}<br>
+<br>
+</code><br>
+Das Programm soll folgenden Output liefern:<br>
+<code><br>
+============== StackinterpreterV2 ===<br>
+CODE:&gt; m_code[0] = push 10<br>
+CODE:&gt; m_code[1] = push 4<br>
+CODE:&gt; m_code[2] = add<br>
+CODE:&gt; m_code[3] = assign x<br>
+CODE:&gt; m_code[4] = push 2<br>
+CODE:&gt; m_code[5] = push 5<br>
+CODE:&gt; m_code[6] = mul<br>
+CODE:&gt; m_code[7] = assign y<br>
+CODE:&gt; m_code[8] = vpush x<br>
+CODE:&gt; m_code[9] = vpush y<br>
+CODE:&gt; m_code[10] = add<br>
+CODE:&gt; m_code[11] = quit<br>
+<br>
+DATA:&gt; m_data[x] = 14<br>
+DATA:&gt; m_data[y] = 10<br>
+<br>
+STACK:&gt;To be implemented<br>
+============== StackinterpreterV2 ===<br>
+<br>
+<br>
+Ergebnis: 24</code><br>
+<code><br>
+</code><span style="text-decoration: underline;">Aufgabe:</span><br>
+&Uuml;berladen Sie f&uuml;r die Klasse CStackinterpreter den Operator
+&lt;&lt;.<br>
+<br>
+<span style="text-decoration: underline;">Hinweis:</span><br
+ style="text-decoration: underline;">
+stackinterpreterv2.h<br>
+<code>&nbsp;&nbsp;&nbsp; &nbsp; ...<br>
+&nbsp;&nbsp;&nbsp; &nbsp; map&lt; string, double, less&lt;string&gt;
+&gt; m_data;&nbsp;&nbsp;&nbsp; //Daten-Speicher<br>
+&nbsp;&nbsp;&nbsp; &nbsp; ...<br>
+&nbsp;&nbsp;&nbsp; &nbsp; friend ostream&amp;
+operator&lt;&lt;(ostream&amp; o, const CStackinterpreter&amp; e);<br>
+&nbsp;&nbsp;&nbsp; &nbsp; ...<br>
+</code>stackinterpreterv2.cpp<br>
+<div style="margin-left: 40px;"><code>ostream&amp;
+operator&lt;&lt;(ostream&amp; o, const CStackinterpreter&amp; e){</code><br>
+<code>&nbsp;&nbsp;&nbsp; ....<br>
+&nbsp;&nbsp;&nbsp; return o;</code><br>
+<code>}</code><br>
+<code></code></div>
+<br>
+<span style="text-decoration: underline;"><br>
+Zusatzaufgabe:</span><br>
+Wir wollen nun obiges Beispiel ohne die STL-Map programmieren. D.h. wir
+m&uuml;ssen eine Klasse definieren, die<br>
+<ul>
+  <li>ein Array aus folgenden Elementen besitzt:<br>
+struct pair { string key, double value;};</li>
+  <li>wenn das Array zu klein wird, sich automatisch verl&auml;ngert</li>
+  <li>wenn ein Eintrag nicht vorhanden ist, diesen ins Array aufnimmt</li>
+  <li>wenn ein Eintrag vorhanden ist, den alten Wert &uuml;berschreibt.<br>
+  </li>
+</ul>
+<br>
+Erstellen Sie die Klasse CVarList (varlist.cpp, varlist.h), die
+folgende Elemente hat:<br>
+<div style="margin-left: 40px;"><code><span
+ style="text-decoration: underline;"></span> class CVarList {<br>
+&nbsp;&nbsp;&nbsp; private:<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; struct pair {string key; double
+value};<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; struct pair * m_varlist;<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; int
+m_last;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //letzten Eintrag im Array<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; int
+m_anzahl;&nbsp;&nbsp;&nbsp;&nbsp; //aktuelle Kapazit&auml;t des Arrays<br>
+&nbsp;&nbsp;&nbsp; public:<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; CVarList(int anz) { m_varlist= new
+struct pair [anzahl]; m_anzahl=anz;}<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; ~CVarlist();<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; bool exists(string pName);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void setVar (string pName, double
+pValue);<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; //wenn variable bereits
+vorhanden-&gt; &auml;ndere Wert<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; //sonst: h&auml;nge
+Variable ans ende an<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; double getValue(string pName);<br>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; double&amp; operator[](string&amp;
+aKey);&nbsp;&nbsp; //zum schreiben (dh. auf der linken Seite eines
+Ausdrucks; lvalue genannt)<br>
+</code><code>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; double
+operator[](string&amp; aKey) const;&nbsp;&nbsp; //zum lesen </code><code>(dh.
+auf der rechten Seite eines Ausdrucks)</code><br>
+<code><br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; friend ostream&amp;
+operator&lt;&lt;(ostream&amp; o, const CVarList&amp; e);<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; //gibt gesamte Liste aus<br>
+};<br>
+</code></div>
+<br>
+<br>
+<table style="width: 100%; text-align: left;" border="0" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td
+ style="background-color: rgb(204, 204, 204); vertical-align: top;">Stackinterpreter&nbsp;
+V3.0: mit Verzweigungen </td>
+    </tr>
+  </tbody>
+</table>
+<span style="text-decoration: underline;"><br>
+Aufgabe:<br>
+</span>Erweitern Sie ihren Stackinterpreter mit folgenden
+Funktionalit&auml;ten:<br>
+<ul>
+  <li>Kommentar.&nbsp; <br>
+  </li>
+  <ul>
+    <li>Alle Zeilen beginnend mit // werden als Kommentar interpretiert<br>
+    </li>
+  </ul>
+  <li>debug Textzeile</li>
+  <ul>
+    <li>Gibt Textzeile aus und anschliessend den CODE-, DATEN- und
+STACKSpeicher aus</li>
+  </ul>
+  <li>if ... neq .... [else ... ] endif</li>
+  <ul>
+    <li>Verzweigungen mit/ohne else-Teil<br>
+    </li>
+  </ul>
+</ul>
+<br>
+<span style="text-decoration: underline;"><span
+ style="text-decoration: underline;"><br>
+</span>Beispiel: if-else.stk</span><br>
+<br>
+<div style="margin-left: 40px;"><code>// file: if-else.stk</code><br>
+<code>// dividieren oder addieren<br>
+push 300</code><br>
+<code>assign x</code><br>
+<code>push 100</code><br>
+<code>assign y</code><br>
+<code style="font-weight: bold;">if</code><br>
+<code>vpush y</code><br>
+<code>push 0</code><br>
+<code style="font-weight: bold;">neq</code><br>
+<code>vpush x<br>
+vpush y<br>
+</code><code>div</code><br>
+<code style="font-weight: bold;">else</code><br>
+<code>vpush x<br>
+</code><code>vpush y<br>
+</code><code>add<br>
+</code><code></code><code style="font-weight: bold;">endif<br>
+</code><code>quit<br>
+<br>
+//Ergebnis: 3.0<br>
+<br>
+</code><br>
+<code></code></div>
+<br>
+<span style="text-decoration: underline;">Pseudocode f&uuml;r
+CStackinterpreter::run()</span><br style="text-decoration: underline;">
+<div style="margin-left: 40px;"><code>....<br>
+else if (m_code[</code><code>m_</code><code>pc] == "if")<br>
+&nbsp;&nbsp;&nbsp; in_if=true;&nbsp;&nbsp;&nbsp; //merke, dass if
+verarbeitet wird<br>
+&nbsp; <br>
+</code><code>else if (</code><code>m_</code><code>code[</code><code>m_</code><code>pc]=="neq"
+&amp;&amp; in_if &amp;&amp; m_stackengine.neq()
+== true ) <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; ; //if-teil wird
+verarbeitet<br>
+</code><code>else if (</code><code>m_</code><code>code[</code><code>m_</code><code>pc]=="neq"
+&amp;&amp; in_if &amp;&amp; m_stackengine.neq() != true ) <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //else-teil wird
+verarbeitet falls vorhanden<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; setze m_pc auf zeile mit
+else <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; wenn nicht vorhanden<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; setze m_pc auf zeile
+mit endif und in_if=false;<br>
+</code>....<code><br>
+</code><code>else if (</code><code>m_</code><code>code[</code><code>m_</code><code>pc]
+== "else") //komme nur dann hierher, wenn if-teil ausgef&uuml;hrt wurde<br>
+&nbsp;&nbsp; setze m_pc auf zeile mit endif und in_if=false;<br>
+</code><code>else if (</code><code>m_</code><code>code[</code><code>m_</code><code>pc]
+== "endif")<br>
+&nbsp;&nbsp; in_if=false;<br>
+</code></div>
+<code>&nbsp;&nbsp;&nbsp; &nbsp; ....<br>
+&nbsp;&nbsp;&nbsp; &nbsp; m_pc++;&nbsp;&nbsp; //n&auml;chsten Befehl
+holen<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; </code><code></code><br>
+<br>
+<span style="font-weight: bold;"><span style="font-weight: bold;"></span></span>Erweitern
+Sie die Klasse CStackinterpreter. Die
+Vergleichsbefehle lauten: eq (gleich), neq (ungleich), lt (kleiner), gt
+(gr&ouml;&szlig;er), le()
+und bool ge(). Vergessen Sie nicht in die Klasse CStackengine die neuen
+Methoden: bool neq(), bool eq(), bool lt()
+und bool gt(), le()
+und bool ge() einzubauen. <br>
+Erlauben Sie auch Kommentare und eine debug-Anweisung.<br>
+<br>
+<span style="text-decoration: underline;">Hinweis:</span><br
+ style="text-decoration: underline;">
+neq, ... vergleicht die beiden Stackelemente und nimmt beide Elemente
+vom Stack<br>
+<br>
+<span style="text-decoration: underline;"></span><br>
+<table style="width: 100%; text-align: left;" border="0" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td
+ style="background-color: rgb(204, 204, 204); vertical-align: top;">Stackinterpreter
+V4.0: mit Ein/Ausgabe<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<span style="text-decoration: underline;"><br>
+Beispiel: stackiv4.stk</span>
+(cin&gt;&gt;radius; umfang=2*radius*3.14; cout&lt;&lt;umfang;)<br>
+<div style="margin-left: 40px;">...<br>
+push 3.14<br>
+<span style="font-weight: bold;">read</span> Bitte geben Sie eine Zahl
+ein: <br>
+assign radius<br>
+push 2<br>
+vpush radius<br>
+mul<br>
+mul<br>
+assign umfang<br>
+vpush umfang<br>
+<span style="font-weight: bold;">write</span> Das Ergebnis lautet: <br>
+<br>
+</div>
+<div style="margin-left: 40px;"><span
+ style="text-decoration: underline;">read</span><br>
+gibt den Prompt aus und wartet darauf, dass der Benutzer eine Zahl
+eintippt und speichert diese
+Zahl dann auf dem Stack<br>
+</div>
+<br>
+<span style="text-decoration: underline;">Aufgabe:</span><br
+ style="text-decoration: underline;">
+Erweitern Sie das Programm so, dass read und write fehlerfrei
+ausgef&uuml;hrt werden k&ouml;nnen.<br>
+<br>
+<span style="text-decoration: underline;">Aufgabe:</span><br>
+Entwerfen Sie mindestens drei Stackmaschinen-Quelltexte, in denen
+Variablen eingelesen und ausgeben werden, und in denen auch ein- oder
+zweiseitige Verzweigungen vorkommen k&ouml;nnen.<br>
+<br>
+Eines dieser Stackmaschinen-Quelltexte sollte das Idelgewicht von
+M&auml;nnern und Frauen nach den folg. Formeln berechnen und
+ausgeben (Eingabe: K&ouml;rpergr&ouml;&szlig;e und Geschlecht)<br>
+<br>
+Idealgewicht M&auml;nner: (KG -100) * 0,9<br>
+Idealgewicht Frauen: (KG -100) * 0,85<br>
+<br>
+<br>
+<table style="width: 100%; text-align: left;" border="0" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td
+ style="background-color: rgb(204, 204, 204); vertical-align: top;">Stackinterpreter
+V5.0: mit While-Schleife <br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<span style="text-decoration: underline;"><br>
+Beispiel: stackiv5.stk</span>
+<br>
+<div style="margin-left: 40px;">push 0<br>
+assign summe<br>
+<br>
+//Schleifenz&auml;hler i<br>
+push 0<br>
+assign i<br>
+<br>
+<span style="font-weight: bold;">while</span><br>
+vpush i<br>
+push 100<br>
+<span style="font-weight: bold;">lt</span><br>
+<br>
+vpush summe<br>
+vpush i<br>
+add<br>
+assign summe<br>
+<br>
+//schleifenz&auml;hler erh&ouml;hen<br>
+vpush i<br>
+push 1<br>
+add<br>
+assign i<br>
+<br>
+<span style="font-weight: bold;">endwhile<br>
+<br>
+</span><span style="text-decoration: underline;">Dies entspricht in C:</span><span
+ style="font-weight: bold;"><br style="font-weight: bold;">
+</span></div>
+<div style="margin-left: 40px;">int summe,i;<br>
+</div>
+<div style="margin-left: 40px;">summe=0;<br>
+i=0;<br>
+while (i &lt;100) {<br>
+&nbsp;&nbsp;&nbsp; summe= summe + i;<br>
+&nbsp;&nbsp;&nbsp; i= i+1;<br>
+}<br>
+<br>
+</div>
+<div style="margin-left: 40px;"><span
+ style="text-decoration: underline;">Anmerkung:</span><br>
+Die Leerzeilen dienen nur der &Uuml;bersichtlichkeit. Im echten Code
+fehlen sie.<br>
+<br>
+Wenn der Interpreter bei einer Verzweigung auf endif st&ouml;&szlig;t,
+macht er im n&auml;chsten Schritt einfach mit der n&auml;chsten Zeile
+weiter.<br>
+Bei einer While-Schleife dagegen m&uuml;sste der Interpreter nun wieder
+zur&uuml;ck zur logischen Bedingung springen, diese erneut
+&uuml;berpr&uuml;fen und ggf. den Block in der Schleife noch einmal
+ausf&uuml;hren.<br>
+</div>
+<br>
+<span style="text-decoration: underline;">Aufgabe:</span><br>
+Erweitern Sie das Programm so, dass while-Anweisungen wie oben
+ausgef&uuml;hrt werden k&ouml;nnen.<br>
+<br>
+<span style="text-decoration: underline;">Aufgabe:</span><br>
+Entwerfen Sie mindestens drei Stackmaschinen-Quelltexte, in denen
+Variablen eingelesen und ausgeben werden, und in denen auch ein- oder
+zweiseitige Verzweigungen und Schleifen vorkommen k&ouml;nnen.<br>
+<br>
+<span style="text-decoration: underline;">Beispiele: </span><br
+ style="text-decoration: underline;">
+sum.stk: Summe der Zahlen von 1 bis N. Wobei N eingelesen werden soll.<br>
+fakt.stk: n! brechnen<br>
+prim.stk: n einlesen und alle Primmzahlen bis n ausgeben <br>
+<br>
+<table style="width: 100%; text-align: left;" border="0" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td
+ style="background-color: rgb(204, 204, 204); vertical-align: top;">Abschluss<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<span style="text-decoration: underline;"></span><br>
+t_minish.c mit eingebauten stackinterpreter<br>
+&nbsp;&nbsp;&nbsp; alle stackbefehle beginnen mit !<br>
+&nbsp;&nbsp;&nbsp; !push 0<br>
+&nbsp;&nbsp;&nbsp; !assign fakt<br>
+&nbsp;&nbsp;&nbsp; !read<br>
+&nbsp;&nbsp;&nbsp; !assign n<br>
+&nbsp;&nbsp;&nbsp; !push 1<br>
+&nbsp;&nbsp;&nbsp; !assign i &nbsp; <br>
+&nbsp;&nbsp;&nbsp; !while<br>
+&nbsp;&nbsp;&nbsp; !vpush i<br>
+&nbsp;&nbsp;&nbsp; !vpush n<br>
+&nbsp;&nbsp;&nbsp; !lt<br>
+&nbsp;&nbsp;&nbsp; !vpush i<br>
+&nbsp;&nbsp;&nbsp; !vpush fakt<br>
+&nbsp;&nbsp;&nbsp; !mul<br>
+&nbsp;&nbsp;&nbsp; !assign fakt<br>
+&nbsp;&nbsp;&nbsp; !vpush i<br>
+&nbsp;&nbsp;&nbsp; !vpush 1<br>
+&nbsp;&nbsp;&nbsp; !add<br>
+&nbsp;&nbsp;&nbsp; !endwhile<br>
+&nbsp;&nbsp;&nbsp; !vpush fakt<br>
+&nbsp;&nbsp;&nbsp; !write<br>
+&nbsp;&nbsp; <br>
+<br>
+Visualisierung: Stackinterpreter mit VB.Net bzw. in C++ mit Qt:<br>
+<div style="margin-left: 40px;">Listboxen: Stack, Variablenliste,
+Code-Speicher, write-Befehle<br>
+Textbox:&nbsp;&nbsp;&nbsp; f&uuml;r read<br>
+</div>
+<br>
+<br>
+<table style="width: 100%; text-align: left;" border="0" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td
+ style="background-color: rgb(204, 204, 204); vertical-align: top;">Weitere
+Themen<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<span style="text-decoration: underline;"></span><br>
+Erzeugung eines Stackmaschinen Codes<br>
+Compiler bauen:<br>
+Attributierte Grammatik: Lexikalische Analyse arithm. Ausdr&uuml;cke<br>
+Konvertierung: infix nach postfix<br>
+&nbsp;&nbsp;&nbsp; mittels Stack (s. convert.cpp)<br>
+&nbsp;&nbsp;&nbsp; mittels expr.Tree (s. zotteljedi)<br>
+<br>
+t_minish.c mit infix eingabe . infix2postfix . stackinterpreter<br>
+<br>
+<br>
+</body>
+</html>

@@ -1,0 +1,20 @@
+**debug "hhhhhhhhhhhhhhhhhhh"   programmieren
+
+**// stk: programmieren
+pow.stk, summe.stk, fakt.stk, gewicht.stk, flaeche.stk, sqrt
+:
+**stackengine: mod programmieren (achtung : int operanden)
+**stackengine: sqrt programmieren (achtung : int operanden)
+**
+
+
+**write mit {0}
+**debugs
+**debugc
+**debugd
+
+todo:
+**if im arbeitsblatt anpassen
+**ablaufdiagramm
+**rekursioon aufrufstiefe
+

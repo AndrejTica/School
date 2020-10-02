@@ -1,0 +1,19 @@
+// file: stackiv3.stk
+push 10
+push 4
+add
+assign x
+push 2
+push 5
+mul
+assign y
+vpush x
+vpush y
+push 0
+debug "!!!!!!!!!!!!!Gibt code-,daten-,stack-Speicher aus"
+if
+neq
+div
+endif
+quit
+//  ergebnis: 1.4  x=14  y=10

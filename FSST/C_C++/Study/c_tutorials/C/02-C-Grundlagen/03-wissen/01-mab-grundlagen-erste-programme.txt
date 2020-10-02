@@ -1,0 +1,76 @@
+﻿MAB: grundlagen-erste-programme.txt
+--------------------------------------------------------------------------------
+
+1) Was gibt das Programm aus
+--------------------------------------------------------------------------------
+{
+	f= 1;
+	n= 5;
+
+	i=1;
+	while (i<=n){
+		f=f*i;
+		i=i+1;  // oder auch das geht i++
+	}
+
+	f ausgeben;
+}
+
+
+2) Programm erstellen
+--------------------------------------------------------------------------------
+	Schreiben Sie ein Programm, das folgende Folge von Zahlen ausgibt.
+	
+	100 81 64 49 36 25 16 9 4 1
+	
+
+3) Gforfor
+--------------------------------------------------------------------------------
+	Verwende eine geschachtelte for-Schleife 
+	(im for-Schleifenblock ist selbst wieder eine for-Schleife) 
+	um folg. Ausgabe zu erreichen. 
+
+	Das Programm muss den Benutzer nach einer Zahl zw. 3 und 9 fragen. 
+	Das Programm fragt den Benutzer solange bis dieser ein Zahl 
+	zwischen 3 und 9 eingibt.
+
+	Beispiel: 5 wurde eingeben.
+	1
+	22
+	333
+	4444
+	55555 
+
+
+4) GPerfekteZahl
+--------------------------------------------------------------------------------
+	Eine natürliche Zahl n nennt man eine perfekte Zahl, 
+	wenn sie gleich der Summe aller echten Teiler ist.
+
+	Bsp:
+	Sie Summe der echten Teiler von n soll T(n) bezeichnet werden.
+	T(6)= 3+2+1
+	T(28)= 14+7+4+2+1
+
+	Hinweis:
+	echte Teiler von n werden alle natürlichen Teiler von n einschliesslich 1, 
+	aber ohne n bezeichnet.
+
+	Schreiben Sie ein Struktogramm, das 
+	n einliest und 
+	ausgibt ob es sich um eine perfekte Zahl handelt oder nicht. 
+	Zusätzlich sollen die Teiler und die Summer der Teiler 
+	ausgegeben werden.
+	
+	
+5) GPrimzahl
+--------------------------------------------------------------------------------
+	Lies eine integer Zahl (n) ein. 
+	Das Programm DARF nur eine positive Zahl größer gleich 2 zulassen. 
+	Gib aus, ob es sich um eine Primzahl handelt.
+
+PAP:
+	Wir testen zunächst, ob die Testzahl gerade ist und 
+	prüfen dann alle ungeraden Zahlen (>2) bis zur Testzahl (n) 
+		als mögliche Teiler (t). 
+

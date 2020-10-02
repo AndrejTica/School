@@ -1,0 +1,195 @@
+﻿// THEMA: XML
+// --------------------------------------------------------
+
+/** AUFGABE 1: erste xml-Datei verarbeiten
+  * Erstellen Sie ein QT-Konsolenprogramm namens xml-world1
+  * und bringen Sie das unten stehende Programm zum Laufen.
+  *
+  * Hinweis:
+  * Das Programm liest die Datei world1.xml
+  * siehe dazu weiter unten: Datei: world1.xml
+  */
+  
+
+/** AUFGABE 2: XML-FILE erstellen
+  * Erstellen Sie die Datei world.xml.
+  * Ausgangsbasis: world.txt 
+  * (textadventureGame:Version3 (inkl. Gegenstände und Monster).
+  */
+
+/** AUFGABE 3: Programm: adventureGameV3_XML
+  * Erstellen Sie ein neues Projekt namens adventureGameV3_XML
+  * auf der Basis von adventureGameV3 (arbeitet mit world.txt).
+  * Datenbasis sei nun ihre oben erstellte Datei: world.xml
+*/
+
+
+#include <QtCore/QCoreApplication>
+
+#include <QXmlStreamReader>
+#include <QTextStream>
+#include <QFile>
+
+
+void parseXmlFile(QTextStream &out, const QString &fileName) {
+    
+    out << "Analysis of XML file: " << fileName << endl;
+    
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly)) {
+	out << "  Couldn't open the file." << endl << endl << endl;
+	return;
+    }
+    
+    QXmlStreamReader reader(&file);
+    
+    QString spielName;
+    int anzRaeume=0;
+    while (!reader.atEnd()) {
+	reader.readNext();
+	if (reader.isStartElement()) {
+	    if (reader.name() == "spiel")
+		spielName= reader.attributes().value("name").toString();
+	    else if(reader.name() == "raum")
+		anzRaeume++;
+	}
+    }
+    
+    if (reader.hasError()) {
+	out << "  The XML file isn't well-formed: " << reader.errorString()
+		<< endl << endl << endl;
+	return;
+    }
+    
+    out << "  Spiel: \"" << spielName << "\"" << endl
+	    << "  Number of raeume: " << anzRaeume << endl;
+    
+    
+    out << endl << endl;
+}
+
+
+
+int main(int argc, char **argv){
+    QCoreApplication app(argc, argv);
+        
+    QTextStream out(stdout);
+    
+    
+    parseXmlFile(out, QString("world1.xml"));
+    
+    return 0;
+}
+
+/*  
+Datei: world1.xml:
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+
+<spiel name="world1.xml">
+<start> Eingang </start>
+
+<raeume>
+
+<raum name="mitte">
+<beschreibung>
+_____________________________________________________________________
+   Sie befinden Sie genau in der Mitte des Hauses.
+   
+   In irgendeinem Zimmer befindet sich ihr Freund,
+   der von geheimnisvollen Personen festgehalten wird.
+   
+   Es gibt eine Tuer in jede Richtung.
+   (hilfe bzw. ?)
+_____________________________________________________________________
+</beschreibung>
+<nord/> Oben
+<ost/>  Rechts
+<sued/> Eingang
+<west/> Links
+</raum>
+
+<raum name="links">
+<beschreibung>
+_____________________________________________________________________
+   Hier befindet sich ein Computer auf dem vielen Fragen stehen.
+   Es gibt nur eine Tuer nach west, woher sie gekommen sind.
+   (hilfe bzw. ?)
+_____________________________________________________________________
+</beschreibung>
+<nord/> None
+<ost/>  Mitte
+<sued/> None
+<west/> None
+</raum>
+
+<raum name="Eingang">
+<beschreibung>
+_____________________________________________________________________
+   Ja, endlich. Sie haben es gefunden. Ein unheimliches Haus. 
+   Eine geheimnisvolle Person aus dem Jenseits hat ihnen
+   eine schreckliche Nachricht ueberbracht.
+   
+   Ihr Freund wird von dunklen Maechten in einem grossen Haus
+   festgehalten. Sie muessen ihn retten. Ja, wirklich, das sind
+   sie ihm schuldig.
+   Also worauf warten Sie, gehen Sie ins Haus!!!!
+   (hilfe bzw. ?)
+_____________________________________________________________________
+</beschreibung>
+<nord/> Mitte
+<ost/>  None
+<sued/> None
+<west/> None
+</raum>
+
+<raum name="Rechts">
+<beschreibung>
+_____________________________________________________________________
+   Gleich nachdem Sie durch die Tuer gekommen sind, merkten Sie 
+   das Unheimliche.
+   Irgendwer will was von ihnen. Aber, was nur ?
+   Es gibt hier keine Antwort fuer Sie. 
+   Also zurueck, denn es gibt nur diesen Weg nach Westen.
+_____________________________________________________________________
+</beschreibung>
+<nord/> None
+<ost/>  None
+<sued/> None
+<west/> Mitte
+</raum>
+
+<raum name="Oben">
+<beschreibung>
+_____________________________________________________________________
+   Ja, Sie hoeren ganz deutlich die Stimme. Sie kommt von oben
+   Es gibt keinen Weg zurueck. Aber doch es gibt einen Weg nach 
+   Sueden und einen nach Norden.
+   Wohin also ?
+_____________________________________________________________________
+</beschreibung>
+<nord/> Ende
+<ost/>  None
+<sued/> Mitte
+<west/> None
+</raum>
+
+<raum name="Ende">
+<beschreibung>
+_____________________________________________________________________
+   Endlich haben Sie ihren Freund gefunden!!!!!
+   Er stammelt fuer Sie unverstaendliche Worte. Sie gehen auf ihn zu.
+   Aber, da sehen Sie selbst, was er ihnen zurufen moechte.
+   Die Gefahr ist noch nicht vorueber, sondern beginnt erst.
+   To be continued...
+_____________________________________________________________________
+</beschreibung>
+<nord/> None
+<ost/>  None
+<sued/> None
+<west/> None
+</raum>
+
+</raeume>
+</spiel>
+
+*/

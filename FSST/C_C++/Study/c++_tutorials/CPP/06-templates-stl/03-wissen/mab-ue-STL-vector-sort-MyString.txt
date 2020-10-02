@@ -1,0 +1,63 @@
+﻿/** MAB: STL-vector-sort-MyString
+  AUFGABE: BRINGEN SIE DAS FOLGENDE PROGRAMM ZUM LAUFEN
+  INHALT:
+	  STL-ALGORITHMEN VERWENDEN KÖNNEN
+	  DIE KLASSE VECTOR VERWENDEN KÖNNEN.
+  HINWEIS: http://www.cplusplus.com/reference/algorithm/sort/
+  KLASSEN MIT POINTER MEMBERN
+    => you should always define both
+	a) a ??????????????? and	b) ?????????????????,
+    whenever your class contains a pointer member
+  STL-SORT algorithm
+  => you just have to overload the ?????????? operator (use a friend function)
+------------------------------------------------------------**/
+#include <algorithm>
+#include <vector>
+#include <iostream>
+using namespace std;
+#include <cstring> // WEGEN strlen(), ...
+
+// Die Klasse MyString (Kurzform: ohne eigene cpp-Datei)
+class MyString{
+private:
+    char* s;
+    int len;
+public:
+    MyString(const char* s){
+		this->len= strlen (s);
+		this->s= new char[this->len + 1]; // EOS	
+		strcpy(this->s, s);
+    }
+    // copy cons
+    MyString(const MyString& other){
+		???????????????
+    }
+    MyString& operator=(const MyString& other){
+		???????????????
+    }
+    friend ostream& operator << (ostream& o, const MyString& other){
+		???????????????
+    }
+};
+int main(int argc, char *argv[]){
+    MyString a("Zeppelin"); MyString b("Biene"); MyString c("Herbst");   
+    MyString d("Sommer");  MyString e("Theodor");
+
+    vector<MyString> v;
+    vector<MyString>::iterator itv;
+
+    v.push_back(a); v.push_back(b); v.push_back(c); v.push_back(d);
+    v.push_back(e);
+
+    cout << "Vor dem Sortieren: " << endl;
+    for(itv=v.begin(); itv != v.end(); itv++)
+		cout << *itv<< endl;
+
+    sort(v.begin(),v.end());
+
+    cout << "Nach dem Sortieren: " << endl;
+    for(itv=v.begin(); itv != v.end(); itv++)
+		cout << *itv<< endl;
+
+    return 0;
+}

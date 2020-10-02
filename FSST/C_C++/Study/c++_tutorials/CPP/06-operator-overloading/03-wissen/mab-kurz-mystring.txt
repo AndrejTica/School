@@ -1,0 +1,41 @@
+mab: mystring
+------------------------------------------------------------
+
+1. (2) -----------------------------------------------------
+	Gegeben:
+	class MyString{
+		private: 
+			char* s;
+			int size;
+		....
+		bool operator==(const char* s);		//3
+		....
+	}
+	
+	Erstellen Sie die dazugehörige Methode (cpp)
+
+
+2. (2) -----------------------------------------------------
+   a) Warum muss beim Kopierkonstruktor eine Referenz als 
+   		Parameter übergeben werden?
+   		
+   b) Wann wird der Kopierkonstruktor aufgerufen
+
+
+
+3. (2) -----------------------------------------------------
+   Die Klasse MyString:
+   Vervollständigen Sie folg. Programmzeilen 
+ 
+   a) ______________ operator[](int index);
+
+   b) ______________ operator=(const MyString& e);
+
+
+
+4. (2) -----------------------------------------------------
+    Die Klasse MyString: Gesucht ist der 
+  
+  a) Kopierkonstruktor
+  b) Ausgabeoperator << 
+

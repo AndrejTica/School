@@ -1,0 +1,1208 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+	<TITLE>ab-os-uebungen</TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 3.1  (Unix)">
+	<META NAME="CREATED" CONTENT="0;0">
+	<META NAME="CHANGEDBY" CONTENT="Anton Hofmann">
+	<META NAME="CHANGED" CONTENT="20110126;16283500">
+	<STYLE TYPE="text/css">
+	<!--
+		TD P { color: #000000 }
+		H1 { color: #000000 }
+		P { color: #000000 }
+		DT { color: #000000 }
+		DD { color: #000000 }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="de-DE" TEXT="#000000" DIR="LTR">
+<H1><U><B>Arbeitsblatt: POSIX</B></U></H1>
+<P>Wir wollen hier die im POSIX beschriebenen Methoden und Konzepte
+zum Multitasking (Nebenläufigkeit) und der
+Prozesskommunikation/-Synchronisation (IPC=InterProcessCommunication)
+üben.<BR><BR>Im Detail werden folg. Themen/Begriffe besprochen:</P>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm">Signale (signal(),alarm(), ...) 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm">Prozesse (fork(), exec(), wait(),
+	...) 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm">Kommunikation (pipe(),
+	popen(),fdopen(), streams) 
+	</P>
+	<LI><P>Synchronisation: Lock-Files 
+	</P>
+</UL>
+<P><U><BR>Workshop:</U></P>
+<OL>
+	<LI><P STYLE="margin-bottom: 0cm">http-server mit fork() 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm">Parallelles Sortieren (MergeSort) 
+	</P>
+</OL>
+<P><BR><BR>
+</P>
+<TABLE WIDTH=278 BORDER=0 CELLPADDING=2 CELLSPACING=0>
+	<COL WIDTH=274>
+	<TR>
+		<TD WIDTH=274 BGCOLOR="#cccccc">
+			<P><B>Signale: alarm(), signal()&nbsp;&nbsp;&nbsp;&nbsp; (4h)</B></P>
+		</TD>
+	</TR>
+</TABLE>
+<P><BR>Signale werden zur einfachen Kommunikation zwischen Programmen
+verwendet. Mögliche Anwendungen sind:</P>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm">auf Programmabbruch durch Ctrl-C
+	reagieren können 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm">einem Programm während seiner
+	Laufzeit mitteilen, es möge seine Konfiguration neu auslesen 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm">auf einen Timeout reagieren können
+		</P>
+	<LI><P>...</P>
+</UL>
+<P STYLE="margin-bottom: 0cm"><U>Hinweis:</U><BR>alarm - set an alarm
+clock for delivery of a signal<BR>signal - ANSI C signal handling<BR>man
+3 alarm</P>
+<P STYLE="margin-bottom: 0cm"><A HREF="http://www.manpagez.com/man/3/Signal/">http://www.manpagez.com/man/3/Signal/</A>
+</P>
+<P STYLE="margin-bottom: 0cm"><B><BR></B><U>Übung (selfalarm.c):</U></P>
+<P STYLE="margin-left: 1.06cm"><CODE>// a.hofmann mar2004<BR>//
+selfalarm.c<BR><BR>#include &lt;stdio.h&gt;<BR>#include
+&lt;unistd.h&gt;<BR><BR>int main(int argc, char * argv[]){<BR>&nbsp;&nbsp;&nbsp;
+if (argc==1){<BR>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; printf(&quot;usage:
+selfalarm.exe #&quot;); exit(1);<BR>&nbsp;&nbsp;&nbsp; }<BR>&nbsp;&nbsp;&nbsp;
+</CODE><CODE><B>alarm(10);&nbsp;&nbsp; &nbsp;//nach 10 sekunden,
+bricht das Programm ab<BR></B></CODE><CODE>&nbsp;&nbsp;&nbsp;
+while(1)<BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; printf(&quot;%s&quot;,
+argv[1]);<BR><BR>return 0;<BR>}<BR><BR>// gcc selfalarm.c -o
+selfalarm.exe<BR>// starte mit: ./selfalarm.exe 1 &amp;
+./selfalarm.exe 0</CODE></P>
+<P>Starten Sie das Programm selfalarm.exe 2× gleichzeitig mit 
+</P>
+<P><CODE>./selfalarm.exe 1 &amp; ./selfalarm.exe 0</CODE></P>
+<P>Die Eingabe &quot;<CODE>x &amp; y</CODE>&quot; startet die beiden
+Kommandos <CODE>x</CODE> und <CODE>y</CODE> gleichzeitig. 
+</P>
+<P><U>Frage:</U><BR>Können Sie die Wirkung des <CITE>preemptive
+Multitasking</CITE> beobachten?</P>
+<DL>
+	<DL>
+		<DT STYLE="margin-left: 0.06cm"><CITE><B>Cooperative Scheduling</B></CITE>
+				</DT><DL>
+			<DL>
+				<DD STYLE="margin-left: 1.06cm; margin-bottom: 0.5cm">
+				Zustand <CITE>running</CITE>, bis <STRONG>freiwilliger</STRONG>
+				Zustandswechsel <BR>Scheduler kann laufenden Prozess nicht
+				unterbrechen 
+				</DD></DL>
+		</DL>
+		<DT STYLE="margin-left: 0.06cm">
+		<CITE><B>Preemptive Scheduling</B></CITE> 
+		</DT><DL>
+			<DL>
+				<DD STYLE="margin-left: 1.06cm; margin-bottom: 0.5cm">
+				Zustand <CITE>running</CITE> höchstens bis Ablauf des
+				Zeitquantums (&quot;Verdrängung&quot;)<BR>Scheduler kontrolliert
+				Zustandswechsel 
+				</DD></DL>
+		</DL>
+	</DL>
+</DL>
+<P>
+<BR>Wir wollen nun, wenn das Signal SIGALRM erzeugt wird, das
+Programm nicht abbrechen lassen, sondern eine eigene C-Funktion
+aufrufen lassen.<BR><BR><U>Übung: (id-code.c)</U><BR>Bringen Sie
+folgendes Programm zum Laufen und erklären Sie seine Funktion<BR><BR><CODE>/*
+Datei: id-code.c Hofmann Anton<BR>&nbsp;* Demo: Zeiger auf Funktionen
+und Interprocess Communication<BR>&nbsp;* Read with timeout <BR>&nbsp;*/
+<BR>#include &lt;signal.h&gt; <BR>#include &lt;stdio.h&gt; <BR><BR>int
+toolong; <BR>int count; <BR></CODE><CODE><B><BR>void wakeup(){<BR>&nbsp;&nbsp;&nbsp;
+toolong=1;<BR>&nbsp;&nbsp;&nbsp; count++;<BR>&nbsp;&nbsp;&nbsp;
+#ifdef DEBUG <BR>&nbsp;&nbsp;&nbsp; printf(&quot;wakeup was
+called\n&quot;); fflush(stdout); <BR>&nbsp;&nbsp;&nbsp; #endif <BR>&nbsp;&nbsp;&nbsp;
+<BR>&nbsp;&nbsp;&nbsp; alarm(10); <BR>}</B></CODE></P>
+<P><CODE><BR>int main(){ <BR>&nbsp;&nbsp;&nbsp; int idcode; <BR>&nbsp;&nbsp;&nbsp;
+void (*alrm_func)(); //Pointer,um die Adresse der 'alten'
+Alarmfunktion zu speichern. <BR><BR>&nbsp;&nbsp;&nbsp; while(1) {
+<BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; printf(&quot;Wie lautet Ihr
+ID-CODE ? &quot;); <BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; toolong=
+0; // setze das Alarmsignal auf wakeup() und speichere den alten
+Zeiger alrm_func. <BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+</CODE><CODE><B>alrm_func= signal(?????????, ???????????); <BR></B></CODE><CODE><BR>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; /* setze den Alarm-Timer */ <BR>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; </CODE><CODE><B>alarm(10); <BR></B></CODE><CODE><BR>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; /* lies ID-CODE */ <BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+scanf(&quot;%d&quot;, &amp;idcode); <BR><BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+if (toolong == 0) break; /* ID-CODE wurde ohne timeout
+eingeben-&gt;verlasse Schleife */ <BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+if (count == 1) /* Antwort auf ersten timeout */ { <BR>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; printf(&quot;\nIhren ID-CODE
+finden Sie auf Ihrer ID-KARTE.\n&quot;); <BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; fflush(stdout); <BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+} <BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; else { <BR>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; printf(&quot;\nFragen Sie im
+Sekretariat nach einer neuen &quot;); <BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; printf(&quot;ID-KARTE, \nfalls sie verloren
+gegangen ist.\n&quot;); <BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+exit(1); /* PROGRAMMABBRUCH */ <BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+} <BR>&nbsp;&nbsp;&nbsp; } /* end_while */ <BR><BR>&nbsp;&nbsp;&nbsp;
+/* setze das Alarmsignal wieder zurueck*/<BR>&nbsp;&nbsp;&nbsp;
+signal(????????????, ??????????????); <BR>&nbsp;&nbsp;&nbsp;
+alarm(0); <BR>&nbsp;&nbsp;&nbsp; printf(&quot;\nID-CODE: %d\n&quot;,
+idcode); <BR>} /*end_main*/ <BR><BR><BR><BR><BR></CODE><U>Hinweis:<BR></U>gcc
+-DDEBUG .... bewirkt, dass auch die Anweisungen zwischen #define
+DEBUG .... #endif übersetzt werden<BR><BR><BR>
+</P>
+<P><BR><U>Aufgabe (wecker.c: Wecker mit Text):</U><BR>Wir wollen
+einen &quot;Wecker mit Text&quot; erstellen. Man startet diesen und
+übergibt ihm eine Zeit in Sekunden und einen Text. Wenn diese Zeit
+abgelaufen ist, wird vom Wecker ein Signal (SIGALRM) abgesetzt.
+Standardmäßig wird dann das laufende Programm beendet. Wir wollen
+aber, dass das Programm vor dem Ende noch den Text ausgibt.<BR><BR><BR><U>Übung:
+(control-c.c)</U><BR>Schreiben Sie ein Programm, das beim erstmaligen
+Drücken von Ctrl-C den Text &quot;Control-c&quot; am Bildschirm
+ausgibt. Beim zweiten Drücken von Ctrl-C soll das Programm beendet
+werden. (exit(1)).<BR>Bringen Sie folgendes Programm zum Laufen.<BR><BR><CODE>/*
+hofmann anton<BR>&nbsp;* control-c.c<BR>&nbsp;* demo: SIGINT
+abfangen<BR>&nbsp;* Ctrl+C fuehrt erst beim 2.mal zu einem
+Programmabbruch<BR>&nbsp;* 2004<BR>&nbsp;*/<BR><BR>#include
+&lt;stdio.h&gt;<BR>#include &lt;signal.h&gt;<BR><BR>int flagSIGINT =
+0;<BR><BR>/* beim 1. Aufruf wird die globale Variable flagSIGINT
+inkrementiert;<BR>&nbsp;&nbsp; beim 2. Aufruf erfolgt der
+Programmabbruch */<BR><BR></CODE><CODE><B>void mySIGINT(){<BR>&nbsp;&nbsp;&nbsp;
+if (flagSIGINT == 0){<BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+flagSIGINT++;<BR>&nbsp;&nbsp;&nbsp; }<BR>&nbsp;&nbsp;&nbsp; else{<BR>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; printf(&quot;SIGINT zum 2. Mal\n&quot;);<BR>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; exit(1);<BR>&nbsp;&nbsp;&nbsp; }<BR>}<BR></B></CODE><CODE><BR><BR>int
+main (){<BR>&nbsp;&nbsp;&nbsp; printf(&quot;Demo: Erst beim 2.
+Auftreten von SIGINT erfolgt der Programmabbruch&quot;);<BR>&nbsp;&nbsp;&nbsp;
+fflush(stdout);<BR><BR><BR>&nbsp;&nbsp;&nbsp; if (signal(SIGINT,
+SIG_IGN) != SIG_IGN)<BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </CODE><CODE><B>signal
+(SIGINT, mySIGINT);<BR></B></CODE><CODE><BR>&nbsp;&nbsp;&nbsp; for
+(;;){<BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; printf(&quot;Hello,
+world !\n&quot;);<BR>&nbsp;&nbsp;&nbsp; }<BR>}<BR></CODE><BR><BR>
+</P>
+<P><BR>Mit dem Kommando kill (man kill) kann man von der Shell aus
+Programmen Signale schicken. Oft werden hier die Signale USR1 bzw.
+USR2 verwendet. Hier ein Beispiel:<BR><CODE><BR>&nbsp;* aufruf:
+./kill-usr1-usr2.exe &amp;<BR>&nbsp;* [1] &nbsp;&nbsp;&nbsp; 4720<BR>&nbsp;*
+$ kill -USR1&nbsp; 4720<BR>&nbsp;* $ kill -USR2&nbsp; 4720<BR>&nbsp;*
+$ kill&nbsp; 4720<BR></CODE><BR><U>Übung: (kill-usr1-usr2.c)</U><BR><CODE>/*
+Datei: kill-usr1-usr2.c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Hofmann
+Anton<BR>&nbsp;* demo signal()<BR>&nbsp;* gcc kill-usr1-usr2.c -o
+kill-usr1-usr2.exe</CODE><BR><CODE>&nbsp;* aufruf:
+./kill-usr1-usr2.exe &amp;<BR>&nbsp;* [1] &nbsp;&nbsp;&nbsp; 4720<BR>&nbsp;*
+$ kill -USR1&nbsp; 4720<BR>&nbsp;* $ kill -USR2&nbsp; 4720<BR>&nbsp;*
+$ kill&nbsp; 4720<BR>&nbsp;*/<BR><BR>#include &lt;stdio.h&gt;<BR>#include
+&lt;signal.h&gt;<BR>#include &lt;errno.h&gt;<BR><BR>static void
+sig_usr (int); /* one handler for both signals */<BR><BR>int
+main(){<BR>if (signal (SIGUSR1, sig_usr) == SIG_ERR)<BR>&nbsp;&nbsp;&nbsp;
+perror (&quot;Can't catch SIGUSR1&quot;);<BR>if (signal (SIGUSR2,
+sig_usr) == SIG_ERR)<BR>&nbsp;&nbsp;&nbsp; perror (&quot;Can't catch
+SIGUSR2&quot;);<BR><BR>for (;;)<BR>&nbsp;&nbsp;&nbsp; pause(); // The
+</CODE><CODE><B>pause</B></CODE><CODE>() function forces a process to
+pause until a signal is received<BR>} /* end_main*/<BR><BR><BR>/*
+-------------------------------------------------- */<BR>static
+void<BR>sig_usr( int signo)&nbsp;&nbsp;&nbsp; /* argument is signal
+number */<BR>{<BR><BR>if (signo == SIGUSR1)<BR>&nbsp;&nbsp;&nbsp;
+printf(&quot;received SIGUSR1\n&quot;);<BR>else if (signo ==
+SIGUSR2)<BR>&nbsp;&nbsp;&nbsp; printf(&quot;received
+SIGUSR2\n&quot;);<BR>else<BR>&nbsp;&nbsp;&nbsp; printf (&quot;received
+signal %d\n&quot;, signo);<BR>}</CODE><BR><BR><U>Hinweis:</U><BR>siehe
+auch man 2 kill<BR><U><BR>Aufgabe:</U><BR>Version1: Schreiben Sie das
+Programm <A HREF="t_minish-transfer.tgz">t_minish.c</A> derart um,
+dass bei Auftreten des Signals USR1 die zur Zeit aktive Liste von
+Befehlen verworfen wird.<BR><BR>Version2: Schreiben Sie das Programm
+<A HREF="t_minish-transfer.tgz">t_minish.c</A> derart um, dass bei
+Auftreten des Signals USR1 die Datei default.msh eingelesen wird. Die
+zur Zeit aktive Liste von Befehlen soll verworfen werden.<BR><BR><BR>
+</P>
+<P><BR><BR>
+</P>
+<TABLE BORDER=0 CELLPADDING=2 CELLSPACING=2>
+	<TR>
+		<TD BGCOLOR="#cccccc">
+			<P>Prozesse: fork(), exec()&nbsp;&nbsp;&nbsp; (4h) 
+			</P>
+		</TD>
+	</TR>
+</TABLE>
+<P><BR>fork, vfork - erzeuge einen Kindprozess.<BR>Vater- und
+Kindprozess haben einen getrennten Adressraum. Nach einem fork() wird
+ein sogenannter Child-Prozess erzeugt, der&nbsp; einen eigenen (echte
+Kopie des Parent-Prozesses) Speicher besitzt. Auch der IP
+(Instruction Pointer) wird kopiert. Deshalb ist&nbsp; eine
+Verzweigung&nbsp; nach dem&nbsp; fork() wichtig. (s.u.)
+<BR><BR><BR><U><IMG SRC="fork_gabel.gif" NAME="Grafik1" ALT="fork" ALIGN=BOTTOM WIDTH=391 HEIGHT=134 BORDER=0><BR><BR><BR>Anmerkung:</U><BR>Bei
+Threads ist dies nicht der Fall. Hier teilen sich die Threads den
+Adressraum. Jeder Thread besitzt allerdings einen eigenen Stack und
+Statusinformationen.<BR><B><BR><BR></B><U>Übung:
+(forkdemo.c)</U><BR>bringen sie folgendes Programm zum Laufen
+<BR><BR><CODE><CODE>//a.hofmann 2004<BR>//forkdemo.c<BR><BR>#include
+&lt;stdio.h&gt;<BR>#include &lt;stdlib.h&gt;<BR>#include
+&lt;unistd.h&gt;<BR><BR>void arbeite(char*, int);<BR><BR>int main()
+{<BR>&nbsp;&nbsp;&nbsp; int i = 0;<BR>&nbsp;&nbsp;&nbsp; int pid=
+</CODE></CODE><CODE><CODE><B>getpid()</B></CODE></CODE><CODE><CODE>;<BR>&nbsp;&nbsp;&nbsp;
+int status;<BR><BR>&nbsp;&nbsp;&nbsp; printf(&quot;\nNur ein Prozess
+bisher: PID= %d\n&quot;, pid);<BR>&nbsp;&nbsp;&nbsp; printf(&quot;Aufruf
+von fork in 5 sec ...\n&quot;);<BR><BR>&nbsp;&nbsp;&nbsp; while(i &lt;
+5){<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; printf(&quot;%d\n&quot;,
+i++);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sleep(1);<BR>&nbsp;&nbsp;&nbsp;
+}<BR><BR>&nbsp;&nbsp;&nbsp; status= fork();&nbsp; <BR>&nbsp;&nbsp;&nbsp;
+if (status == 0) { // ******CHILD******* Prozess erzeugen<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+pid= getpid();<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+printf(&quot;\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ICH bin der KIND-Prozess: PID= %d\n&quot;, pid);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+arbeite(&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+KIND-Prozess: &quot;, pid);<BR>&nbsp;&nbsp;&nbsp; }<BR>&nbsp;&nbsp;&nbsp;
+else if (status &gt; 0) //*****PARENT****** Prozess erzeugen<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+arbeite(&quot;VATER-Prozess: &quot;, pid);<BR><BR>&nbsp;&nbsp;&nbsp;
+else<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; printf(&quot;\nERROR:
+Kein Child erzeugt!!\n&quot;);<BR><BR>&nbsp;&nbsp;&nbsp; return
+0;<BR>}<BR><BR>void arbeite(char *s, int pid) {<BR>&nbsp;&nbsp;&nbsp;
+int i=0;<BR><BR>&nbsp;&nbsp;&nbsp; while(i &lt; 10) {<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+printf(&quot;%s PID= %d i=%d \n&quot;, s, pid, i++);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+sleep(1);<BR>&nbsp;&nbsp;&nbsp; }<BR><BR>}<BR><BR>// gcc forkdemo.c
+-o forkdemo.exe; ./forkdemo.exe<BR><BR><BR>Anmerkung: Erst bei
+schreibendem Zugriff auf Variablen, werden diese kopiert.<BR>D.h.
+parent und child haben dann eigene Variablen <BR><BR><BR></CODE></CODE><U>Aufgabe
+(selfalarm-fork.c):</U><BR>Schreiben Sie das obige Programm
+selfalarm.c derart um, dass das Verhalten gleich bleibt, aber nur
+folgendermaßen aus der Shell aufgerufen werden
+muss.<BR><BR>./selfalarm-fork.exe&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;
+0<BR><BR>&nbsp;<BR><U>Aufgabe: (file-server mit fork)</U><BR>Schreiben
+Sie das Programm <A HREF="t_fileserver.c">t_fileserver.c</A> derart
+um, dass das Filehandling durch einen Child-Prozesse realisiert wird.
+Dadurch kann der Server bereits den nächsten Request eines
+Client-Programmes <A HREF="t_fileclient.c">t_fileclient.c</A>
+annehmen.<BR><BR><U>Frage: </U><BR>Beim Testen des Programmes finden
+Sie in der Prozessliste (ps -aux) Einträge mit ....&lt;defunc&gt;.
+Was ist damit gemeint? Wie kann man dies verhindern?<BR><BR><BR>
+</P>
+<P><BR>+<U>Aufgabe: (base64 Verschlüsselung)</U><BR>Schreiben Sie
+das Programm <A HREF="t_fileserver.c">t_fileserver.c</A> ,
+<A HREF="t_fileclient.c">t_fileclient.c</A> derart um, dass der
+Client bei Eingabe von &quot;get filename&quot; die Datei namens
+filename öffnet, zum Server schickt. Dieser verschüsselt die
+empfangenen Daten mit dem base64 Algorithmus und sendet diese an den
+Client zurück. Der Client zeigt die kodierten Daten auf dem
+Bildschirm an.<BR><BR><U>Hinweis:</U><BR>Bei <A HREF="http://www.zotteljedi.de/">www.zotteljedi.de</A>
+finden Sie Hinweise zur Lösung.<BR><BR><BR>
+</P>
+<TABLE BORDER=0 CELLPADDING=2 CELLSPACING=2>
+	<TR>
+		<TD BGCOLOR="#cccccc">
+			<P>Prozesse überlagern:&nbsp; exec(), execlp(), ....</P>
+		</TD>
+	</TR>
+</TABLE>
+<P><BR>Wir wollen nun die sogenannte Prozessüberlagerung
+kennenlernen. Ein Prozess kann sich selbst in einen anderen Prozess
+&quot;verwandeln&quot;.<BR><BR><BR><U>Übung:
+(execlp-demo.c)</U><BR>Prozessüberlagerung mit execlp(), ....<BR><BR><CODE>//
+a.hofmann 2004<BR>// execlp-demo.c<BR><BR>#include &lt;stdio.h&gt;<BR>int
+main(){<BR>&nbsp;&nbsp;&nbsp; int rv;<BR>&nbsp;&nbsp;&nbsp;
+printf(&quot;Demo: execlp(): Ausfuehrung von sort:\n&quot;);<BR>&nbsp;&nbsp;&nbsp;
+printf(&quot;Bitte geben sie einzelne Textzeilen ein.\n&quot;);<BR>&nbsp;&nbsp;&nbsp;
+printf(&quot;Diese werden nach &lt;Ctrl-D&gt; sortiert
+ausgegeben\n&quot;);<BR><BR>&nbsp;&nbsp;&nbsp; rv = execlp(&quot;sort&quot;,
+&quot;sort&quot;, NULL);<BR><BR>&nbsp;&nbsp;&nbsp; /*
+Fehlerfall!!!!!!!!!: Dürfte eigentlich nicht mehr ausgeführt werden
+*/<BR>&nbsp;&nbsp;&nbsp; printf(&quot;Fehler bei execlp&quot;);<BR>&nbsp;&nbsp;&nbsp;
+exit(1);<BR>}<BR><BR>// gcc -o execlp-demo.exe execlp-demo.c;
+./execlp-demo.exe<BR><BR><BR>Hinweis:<BR>&nbsp;&nbsp;&nbsp; rv =
+execlp(&quot;/bin/ls&quot;, &quot;ls&quot;, &quot;-l&quot;, NULL); <BR></CODE><BR><BR>
+</P>
+<TABLE BORDER=0 CELLPADDING=2 CELLSPACING=2>
+	<TR>
+		<TD BGCOLOR="#cccccc">
+			<P>Wait: warten auf Prozesse</P>
+		</TD>
+	</TR>
+</TABLE>
+<P><BR>Oft bzw. meist ist es praktisch/notwendig, dass der
+Vaterprozess auf den Kindprozess wartet. Dabei spricht man von einer
+Art Synchronisation. Die Funktion wait() kann dazu verwendet werden.
+Man kann dadurch auch den Rückgabewert (return bzw. exit()) des
+Kindprozesses erhalten. Also eine einfache Art der Kommunikation
+erreichen.<BR><BR><U>Hinweis:</U><BR><CODE>#include
+&lt;sys/types.h&gt;<BR>#include &lt;sys/wait.h&gt;<BR><BR>3 Formen
+sind möglich:</CODE></P>
+<OL>
+	<LI><P STYLE="margin-bottom: 0cm"><CODE>pid_of_child= wait
+	(&amp;status);&nbsp;&nbsp;&nbsp; //status= der vom child mittels
+	exit() zurückgeg. Wert </CODE>
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><CODE>pid_of_child= wait
+	((int*)0);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //status ist&nbsp;
+	für&nbsp; parent nicht interessant </CODE>
+	</P>
+	<LI><P><CODE>pid_t waitpid(pid_t pid, int *status, int options);</CODE></P>
+</OL>
+<P><U><BR>Hinweis zum Exit-Status eines Prozesses:</U><BR>&nbsp;&nbsp;&nbsp;&nbsp;
+<FONT SIZE=2>This&nbsp; status&nbsp; can&nbsp; be evaluated with the
+following macros (these macros<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+take the stat buffer (an int) as an argument — not&nbsp; a&nbsp;
+pointer&nbsp; to&nbsp; the<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+buffer!):<BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+WIFEXITED(status)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+returns true if the child terminated normally, that is, by
+call‐<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ing exit() or _exit(), or by returning from main().<BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+WEXITSTATUS(status)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+evaluates to the least significant eight bits of the return
+code<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+of&nbsp; the&nbsp; child&nbsp; which terminated, which may have been
+set as the<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+argument to a call to exit() or _exit() or as the argument for
+a<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return&nbsp; statement&nbsp; in&nbsp; the main program.&nbsp; This
+macro can only be<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+evaluated if WIFEXITED returned true.</FONT><FONT SIZE=2><U><BR></U></FONT><U><BR><BR>Übung:
+(wait.c)</U><BR>Der laufende Prozess teilt sich durch <B>fork</B> auf
+in Parent und Child, Parent bleibt unverändert. Child lädt durch
+<B>exec</B> ein anderes Programm und verwandelt sich in dieses. Von
+da an laufen beide Prozesse konkurrent zueinander ab und verrichten
+verschiedene Aufgaben. Durch <B>wait</B> kann Parent sich mit dem
+Child <B>synchronisieren</B> in dem Sinne, dass er wartet, bis dieser
+fertig ist. Durch exit() kann das Child zusätzlich eine
+Erfolgsmeldung an den Parent-Prozess geben. <BR><BR><CODE>//a.hofmann
+2004<BR>// wait.c<BR>//2 unabh. prozesse starten: fork-&gt; execlp |
+wait<BR>#include &lt;stdio.h&gt;<BR><BR>int main() {<BR>&nbsp;&nbsp;
+int pid;<BR>&nbsp;&nbsp; printf(&quot;Demo: fork(), execlp(), wait():
+Ausfuehrung von sort\n&quot;);<BR>&nbsp;&nbsp; printf(&quot;Bitte
+geben sie einzelne Textzeilen ein.\n&quot;);<BR>&nbsp;&nbsp;
+printf(&quot;Diese werden nach &lt;Ctrl-D&gt; sortiert
+ausgegeben\n&quot;);<BR><BR>&nbsp;&nbsp; pid = </CODE><CODE><B>fork();</B></CODE><CODE><BR><BR>&nbsp;&nbsp;
+/* Parent-Prozeß ----------------------&nbsp; */<BR>&nbsp;&nbsp; if
+(pid &gt; 0) {<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int status;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </CODE><CODE><B>wait(&amp;status);
+/* wartet, bis Child fertig */</B></CODE><CODE><BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+printf(&quot;VATER-Prozess: child-Prozess ist fertig und lieferte:
+%d\n&quot;, status);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; exit(0);<BR>&nbsp;&nbsp;
+}<BR><BR>&nbsp;&nbsp; /* Child-Prozess ----------------------- */<BR>&nbsp;&nbsp;
+if (pid == 0) {<BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </CODE><CODE><B>execlp(&quot;sort&quot;,
+&quot;sort&quot;, NULL);</B></CODE><CODE><BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/* Fehlerfall */<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; printf(&quot;Fehler
+bei execlp&quot;);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; exit(1);<BR>&nbsp;&nbsp;
+}<BR><BR>}<BR>// gcc -o wait.exe wait.c ; ./wait.exe</CODE><BR><BR><IMG SRC="fork-wait.gif" NAME="Grafik2" ALT="wait" ALIGN=BOTTOM WIDTH=381 HEIGHT=156 BORDER=0><BR><BR><IMG SRC="fork-zombie.gif" NAME="Grafik3" ALT="zombie" ALIGN=BOTTOM WIDTH=411 HEIGHT=156 BORDER=0><BR><BR><BR>
+</P>
+<TABLE BORDER=0 CELLPADDING=2 CELLSPACING=2>
+	<TR>
+		<TD BGCOLOR="#cccccc">
+			<P>Kommunikation zwischen Parent und Child: pipe()&nbsp;&nbsp;&nbsp;
+			(4h) 
+			</P>
+		</TD>
+	</TR>
+</TABLE>
+<P><U>Erste Übungen zur IPC (InterProcessCommunication):</U></P>
+<UL>
+	<LI><P>Kommunikation über <B>gemeinsame Dateien</B><BR>Prozesse
+	schreiben in Dateien, die von anderen Prozessen gelesen
+	werden.<BR><U><BR>Beispiel:</U><BR>mkfifo /tmp/bla; ls -l
+	/tmp/bla<BR>shell1: cat /etc/passwd &gt; /tmp/bla<BR>shell2: cat
+	/tmp/bla<BR><U><BR>Beispiel:</U><BR>vi /etc/syslog.conf .... *.*
+	|/dev/xconsole<BR>rcsyslog restart<BR>shell1: cat
+	/dev/xconsole<BR>shell2: su - <BR>shell2: logger &quot;Dies ist ein
+	Test f. syslog und named pipe /dev/xconsole&quot;</P>
+	<LI><P>Kommunikation über <B>Pipes</B><BR>Dies sind unidirektionale
+	Datenkanäle zwischen zwei Prozeßen. Ein Prozeß schreibt Daten in
+	den Kanal (Anfügen am Ende) und ein anderer Prozeß liest die Daten
+	in der gleichen Reihenfolge wieder aus (Entnahme am Anfang).
+	Realisierung im Speicher oder als Dateien. Lebensdauer in der Regel
+	solange beide Prozeße existieren.<BR><BR>[Beispiel: POSIX: cat
+	/etc/passwd | cut -d&quot;:&quot; -f1 | sort &gt; usernames.txt] 
+	</P>
+</UL>
+<P><BR>Pipes sind bidirektionale Kanäle, die zur <B>Kommunikation</B>
+zwischen verwandten Prozessen verwendet werden. Die Funktionen
+<B>write()</B> und <B>read()</B> bzw. <B>fgets(),fputs(),</B> ...
+werden dabei verwendet. <B><BR><BR>Zuvor</B> müssen allerdings mit
+<B>pipe() Kommunikationskanäle</B> (eine Art Filedeskriptoren)
+erzeugt werden. Dabei hat der Lesekanal den Offset 0 und der
+Schreibekanal den Offset 1.<BR><BR><U>Anmerkung:<BR></U><CODE>write(1,
+buf, 128); &nbsp; schreibt 128 Bytes (buf[0] bis buf[127]) auf den
+Standardausgabekanal (Bildschirm.)<BR>read(0, buf, 128);&nbsp;&nbsp;&nbsp;
+liest 128 Bytes vom Standardeingabekanal (Tastatur)<BR></CODE><BR><BR><U>Hinweis:
+(unix-like filehandling vs. stream-Files)<BR></U>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; #include &lt;sys/types.h&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+#include &lt;sys/stat.h&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+#include &lt;fcntl.h&gt;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+#include &lt;unistd.h&gt;</P>
+<UL>
+	<LI><P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <B>int open(const char
+	*pathname, int flags);</B> 
+	</P>
+</UL>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The&nbsp; open()&nbsp;
+system&nbsp; call is used to convert a pathname into a file
+descriptor (a small, non-negative<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+integer for use in subsequent I/O as with read, write, etc.).&nbsp;
+When the call is successful, the&nbsp; file<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+descriptor returned will be the lowest file descriptor not currently
+open for the process.&nbsp; This call<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+creates a new open file, not shared with any other process.&nbsp;
+(But shared open files may arise via the<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+fork(2)&nbsp; system&nbsp; call.)&nbsp;&nbsp; The&nbsp; new&nbsp;
+file&nbsp; descriptor is set to remain open across exec functions
+(see<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fcntl(2)).&nbsp; The
+file offset is set to the beginning of the file.<BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+The parameter flags is one of O_RDONLY, O_WRONLY or O_RDWR which
+request opening the file&nbsp; read-only,<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+write-only or read/write, respectively, bitwise-or'd.</P>
+<UL>
+	<LI><P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <B>size_t read(int fd, void
+	*buf, size_t count);</B> 
+	</P>
+</UL>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; read wird solange <B>blockiert,</B>
+bis sich wieder genügend Daten in der Pipe befinden. <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Schreibt kein Prozeß mehr in die Pipe bleibt read solange stecken
+bis der <B>schreibende</B> <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Prozeß den Systemaufruf <B>close</B> verwendet hat. Dieses
+steckenbleiben von read eignet sich prima zum&nbsp;&nbsp;&nbsp;&nbsp;
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Syncronisieren von
+Prozessen.<BR>&nbsp; 
+</P>
+<UL>
+	<LI><P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <B>size_t write(int fd,
+	const void *buf, size_t count);</B> 
+	</P>
+</UL>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; write schreibt die Daten in der
+richtigen Reihenfolge in die Pipe. Ist die Pipe <B>voll,</B> wird der
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; schreibende Prozeß solange
+<B>angehalten</B> bis wieder genügend Platz vorhanden ist. Diese
+Verhalten <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; könnten sie abschalten
+in dem sie das Flag O_NONBLOCK mit z.B. der Funktion fcntl setzen.
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; In diesem Fall liefert der
+Schreibende Prozeß 0 zurück.</P>
+<UL>
+	<LI><P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <B>int close(int fd);</B>
+		</P>
+</UL>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; Schliesst den Filedeskriptor<BR><BR><BR><U>Streams
+in C (siehe C-Skriptum: 2ikt)</U></P>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm"><B>fopen()</B> 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><B>fprintf()</B> 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><B>fputs()</B> 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><B>fgets()</B> 
+	</P>
+	<LI><P><B>fclose()</B> 
+	</P>
+</UL>
+<P><BR><BR>
+</P>
+<UL>
+	<LI><P><B>FILE *fdopen(int fildes, const char *mode);</B> 
+	</P>
+</UL>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The fdopen function <B>associates</B>
+a <B>stream</B> with the existing <B>file descriptor</B>, fildes.&nbsp;
+The mode&nbsp; of&nbsp; the<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+stream&nbsp; (one&nbsp; of&nbsp; the values &quot;r&quot;, &quot;r+&quot;,
+&quot;w&quot;, &quot;w+&quot;, &quot;a&quot;, &quot;a+&quot;) must be
+compatible with the mode of the<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+file descriptor.&nbsp; The file position indicator of the new stream
+is set to that belonging&nbsp; to&nbsp; fildes,<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+and&nbsp; the&nbsp; error and end-of-file indicators are cleared.&nbsp;
+Modes &quot;w&quot; or &quot;w+&quot; do not cause truncation
+of<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; the file.&nbsp; The file
+descriptor is not dup'ed, and will be closed when the stream created
+by fdopen is<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; closed.&nbsp;
+The result of applying fdopen to a shared memory object is
+undefined.<BR><BR><BR><U>siehe:</U> 
+</P>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm">man pipe 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm">man 2 open 
+	</P>
+	<LI><P>man read write close fdopen</P>
+</UL>
+<P><U><BR>Übung: (pipe-fork.c)</U><BR><CODE>// a.hofmann 2004<BR>//
+pipe-fork.c<BR><BR>#include &lt;stdio.h&gt;<BR>#include
+&lt;unistd.h&gt;<BR><BR>#define LESE_KANAL 0<BR>#define SCHREIB_KANAL
+1<BR><BR>char *mes1 = &quot;Hallo, Welt Nr.1&quot;;<BR>char *mes2 =
+&quot;Hallo, Welt Nr.2&quot;;<BR>char *mes3 = &quot;Hallo, Welt
+Nr.3&quot;;<BR><BR>int main(){<BR>&nbsp;&nbsp; char buf[128];<BR>&nbsp;&nbsp;
+</CODE><CODE><B>int fd[2]</B></CODE><CODE>, k, pid;<BR>&nbsp;&nbsp;
+/* Pipe oeffnen */<BR><BR>&nbsp;&nbsp; if (</CODE><CODE><B>pipe(fd)</B></CODE><CODE>
+&lt; 0) {<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; perror(&quot;Fehler bei
+pipe&quot;);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; exit(1);<BR>&nbsp;&nbsp;
+}<BR><BR>&nbsp;&nbsp; /* Child-Prozess erzeugen */<BR>&nbsp;&nbsp; if
+((</CODE><CODE><B>pid = fork()</B></CODE><CODE>) &lt; 0) {<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+perror(&quot;Fehler bei fork&quot;);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+exit(1);<BR>&nbsp;&nbsp; }<BR><BR>&nbsp;&nbsp; /* Parent-Prozess:
+Leseseite der Pipe<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; schliessen und
+in die Pipe schreiben */<BR>&nbsp;&nbsp; else if (pid &gt; 0) { /*
+PARENT ===================== */<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int
+status;<BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</CODE><CODE><B>close(fd[LESE_KANAL]);</B></CODE><CODE><BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</CODE><CODE><B>write(fd[SCHREIB_KANAL], mes1, strlen(mes1)+1);&nbsp;&nbsp;&nbsp;
+//inkl EOS</B></CODE><CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</CODE><CODE><B>write(fd[SCHREIB_KANAL], mes2, strlen(mes1)+1);</B></CODE><CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</CODE><CODE><B>write(fd[SCHREIB_KANAL], mes3,
+strlen(mes1)+1);</B></CODE><CODE><BR></CODE><CODE><B><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+close(fd[SCHREIB_KANAL]);</B></CODE><CODE><BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</CODE><CODE><B>wait(&amp;status);</B></CODE><CODE><BR><BR>&nbsp;&nbsp;
+}<BR><BR>&nbsp;&nbsp; /* Child-Prozess: Schreibseite der Pipe<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+schliessen und von der Pipe lesen */<BR>&nbsp;&nbsp; if (pid == 0) {
+/* CHILD ===================================*/<BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+int len;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</CODE><CODE><B>close(fd[SCHREIB_KANAL]);<BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+len=read(fd[LESE_KANAL], buf, sizeof(buf));<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+printf(&quot;%s\n%d Bytes gelesen!\nFrage: Warum wird nur die erste
+Zeile angezeigt?\n\n&quot;, buf, len);<BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+close(fd[SCHREIB_KANAL]);</B></CODE><CODE><BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+exit(1);<BR>&nbsp;&nbsp; }<BR>}<BR><BR>// gcc pipe-fork.c -o
+pipe-fork.exe; ./pipe-fork.exe<BR><BR><BR><BR></CODE><U>Anmerkung:</U><BR>anzahl=read(kanal,
+buf, len) ist blockiernd, d.h. read() beendet, wenn</P>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm">soviele Daten in den
+	Kommunikationskanal geschrieben wurden, wie in len angegeben
+	sind.<BR>Dann steht in anzahl der gleiche Wert wie in len.(s.
+	pipe-demo.c) Oder, wenn 
+	</P>
+	<LI><P>der Schreibkanal geschlossen wird. close(fd[1]); <BR>Dann
+	steht in anzahl die Anzahl der gesendeten Bytes. 
+	</P>
+</UL>
+<P><BR>Wir wollen nun zwischen Prozessen mittels pipe()
+kommunizieren. Dazu folgendes Beispiel:<BR><B><BR></B><U>Hinweis:
+Standard-E/A-Funktionen mit pipe</U><BR>Natürlich ist es auch
+möglich auf Pipes mit Standard Stream E/A - Funktionen zuzugreifen.
+Dazu müssen sie nur die mit dem pipe() - Aufruf erhaltenen
+Filedeskriptoren mit der Funktion fdopen (Siehe Kapitel
+Low-Level-I/O) einen Dateizeiger (FILE *) zuteilen. Natürlich müssen
+sie fdopen mit dem richtigen Modus verwenden. Denn es ist nicht
+möglich....... 
+</P>
+<P STYLE="margin-left: 1.06cm; margin-bottom: 0cm">FILE
+*f;<BR>f=fdopen(fd[0], &quot;w&quot;); /*falsch*/&nbsp; 
+</P>
+<P><BR>...zu verwenden da fd[0] für das Lesen aus einer Pipe steht.
+Richtig ist dagegen..... 
+</P>
+<P STYLE="margin-left: 1.06cm; margin-bottom: 0cm">FILE *reading,
+*writing;<BR><BR>reading=fdopen(fd[0], &quot;r&quot;);<BR>writing
+=fdopen(fd[1], &quot;w&quot;);&nbsp; 
+</P>
+<P><BR><BR>Geben sie Ihrem Dateizeiger einfach einen aussagekräftigen
+Namen um Verwechslungen auszuschliessen. Sehen wir uns dazu wieder
+ein Beispiel an........ <BR><CODE><BR>/*<BR>&nbsp;* pipe2.c: Demo:
+pipe, fork, fdopen<BR>&nbsp;* fgets(stdin)::PARENT::fputs(writing)
+-&gt;&nbsp; fgets(reading)::CHILD::fputs(newfile)<BR>&nbsp;* Aufruf:
+./pip2 pip2.c<BR>&nbsp;* gcc pip2.c -o pip2 ; ./pip2
+pip2.c<BR>&nbsp;*/<BR><BR>#include &lt;unistd.h&gt;<BR>#include
+&lt;sys/wait.h&gt;<BR>#include &lt;stdio.h&gt;<BR>#include
+&lt;sys/types.h&gt;<BR>#include &lt;fcntl.h&gt;<BR>#include
+&lt;string.h&gt;<BR><BR>#define USAGE printf(&quot;usage : %s
+Datei\n&quot;,argv[0]);<BR>#define MAX 4096<BR><BR>int main(int argc,
+char *argv[]){<BR><BR>&nbsp; int </CODE><CODE><B>fd[2]</B></CODE><CODE>,
+fd1,i, n;<BR>&nbsp; pid_t pid;<BR>&nbsp; char puffer[MAX];<BR>&nbsp;
+</CODE><CODE><B>FILE *reading, *writing, *newfile;</B></CODE><CODE><BR><BR>&nbsp;
+if(argc !=2)<BR>&nbsp;&nbsp;&nbsp; { USAGE; exit(0); }<BR><BR><BR>/*Wir
+erstellen eine pipe*/<BR>&nbsp; if(</CODE><CODE><B>pipe(fd)</B></CODE><CODE>
+&lt;0)<BR>&nbsp;&nbsp;&nbsp; { perror(&quot;pipe : &quot;); exit(0);
+}<BR><BR><BR>/*Wir erzeugen einen neuen Prozess*/<BR>&nbsp;
+if((</CODE><CODE><B>pid=fork()</B></CODE><CODE>) &lt; 0)<BR>&nbsp;&nbsp;&nbsp;
+{ perror(&quot;pipe : &quot;); exit(0); }<BR><BR>&nbsp; else if(pid &gt;
+0) /* ====================== Elternprozess*/<BR>&nbsp;&nbsp; {<BR>&nbsp;&nbsp;&nbsp;&nbsp;
+close(fd[0]); /*Leseseite schliessen*/<BR>&nbsp;&nbsp;&nbsp;&nbsp;
+<BR>&nbsp;&nbsp;&nbsp;&nbsp; if((</CODE><CODE><B>writing=fdopen(fd[1],
+&quot;w&quot;)</B></CODE><CODE>) == NULL)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{ perror(&quot; fdopen : &quot;); exit(0); }<BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;
+</CODE><CODE><B>fgets(puffer, MAX, stdin); /*Wir lesen von stdin
+*/</B></CODE><CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp; </CODE><CODE><B>fputs(puffer,
+writing);&nbsp;&nbsp;&nbsp; /*Wir schreiben in die Pipe*/</B></CODE><CODE><BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;
+</CODE><CODE><B>fclose(writing);</B></CODE><CODE><BR>&nbsp;&nbsp; }<BR>&nbsp;
+else /* ====================================Kindprozess*/<BR>&nbsp;&nbsp;
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp; close(fd[1]); /*Schreibseite
+schliessen*/<BR>&nbsp;&nbsp;&nbsp; <BR>&nbsp; &nbsp;&nbsp;
+if((</CODE><CODE><B>reading=fdopen(fd[0], &quot;r&quot;)</B></CODE><CODE>)
+== NULL)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { perror(&quot;
+fdopen : &quot;); exit(0); }<BR></CODE><CODE><B><BR>&nbsp;&nbsp;&nbsp;&nbsp;
+fgets(puffer, MAX, reading); /*Wir lesen aus der Pipe*/</B></CODE><CODE><BR></CODE><CODE><B><BR></B></CODE><CODE>&nbsp;&nbsp;
+&nbsp; if((</CODE><CODE><B>newfile=fopen(argv[1], &quot;a+&quot;)</B></CODE><CODE>)
+&lt; 0)<BR>&nbsp; &nbsp; &nbsp; &nbsp; { perror(&quot;fopen : &quot;);
+exit(0); }<BR>&nbsp; </CODE><CODE><B><BR>&nbsp;&nbsp; &nbsp;
+fputs(puffer, newfile);</B></CODE><CODE><BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;
+fclose(newfile);<BR><BR>&nbsp;&nbsp;&nbsp;&nbsp; </CODE><CODE><B>fclose(reading);<BR></B></CODE><BR><CODE>&nbsp;&nbsp;
+}<BR>&nbsp; <BR><BR>exit(0);<BR>}<BR></CODE>&nbsp; <BR>Mit diesem
+Programm öffnen bzw. erzeugen wir eine Datei, die als Argument in
+der Kommandozeile angegeben wurde. Dann schließen wir im
+Elternprozess die Leseseite der Pipe und teilen den FILE-Zeiger mit
+fdopen() die Schreibseite der Pipe zu. Dann lesen wir aus der
+Standardeingabe mit fgets und danach schreiben wir mit fputs in die
+Pipe. Der Kindprozess schließt dann die Pipe und teilt dem
+FILE-Zeiger die Leseseite von der Pipe zu. Anschließend lesen wir
+aus der Pipe mit fgets und schreiben dies mit fputs in die neue
+Datei. <BR><BR><BR><U>Zusammenfassung:<BR>Beispiel: Zwei verwandte
+Prozesse und eine pipe</U><BR>In der Praxis werden Pipes zur
+Datenübermittlung zwischen verwandten Prozessen, z.B. zwischen
+Parent-Prozeß und Child-Prozeß herangezogen. Der Grund: die
+Vererbung der Filedeskriptoren macht es erst möglich, die Pipe durch
+zwei Prozesse gleichzeitig zu benutzen. Nicht miteinander verwandte
+Prozesse können nicht durch gewöhnliche Pipes kommunizieren. Bei
+diesen können zB. Named Pipes verwendet werden. (s. Gräfe:
+IPC)<BR><BR>Normalerweise erzeugt der <B>Parent-Prozeß</B> die <B>Pipe</B>
+und führt <B>dann</B> ein <B>fork</B> aus. Der Child-Prozeß besitzt
+anschließend durch Vererbung Kopien der Filedeskriptoren der Pipe.
+D.h. beide Prozesse haben gemeinsamen Zugriff auf die Pipe.
+Allerdings können beide dann auch Lesen und Schreiben, was
+garantiert Verwirrung stiftet. Aus diesem Grunde gehört es zum guten
+Stil, daß jeder Prozeß nun - nach dem fork - den Filedeskriptor
+schließt, den er nicht braucht. Dies ist auch wegen der begrenzten
+Anzahl zur Verfügung stehender Deskriptoren anzuraten. Im unserem
+nächsten Beispiel wird genau so vorgegangen. <BR><BR><IMG SRC="pipe_zweiprozess.gif" NAME="Grafik4" ALT="pipe_zweiprozess.gif" ALIGN=BOTTOM WIDTH=660 HEIGHT=292 BORDER=0><BR><U>Aufgabe:
+(pipe-fork1.c)</U><BR>Erstellen Sie das Programm pipe-fork1.c,
+wobei<BR>der Vaterprozess</P>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm">schliesst Lesekanal und 
+	</P>
+	<LI><P>liest von der Tastaur Text ein (Ende mit &quot;quit&quot;)
+	und schreibt diesen in den Schreibekanal (inkl.EOS)</P>
+</UL>
+<P>der Child-Prozess</P>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm">schliesst den Schreibkanal und 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm">liest aus dem Lesekanal und 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm">wandelt das Gelesene in
+	Grossbuchstaben um (toupper()) und 
+	</P>
+	<LI><P>schreibt den Text auf den
+	Bildschirm<BR><CODE>printf(&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	CHILD: %s\n&quot;, buf); fflush(stdout);</CODE></P>
+</UL>
+<P STYLE="margin-bottom: 0cm">Der Kommunikationsbuffer soll 128 Bytes
+sein. D.h. während der Vaterprozess die Benutzereingabe liest und an
+den Childprozess weiter reicht, soll der Childprozesse die gelesenen
+Daten in Grossbuchstaben umwandeln und ausgeben.<BR><U>Hinweis:</U><BR>Verwenden
+Sie read(), write() zur Kommunikation<BR><BR><U><BR>Aufgabe:
+(pipe-rate.c)</U><BR>Zwei Prozesse spielen &quot;Zahlenraten&quot;
+<BR>Parentprozeß denkt sich eine Zahl zwischen 1 und 100 aus <BR>Dann
+wiederholt bis zum Treffer... 
+</P>
+<P STYLE="margin-left: 1.06cm; margin-bottom: 0cm">1.Childprozeß
+macht einen Rateversuch und schreibt die Zahl in die up-Pipe
+<BR>2.Parentprozeß liest die geratene Zahl aus der up-Pipe
+<BR>3.Parentprozeß bewertet die geratene Zahl mit -1 (zu tief), 0
+(getroffen) oder +1 (zu hoch) <BR>4.Parentprozeß schreibt die
+Bewertung in die down-Pipe <BR>5.Childprozeß liest die Bewertung aus
+der down-Pipe und leitet daraus einen neuen Rateversuch ab 
+</P>
+<P><U>Hinweis:</U><BR>Verwenden Sie fdopen(), fprintf(), fscanf() zur
+Kommunikation<BR><BR><BR><BR>
+</P>
+<TABLE BORDER=0 CELLPADDING=2 CELLSPACING=2>
+	<TR>
+		<TD BGCOLOR="#cccccc">
+			<P>Bidirektionale Kommunikation mit einem externen Programm:&nbsp;&nbsp;
+			fork()-&gt;close()-&gt;dup()-&gt;exec() 
+			</P>
+		</TD>
+	</TR>
+</TABLE>
+<P><BR>Eine weitere gängige Aufgabenstellung im Zusammenhang mit
+Pipes ist die, daß zwei Prozesse (Parent und Child) durch zwei Pipes
+verbunden sind, die in verschiedene Richtungen wirken. Also ein
+bidirektionaler Kanal.<BR><BR><IMG SRC="pipe_zweipipe_zweiprozess.gif" NAME="Grafik5" ALT="pipe_zweipipe_zweiprozess.gif" ALIGN=BOTTOM WIDTH=660 HEIGHT=292 BORDER=0><BR><U>Beispiel:
+fork,close,dup,exec sort</U><BR>Im folgenden Programm wird dieses
+Prinzip in die Praxis umgesetzt. Zusätzlich wird der Child-Prozeß
+mit exec durch ein neues Programm überlagert. In unserem Spezialfall
+soll dieses die UNIX-Utility sort sein. Dabei ergibt sich ein für
+Pipes charakteristisches Problem: sort kennt wie viele andere
+UNIX-Dienstprogramme nur die standardmäßigen Filedeskriptoren 0, 1
+und 2. <BR><U><BR>Anmerkung:</U> <BR>0 ... stdin,&nbsp;&nbsp; 1 ...
+stdout,&nbsp;&nbsp;&nbsp; 2 ...stderr<BR><BR>Zur Hilfe kommt uns der
+Systemaufruf dup(). (Dupliziere Filedeskriptoren). Dadurch kann der
+mit execlp() gestartete Prozess auf die pipes zugreifen. Dadurch kann
+also ein externes Programm aufgerufen werden und mit ihm über pipes,
+wie oben, kommuniziert werden.<BR><BR>Im folgenden Programm kommt
+dieser Trick öfters vor. Finden Sie heraus, wo! Man muß sich für
+das Verständnis vor allem die Reihenfolge <B>fork, close, dup, exec</B>
+merken. <BR><BR><U>siehe</U><BR>dup, dup2 - duplicate a file
+descriptor<BR>close - close a file descriptor<BR><U><BR>Anmerkung:</U><BR>Wenn
+zB. ein Webserver mit einem externen Programm kommuniziert (zB: SSI),
+wird diese Technik verwendet.<BR>&nbsp; <BR><BR><CODE>// a.hofmann
+2004<BR>// pipe2-execlp.c<BR>// Beispiel fuer pipe, dup, fork, exec
+<BR>#include &lt;stdio.h&gt;<BR>#include &lt;sys/types.h&gt;<BR>#include
+&lt;fcntl.h&gt;<BR><BR>#define BUFLEN 512<BR>#define SCHREIB
+1<BR>#define LIES 0<BR><BR>//PARENT: ---&gt; fdparent_out[SCHREIB]
+------&gt; CHILD: fdparent_out[LIES]<BR>//PARENT: &lt;---
+fdparent_in[LIES]&nbsp;&nbsp;&nbsp;&nbsp; &lt;------ CHILD:
+fdparent_in[SCHREIB]<BR></CODE><BR><CODE><BR>int sortieren(char*
+fname){<BR>&nbsp;&nbsp; </CODE><CODE><B>int fdparent_out[2],
+fdparent_in[2];</B></CODE><CODE><BR>&nbsp;&nbsp; int fd, nread;<BR>&nbsp;&nbsp;
+char buf[BUFLEN];<BR><BR>&nbsp;&nbsp;&nbsp; </CODE><CODE><B>//pipes
+erzeugen</B></CODE><CODE><BR>&nbsp;&nbsp; if (</CODE><CODE><B>pipe(fdparent_in)
+&lt; 0 || pipe(fdparent_out)</B></CODE><CODE> &lt; 0) {<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+perror(&quot;Fehler bei pipe&quot;);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+exit(1);<BR>&nbsp;&nbsp; }<BR><BR>&nbsp;&nbsp; switch (</CODE><CODE><B>fork()</B></CODE><CODE>)
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; case -1: /* Fehler
+*/<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+perror(&quot;Fehler bei fork&quot;);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+exit(1);<BR><BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; case&nbsp; 0: /*
+Child-Prozess richtet eine pipe zw. parent und standard-unix utility
+sort ein*/<BR><BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; </CODE><CODE><B>// schliesst stdin, stdout</B></CODE><CODE><BR>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; </CODE><CODE><B>//</B></CODE><CODE><BR>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; </CODE><CODE><B>//
+durch dieses schliessen werden die filedeskriptoren 0 und 1 frei</B></CODE><CODE><BR>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; </CODE><CODE><B>//</B></CODE><CODE><BR>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; </CODE><CODE><B>//
+beim nächsten dup() werden diese freien filedeskriptoren vom
+System<BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; // wieder verwendet. <BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; //<BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; // Dadurch werden (s.u.), die
+mit dup() duplizierten<BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+fdparent_out[LIES] an filedeskriptor 0 und<BR></B></CODE><CODE>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </CODE><CODE><B>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+fdparent_in[SCHREIB]an filedeskriptor 1 gebunden<BR>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; //<BR>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; // dies ist ideal
+für den mit exec() aufgerufenen sort-Befehl, da dieser<BR>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; // mit stdin und
+stdout arbeitet.<BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; //<BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; // D.h. Die Ausgabe des PARENT wird an die stdin&nbsp;
+des Sort-Befehls und<BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Die Eingabe des
+PARENT wrid an die stdout des Sort-Befehls gebunden<BR>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; //<BR></B></CODE><CODE>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; </CODE><CODE><B>//
+die standardkanäle des sort-prozesses sind mit den zuvor
+duplizierten Kanälen<BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; // verbunden. d.h.<BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; // ein read(0,buf,len) des
+sort-prozesses liest tatsächlich vom<BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; // &nbsp;&nbsp;&nbsp;
+fdparent_out[LIES]<BR></B></CODE><CODE>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; </CODE><CODE><B>// ein
+write(1,buf,len) des sort-prozesses schreibt tatsächlich nach<BR>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; // &nbsp;&nbsp;&nbsp;
+fdparent_in[SCHREIB]<BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; //<BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; // Auf diese Weise kommuniziert der Parent
+direkt mit dem externen Programm<BR></B></CODE>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+<BR><CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</CODE><CODE><B>close(fdparent_out[SCHREIB]);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+close(fdparent_in[LIES]);<BR></B></CODE><BR><CODE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (</CODE><CODE><B>close(0) &lt; 0) { //std-eingabe
+schliessen</B></CODE><CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+perror(&quot;Fehler bei close&quot;);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+exit(1);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (</CODE><CODE><B>dup(fdparent_out[LIES]) != 0) {</B></CODE><CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+perror(&quot;Fehler bei dup&quot;);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+exit(1);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}<BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (</CODE><CODE><B>close(1) &lt; 0) { //std-ausgabe
+schliessen</B></CODE><CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+perror(&quot;Fehler bei close&quot;);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+exit(1);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (</CODE><CODE><B>dup(fdparent_in[SCHREIB]) != 1)
+{</B></CODE><CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+perror(&quot;Fehler bei dup&quot;);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+exit(1);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}<BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</CODE><CODE><B>close(fdparent_out[LIES]); //werden nicht mehr
+gebraucht, da sort den child überlagert<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+close(fdparent_in[SCHREIB]);</B></CODE><CODE><BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</CODE><CODE><B>execlp(&quot;sort&quot;, &quot;sort&quot;,
+NULL);</B></CODE><CODE><BR><BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+default: /* Parent-Prozess */<BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</CODE><CODE><B>close(fdparent_out[LIES]);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+close(fdparent_inp[SCHREIB]);</B></CODE><CODE><BR><BR>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; // FILE
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if ((fd = open(fname, O_RDONLY)) &lt; 0) {<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+perror(&quot;Fehler bei open&quot;);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+exit(1);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}<BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+while ((nread = read(fd, buf, sizeof(buf))) != 0) {<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (nread == -1) {<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+perror(&quot;Fehler bei read&quot;);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+exit(1);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}<BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (</CODE><CODE><B>write(fdparent_out[SCHREIB], buf, nread)</B></CODE><CODE>
+== -1) {<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+perror(&quot;Fehler bei write auf Pipe&quot;);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+exit(1);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}//while<BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+close(fd);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+close(fdparent_out[SCHREIB]);<BR><BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+while ((nread = </CODE><CODE><B>read(fdparent_in[LIES], buf,
+sizeof(buf)))</B></CODE><CODE> != 0) {<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (nread == -1) {<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+perror(&quot;Fehler bei read von Pipe&quot;);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+exit(1);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}<BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (write(1, buf, nread) == -1) {<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+perror(&quot;Fehler bei write&quot;);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+exit(1);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+close(fdparent_in[LIES]);<BR>&nbsp;&nbsp; }<BR>&nbsp;&nbsp;
+return(0);<BR>}<BR><BR><BR>int main(int argc, char* argv[]) {<BR>&nbsp;&nbsp;
+if (argc &lt; 2) {<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(stderr,
+&quot;Aufruf: %s file\n&quot;, argv[0]);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+exit(1);<BR>&nbsp;&nbsp; }<BR><BR>&nbsp;&nbsp;
+sortieren(argv[1]);<BR><BR>}<BR><BR></CODE>// Wir lassen das Programm
+seinen eigenen Quelltext sortieren. <BR>// gcc -o pipe2-execlp.exe
+pipe2-execlp.c; ./pipe2-execlp.exe pipe2-execlp.c<BR><BR><BR>Wichtig
+ist im Kindprozeß das Duplizieren des Filedeskriptors. Mit Hilfe der
+dup()-Funktion bleibt bei einem exec-Aufruf das close-on-exec-Flag
+gelöscht. Wir verbinden praktisch mit der Funktion dup die
+Standardaus/eingabekanäle mit unseren Pipekanälen. Wichtig ist in
+einem solchen Fall, wenn wir unseren Kindprozeß überlagern die
+Reihenfolge: fork, close, dup, exec. Somit kommuniziert unser aktuell
+laufender Elternprozeß mit dem Programm sort.<BR><BR><U>Aufgabe:
+(pipe-execlp-befehl.c)</U><BR>Schreiben Sie auf der Grundlage des
+obigen Programmes, ein Programm, das als Argument einen einfachen
+Unixbefehl (ls oder ps oder ...) erhält. Der Befehl soll vom PARENT
+an den CHILD geschickt werden und dort mit einer entsprechenden
+exec-Funktion ausgeführt werden. Die Ausgabe des Befehls soll direkt
+an den PARENT geschickt werden.<BR><BR><U>Aufgabe:
+(einfacher-telnetd.c)</U><BR>Schreiben Sie das Programm
+<A HREF="t_fileserver.c">t_fileserver.c</A> derart um, dass vom
+Client-Programm einfache Unixbefehle geschickt werden. Diese sollen
+analog zur vorherigen Aufgabe mittels child-prozesse ausgeführt
+werden und das Ergebnis an den Client geschickt werden.
+Client-Programm <A HREF="t_fileclient.c">t_fileclient.c</A> .<BR><BR><BR><BR>
+</P>
+<TABLE BORDER=0 CELLPADDING=2 CELLSPACING=2>
+	<TR>
+		<TD BGCOLOR="#cccccc">
+			<P>Bidirektionale Kommunikation mit Komfort: popen()</P>
+		</TD>
+	</TR>
+</TABLE>
+<P><BR>Die Subroutine popen führt das im Parameter (String)
+abgelegte Kommando mit Hilfe von system() aus. Dabei wird zusätzlich
+eine Pipe zwischen dem aufrufenden Parent-Prozeß und der
+Standardeingabe bzw. -ausgabe des Child-Prozesses angelegt. Auf diese
+kann geschrieben (mode = &quot;w&quot;) werden, bzw. von dieser kann
+gelesen (mode = &quot;r&quot;) bzw. mit Hilfe des Streams, den popen
+als Ergebnis liefert. Im Fehlerfall ist NULL das Resultat von popen.
+Die Subroutine pclose schließt den als Argument anzugebenden Stream
+wieder und liefert den Status der Shell als Resultat. Falls sich der
+Stream nicht schließen läßt, ist das Resultat gleich EOF. <BR><BR>Zum
+Lesen bzw. Schreiben des Streams dienen die alltäglichen
+Standard-I/O-Funktionen wie fgets() oder fputs(). <BR><BR>popen,
+pclose - process I/O<BR><U><BR>Beispiel: popen-demo.c</U><BR><BR><CODE>//
+a.hofmann 2004<BR>// popen-demo.c<BR><BR>#include &lt;stdio.h&gt;<BR>#define
+LEN 50<BR><BR>char *mygetcwd(){<BR>&nbsp;&nbsp; FILE *pstream;<BR>&nbsp;&nbsp;
+char *ptr;<BR><BR>&nbsp;&nbsp; pstream = popen(&quot;pwd&quot;,
+&quot;r&quot;);<BR><BR>&nbsp;&nbsp; ptr = (char *) malloc(LEN);<BR><BR>&nbsp;&nbsp;
+if (fgets(ptr, LEN, pstream) == NULL) {<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+pclose(pstream); <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return(NULL);<BR>&nbsp;&nbsp;
+} <BR>&nbsp;&nbsp; else {<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+pclose(pstream);&nbsp;&nbsp;&nbsp;&nbsp; <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return(ptr);<BR>&nbsp;&nbsp; }<BR>}<BR><BR>int main() {<BR>&nbsp;&nbsp;
+char *name;<BR>&nbsp;&nbsp; name = mygetcwd();<BR><BR>&nbsp;&nbsp; if
+(name != NULL) <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; printf(&quot;%s\n&quot;,
+name);<BR>&nbsp;&nbsp; else<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+printf(&quot;Fehler bei gcwdtst\n&quot;);<BR>}<BR></CODE><BR>// gcc
+popen-demo.c -o popen-demo.exe; ./popen-demo.exe<BR><BR><U>Aufgabe
+(popen-starter.c):</U><BR>Schreiben Sie ein Programm, das aus der
+Kommandozeile als 1. Argument einen Dateinamen und als 2. Argument
+ein Shellkommando erhält. Führen Sie dieses Kommando mit popen()
+aus und schreiben Sie das Ergebnis in die
+Datei.<BR><BR><U>Beispiel:</U><BR>./popen-starter.exe erg.txt &quot;find
+/etc -type f | grep -i localhost&quot;<BR><BR><U>Hinweis:</U><BR>Da
+der Befehl spaces enthalten kann, muss er mit &quot;&nbsp;&nbsp;&nbsp;&nbsp;
+&quot; geklammert werden.<BR><BR><U>Aufgabe (popen-qt):</U><BR>Schreiben
+Sie ein Programm, das mittels qt eine GUI baut, die zwei Textboxes
+und eine ListBox enthält.<BR>1. TextEdit: zur Eingabe von
+Shell-Kommandos<BR>2. TextEdit: Ausgabe des Shell-Kommandos<BR>3.
+ComboBox: Listet alle eingegebenen Shell-Kommandos und bei Click auf
+einen Listeneintrag wird dieses ausgeführt und in der 2. TextEdit
+angezeigt.<BR><BR><U><BR>Hinweis
+Qt:</U><BR><A HREF="http://www.trolltech.com/">www.trolltech.com</A><BR><A HREF="/usr/lib/qt3/doc/html/index.html">qt-Docu</A><BR><A HREF="https://www.users.fh-sbg.ac.at/horde/util/go.php?url=http%3A%2F%2Fwww.ruwela.de%2FSub_Cpp%2FSub_Cpp.html&amp;Horde=8795a7a6b5474123c0975b55095c8746" TARGET="_blank">http://www.ruwela.de/Sub_Cpp/Sub_Cpp.html</A><BR><A HREF="https://www.users.fh-sbg.ac.at/horde/util/go.php?url=http%3A%2F%2Fwww.hosengummi.de%2F&amp;Horde=8795a7a6b5474123c0975b55095c8746" TARGET="_blank">http://www.hosengummi.de/</A><BR><A HREF="https://www.users.fh-sbg.ac.at/horde/util/go.php?url=http%3A%2F%2Fni.cs.tu-berlin.de%2Flehre%2FCppPraktikum%2FBodyLehrplan.html&amp;Horde=8795a7a6b5474123c0975b55095c8746" TARGET="_blank">http://ni.cs.tu-berlin.de/lehre/CppPraktikum/BodyLehrplan.html</A><BR><BR><BR><U>Hinweis
+Programmerstellung: </U><BR>$&gt; designer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+... designer starten 
+</P>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm"><FONT SIZE=2>neues C++Projekt
+	(Name: popen-qt)</FONT> 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><FONT SIZE=2>neues Widget mit </FONT>
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; <FONT SIZE=2>1.
+	TextEdit: zur Eingabe von Shell-Kommandos. </FONT>
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+	<FONT SIZE=2>Bei Return soll popen() aufgerufen werden und die
+	Ausgabe in folg. TextEdit angezeigt werden.</FONT> 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; <FONT SIZE=2>2.
+	TextEdit: Ausgabe des Shell-Kommandos</FONT> 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; <FONT SIZE=2>3.
+	ComboBox: Listet alle eingegebenen Shell-Kommandos und </FONT>
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+	<FONT SIZE=2>bei Click auf einen Listeneintrag wird dieses
+	ausgeführt </FONT>
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><FONT SIZE=2>save</FONT> 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><FONT SIZE=2>neues C++ Main-File
+	(main.cpp)</FONT> 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><FONT SIZE=2>qmake</FONT> 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><FONT SIZE=2>make</FONT> 
+	</P>
+	<LI><P><FONT SIZE=2>./popen-qt</FONT> 
+	</P>
+</UL>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<TABLE BORDER=0 CELLPADDING=2 CELLSPACING=2>
+	<TR>
+		<TD BGCOLOR="#cccccc">
+			<P>Kommunikation: Named pipe mkfifo()</P>
+		</TD>
+	</TR>
+</TABLE>
+<P>siehe ikt4 Gräfe: Kapitel IPC<BR><BR><BR>
+</P>
+<TABLE BORDER=0 CELLPADDING=2 CELLSPACING=2>
+	<TR>
+		<TD BGCOLOR="#cccccc">
+			<P>Synchronisation mit Lockfiles 
+			</P>
+		</TD>
+	</TR>
+</TABLE>
+<P><BR>Wir betrachten in diesem Abschnitt eine einfache und
+altbewährte Methode zur Erreichung des gegenseitigen Ausschlusses
+bei kritischen Abschnitten. Mit Hilfe der Eigenschaften des
+Systemaufrufs open werden mit Hilfe von Lock-Files eine Art von
+Semaphoren implementiert. <BR><BR>Als Simulation der P-Operation wird
+wiederholt versucht, ein File, das bewußte Lock-File mit open
+(manchmal auch mit creat) zu kreieren. Die V-Operation wird auf das
+Löschen des Lock-Files mit unlink zurückgeführt. Die beiden
+Operationen P und V heißen in unserem Zusammenhang lock und unlock.
+<BR><BR>Die wesentliche Idee bei dieser Vorgehensweise ist die
+gemeinsame Verwendung der Zugriffs-Flags O_CREAT und O_EXCL bei open
+(man open). Wenn das File schon existiert, kann ein Prozeß nicht
+erfolgreich damit sein. Unter der Voraussetzung, daß der
+Systemaufruf open atomar ist, also nicht unterbrochen werden kann,
+ist damit die Semaphor-Eigenschaft sichergestellt. 
+</P>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm">&nbsp;&nbsp;&nbsp; int lock(char*
+	name); 
+	</P>
+	<LI><P>&nbsp;&nbsp;&nbsp; void unlock(char* name); 
+	</P>
+</UL>
+<P>Die Funktionen haben beide das Argument name, einen
+String-Pointer, der den Namen des Lock-Files im Directory /tmp
+angibt. Das Resultat von lock ist im Erfolgsfalls die Anzahl der
+Versuche, die zur Inbesitznahme des Lock-Files nötig waren, minimal
+1. Im Fehlerfall ist das Resultat negativ, absolut gleich der Anzahl
+der Fehlversuche. <BR><BR><U>Beispiel: (lock.c)</U><BR><CODE>#include
+&lt;sys/types.h&gt;<BR>#include &lt;errno.h&gt;<BR>#include
+&lt;string.h&gt;<BR>#include &lt;stdio.h&gt;<BR>#include
+&lt;fcntl.h&gt;<BR><BR>#define LOCKDIR &quot;/tmp/&quot;&nbsp;&nbsp;
+/* oder z.B. /usr/tmp/ */<BR>#define MAXVERS 10<BR>#define SLPTIME
+(unsigned int) 1<BR><BR>static char *lockpath(char* name)&nbsp;&nbsp;
+/* Lock-File Pfadnamen generieren */<BR>{<BR>&nbsp; static char
+path[20];<BR>&nbsp; strcpy(path, LOCKDIR);<BR>&nbsp;
+return(strcat(path, name));<BR>}<BR><BR><BR>int lock(char*
+name)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Lock-File in
+Besitz bringen */ /*vgl P(s)*/<BR>{<BR>&nbsp;&nbsp; int fd,
+versuche;<BR><BR>&nbsp;&nbsp; versuche = 0;<BR><BR>&nbsp;&nbsp; while
+((fd = open(lockpath(name), O_WRONLY|O_CREAT|</CODE><CODE><B>O_EXCL</B></CODE><CODE>,0666))==-1
+&amp;&amp;<BR>&nbsp;&nbsp;&nbsp; errno == EEXIST) {<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (++versuche &gt;= MAXVERS)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return(-versuche);&nbsp;&nbsp;&nbsp;&nbsp; /* das waren zuviele
+Versuche */<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sleep(SLPTIME);<BR>&nbsp;&nbsp;
+}<BR>&nbsp;&nbsp;&nbsp; <BR>&nbsp;&nbsp; if (fd == -1 || close(fd) ==
+-1) {<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(stderr, &quot;Fehler
+bei lock.\n&quot;);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; exit(1);<BR>&nbsp;&nbsp;
+}<BR>&nbsp;&nbsp; return(++versuche);<BR>}<BR><BR>void unlock(char*
+name)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Lock-File freigeben */<BR>{<BR>&nbsp;&nbsp;
+if (unlink(lockpath(name)) == -1) {<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+fprintf(stderr, &quot;Fehler bei unlock.\n&quot;);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+exit(1);<BR>&nbsp; }<BR>}<BR><BR></CODE><BR>Die lokale Funktion
+lockpath erzeugt einen Filenamen im Directory /tmp, für das alle
+Benutzer Schreibrecht haben. <BR><BR>Das folgende Beispiel macht
+Gebrauch von lock und unlock: <BR><BR><U>Beispiel:
+(locktest.c)</U><BR><CODE>#include &lt;stdio.h&gt;<BR>#include
+&lt;stdlib.h&gt;<BR>#include &lt;string.h&gt;<BR><BR>int main(int
+argc, char* argv[]){<BR><BR>&nbsp;&nbsp; char lockname[128];<BR>&nbsp;&nbsp;
+int&nbsp; pid, i, l, loops;<BR><BR>&nbsp;&nbsp; if (argc != 3)
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(stderr, &quot;Aufruf: %s
+lockname loops\n&quot;, argv[0]);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+exit(1);<BR>&nbsp;&nbsp; }<BR><BR>&nbsp;&nbsp; strcpy(lockname,
+argv[1]);<BR>&nbsp;&nbsp; loops = atoi(argv[2]);<BR><BR>&nbsp;&nbsp;
+pid = getpid();<BR><BR>&nbsp;&nbsp; printf(&quot;Prozess: %d,
+Lock-File: %s\n\n&quot;, pid,lockname);<BR><BR>&nbsp;&nbsp; for (i=0;
+i&lt;loops; i++) {<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</CODE><CODE><B>l = lock(lockname);</B></CODE><BR><CODE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (l &gt; 0) {<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+printf(&quot;%d, krit. Abschnitt %2d, %2d Versuche\n&quot;, pid, i,
+l);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+else {<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+fprintf(stderr,&quot;%2d Versuche,Fehler bei
+Lock-FileErzeugung\n&quot;,-l);&nbsp;&nbsp;&nbsp; <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+exit(1);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</CODE><CODE><B>unlock(lockname);</B></CODE><CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; printf(&quot;%d, unkrit. Abschnitt
+%2d\n&quot;, pid, i);<BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+sleep(2);<BR>&nbsp;&nbsp; }/*for*/<BR><BR>&nbsp;&nbsp; return
+0;<BR>}<BR><BR></CODE>Wir compilieren locktest.c und starten zwei
+Versionen zum konkurrenten Ablauf. Dies sieht dann so aus: <BR><BR>$
+gcc locktest.c lock.c -o locktest.exe<BR>$ locktest x 5 1 1 &amp;
+locktest x 5 0 3 &amp;<BR><BR><BR>Typische Beispiele der Anwendung
+von Lockfiles innerhalb UNIX sind zu finden bei relativen langsamen
+Vorgängen, wie der Synchronisierung von Druckjobs beim Druckerdaemon
+lpd oder der Synchronisierung des Zugriffs auf eine
+Modemschnittstelle durch ein Terminalprogramm wie kermit. <BR><BR><BR><BR>
+</P>
+<TABLE BORDER=0 CELLPADDING=2 CELLSPACING=2>
+	<TR>
+		<TD BGCOLOR="#cccccc">
+			<P>Aufgabe: Paralleles Sortieren 
+			</P>
+		</TD>
+	</TR>
+</TABLE>
+<P STYLE="margin-bottom: 0cm"><BR>Eine große Datei (&quot;Daten.txt&quot;)
+mit positiven, ASCII-codierten Ganzzahlen ist zu sortieren. Dies kann
+unter Unix/Linux mit dem Kommando <BR>&nbsp;<BR>&nbsp;&nbsp;&nbsp;
+sort -g Daten.txt<BR><BR>geschehen. Bei z.B. 500000 Zahlen dauert
+dies schon relativ lange. Es soll nun versucht werden, die
+Sortierzeit durch eine Aufteilung des Sortiervorganges auf 2
+parallele Prozesse zu reduzieren. <BR><BR>Das Grundprinzip lautet wie
+folgt: 
+</P>
+<P STYLE="margin-left: 1.06cm; margin-bottom: 0cm">jeweils eine
+Hälfte der Zahlen wird zu den beiden Sortierprozessen geschickt
+<BR>beide Prozesse sortieren parallel <BR>das Sortierergebnis wird
+zurückgesendet <BR>durch &quot;Mischen&quot; der beiden Zahlenfolgen
+wird das Gesamtergebnis erzeugt 
+</P>
+<P STYLE="margin-bottom: 0cm"><BR>Daraus resultiert die folgende
+Implementation (Beispiel): 
+</P>
+<P STYLE="margin-left: 1.06cm; margin-bottom: 0cm">Ein C-Programm
+&quot;mysort&quot; kreiert 4 &quot;Pipes&quot; zur bidirektionalen
+Kommunikation mit den beiden Sortierprozessen. Es erzeugt danach 2
+Kindprozesse mit &quot;fork&quot;, die ihrerseits über &quot;execlp&quot;
+das Programm &quot;sort&quot; starten - und zwar so, dass die
+unsortierten Zahlen über die Standardeingabe gelesen und die
+sortierten über die Standardausgabe geschrieben werden. 
+</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-left: 1.06cm; margin-bottom: 0cm">Der Vaterprozess
+liest nun die Datei &quot;Daten.txt&quot; und sendet die Zahlen im
+Wechsel zu seinen beiden Kindprozessen. <BR>Danach wartet er auf die
+Ergebnisdaten. Dabei liest er jeweils eine Zahl von den beiden
+&quot;Ergebnis&quot;-Pipes und schreibt die jeweils kleinere auf den
+Bildschirm (dies wird als &quot;Mischen&quot; bezeichnet). 
+</P>
+<P><BR><BR>Die folgende Grafik erläutert das Prinzip: <BR><IMG SRC="sort.jpg" NAME="Grafik6" ALT="sortieren mit 2 child Prozessen und 4 Pipes" ALIGN=BOTTOM WIDTH=841 HEIGHT=595 BORDER=0><BR><U>Hinweis:
+Mischen (Merging) </U><BR>kann zunächst für 2 Felder demonstriert
+werden.Eine mögliche Implementation wäre: <BR>&nbsp;<BR>&nbsp;//
+merge(int a[], int b[], int c[], int n, int m) <BR>&nbsp;// mischt
+zwei sortierte Felder a[], der Dimension n <BR>&nbsp;// und b[] der
+Dimension m in ein Feld c[], der Dimension m+n <BR>&nbsp;// <BR>&nbsp;<BR><CODE>void
+merge(int a[], int b[], int c[], int n, int m){<BR>&nbsp;&nbsp;&nbsp;
+int i, j, k;<BR>&nbsp;&nbsp;&nbsp; i = j = 0;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+for( k=0; k&lt;m+n; k++ ) {<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/* kleineres Element a[i] oder b[j] finden */<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if( i&lt;n &amp;&amp; j&lt;m ) {<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (a[i] &lt; b[j]) <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+c[k]=&nbsp; a[i++];<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+else<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+c[k]=&nbsp; b[j++];<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else if(
+i&lt;n ) {<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+c[k] = a[i++];<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else if(
+j&lt;m ) {<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+c[k] = b[j++];<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return;<BR>}<BR><BR></CODE>&nbsp;<BR><U>Hinweis:
+Zufallszahlen<BR><BR></U><CODE>//a.hofmann<BR>// generiert eine datei
+mit zufallszahlen<BR>// aufruf: ./create-daten.exe filename
+anzahl<BR>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+./create-daten.exe daten.txt 500000<BR>// gcc create-daten.c
+-ocreate-daten.exe<BR><BR>#include &lt;stdlib.h&gt;<BR>#include
+&lt;stdio.h&gt;<BR><BR>int main(int argc, char * argv[]){<BR>&nbsp;&nbsp;&nbsp;
+int anzahl;<BR>&nbsp;&nbsp;&nbsp; int i;<BR>&nbsp;&nbsp;&nbsp; FILE*
+fp;<BR><BR>&nbsp;&nbsp;&nbsp; if (argc != 3){<BR>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; printf(&quot;\nAufruf: ./create-daten.exe
+daten.txt 500000\n&quot;);<BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+exit(1);<BR>&nbsp;&nbsp;&nbsp; }<BR><BR>&nbsp;&nbsp;&nbsp; if
+(isdigit(argv[2][0]))<BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+anzahl= atoi(argv[2]);<BR>&nbsp;&nbsp;&nbsp; else {<BR>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; printf(&quot;\nAufruf: ./create-daten.exe
+daten.txt 500000\n&quot;);<BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+exit(1);<BR>&nbsp;&nbsp;&nbsp; }<BR><BR>&nbsp;&nbsp;&nbsp; fp=
+fopen(argv[1], &quot;w&quot;);<BR>&nbsp;&nbsp;&nbsp; if
+(fp==NULL){<BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+perror(argv[1]);<BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+exit(1);<BR>&nbsp;&nbsp;&nbsp; }<BR><BR>&nbsp;&nbsp;&nbsp;
+printf(&quot;\n....generating file: %s with %d integers
+....\n&quot;,argv[1], anzahl);<BR><BR>&nbsp;&nbsp;&nbsp; for (i=0; i&lt;
+anzahl; i++)<BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+fprintf(fp,&quot;%d\n&quot;, rand()%10000);<BR><BR>&nbsp;&nbsp;&nbsp;
+close(fp);<BR>}<BR><BR></CODE><U><BR>Hinweis: Laufzeitmessung:
+(www.pronix.de)</U><BR><CODE>#include &lt;stdio.h&gt;<BR>#include
+&lt;time.h&gt;<BR><BR>int main(){<BR>&nbsp;long i;<BR>&nbsp;float
+zeit;<BR>&nbsp;<BR>&nbsp;clock_t start, ende;<BR>&nbsp;<BR>&nbsp;/*start
+bekommt die aktuelle CPU-Zeit*/<BR>&nbsp;start = clock();<BR><BR>&nbsp;/*Hier
+sollte der ausführbare Code stehen für die<BR>&nbsp;&nbsp;
+Laufzeitmessung*/<BR><BR>&nbsp;/*Wir verwenden einfach ein
+Schleife*/<BR>&nbsp;for(i=0; i&lt;200000000; i++)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+;<BR><BR>&nbsp;/*stop bekommt die aktuelle CPU-Zeit*/<BR>&nbsp;ende =
+clock();<BR>&nbsp;<BR>&nbsp;/*Ergebniss der Laufzeitmessung in
+Sekunden*/<BR><BR>&nbsp;zeit = (float)(ende-start) /
+(float)CLOCKS_PER_SEC;<BR><BR>&nbsp;printf(&quot;Die Laufzeitmessung
+ergab %.2f Sekunden\n&quot;,zeit);<BR>&nbsp;return 0;<BR><BR>}<BR></CODE><BR><BR><BR><BR>
+</P>
+<TABLE BORDER=0 CELLPADDING=2 CELLSPACING=2>
+	<TR>
+		<TD BGCOLOR="#cccccc">
+			<P>Weitere Themen:</P>
+		</TD>
+	</TR>
+</TABLE>
+<P><BR>siehe auch<BR>unix-guru (openbook)</P>
+<OL>
+	<LI><P STYLE="margin-bottom: 0cm">shared memory und semaphore 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm">threads: 
+	</P>
+</OL>
+<P><BR><BR>
+</P>
+</BODY>
+</HTML>

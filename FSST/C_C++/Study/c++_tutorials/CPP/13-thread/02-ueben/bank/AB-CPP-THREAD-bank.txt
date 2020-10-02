@@ -1,0 +1,252 @@
+﻿AB-CPP-THREAD-bank.txt
+===========================================================================
+[1] ]http://www.dpunkt.de/java/Programmieren_mit_Java/Multithreading/3.html
+Projekt: CPP-THREAD-Bank
+
+
+------------------------------------------------------------------------
+Aufgabe 01: 
+------------------------------------------------------------------------
+Erstellen Sie auf der Grundlage des hier gezeigten Java-Programmes
+ein CPP-Programm mit der Verwendung von Threads.
+Siehe unten: BESCHREIBUNG des Java-Programmes
+
+
+
+------------------------------------------------------------------------
+Aufgabe 02: 
+------------------------------------------------------------------------
+Lösen Sie in Ihrem CPP-Programm auch das Lost-Update Problem.
+
+
+
+Hinweis: Der aktuelle Thread soll 1 Sec warten.
+------------------------------------------------------------------------
+#include <thread>         // std::this_thread::sleep_for
+#include <chrono>         // std::chrono::seconds
+using namespace std;
+
+...
+// Inkonsistenz, da neuer Betrag noch nicht vermerkt
+std::chrono::seconds one_second(1);
+std::this_thread::sleep_for (one_second);
+
+Hinweis: Bsp: Eine Klasse runnable 
+------------------------------------------------------------------------
+a) Die Klasse runnable implementiert den Funktionsoperator () und
+b) Diese Methode wird dann in main() als eigener Thread gestartet.
+
+/*
+01-thread-create04.cpp
+g++ -std=c++11 01-thread-create04.cpp -o01-thread-create04.exe -lpthread
+
+#include <iostream>
+#include <thread>
+ 
+class runnable{
+    public:
+        void operator()(){
+            std::cout << "Hello World" << std::endl;
+        }
+};
+ 
+int main(){
+    std::thread t(std::move(runnable()));
+
+    t.join();
+    return 0;
+}
+*/
+
+
+
+
+------------------------------------------------------------------------
+BESCHREIBUNG des Java-Programmes:
+------------------------------------------------------------------------
+Dateien: (weiter unten ist auch der Quelltext)
+	1) SimpleBank.java		- enthält die Konten
+	2) Angestellter.java	- extends Thread, macht d. Überweisung
+	3) SimpleBankDemo.java - main: startet die Threads
+
+
+Ein Objekt Bank modelliert eine reale Bank, die Konten für verschiedene 
+Personen verwaltet. Die Bank hat Überweisungen durchzuführen. 
+Die Überweisungen werden in parallelen Threads abgearbeitet. 
+
+
+Die Klasse SimpleBank
+------------------------------------------------------------------------
+In diesem Beispiel wird die Bank durch eine Klasse SimpleBank realisiert. 
+Diese Bank besitzt das Array konten, das die Stände der einzelnen 
+Konten enthält. 
+Der Array-Index soll als Kontonummer dienen. 
+
+Für Transaktionen zwischen zwei Konten stellt SimpleBank die Methode 
+ueberweisung() zur Verfügung. 
+
+Ihr werden die beiden beteiligten Kontonummern sowie der Betrag der 
+Überweisung übergeben. 
+
+Zu Demonstrationszwecken wird die Ausführung der Überweisung zwischen 
+der Berechnung des neuen Kontostands und dessen Zurückschreiben 
+unterbrochen. Hierzu wird auf die bekannte Methode sleep() verwendet.
+
+Als letztes verfügt SimpleBank über die Methode kontostand(), 
+mit der die aktuellen Stände aller Konten angezeigt werden können.
+
+
+
+class SimpleBank {
+	static int[] konten = {30, 50, 100};
+
+	public void überweisung(int von, int nach, int betrag) {
+		int neuerBetrag;
+
+		neuerBetrag = konten[von];
+		neuerBetrag -= betrag;
+		// Inkonsistenz, da neuer Betrag noch nicht vermerkt
+		try {
+			Thread.sleep((int)Math.random()*1000);
+		}
+		catch(InterruptedException e) {
+		}
+		konten[von] = neuerBetrag;
+
+		neuerBetrag = konten[nach];
+		neuerBetrag += betrag;
+		// dito
+		konten[nach] = neuerBetrag;
+	}
+
+	public void kontostand() {
+		for(int i = 0; i < konten.length; i++)
+			System.out.println("Konto "+ i +": " + konten[i]);
+	}
+}
+
+
+
+Die Überweisungen sollen durch Bankangestellte erfolgen. 
+Diese werden durch die Klasse Angestellter implementiert. 
+Damit mehrere Angestellte gleichzeitig Transaktionen vornehmen können, 
+werden sie von Thread abgeleitet. 
+
+Die Klasse Angestellter
+------------------------------------------------------------------------
+Jeder Angestellte gehört zu einer Bank. 
+Deshalb wird dem Konstruktor ein Verweis auf SimpleBank übergeben. 
+Über diesen Verweis wird die Methode überweisung() aufgerufen. 
+Die beiden beteiligten Kontonummern sowie der Betrag werden dem 
+Konstruktor übergeben und in entsprechenden Datenelementen 
+der Klasse gespeichert. 
+
+Diese Datenelemente werden dann in run() benutzt, um die Methode 
+überweisung() der Bank aufzurufen. Nachdem die Transaktion durchgeführt 
+ist, wird eine aktuelle Kontenübersicht ausgegeben.
+
+ class Angestellter extends Thread {
+
+	SimpleBank bank;
+	int von, nach, betrag;
+
+	public Angestellter(SimpleBank bank, int von,
+			int nach, int betrag) {
+		this.bank = bank;
+		this.von = von;
+		this.nach = nach;
+		this.betrag = betrag;
+	}
+
+	public void run() {
+		// Überweisung vornehmen
+		bank.überweisung(von, nach, betrag);
+		// Kontostand ausgeben
+		System.out.println("Nachher:");
+		bank.kontostand();
+	}
+}
+
+
+Das Demonstrationsprogramm 
+------------------------------------------------------------------------
+vereinbart drei Verweise auf die Klasse 
+Angestellter. Anschließend wird ein SimpleBank-Objekt erzeugt und eine 
+Übersicht über den Anfangsstand der Konten gegeben. 
+Dann werden die drei Thread-Objekte erzeugt. 
+Die Konten werden hierbei so gewählt, dass sich eine ringförmige 
+Überweisung ergibt. Wenn alles ordnungsgemäß verläuft, dann müsste also 
+die Kontenübersicht am Ende genauso aussehen wie am Anfang. 
+
+Schließlich werden die Threads durch Aufrufe ihrer 
+start()-Methoden gestartet.
+
+public class SimpleBankDemo {
+
+	public static void main(String[] args) {
+		Angestellter A1, A2, A3;
+		SimpleBank b = new SimpleBank();
+
+		System.out.println("Vorher:");
+		b.kontostand();
+
+		// Eine ringförmige Überweisung
+		A1 = new Angestellter(b, 0, 1, 20);
+		A2 = new Angestellter(b, 1, 2, 20);
+		A3 = new Angestellter(b, 2, 0, 20);
+
+		A1.start();
+		A2.start();
+		A3.start();
+	}
+}
+
+Prinzipiell kann das Beispiel ohne Probleme funktionieren. 
+Falls jedoch von beiden Threads zur gleichen Zeit der Kontostand von 
+Konto A erniedrigt werden soll, so kann es vorkommen, dass beide den 
+gleichen Ausgangskontostand lesen, in ihrer temporären Variablen 
+speichern, davon subtrahieren und dann den neuen Wert schreiben. 
+Je nachdem, ob der erste oder der zweite Thread beim Schreiben schneller 
+ist, wird der Kontostand von Konto A um 10 oder um 20 erniedrigt. 
+Der korrekte Wert wäre jedoch die Summe der Einzelabbuchungen, also 30, 
+gewesen. Die Ausgabe des Programms sieht so (oder ähnlich) aus:
+
+       Vorher:
+       Konto 0: 30
+       Konto 1: 50
+       Konto 2: 100
+       Nachher:
+       Konto 0: 10
+       Konto 1: 70
+       Konto 2: 100
+       Nachher:
+       Konto 0: 10
+       Konto 1: 30
+       Konto 2: 120
+       Nachher:
+       Konto 0: 30
+       Konto 1: 30
+       Konto 2: 80
+
+Das Problem: Lost-update
+------------------------------------------------------------------------
+Wie man der letzten Kontenübersicht entnehmen kann, sind nach der 
+letzten Überweisung 40 EUR »verschwunden«. 
+
+Die Ursache des Problems liegt darin, dass der Vorgang der Abbuchung, 
+also das Lesen, Subtrahieren und Schreiben in mehreren Schritten 
+abläuft und so ein zweiter Thread mit einer eigentlich ungültigen Zahl 
+arbeitet. Dieses Verhalten nennt man Race-Condition. 
+Generell sind Race-Conditions Programmfehler, die nur manchmal 
+auftreten, nämlich genau dann, wenn zufällig zwei parallele Threads 
+zur gleichen Zeit auf bestimmte Objekte zugreifen. 
+Derartige Fehler sind in der Praxis schwer zu lokalisieren. 
+
+
+
+Die Lösung: Sperrsynchronisation mittels Semaphore
+------------------------------------------------------------------------
+Um das Problem zu umgehen, sollte es eine Möglichkeit geben, 
+diese Sequenz als unteilbare Operation zu definieren oder den Zugriff 
+auf das Konto während der Operation zu sperren.
+

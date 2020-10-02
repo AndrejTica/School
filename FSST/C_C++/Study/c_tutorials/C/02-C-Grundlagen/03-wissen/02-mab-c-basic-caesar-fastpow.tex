@@ -1,0 +1,145 @@
+% Created 2019-02-24 So 17:07
+% Intended LaTeX compiler: pdflatex
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usepackage{listings}
+\author{Anton Hofmann}
+\date{\today}
+\title{}
+\hypersetup{
+ pdfauthor={Anton Hofmann},
+ pdftitle={},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 26.1 (Org mode 9.1.9)},
+ pdflang={English}}
+\begin{document}
+
+\tableofcontents
+
+\section{probe-mab: C-basic}
+\label{sec:org163fe42}
+
+\section{AUFGABE: caesar.c}
+\label{sec:org38f6b17}
+\begin{itemize}
+\item gegeben:
+\end{itemize}
+\lstset{language=C,label= ,caption= ,captionpos=b,numbers=none}
+\begin{lstlisting}
+//mycat.c  Eingabe nach Ausgabe
+#include <stdio.h>
+int main(){
+	int ch;
+	while ( (ch= fgetc(stdin)) != EOF){
+		fputc(ch, stdout);
+	}
+
+	return 0;
+}
+\end{lstlisting}
+\begin{itemize}
+\item Erstelle das Programm caesar.c
+\begin{itemize}
+\item Es wird das gesamte Alphabet um eine bestimmte Anzahl von Buchstaben \textbf{verschoben} und
+\item dadurch jeder Buchstabe des Klartextes einzeln verändert.
+\item Der "Key" besteht also aus einer Zahl, um die der ASCII-Wert des Plain-Zeichens erhöht wird.
+\end{itemize}
+\item Vorgaben:
+\begin{itemize}
+\item Es sollen nur Buchstaben verschlüsselt werden.
+\item Verwende im Programm die Variable: int key=5;
+\item Verwende zum Testen die Dateiumlenkung: ./caesar.exe < caesar.c
+\end{itemize}
+\item Zusatz:
+\begin{itemize}
+\item Können Sie die Datei: werwolf-caesarkodiert.txt knacken?
+\end{itemize}
+
+\item Beispiel: Cäsar verschlüsseln
+\begin{itemize}
+\item Plaintext: "HALLO"
+\item Key: 2
+\item Ciphertext: JCNNQ
+\end{itemize}
+
+\item Beachte:
+\begin{itemize}
+\item Wenn man zB. zum Zeichen 'Z' kommt muss man beim Zeichen 'A' weiter zählen. (analog z -> a)
+\item Wenn das jeweilige CIPHERzeichen > 'Z' (analog für 'z')
+\item dann CiPHERzeichen = CIPHERzeichen  - 26
+\end{itemize}
+
+\item Beispiel:
+\end{itemize}
+\lstset{language=C,label= ,caption= ,captionpos=b,numbers=none}
+\begin{lstlisting}
+ch=ch+key;
+if(ch>'Z')
+    ch= ch-26;
+
+bzw. für Kleinbuchstaben
+
+ch=ch+key;
+if(ch>'z')
+    ch= ch-26;
+\end{lstlisting}
+
+\begin{itemize}
+\item Anmerkung: Entschlüsselt wird mit key=26-key;
+
+\item Beispiel:
+\begin{itemize}
+\item Hello, world!		(key=4)
+\item Lipps, asvph! 		(entschluesselt wird mit 22) (vgl: 26  - 4)
+\end{itemize}
+\end{itemize}
+
+
+\section{AUFGABE: fastpow.c}
+\label{sec:org687ecee}
+\begin{itemize}
+\item x hoch y kann man wie folgt sehr schnell berechnen:
+\item wenn y ungerade:
+\begin{itemize}
+\item ergebnis= ergebnis*x;
+\item y= y-1;
+\end{itemize}
+\item wenn y gerade:
+\begin{itemize}
+\item x= x*x;
+\item y= y/2;
+\end{itemize}
+
+\item Beispiel: x=3 und y=16
+\begin{itemize}
+\item ergebnis= 3 hoch 16
+\item ergebnis= (3 hoch 2) hoch 8
+\end{itemize}
+
+\item Beispiel: x=3 und y=17
+\begin{itemize}
+\item ergebnis= 3 hoch 17
+\item ergebnis= 3 hoch 16 * 3
+\item ergebnis*3=3 hoch 16
+\end{itemize}
+
+\item Erstelle das Programm fastpow.c
+\begin{itemize}
+\item lies x und y ein
+\item gib das Ergebnis von x hoch y aus
+\end{itemize}
+\end{itemize}
+\end{document}

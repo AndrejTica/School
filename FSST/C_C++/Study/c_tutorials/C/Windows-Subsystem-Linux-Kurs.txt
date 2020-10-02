@@ -1,0 +1,91 @@
+* Windows-Subsystem-Linux
+
+- https://docs.microsoft.com/en-us/windows/wsl
+
+* Powershell als Administrator
+Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
+
+* kali-linux auswählen u. installieren
+
+* user und pwd erstellen
+- alles klein geschrieben und kurzen namen wählen
+- Bei der passwort-eingabe werden überhaupt keine zeichen angezeigt.
+- wenn Du dich vertippt hast, kannst du mit Ctrl+u wieder von vorn beginnen
+
+* Linux updaten
+sudo apt update && sudo apt upgrade
+
+* C-Compiler installieren
+sudo apt install build-essential
+
+* C Compiler starten/testen
+gcc
+
+wenn zB. folg Ausgabe erscheint, ist alles OK
+fatal error: no input files
+compilation terminated.
+
+* Mein erstes C Programm mit dem Linux-Editor nano
+nano hello.c
+
+/*
+ * hello.c
+ */
+ #include <stdio.h>
+ int main(){
+    printf("Hello, world!\n");
+    return 0;
+ }
+
+Ctrl-x eingeben und die Datei Speichern
+
+* hello.c übersetzen
+gcc hello.c -o hello.exe
+
+* hello.exe starten
+./hello.exe
+
+
+
+
+* ==========================================================
+
+* Linux Kurs I
+
+pwd
+	gibt das aktuelle Verzeichnis aus
+
+cd
+	wechselt in das sog. Home-Verzeichnis (meist /home/username)
+
+cd /mnt/c
+	wechselt in das Verzeichnis /mnt/c (unter Windows c:\)
+
+mkdir /mnt/c/c-kurs
+	erzeugt das Verzeichnis c-kurs im Verzeichnis /mnt/c
+
+ls
+ls -l
+ls -al
+	gibt den Inhalt des aktuellen Verzeichnisses an
+
+ls -l /mnt/c/c-kurs
+	gibt den Inhalt des Verzeichnisses /mnt/c/c-kurs an
+
+cat hello.c
+	zeigt den Inhalt der Datei hello.c (im aktuellen Verzeichnis)
+
+cat /etc/passwd
+	zeigt den Inhalt der Datei passwd im Verzeichnis /etc 
+
+cp /etc/passwd bla-passwd.txt
+	kopiert die Datei /etc/passwd ins aktuelle Verzeichnis unter dem Namen bla-passwd.txt
+
+cp /etc/passwd .
+	kopiert die Datei /etc/passwd ins aktuelle Verzeichnis unter dem Namen passwd
+
+rm bla-passwd.txt
+	löscht die Datei
+
+mv passwd bla-passwd.txt
+	umbennen: benennt die Datei passwd nun bla-passwd.txt

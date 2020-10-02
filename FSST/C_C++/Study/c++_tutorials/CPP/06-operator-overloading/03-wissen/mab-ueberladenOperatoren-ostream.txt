@@ -1,0 +1,22 @@
+﻿mab-ueberladenOperatoren (4)
+-----------------------------------------------------------------
+
+Gegeben sei:
+
+  #include <iostream>
+    class Date {
+        //...
+    };
+
+    void staff(Date& f){
+        //..
+        std::out << f << endl; // output Date object f
+    }
+
+a) Frage: 
+Welcher operator muss definiert werden, sodass das Objekt f richtig ausgegeben werden kann?
+   1. std::ostream& operator << (std::ostream&, const Date&) als eine glob. C-Funktion
+   2. void << operator<<(std::ostream& , const Date&) als eine glob. C-Funktion
+   3. std::streambuf& operator << (std::ostream&, const Date&) als eine glob. C-Funktion
+   4. void std::operator<<(std::ostream&) als member function der Klasse Date
+   5. std::ostream& operator <<(std::ostream&) als member function der Klasse Date

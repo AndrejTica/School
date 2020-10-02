@@ -1,0 +1,456 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de"><head>
+	<title>Die 12 häufigsten Programmierfehler</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+
+	<meta content="Martin Kompf" name="author">
+	<meta content="c,c++,cplusplus,programmierung,softwareentwicklung,fehler" name="keywords">
+	<meta content="Martin Kompf" name="publisher">
+	<meta content="NEVER" name="expires">
+	<meta content="INDEX,FOLLOW" name="robots">
+
+    <style media="all" type="text/css" xml:space="preserve">@import "../style/kompf.css";</style>
+    <style media="print" type="text/css" xml:space="preserve">@import "../style/kompf-print.css";</style>
+    <style media="only screen and (max-width: 480px)" type="text/css" xml:space="preserve">@import "../style/kompf-mobile.css";</style>
+    <meta content="2012-02-23T19:19:15+01:00" name="date">
+    <meta content="XHTMLBooster 1.0" name="generator">
+    <meta content="user-scalable=no, width=device-width" name="viewport">
+
+</head>
+<body>
+  <div id="Header">
+<a href="http://www.kompf.de/" shape="rect">Kompf.de</a> &gt; <a href="http://cplus.kompf.de/" shape="rect">C/C++</a> &gt; <a href="http://cplus.kompf.de/artikel/index.html" shape="rect">Artikel</a>
+</div>
+  <div id="Content">
+
+<h1>Die 12 häufigsten Programmierfehler</h1>
+<p class="author">Martin Kompf</p>
+<p class="intro">
+Immer wieder werden die gleichen Fehler gemacht...
+Diese Liste enthält die zwölf am häufigsten vorkommenden Fehler in
+der C-Programmierung und soll dabei helfen, selbige zu
+vermeiden.
+</p>
+
+<div>
+<div class="ads_cont">
+<script type="text/javascript" xml:space="preserve">
+            <!--
+google_ad_client = "ca-pub-0341323781243867";
+/* ads_cont */
+google_ad_slot = "5295030165";
+google_ad_width = 728;
+google_ad_height = 90;
+//-->
+</script>
+<script src="haeufige-programmierFehler-Dateien/show_ads.js" type="text/javascript" xml:space="preserve">
+</script><ins style="display:inline-table;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:728px"><ins id="aswift_0_anchor" style="display:block;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:728px"><iframe allowtransparency="true" hspace="0" marginwidth="0" marginheight="0" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){i+='.call';setTimeout(h,0)}else if(h.match){i+='.nav';w.location.replace(h)}s.log&amp;&amp;s.log.push(i)}" vspace="0" id="aswift_0" name="aswift_0" style="left: 0pt; position: absolute; top: 0pt;" frameborder="0" height="90" scrolling="no" width="728"></iframe></ins></ins>
+</div>
+</div>
+
+<p>Die Liste ist eine Übersetzung und Erweiterung der englischen
+<a href="http://www.edm2.com/0504/12cerr.html" shape="rect" target="_blank">Originalversion von Jeppe Cramon</a>.</p>
+<ol>
+<li>
+          <strong>Anfang und Ende von Kommentaren müssen korrekt
+bezeichnet sein.</strong>
+          <br clear="none">
+Kommentaranfang: /*<br clear="none">
+Kommentarende: */<br clear="none">
+        </li>
+<li>
+          <strong>Der Zuweisungsoperator = wird oft mit dem Testoperator
+== verwechselt.</strong>
+          <br clear="none">
+Dieser Fehler tritt insbesondere deswegen so häufig auf, weil
+andere Programmiersprachen = auch als Testoperator verwenden.
+Außerdem entdeckt der Compiler diesen Fehler oftmals nicht, da eine
+Zuweisung einen Wert hat und demzufolge in einem Vergleichsausdruck
+vorkommen kann. Zum Beispiel:
+<pre xml:space="preserve">if (number = 9) { /* falsch */
+    number = 0;
+}
+</pre>
+Diese Sequenz ist syntaktisch korrekt, compiliert fehlerfrei, wird
+jedoch bei der Abarbeitung nicht das gewünschte tun. Anstatt der
+Variablen number den Wert 0 zuzuweisen, falls diese gleich 9 ist,
+wird number immer auf 0 gesetzt, da die Zuweisung <tt>number = 9</tt>
+immer den logischen Wert <tt>true</tt> zurückliefert!<br clear="none">
+Abhilfe kann man schaffen, indem man sich angewöhnt, <em>immer
+zuerst den Wert, gegen den verglichen wird, hinzuschreiben</em>.
+Also:
+<pre xml:space="preserve">if (9 == number) { /* richtig */
+    number = 0;
+}
+</pre>
+Wird hier statt == aus Versehen = geschrieben, so wird schon der
+Compiler eine Fehlermeldung ausgeben.</li>
+<li>
+          <strong>Fehler bei Zuweisungen in
+Vergleichsausdrücken.</strong>
+          <br clear="none">
+Werden die Klammern um eine Zuweisung vergessen, wird zuerst der
+Vergleich abgearbeitet und sein Ergebnis zugewiesen. Dies ist
+syntaktisch korrekt und wird vom Compiler nicht bemerkt. Zum
+Beispiel:
+<pre xml:space="preserve">while (ch = getchar() != EOF) /* falsch */
+</pre>
+Dies wird der Variablen ch den Wert 1 für TRUE zuweisen bis
+getchar() EOF zurückliefert. Dann erhält ch den Wert 0 für
+FALSE.<br clear="none">
+Wahrscheinlich wollte der Programmierer jedoch, daß der Variablen
+ch das von getchar() zurückgelieferte Zeichen zugewiesen wird! Die
+korrekte Syntax dafür ist:
+<pre xml:space="preserve">while ((ch = getchar()) != EOF) /* richtig */
+</pre>
+        </li>
+<li>
+          <strong>Fehler bei der Benutzung von Arrays.</strong>
+          <br clear="none">
+Der kleinste Index eines Arrays in C ist 0. Das heißt, die
+Deklaration
+<pre xml:space="preserve">int a[10];
+</pre>
+definiert zehn Feldelemente a[0], a[1], ..., a[9]. Ein Versuch, auf
+a[10] zuzugreifen, wird weder vom Compiler noch vom Laufzeitsystem
+bemerkt:
+<pre xml:space="preserve">for (i=0; i &lt;= 10; i++) /* falsch! Der höchste Index ist 9 */
+    a[i] = i;
+</pre>
+Dieses Beispiel wird zur Laufzeit der Variablen a[10] den Wert 10
+zuweisen. Da es die Variable a[10] jedoch nicht gibt, wird unter
+Umständen eine andere Variable überschrieben.<br clear="none">
+Das Fehlen der Überprüfung von Feldgrenzen zur Laufzeit wird oft
+von Hackern zum Erzeugen (un-)kontrollierter Programmabstürze
+ausgenutzt und stellt bei Netzwerksoftware ein kritisches
+Sicherheitsloch dar. Entdecken lassen sich solche Fehler mit
+speziellen Memory Debuggern, wie Dmalloc oder Bounds Checker.</li>
+<li>
+          <strong>Klammern beim Aufruf von Funktionen ohne
+Parameter.</strong>
+          <br clear="none">
+Falls zum Beispiel eine parameterlose Funktion getValue existiert,
+so ist der Funktionsaufruf
+<pre xml:space="preserve">x = getValue; /* falsch */
+</pre>
+falsch.<br clear="none">
+Der korrekte Aufruf wäre
+<pre xml:space="preserve">x = getValue(); /* richtig */
+</pre>
+        </li>
+<li>
+          <strong>Fehler bei der Übergabe eines Pointers an eine
+Funktion.</strong>
+          <br clear="none">
+Eine Funktion convert ist als
+<pre xml:space="preserve">void convert(int *px);
+</pre>
+deklariert. Da der Parameter px ein Pointer auf eine Integer
+Variable ist, muß auch der Funktionsaufruf mit einem Pointer als
+Parameter erfolgen. Also zum Beispiel:
+<pre xml:space="preserve">int result;
+convert(&amp;result);
+</pre>
+Ein typischer Fehler ist, daß der Adreßoperator &amp; hier
+vergessen wird.</li>
+<li>
+          <strong>Funktionen müssen deklariert werden!</strong>
+          <br clear="none">
+Wird eine Funktion nicht vor ihrer Benutzung deklariert, so wird
+automatisch <em>int</em> als Rückgabetyp angenommen. Zum Beispiel:
+<pre xml:space="preserve">double a;
+a = getdouble(); /* falsch */
+</pre>
+Hier wird a ein <em>int</em> anstatt des erwarteten <em>double</em>
+zugewiesen, da der Compiler annimmt, daß getdouble() ein
+<em>int</em> zurückliefert. Um dies zu korrigieren, muß die
+Funktion zunächst deklariert werden (dies wird auch als Prototype
+bezeichnet):
+<pre xml:space="preserve">double getdouble();
+double a;
+
+a = getdouble(); /* richtig */
+</pre>
+        </li>
+<li>
+          <strong>Das 'break' in 'switch' Anweisungen darf nicht
+vergessen werden!</strong>
+          <br clear="none">
+Wird das break vergessen, so wird die Programmausführung bis zum
+nächsten break oder dem Ende der switch Anweisung fortgesetzt.
+Beispiel:
+<pre xml:space="preserve">switch (weekday) {
+  case MONDAY : printf("Start a new week");
+  case TUESDAY:         /* no break here */
+  case FRIDAY :
+    workday++;
+    break;
+  default: weekday++;
+}
+</pre>
+Ist weekday gleich MONDAY, so wird ebenfalls der Code für TUESDAY
+und FRIDAY ausgeführt, da nach MONDAY und TUESDAY kein break steht.
+Ist dieses Verhalten vom Programmierer beabsichtigt, so sollte es
+wie im Beispiel kommentiert werden.</li>
+<li>
+          <strong>Benutzung von Seiteneffekten in
+Ausdrücken.</strong>
+          <br clear="none">
+Die Benutzung von Seiteneffekten ("um Schreibarbeit zu sparen")
+kann zu ungewollten Ergebnissen führen. Beispiel:
+<pre xml:space="preserve">a[n] = n++;
+</pre>
+Ist equivalent entweder zu:
+<pre xml:space="preserve">a[n] = n;
+n = n + 1;
+</pre>
+oder zu:
+<pre xml:space="preserve">a[n + 1] = n;
+n = n + 1;
+</pre>
+Welcher der beiden Fälle eintritt, hängt vom Compiler ab.</li>
+<li>
+          <strong>Fehler bei Typkonvertierungen.</strong>
+          <br clear="none">
+Die Konvertierung von <em>char</em> nach <em>int</em> hängt ähnlich
+wie Bitshiftoperationen auf <em>char</em> davon ab, ob der Typ
+<em>char</em> als <em>signed</em> oder <em>unsigned</em> definiert
+ist. Dies wiederum hängt vom Compiler oder einem Compilerschalter
+ab. Beispiel:
+<pre xml:space="preserve">char a;
+
+a = 228;            /* iso code for the german a-umlaut */
+printf( "%d\n", a); /* implicit conversion to int */
+</pre>
+Es wird entweder -28 oder 228 ausgegeben. Beim GNU Compiler gcc
+läßt sich dieses Verhalten durch Verwenden der
+Kommandozeilenschalter -funsigned-char oder -fsigned-char
+steuern.</li>
+<li>
+          <strong>Klammern beim Verwenden von Pointern und
+Increment/Decrement Operatoren.</strong>
+          <br clear="none">
+Beispiel:
+<pre xml:space="preserve">char line[80];
+*lp = line;
+ch = *lp++;         /* the same as *(lp++) */
+</pre>
+In diesem Beispiel wird ch das Zeichen zugewiesen, auf welches lp
+zeigt. Anschließend wird lp inkrementiert. Verwendet man jedoch
+<pre xml:space="preserve">ch = (*lp)++;
+</pre>
+so wird ch ebenfalls das Zeichen zugewiesen, auf welches lp zeigt.
+Anschließend wird jedoch nicht lp, sondern das Zeichen, auf welches
+lp zeigt, inkrementiert!</li>
+<li>
+          <strong>Die logischen Operatoren &amp;&amp; und || dürfen nicht
+mit den Bitoperatoren &amp; und | verwechselt werden!</strong>
+        </li>
+</ol>
+
+<div>
+<div class="ads_cont">
+<script type="text/javascript" xml:space="preserve">
+            <!--
+google_ad_client = "ca-pub-0341323781243867";
+/* ads_cont */
+google_ad_slot = "5295030165";
+google_ad_width = 728;
+google_ad_height = 90;
+//-->
+</script>
+<script src="haeufige-programmierFehler-Dateien/show_ads.js" type="text/javascript" xml:space="preserve">
+</script><ins style="display:inline-table;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:728px"><ins id="aswift_1_anchor" style="display:block;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:728px"><iframe allowtransparency="true" hspace="0" marginwidth="0" marginheight="0" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){i+='.call';setTimeout(h,0)}else if(h.match){i+='.nav';w.location.replace(h)}s.log&amp;&amp;s.log.push(i)}" vspace="0" id="aswift_1" name="aswift_1" style="left: 0pt; position: absolute; top: 0pt;" frameborder="0" height="90" scrolling="no" width="728"></iframe></ins></ins>
+</div>
+</div>
+</div>
+
+<div id="Footer">
+<div class="copyright">
+Copyright © 2001-2012&nbsp;Martin Kompf. All rights reserved.
+</div>
+</div>
+
+  <div id="Menu">
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/index.html" shape="rect">Übersicht</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://www.kompf.de/imprint.html" shape="rect">Impressum</a>
+      </div>
+      <div class="menuLabel">Sprache</div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/poly.html" shape="rect">Polymorphie</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/perfmess.html" shape="rect">Performancetuning</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/namespace.html" shape="rect">Namespaces</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/refcnt.html" shape="rect">Reference Counting</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/templates.html" shape="rect">Templates (1)</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/templates2.html" shape="rect">Templates (2)</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/funcpar.html" shape="rect">Parameterübergabe</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/const.html" shape="rect">Konstanten</a>
+      </div>
+      <div class="menuItem">
+        <span class="menuSelected">Programmierfehler</span>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/exceptions.html" shape="rect">Exceptions</a>
+      </div>
+      <div class="menuLabel">Standard Template Library (STL)</div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/container.html" shape="rect">Container</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/functors.html" shape="rect">Functors</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/random_shuffle.html" shape="rect">Zufälle</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/autoptr.html" shape="rect">Zeigerautomatik</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/stream1.html" shape="rect">Streams (1)</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/stream2.html" shape="rect">Streams (2)</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/stream3.html" shape="rect">Streams (3)</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/stream4.html" shape="rect">Streams (4)</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/vectorlist.html" shape="rect">Vektoren</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/strings.html" shape="rect">Strings</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/fwords.html" shape="rect">Dateien</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/assoz.html" shape="rect">Assoziative Container</a>
+      </div>
+      <div class="menuLabel">Multithreading</div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/threads1.html" shape="rect">Einführung</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/threads2.html" shape="rect">JThreads/C++</a>
+      </div>
+      <div class="menuLabel">Inter Process Communication (IPC)</div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/pipe.html" shape="rect">Pipes</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/memlock.html" shape="rect">Synchronisation</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/memmap.html" shape="rect">Memory Mapped Files</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/httpget.html" shape="rect">Netzwerk Client</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/httpserv.html" shape="rect">Netzwerk Server</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/network3.html" shape="rect">Netzwerk 3</a>
+      </div>
+      <div class="menuLabel">CORBA</div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/corbatut.html" shape="rect">CORBA</a>
+      </div>
+      <div class="menuLabel">Libraries und APIs</div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/dirlist.html" shape="rect">Verzeichnisse</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/environ.html" shape="rect">Programmumgebung</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/c++boost.html" shape="rect">C++ Boost</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/dates.html" shape="rect">Zeitrechnungen</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/locale.html" shape="rect">Around The World</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/timeover.html" shape="rect">9. September?</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/regex.html" shape="rect">Reguläre Ausdrücke</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/random.html" shape="rect">Zufallszahlen</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/gmp.html" shape="rect">Rechnen mit beliebiger Genauigkeit</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/macaddr.html" shape="rect">MAC Adresse</a>
+      </div>
+      <div class="menuLabel">Compiler, Debugger, IDEs</div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/cdt.html" shape="rect">Eclipse CDT</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/devcpp.html" shape="rect">Bloodshed Dev-C++</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/bcc32.html" shape="rect">Borland C++ Compiler</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/cygwin.html" shape="rect">cygwin</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/lcc.html" shape="rect">LCC-Win32</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/memwatch.html" shape="rect">Speicherkontrolle</a>
+      </div>
+      <div class="menuLabel">Versionsverwaltung</div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/rcs.html" shape="rect">Versionsverwaltung</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/cvs.html" shape="rect">Versionsverwaltung II</a>
+      </div>
+      <div class="menuLabel">Rezensionen</div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/chowto-c-programmmieren.html" shape="rect">C-HowTo</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/rez_dpe.html" shape="rect">Design Patterns Explained</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/rez_willms.html" shape="rect">C++ Programmierung von A. Willms</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/galileo-c.html" shape="rect">Ein Lehrbuch zu C und C++</a>
+      </div>
+      <div class="menuItem">
+        <a href="http://cplus.kompf.de/artikel/csharpbook.html" shape="rect">Das C# Buch von Eric Gunnerson</a>
+      </div>
+    </div>
+
+  
+
+</body></html>

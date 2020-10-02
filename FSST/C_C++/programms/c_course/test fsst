@@ -1,0 +1,53 @@
+passwort ändern
+passwd
+
+in welcher datei sind alle user aufgelistet (pfad)
+var
+
+wofür seht das Tilde Zeichen in unix commandos?
+
+home vollständiger pfad
+
+
+Linux Befehle:
+
+pwd (print working directory)
+cd (change directory)
+df (dump files)
+ls 
+ls -l
+ls -la
+ls ..
+ls ../..
+cat
+cp (copy)
+rm (delete)
+mv (move)
+
+gcc <name.c> -o <name>
+touch <name.c>
+mkdir
+
+
+int len = strlen(s)
+strcpy(s,s2)
+strcopy(s, "HALLO")
+strcat(s, s2)
+
+int cmp= strcmp(s, "quit");
+git pull
+git status
+git checkout origin/DIY AUFGABEN/
+
+
+gedit *.c *.h //alle .c und .h datein aufmachen
+bg  //prozes in den hintergrund schieben
+top();
+pop();
+push();
+init();
+ 
+
+
+ 
+

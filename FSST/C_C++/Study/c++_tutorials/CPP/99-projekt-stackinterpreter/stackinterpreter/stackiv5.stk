@@ -1,0 +1,39 @@
+//summe.stk
+//a.hofmann
+push 0
+assign summe
+read Summe berechnen: VON ?
+assign von
+Sread Summe berechnen: VON ?
+assign von
+
+push 0
+assign i
+// ------------------------------------------------
+while
+vpush i
+push 5
+//gt nimmt nur ein element vom stack
+lt
+//Schleifenzähler vom stack holen
+//assign i
+//--------- aufsummieren
+vpush summe
+vpush i
+add
+assign summe
+//
+// -----------------increment
+vpush i
+push 1
+add
+assign i
+//
+debug
+read weiter mit einer zahl ....
+assign bla
+endwhile
+// -----------------------------------------------
+vpush summe
+write Das Ergebnis ist: 
+//debug

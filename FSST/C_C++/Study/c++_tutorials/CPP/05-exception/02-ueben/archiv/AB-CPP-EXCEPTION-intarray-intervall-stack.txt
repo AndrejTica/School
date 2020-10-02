@@ -1,0 +1,95 @@
+﻿AB-CPP-EXCEPTION-intarray-intervall-stack.txt
+===================================================================
+
+
+Aufgabe: Studieren Sie die folgenden Beispiele:
+-------------------------------------------------------------------
+http://www.cplusplus.com/reference/new/bad_alloc/
+http://www.cplusplus.com/reference/stdexcept/
+http://www.cplusplus.com/reference/stdexcept/out_of_range/
+http://www.cplusplus.com/reference/stdexcept/overflow_error/
+http://www.cplusplus.com/reference/stdexcept/underflow_error/
+
+
+Aufgabe: stack
+-------------------------------------------------------------------
+Gegeben ist: stack.h
+
+~~~
+~~~
+Gesucht ist stack.cpp unter Berücksichtigung der obigen Exception-Klassen.
+
+Hier ein kleines test-stack-exception.cpp
+
+
+
+
+
+
+
+
+
+
+Aufgabe: intarray
+-------------------------------------------------------------------
+Verwenden Sie die obigen Exception-Klassen für die Klasse Intarray
+und testen Sie diese.
+
+
+
+
+Aufgabe: intervall
+-------------------------------------------------------------------
+Verwenden Sie die obigen Exception-Klassen.
+
+#include <iostream>
+using namespace std;
+class IntArray{
+    private: 
+        int size; 
+    protected:
+        int* a;
+    public: 
+        IntArray(int len=100){
+                size=len;
+                a= ????????????;
+        }
+        ~IntArray(){
+                ?????????????;
+        }
+};  
+// ----------------------------------------
+class IntIntervall : public IntArray {
+    private:
+        int l; int r;
+    public:
+        IntIntervall(int left, int right){
+			??????????
+		}
+		void setAt(int i, int value) ???????? {
+            ????????????
+        }        
+       string toString() const{
+		     ??????????
+       }
+};
+// ----------------------------------------
+int main(int argc, char *argv[]) {
+  IntIntervall iv(-10,10);
+
+  for (int i=-10; i<=10; i++)
+    iv.setAt(i, i);
+
+  iv.setAt(-10,-1000);
+  iv.setAt(10,1000);
+	
+  try{
+	iv.setAt(-9999, 5);
+  }catch(????????????? ex){
+	cerr << ex.toString() << endl;
+  }
+	
+  cout << iv.toString() << endl;  
+  return 0;
+}
+

@@ -1,0 +1,1 @@
+Acquire::http::Proxy "http://edu.htl.org\username:pwd@tmg-z2.htl.org:8080";

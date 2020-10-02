@@ -1,0 +1,40 @@
+1.10.3.  Beispiel: caesar.c
+================================================================================
+Cäsar-Chiffre: Zur Codierung seiner Nachrichten soll Cäsar folgendes Verfahren 
+angewandt haben: Statt des Buchstabens, den er meinte, schrieb er den Buchstaben
+auf, der im Alphabet k Positionen rechts vom gemeinten Buchstaben ist. 
+Wenn man bei 'z' ankommt, muss man bei 'a' weiter zählen.
+
+
+Beispiel: Mit k=4 wird aus "hello world" der verschlüsselte Text "lipps asvph". 
+
+
+Schreiben Sie ein C-Progamm (Text einlesen, Text verschlüsseln), das nur die 
+Buchstaben mit dem Cäsar-Chiffre verschlüsselt, aber alle anderen Zeichen 
+unverschlüsselt lässt. Aus "Hello, world!" soll also "Lipps, asvph!" werden. 
+
+Anmerkung: 
+Wenn man zB. zum Zeichen Z kommt muss man beim Zeichen A weiter 
+zählen. (analog z -> a) 
+
+ch=ch+key;
+if(ch>'Z')
+    ch= ch-26;
+
+bzw.
+ch=ch+key;
+if(ch>'Z')
+    ch= ch-26;
+
+
+Anmerkung: Entschlüsselt wird mit key=26-key;
+
+Beispiel:
+Hello, world!		(key=4)
+Lipps, asvph! 	(entschluesselt wird mit 22) (vgl: 26  - 4)
+
+
+Hinweis:
+Als Datentyp verwenden Sie unsigned char
+Annahme: Die Zeilenlänge der Eingabedaten ist <= 128 Zeichen.
+

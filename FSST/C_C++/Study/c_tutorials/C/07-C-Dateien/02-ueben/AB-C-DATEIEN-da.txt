@@ -1,0 +1,28 @@
+﻿AB-C-DATEIEN-da.txt
+===============================================================
+
+
+Aufgabe: da-bilder2html
+---------------------------------------------------------------
+Gegeben sei der Ordner bilder mit Dateien der Form
+foto-1234.jpg.
+
+Erstellen Sie ein Programm namens da-bilder2html, die folgende
+Ausgabe auf die Konsole ausgibt.
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>AbsolventInnen und Ihre Diplomarbeiten</title>
+</head>
+<body>
+
+<h1>AbsolventInnen und Ihre Diplomarbeiten der Elektronik-Abteilung</h1>
+<p>Wenn Sie auf ein Bild klicken können Sie die Beschreibung der 
+der jeweilingen Diplomarbeit einsehen.</p>
+
+<a href="http://www.htl-innovativ.at/index.php?lang=ger&modul=detail&id=5488"><img src="bilder/foto-5488.jpg" width="160" height="120"></a>
+....
+
+
+

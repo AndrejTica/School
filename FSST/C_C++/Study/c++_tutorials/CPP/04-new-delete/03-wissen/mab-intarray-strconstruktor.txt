@@ -1,0 +1,62 @@
+﻿mab: intarray: new, delete:
+------------------------------------------------------------------ 
+1.(6) Gegeben: Die Klasse Intarray mit den Membern: int* a; int size;
+Beispiel f. den Aufruf:
+	Intarray* is= new IntArray("9,8,7777,6,5,4,3,2,1,0");
+
+Gesucht:
+	﻿Intarray::Intarray(char* s){  // s hat zB. "1,2,3,4,5"
+		char* p;
+		char* t;
+		int len, i;
+	
+		// Parameter s duplizieren
+		t= strdup(s);
+	
+		// zähle die Anzahl der Zahlen
+		len=0;
+1.1.(1)	????????????????????
+		
+		// member initialisieren
+1.2.(3)    ????????????????????
+		
+		// werte reinschreiben in a
+		t=strdup(s);
+1.3.(2) ????????????????????
+	}
+Frage: 
+	Muss nach der Verwendung von strdup()
+		a) der Speicher wieder freigegeben werden?
+		b) der Rückgabewert auf NULL geprüft werden?
+Antwort: JA oder nein
+		
+Hinweis: sscanf
+	char p[]= "111"; int a[10];
+	sscanf(p, "%i", &a[0]);   // schreibt in a[0] den int-Wert 111.
+	
+Hinweis: strtok
+	Mit der Funktion strtok() können Sie einen String in einzelne 
+	Teilstrings anhand von Tokens zerlegen. Zuerst die Syntax:
+	
+	char *strtok(char *s1, const char *s2);
+	
+	Damit wird der String s1 durch das Token getrennt, welches 
+	sich im s2 befindet. Ein Token ist ein String, der keine 
+	Zeichen aus s2 enthält. Ein Beispiel:
+	
+	/* strtok.c */
+	#include <stdio.h>
+	#include <stdlib.h>
+	#include <string.h>
+	int main(void) {
+	   char string[] = "Ein Teststring mit mehreren Worten\n"
+					   "und mehreren Zeilen.\t Ende\n";
+	   int i=1;
+	   char *ptr;
+	   ptr = strtok(string, "\n\t ");
+	   while(ptr != NULL) {
+		  printf("% d. Wort: %s\n",i++,ptr);
+		  ptr = strtok(NULL, "\n\t ");
+	   }
+	   return EXIT_SUCCESS;
+	}

@@ -1,0 +1,1 @@
+document.write('<script type="text/javascript"><!--\r\ngoogle_ad_client = "pub-2560316224908115";\r\n/* TF Default Sky 160x600 */\r\ngoogle_ad_slot = "2755247931";\r\ngoogle_ad_width = 160;\r\ngoogle_ad_height = 600;\r\n//-->\r\n<\/script>\r\n<script type="text/javascript"\r\nsrc="http://pagead2.googlesyndication.com/pagead/show_ads.js">\r\n<\/script>\r\n');

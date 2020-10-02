@@ -1,0 +1,64 @@
+﻿# PROJEKT: Diplomarbeiten online
+
+	* Quelle: DB/04-db-app-jdbc/02-ueben/diplomarbeit-2014-06-02.sql
+	* Dauer: ???
+	* Themen: php und DB
+
+
+	
+## Vorkenntnisse:
+-- -----------------------------------------------------------------
+Studieren Sie http://www.htl-innovativ.at
+
+
+
+## AUFGABE: shs WEBZUGANG
+-- -----------------------------------------------------------------
+* Datenbanken/user: 
+	da_admin	enthält die eigentlichen Daten
+	da_public	hat nur lesenden Zugriff auf die Daten von da_admin.
+				Das password lautet: 'comein'
+	
+	
+* importieren Sie die Daten aus 
+DB/04-db-app-jdbc/02-ueben/diplomarbeit-2014-06-02.sql
+
+
+	
+	
+
+
+## AUFGABE: DA ADMIN mit MS-Access
+-- -----------------------------------------------------------------
+* Erzeugen Sie eine ODBC-Datenquelle für den Zugang zur Datenbank
+	shsadmin
+	
+* Erstellen Sie eine Verknüpfung zur Datenbank und Tabelle
+
+* Erstellen Sie mit dem Formularassistenten ein Bearbeitungsformular
+	zum erfassen, update, löschen v. Datensätzen
+	
+* Erstellen Sie einen Report
+
+
+## AUFGABE: WEB-Anbindung: DA_PUBLIC
+-- -----------------------------------------------------------------
+
+Screen Design: vgl. www.htl-innovativ.at
+
+Header
+	suchfeld
+	liste d. Suchergebnisse
+Footer
+
+
+
+## Abgabe: DA-NAME.zip
+-- -----------------------------------------------------------------
+da_admin.*
+da_public.*
+
+
+## Demonstration der Ergebnisse
+-- -----------------------------------------------------------------
+

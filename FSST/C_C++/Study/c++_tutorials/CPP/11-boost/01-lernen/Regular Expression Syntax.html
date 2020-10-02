@@ -1,0 +1,376 @@
+
+<!-- saved from url=(0063)http://www.meyweb.ch/meysoft/support/filereplace/1_2/regexp.htm -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>Regular Expression Syntax</title>
+<link rel="stylesheet" type="text/css" href="./Regular Expression Syntax_files/styl.css">
+</head>
+
+<body>
+
+<h3>Reguläre Ausdrücke</h3>
+<h4><a name="ein"></a>Einleitung</h4>
+<p>Mit regulären Ausrücken kann nicht nur nach einem ganz bestimmten Suchbegriff
+gesucht werden, sondern es sind beliebig komplizierte Suchanfragen möglich. Mit
+Sonderzeichen können Suchbegriffe zusammengesetzt werden, so dass nicht nur ein
+einzelner Begriff gefunden wird, sondern genau definierte Kombinationen von
+Begriffen.</p>
+<p>Falls Sie mit Ausdrücken wie '*.txt', z.B. beim Dateimanagement, bereits
+gearbeitet haben, ist Ihnen das Prinzip der regulären Ausdrücke bereits
+bekannt. Einzelne Sonderzeichen (wie hier der '*') haben eine spezielle
+Bedeutung und stehen z.B. für beliebigen Text (der '*' steht bei diesem
+Beispiel als Platzhalter für einen beliebigen Dateinamen).</p>
+<p>Ähnlich verhält es sich mit den hier verwendeten regulären Ausdrücken. So
+findet beispielsweise 'fi.*?en' beliebige Ausdrücke, die mit 'fi' beginnen und
+mit 'en' aufhören (z.B. finden, finnen etc...) wobei das '?' angibt, das
+jeweils die kürzeste Möglichkeit gesucht werden soll.</p>
+<p>Nachfolgend finden Sie einige Erläuterungen zu den einzelnen Operatoren und deren Bedeutung.</p>
+<h4><a name="op"></a>Operatoren</h4>
+<p>Ausführliche Erklärungen weiter unten.</p>
+<table border="0" width="872">
+  <tbody><tr>
+    <td width="60" bgcolor="#0099FF"><b>Zeichen</b></td>
+    <td width="798" bgcolor="#0099FF"><b>Bedeutung</b></td>
+  </tr>
+  <tr>
+    <td width="60">.</td>
+    <td width="798">steht für ein beliebiges Zeichen (genau ein)</td>
+  </tr>
+  <tr>
+    <td width="60" bgcolor="#99CCFF">|</td>
+    <td width="798" bgcolor="#99CCFF">Oder. Bsp: 'a(b|c)' findet 'ab' oder 'ac'</td>
+  </tr>
+  <tr>
+    <td width="60">*</td>
+    <td width="798">Wiederholung: Das Zeichen vor "*" kann beliebig
+      oft vorkommen (einschliesslich null mal). Bsp: ba* findet b ba, baa, baaa,
+      usw.</td>
+  </tr>
+  <tr>
+    <td width="60" bgcolor="#99CCFF">+</td>
+    <td width="798" bgcolor="#99CCFF">wie * aber ohne null mal. Bsp: ba* findet ba, baa, baaa, usw.
+      aber nicht b</td>
+  </tr>
+  <tr>
+    <td width="60">?</td>
+    <td width="798">wie * aber nur einfache Wiederholung. Bsp: ba? findet b, ba
+      aber nicht baa
+      <p>folgt es einem '*' oder '+' findet es bei Wiederholungen die kürzest
+      mögliche Zeichenfolge (sonst längste). Bsp: 'f.*?n' findet 'fin' und
+      nicht 'finden'</p></td>
+  </tr>
+  <tr>
+    <td width="60" bgcolor="#99CCFF">(, )</td>
+    <td width="798" bgcolor="#99CCFF">Klammern zum gruppieren von Ausdrücken</td>
+  </tr>
+  <tr>
+    <td width="60">{, }</td>
+    <td width="798">Der vor den Klammern stehende Ausdruck wird so oft repetiert
+      wie zwischen den Klammern angegeben, für einen Bereich: {unteres Limit,
+      oberes Limit} Bsp: 'ba{2,4}' findet&nbsp; 'baa', 'baaa' und 'baaaa'.
+      Zwischen den Klammern darf kein Leerzeichen stehen!</td>
+  </tr>
+  <tr>
+    <td width="60" bgcolor="#99CCFF">[, ]</td>
+    <td width="798" bgcolor="#99CCFF">Menge von Zeichen. Bsp: '[abc]' steht für
+      'a', 'b' oder 'c'. '[a-f]' steht für alle Zeichen von 'a' bis und mit
+      'f'.</td>
+  </tr>
+  <tr>
+    <td width="60">$</td>
+    <td width="798">Zeilenumbruch am Ende einer Zeile</td>
+  </tr>
+  <tr>
+    <td width="60" bgcolor="#99CCFF">^</td>
+    <td width="798" bgcolor="#99CCFF">Negation. Bsp: '^a' bedeutet alle Zeichen
+      ausser 'a'
+      <p>Zeilenumbruch am Anfang einer Zeile</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="60">\</td>
+    <td width="798">Das nachfolgende Zeichen wird als gewöhnlicher Buchstabe
+      aufgefasst und nicht als Sonderzeichen. Z.B. steht '\.' für einen Punkt
+      und nicht als '\' gefolgt von einem beliebigen Zeichen.
+      <p>Das folgende Zeichen ist ein Sonderzeichen. Bsp:'\n' repräsentiert das
+      'neue Linie' Zeichen</p>
+    </td>
+  </tr>
+</tbody></table>
+<h4><a name="wdh"></a>Wiederholungen</h4>
+<p>Wiederholungen von einzelnen Zeichen können durch die Zeichen '*', '+' oder
+'?' dargestellt werden. Ein Ausdruck gefolgt von einem '*' kann beliebig oft
+wiederholt werden (einschliesslich 0 mal), '+' bedeutet das selbe aber der
+Ausdruck&nbsp; muss mindestens einmal vorkommen, während er bei '?' max. einmal
+vorkommen darf.<br>
+Soll der Ausdruck eine bestimmte Anzahl vorkommen, kann dem Ausdruck die Anzahl
+in geschweiften Klammern folgen z.B. '{3}'. '{2,5}' bedeutet, dass der Ausdruck
+min. 2 mal aber max. 5 mal vorkommen darf, während '{2,}' nur die untere Grenze
+angibt, also min. 2 mal. Zwischen den Klammern darf kein Leerzeichen stehen!<br>
+Der zu wiederholende Ausdruck kann ein einzelnes Zeichen, eine Zeichengruppe
+oder einen Ausdruck der mit '()' gruppiert wurde.&nbsp;</p>
+<p>Bsp:&nbsp;</p>
+<p>'ba*' findet 'b', 'ba', 'baa', 'baaa' ...<br>
+'ba+' findet&nbsp; 'ba' or 'baa' aber nicht 'b'.<br>
+'ba?' findet&nbsp; 'b' or 'ba'.<br>
+'ba{2,4}' findet&nbsp; 'baa', 'baaa' und 'baaaa'.</p>
+<p>'(ba)*' findet 'ba', baba'... aber nicht 'baa'</p>
+<p>Wird hinter '*' oder '+' ein '?' angehängt, wird die jeweils kürzeste
+Möglichkeit gefunden, ansonsten die längste.</p>
+<p>Bsp:</p>
+<p> 'f.*?n' findet 'fin' und
+      nicht 'finden'</p>
+<p>'f.*n' findet 'finden' und
+      nicht 'fin' (sofern nicht noch später ein 'n' folgt)</p>
+<h4><a name="grp"></a>Gruppieren</h4>
+<p>Mit runden Klammern können Ausdrücke gruppiert werden.</p>
+<p>Bsp:</p>
+<p>'(ba)*' findet 'ba', baba'... aber nicht 'baa'</p>
+<h4><a name="alt"></a>Alternativen</h4>
+<p>Mit dem Oder Operator '|' können alternativ verschiedene Ausdrücke gefunden
+werden.</p>
+<p>Bsp:</p>
+<p>&nbsp;'a(b|c)' findet 'ab' oder 'ac'</p>
+<p>'abc|def' findet 'abc' oder 'def'</p>
+<h4><a name="men"></a>Mengen</h4>
+<p>Mit den Eckigen Klammern '[' und ']' können Zeichen zu einer Menge
+zusammengefasst werden. Mit '^' können die Mengen negiert werden.</p>
+<p>Bsp:</p>
+<p>'[abc]' findet 'a', 'b' oder 'c'</p>
+<p>'[^abc]' findet jedes Zeichen ausser 'a', 'b' oder 'c'</p>
+<p>'[a-z]' findet jedes Zeichen von 'a' bis und mit 'z'</p>
+<p>Spezielle Zeichen(mengen) können mit Klassen definiert werden. Klassen
+werden mit '[:<i>klassenname</i>]' definiert innerhalb einer Mengendeklaration.</p>
+<p>Bsp:</p>
+<p>'[[:digit]]' ist die Menge aller Ziffern (0-9)</p>
+<p>&nbsp;</p>
+<table cellspacing="0" cellpadding="7" width="893" border="0">
+  <tbody>
+    <tr>
+      <td valign="top" width="55" bgcolor="#0099FF"><b>Klassenname</b></td>
+      <td valign="top" width="649" bgcolor="#0099FF"><b>Bedeutung</b></td>
+      <td width="99" bgcolor="#0099FF"><b>Abkürzung (Alternative)</b></td>
+    </tr>
+    <tr>
+      <td valign="top" width="55">alnum</td>
+      <td valign="top" width="649">Ein beliebiges alphanumerisches Zeichen</td>
+      <td width="99">&nbsp;</td>
+    </tr>
+    <tr>
+      <td valign="top" width="55" bgcolor="#99CCFF">alpha</td>
+      <td valign="top" width="649" bgcolor="#99CCFF">Ein Buchstabe a-z oder A-Z.
+        Je nach Zeichensatz können auch noch andere Buchstaben vorkommen</td>
+      <td width="99" bgcolor="#99CCFF">&nbsp;</td>
+    </tr>
+    <tr>
+      <td valign="top" width="55">blank</td>
+      <td valign="top" width="649">unsichtbare Zeichen wie Leerzeichen oder
+        Tabulatoren</td>
+      <td width="99"></td>
+    </tr>
+    <tr>
+      <td valign="top" width="55" bgcolor="#99CCFF">cntrl</td>
+      <td valign="top" width="649" bgcolor="#99CCFF">Kontrollzeichen</td>
+      <td width="99" bgcolor="#99CCFF">&nbsp;</td>
+    </tr>
+    <tr>
+      <td valign="top" width="55">digit</td>
+      <td valign="top" width="649">Ziffern von 0 bis 9</td>
+      <td width="99">\d</td>
+    </tr>
+    <tr>
+      <td valign="top" width="55" bgcolor="#99CCFF">graph</td>
+      <td valign="top" width="649" bgcolor="#99CCFF">grafisches Zeichen</td>
+      <td width="99" bgcolor="#99CCFF">&nbsp;</td>
+    </tr>
+    <tr>
+      <td valign="top" width="55">lower</td>
+      <td valign="top" width="649">Kleinbuchstaben a-z. Je nach Zeichensatz
+        können auch noch andere Buchstaben vorkommen</td>
+      <td width="99">
+\l</td>
+    </tr>
+    <tr>
+      <td valign="top" width="55" bgcolor="#99CCFF">print</td>
+      <td valign="top" width="649" bgcolor="#99CCFF">druckbare Zeichen</td>
+      <td width="99" bgcolor="#99CCFF">&nbsp;</td>
+    </tr>
+    <tr>
+      <td valign="top" width="55">punct</td>
+      <td valign="top" width="649">Punktierung</td>
+      <td width="99">&nbsp;</td>
+    </tr>
+    <tr>
+      <td valign="top" width="55" bgcolor="#99CCFF">space</td>
+      <td valign="top" width="649" bgcolor="#99CCFF">Leerzeichen ??</td>
+      <td width="99" bgcolor="#99CCFF">\s</td>
+    </tr>
+    <tr>
+      <td valign="top" width="55">upper</td>
+      <td valign="top" width="649">Grossbuchstaben A-Z. Je nach Zeichensatz
+        können auch noch andere Buchstaben vorkommen</td>
+      <td width="99">
+\u</td>
+    </tr>
+    <tr>
+      <td valign="top" width="55" bgcolor="#99CCFF">xdigit</td>
+      <td valign="top" width="649" bgcolor="#99CCFF">Hexadezimale Ziffer, 0-9, a-f
+        und A-F.</td>
+      <td width="99" bgcolor="#99CCFF">&nbsp;</td>
+    </tr>
+    <tr>
+      <td valign="top" width="55">word</td>
+      <td valign="top" width="649">Wort - alphanumerische Zeichen plus
+        Unterstrich '_'.</td>
+      <td width="99">\w<br>
+        \W entspricht '[^[:word:]]'</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+Kode
+<p>Die Zeichen können auch durch ihren numerischen Kode repräsentiert werden,
+indem dem Schrägstrich '\' der Kode des Zeichens folgt. Hexadezimale Kodes
+können repräsentiert werden durch '\x' gefolgt vom Kode in Hex.</p>
+<p>Bsp:</p>
+<p>'\023' repräsentiert das Zeichen mit dem Kode 23.</p>
+<p>'\xf0' repräsentiert das Zeichen mit dem Hex Kode f0.</p>
+<p>Um Kode von folgenden Zeichen zu trennen können Klammern benutzt werden.</p>
+<p>Bsp:</p>
+<p>'\0105' repräsentiert das Zeichen mit Kode 105</p>
+<p>'(\010)5' repräsentiert das Zeichen mit dem Kode 10 gefolgt von einer '5'</p>
+<h4><a name="son"></a>Sonderzeichen
+<br>
+</h4>
+<table cellspacing="0" cellpadding="7" width="100%" border="0">
+  <tbody>
+    <tr>
+      <td valign="top" width="33%" bgcolor="#0099FF"><b>Escape Sequenz</b></td>
+      <td valign="top" width="33%" bgcolor="#0099FF"><b>Zeichen Kode</b></td>
+      <td valign="top" width="33%" bgcolor="#0099FF"><b>Bedeutung</b></td>
+    </tr>
+    <tr>
+      <td valign="top" width="33%">\a</td>
+      <td valign="top" width="33%">0x07</td>
+      <td valign="top" width="33%">Glocke.</td>
+    </tr>
+    <tr>
+      <td valign="top" width="33%" bgcolor="#99CCFF">\f</td>
+      <td valign="top" width="33%" bgcolor="#99CCFF">0x0C</td>
+      <td valign="top" width="33%" bgcolor="#99CCFF">Form feed.</td>
+    </tr>
+    <tr>
+      <td valign="top" width="33%">\n</td>
+      <td valign="top" width="33%">0x0A</td>
+      <td valign="top" width="33%">Neue Zeile.</td>
+    </tr>
+    <tr>
+      <td valign="top" width="33%" bgcolor="#99CCFF">\r</td>
+      <td valign="top" width="33%" bgcolor="#99CCFF">0x0D</td>
+      <td valign="top" width="33%" bgcolor="#99CCFF">Wagenrücklauf.</td>
+    </tr>
+    <tr>
+      <td valign="top" width="33%">\t</td>
+      <td valign="top" width="33%">0x09</td>
+      <td valign="top" width="33%">Tabulator.</td>
+    </tr>
+    <tr>
+      <td valign="top" width="33%" bgcolor="#99CCFF">\v</td>
+      <td valign="top" width="33%" bgcolor="#99CCFF">0x0B</td>
+      <td valign="top" width="33%" bgcolor="#99CCFF">Vertikaler Tabulator.</td>
+    </tr>
+    <tr>
+      <td valign="top" width="33%">\e</td>
+      <td valign="top" width="33%">0x1B</td>
+      <td valign="top" width="33%">ASCII Escape Zeichen.</td>
+    </tr>
+    <tr>
+      <td valign="top" width="33%" bgcolor="#99CCFF">\0dd</td>
+      <td valign="top" width="33%" bgcolor="#99CCFF">0dd</td>
+      <td valign="top" width="33%" bgcolor="#99CCFF">Oktaler Zeichenkode, wobei
+        dd eine oder mehrere oktale Ziffern ist.</td>
+    </tr>
+    <tr>
+      <td valign="top" width="33%">\xXX</td>
+      <td valign="top" width="33%">0xXX</td>
+      <td valign="top" width="33%">Hexadezimaler Zeichenkode, wobei XX eine oder
+        mehrere hexadezimale Ziffern ist.</td>
+    </tr>
+    <tr>
+      <td valign="top" width="33%" bgcolor="#99CCFF">\x{XX}</td>
+      <td valign="top" width="33%" bgcolor="#99CCFF">0xXX</td>
+      <td valign="top" width="33%" bgcolor="#99CCFF">Hexadezimaler Zeichenkode,
+        wobei XX eine oder mehrere hexadezimale Ziffern ist (unicode)</td>
+    </tr>
+  </tbody>
+</table>
+<p>Weitere Zeichen (für Kompatibilität zu Perl)</p>
+<table cellspacing="1" cellpadding="5" width="100%" border="0">
+  <tbody>
+    <tr>
+      <td valign="top" width="45%" bgcolor="#0099FF"><b>Zeichen</b></td>
+      <td valign="top" width="45%" bgcolor="#0099FF"><b>dasselbe wie</b></td>
+    </tr>
+    <tr>
+      <td valign="top" width="45%">\w</td>
+      <td valign="top" width="45%">[[:word:]]</td>
+    </tr>
+    <tr>
+      <td valign="top" width="45%" bgcolor="#99CCFF">\W</td>
+      <td valign="top" width="45%" bgcolor="#99CCFF">[^[:word:]]</td>
+    </tr>
+    <tr>
+      <td valign="top" width="45%">\s</td>
+      <td valign="top" width="45%">[[:space:]]</td>
+    </tr>
+    <tr>
+      <td valign="top" width="45%" bgcolor="#99CCFF">\S</td>
+      <td valign="top" width="45%" bgcolor="#99CCFF">[^[:space:]]</td>
+    </tr>
+    <tr>
+      <td valign="top" width="45%">\d</td>
+      <td valign="top" width="45%">[[:digit:]]</td>
+    </tr>
+    <tr>
+      <td valign="top" width="45%" bgcolor="#99CCFF">\D</td>
+      <td valign="top" width="45%" bgcolor="#99CCFF">[^[:digit:]]</td>
+    </tr>
+    <tr>
+      <td valign="top" width="45%">\l</td>
+      <td valign="top" width="45%">[[:lower:]]</td>
+    </tr>
+    <tr>
+      <td valign="top" width="45%" bgcolor="#99CCFF">\L</td>
+      <td valign="top" width="45%" bgcolor="#99CCFF">[^[:lower:]]</td>
+    </tr>
+    <tr>
+      <td valign="top" width="45%">\u</td>
+      <td valign="top" width="45%">[[:upper:]]</td>
+    </tr>
+    <tr>
+      <td valign="top" width="45%" bgcolor="#99CCFF">\U</td>
+      <td valign="top" width="45%" bgcolor="#99CCFF">[^[:upper:]]</td>
+    </tr>
+    <tr>
+      <td valign="top" width="45%">\C</td>
+      <td valign="top" width="45%">.</td>
+    </tr>
+    <tr>
+      <td valign="top" width="45%" bgcolor="#99CCFF">\Q, \E</td>
+      <td valign="top" width="45%" bgcolor="#99CCFF">Alle dem '\Q' folgenden
+        Zeichen werden als normale Zeichen interpretiert bis zu '\E'</td>
+    </tr>
+  </tbody>
+</table>
+<h4><a name="que"></a>Weiterführende Hilfe / Quelle:</h4>
+<p>Übersetzt und modifiziert aus: Dokumentation zu Boost::regex lib, (c) Dr
+John Maddock</p>
+<p>Die original Dokumentation (etwas ausführlicher) kann hier gefunden werden: <a href="http://www.boost.org/libs/regex/syntax.htm">http://www.boost.org/libs/regex/syntax.htm</a>
+(englisch)</p>
+
+
+
+
+</body></html>

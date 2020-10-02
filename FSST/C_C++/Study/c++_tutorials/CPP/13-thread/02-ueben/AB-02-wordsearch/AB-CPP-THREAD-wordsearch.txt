@@ -1,0 +1,373 @@
+AB-CPP-THREAD-wordsearch.txt
+========================================================================
+Quellen:
+	﻿http://marknelson.us/2012/05/23/c11-threading-made-easy/
+	
+Ziele:
+	STL, regex, Async, Mutex, ...
+
+Überblick:
+	Das Programm ./wordsearch.exe soll eine grosse Textdatei einlesen
+	und alle Worte aus der Textdatei ausgeben, die einem bestimmten
+	Muster entsprechen.
+
+	Bsp:
+	./wordsearch.exe ..turn
+	Found 3 matches for ..turn
+	Saturn
+	return
+	upturn
+
+Versionen:
+	Version 1: 	sei eine sequentielle Version
+					wordsearch.cpp
+					
+	Version 2: 	sei eine multithreaded Version
+					async-wordsearch.cpp
+					
+	Version 3: 	sei eine multithreaded Version mit gegenseitigem Ausschluss
+					async-wordsearch-mutex.cpp
+
+
+
+Hinweis: Makefile:
+--------------------------------------------------------------------------
+
+all:
+	g++ wordsearch.cpp -o wordsearch.exe -lpthread
+	g++ async-wordsearch.cpp -o async-wordsearch.exe -lpthread
+	g++ async-wordsearch-mutex.cpp -o async-wordsearch-mutex.exe -lpthread
+run:
+	./wordsearch.exe ..turn
+	./async-wordsearch.exe ..turn
+	./async-wordsearch-mutex.exe ..turn
+clean:
+	rm *.exe
+
+
+
+------------------------------------------------------------------------
+Aufgabe 01: wordsearch.cpp
+------------------------------------------------------------------------
+* (done) Erzeuge die Datei input.txt mit 
+	cp /usr/share/dict/words input.txt
+
+* Lies die Datei input.txt wortweise ein und
+* speichere die Worte in einer deque
+	http://www.cplusplus.com/reference/deque/deque/
+
+* g++ wordsearch.cpp -o wordsearch.exe 
+* ./wordsearch.exe
+
+
+
+Hinweis: wordsearch.cpp
+
+// ------------------------------------------------------------------
+// Hilfsklasse zur Zeitmessung
+// ------------------------------------------------------------------
+#include <chrono>
+class Time{
+private:
+  static chrono::steady_clock::time_point start;
+public:
+  static string getTime(){
+    chrono::duration<double> d= chrono::steady_clock::now() - start;
+    return "[" + to_string(d.count()) + "s] ";
+  }
+
+  static void init(){
+    start= chrono::steady_clock::now();
+  }
+};
+chrono::steady_clock::time_point Time::start= chrono::steady_clock::now();
+
+
+
+
+int main(int argc, char** argv){
+
+   cout << Time::getTime() << "... BEGIN"<<endl;
+	//...
+	
+	ifstream f( "input.txt" );
+    if ( !f ) {
+        cerr << "Cannot open input.txt in the current directory\n";
+        return -1;
+    }
+   if ( argc < 2 ) {
+        cerr << "Usage: ./wordsearch.exe pattern\n\n"
+                "pattern contains lower case letters and periods.\n"
+                "The periods will match any character\n"
+					 "example: ....n\n";
+        return -1;
+    }
+    string word;
+    deque<string> backlog;
+    while ( f >> word )       		// read word
+        backlog.push_back( word );	// store word 
+
+	//...
+   cout << Time::getTime() << "... BEGIN"<<endl;
+        
+
+
+
+
+------------------------------------------------------------------------
+Aufgabe 02: wordsearch.cpp (mit find_matches)
+------------------------------------------------------------------------
+Erzeuge die Funktion find_matches(), die alle strings in der deque 
+namens backlog, die zum Parameter pattern passen/matchen, in 
+einem vector<string> zurückgibt.
+
+Hinweis:
+
+	vector<string> find_matches( string pattern, deque<string> &backlog ){
+		vector<string> results;
+		
+		while ( backlog.size() ) {
+			string word = backlog.front();
+			backlog.pop_front();   // remove word from dequeu
+
+			if ( regex_match( word.begin(), word.end(), regex(pattern)) )
+				results.push_back( word );
+		}
+		return results;
+	}
+
+
+
+ 
+Hier noch der Aufruf der Funktion find_matches():
+
+    vector<string> words = find_matches( pattern, backlog );
+    cout << "Found " << words.size()
+         << " matches for " << pattern
+         << endl;
+    for ( auto s : words )
+        cout << s << "\n";
+        
+        
+Folgender Aufruf muss möglich sein:
+./wordsearch.exe ..turn
+
+gibt alle Worte aus, die dem Pattern entsprechen. Also zB:
+Found 2 matches for ..turn
+return
+upturn
+
+
+
+
+Die Funktion match() soll 
+a) selbst programmiert werden oder 
+b) verwende http://www.cplusplus.com/reference/regex/
+
+
+
+Hinweis-1: regex_match
+// regex-demo.cpp
+//
+// regex_match()
+// liefert true, nur wenn der GESAMTE string dem Muster entspricht.
+//
+// 	g++ regex-demo.cpp -o regex-demo.exe
+
+
+#include <regex> 
+#include <iostream> 
+using namespace std;
+  
+  
+int main(){ 
+	bool ret;
+		
+	string str = "Hello"; 
+	regex muster("..ll."); 
+
+	ret= regex_match(str.begin(), str.end(), muster);
+	if (ret){
+		cout <<endl;
+		cout <<__FILE__ <<":"<<__LINE__<< " ..."<< endl;
+		cout << "string= " << str <<endl;
+		cout << "muster= " << "..ll." <<endl;
+		cout << "regex_match(str.begin(), str.end(), muster); liefert true" << endl;		
+	}
+	
+	return 0;
+}
+
+
+Hinweis-2: regex_match
+  if (std::regex_match ("subject", std::regex("(sub)(.*)") ))
+    std::cout << "string literal matched\n";
+
+
+
+Hinweis-3: regex_search
+http://www.cplusplus.com/reference/regex/match_results/suffix/
+	// match_results::prefix/suffix
+	// - using smatch, a standard alias of match_results<string::iterator>
+	#include <iostream>
+	#include <string>
+	#include <regex>
+
+	int main ()
+	{
+	  std::string s ("there is a needle in this haystack");
+	  std::smatch m;
+	  std::regex e ("needle");
+
+	  std::cout << "searching for needle in [" << s << "]\n";
+	  std::regex_search ( s, m, e );
+
+	  if (m.ready()) {
+		std::cout << m[0] << " found!\n";
+		std::cout << "prefix: [" << m.prefix() << "]\n";
+		std::cout << "suffix: [" << m.suffix() << "]\n";
+	  }
+
+	  return 0;
+	}
+
+
+	Output:
+
+	searching for needle in [there is a needle in this haystack]
+	needle found!
+	prefix: [there is a ]
+	suffix: [ in this haystack]
+
+
+
+
+
+
+Multithreading
+========================================================================
+Wir wollen nun eine sogenannte Multi-Threaded Implementation erzeugen.
+
+1. Verwende für den Aufruf von find_match() den in C++11 vefügbaren 
+	async wrapper:
+
+   auto f1 = async( launch::async, find_matches, pattern, backlog );
+   
+Der return Wert von async() wird future genannt.
+D.h. f1 enthält zunächst keinen Wert, den man gleich verwenden kann.
+Aber nachdem der Thread beendet wurde, kann man über f1 durch die
+Methode get() den eigentlichen Rückgabewert von find_match() erhalten.
+
+
+    vector<string> words = f1.get();
+
+Weil beim Aufruf von asnc() der Parameter std::launch::async
+verwendet wurde, wird der Aufruf von get() bewirken, dass 
+gewartet (vgl. join()) wird, bis der Thread fertig ist.
+
+Wenn also der Thread fertig ist, liefert get() das gewünschte Ergebnis.
+
+Eine sehr einfache Variante, um Asynchronität zu erreichen.
+
+
+
+Mehrere Threads
+===============
+
+------------------------------------------------------------------------
+Aufgabe 3: async-wordsearch.cpp
+------------------------------------------------------------------------
+Kopieren Sie das obige Programm in async-wordsearch.cpp
+Es sollen nun 2 Threads mit find_matches()-Aufrufen gestartet werden.
+
+Beachten Sie:
+   auto f1 = async( launch::async, find_matches, pattern, backlog );
+   auto f2 = async( launch::async, find_matches, pattern, backlog );
+
+ist zuwenig, weil
+	vector<string> 
+	find_matches( string pattern, deque<string> &backlog );
+arbeitet mit einer Referenz auf backlog.
+
+
+Wir müssen also beim Aufruf von async darauf Rücksicht nehmen, sodass
+die 3 Threads alle auf dem gleichen Datenbestand (backlog) arbeiten:
+
+	#include <future>
+	#include <functional>
+	...
+    auto f1 = async( launch::async, find_matches, pattern, ref(backlog) );
+    auto f2 = async( launch::async, find_matches, pattern, ref(backlog) );
+
+
+Die Ergebnisse einsammeln:
+  vector<string> words1= f1.get();
+  vector<string> words2= f2.get();
+  
+
+Bringen Sie das Programm zum Laufen.
+g++ async-wordsearch.cpp -o async-wordsearch.exe -lpthread
+ 
+
+Frage: 
+Was können Sie feststellen?
+
+
+
+Mutex verwenden
+===============
+Das obige Programm stürzt ab, weil Objekte aus der STL wie deque
+nicht thread-safe sind.
+
+
+
+Aufgabe 04: async-wordsearch-mutex.cpp
+------------------------------------------------------------------------
+Kopieren Sie async-wordsearch.cpp nach async-wordsearch-mutex.cpp
+
+Mutex verwenden, um den Zugriff auf deque zu synchronisieren, 
+sodass zu einer Zeit immer (garantiert) nur ein Thread deque
+verwenden kann. (Sperrsynchronisation).
+
+
+Hier ein Beispiel:
+...
+vector<string> find_matches( string pattern, deque<string> &backlog ){
+    vector<string> results;
+    for ( ; ; ) {
+		// EINTRITT in Critical Section.........................
+        m.lock();
+        if ( backlog.size() == 0 ) {
+            m.unlock();
+            return results;
+        }
+        string word = backlog.front();
+        backlog.pop_front();
+		// AUSTRITT aus Critical Section.........................
+        m.unlock(); 
+        if ( match( pattern, word ) )
+            results.push_back( word );
+    }
+...
+}
+
+
+Nun müsste das Programm funktionieren. Machen Sie einige Versuche.
+
+./async-wordsearch-mutex.exe ..turn
+./async-wordsearch-mutex.exe .e
+
+
+
+========== FERTIG =======================
+
+
+Hinweis: Vergleiche mit dem Standardprogramm grep:
+
+grep "^.e$" input.txt|sort
+./async-wordsearch-mutex.exe .e 2> /dev/null | grep -v "Found.*" |sort
+
+Der folgende Aufruf zeigt, dass unser Programm den gleichen Output
+liefert wie grep:
+./async-wordsearch-mutex.exe .e 2> /dev/null | grep -v "Found.*" |sort | diff - <(grep "^.e$" input.txt|sort)
+

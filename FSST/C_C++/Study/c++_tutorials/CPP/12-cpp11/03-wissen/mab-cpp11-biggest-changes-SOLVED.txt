@@ -1,0 +1,185 @@
+﻿mab-cpp11-biggest-changes-SOLVED.txt
+===============================================================
+
+Ergänze:
+	g++ std=c++11 hello.c -o hello.exe
+
+Wie lautet die genaue Ausgabe (inkl. evtl. Zeilenschaltungen)
+des folgenden Programmes?
+	string test;
+	test = R"(First Line.\nSecond line.\nThird Line.\n)";
+	cout << test << endl;
+	
+	First Line.\nSecond line.\nThird Line.
+
+richtig oder falsch
+	int* a = new int[3] { 1, 2, 0 };
+		x richtig
+		o falsch
+
+	vector<string> vs={ "first", "second", "third"};
+		x richtig
+		o falsch
+
+	int arr[] = {1,2,3,4,5};
+	for(int& e : arr){
+	  e = e*e;
+	}
+		x richtig
+		o falsch
+
+
+In-Class Initialisierungen sind private members bei der Klassen
+definition bereits mit Werten initialisiert. Bsp.
+	class Foo{
+	 int a=7; 	//C++11 only
+	public:
+	 Foo();
+	};
+	
+	
+auto i = 42;        // i ist vom Typ: int_____________________
+
+auto p = new Foo(); // p ist vom Typ: Foo*_____________________	
+
+
+Gegeben sei:
+	const vector<int> vi;
+	typedef decltype (vi.begin()) FOO;
+	FOO another;
+
+	another ist in Wirklichkeit vom Typ __________________________
+
+
+Was gibt das Programm aus (Beachte evtl. Zeilenschaltungen)?
+	std::map<std::string, std::vector<int>> map;
+	std::vector<int> v;
+
+	v.push_back(1);
+	v.push_back(2);
+	v.push_back(3);
+
+	map["one"] = v;
+	...
+
+	for(const auto& kvp : map) {
+	  std::cout << kvp.first << std::endl;
+
+	  for(auto v& : kvp.second){
+		 std::cout << v << std::endl;
+	  }
+	}
+
+	one
+	1
+	2
+	3
+	
+Gegeben sei:
+	#include <iostream>
+	#include <vector>
+	#include <algorithm> // for_each, find_if
+	using namespace std;
+
+	int main(){
+		std::vector<int> v;
+		v.push_back(1);
+		v.push_back(2);
+		v.push_back(3);
+
+		std::for_each(	std::begin(v), 
+						std::end(v), 
+						[](int n) -> void {cout << n << endl;});
+
+		auto is_odd = [](int n)-> bool {return n%2==1;};
+
+		auto pos = std::find_if(std::begin(v), std::end(v), is_odd);
+
+		if(pos != std::end(v))
+			std::cout << *pos << std::endl;
+
+		return 0;
+	}
+
+Frage: Was gibt das obige Programm aus?
+1
+2
+3
+1
+
+
+Gegeben sei:
+	#include <iostream>
+	#include <algorithm> // for_each
+	#include <string>
+	using namespace std;
+
+	int main(){
+		string s="Hello World!";
+		int iUppercase = 0; 
+
+		std::for_each(	std::begin(s), 
+					std::end(s), 
+					[&iUppercase] (char c) -> void {
+						if (isupper(c)) iUppercase++;}
+		);
+
+		cout<< iUppercase<<" uppercase letters in: "<< s<<endl;
+		return 0;
+	}
+Das & bei [&iUppercase] gibt an, dass 
+	x per Referenz
+	o per Pointer
+	o per Wert
+	 auf die Variable zugegriffen wird.
+
+Frage: Was gibt das obige Programm aus?
+2 uppercase letters in: Hello World!
+
+
+
+
+Frage: Warum wird hier der Compiler einen Fehler melden?
+	class B {
+	public:
+	   virtual void f(short) {std::cout << "B::f" << std::endl;}
+	};
+
+	class D : public B
+	{
+	public:
+	   virtual void f(int) override {std::cout << "D::f" << std::endl;}
+	};
+
+Antwort:
+Die zu überschreibende Funktion f in der Klasse D hat keine entsprechende Funktion in ihrer Oberklasse B. Beachte, dass beide Funktionen zwar den gleichen Namen f haben, aber sie sind wegen des unterschiedlichen Parameters (short bzw. int) im Sinne von c++ unterschiedliche Funktionen.
+
+
+Gegeben sei:
+	class NoCopy {
+	NoCopy & operator =( const NoCopy & ) = ????????????delete;
+	NoCopy ( const NoCopy & ) = ???????????delete;
+	};
+
+	NoCopy a;
+	NoCopy b(a); //compilation error, copy ctor is deleted
+
+Ersetze die ????????????
+
+
+
+Frage: Was ist ein RValue bzw. LValue?
+
+
+
+
+Frage: Warum ist eine Referenz auf einen Rvalue (temporäres Objekt) sinnvoll?
+
+
+
+
+Es zahlt sich also aus, einer Klasse, die Member mit Zeigern hat, 
+folgendes hinzuzufügen:
+1) den Move-Konstruktor und den
+2) Move-Zuweisungsoperator 
+

@@ -1,0 +1,23 @@
+﻿mab-ref-integritaet-ddl.txt
+--------------------------------------------------------------------------------
+
+1.(2) --------------------------------------------------------------------------
+	Probleme, die bei der Wartung der referentiellen Integrität
+	zu berücksichtigen sind. (Auflistung und Lösungen)
+
+
+2.(4) --------------------------------------------------------------------------
+	Gegeben ist {STUD} N:M {VORL}. Wenn eine Vorlesung abgesagt
+	wird , sollen alle davon abhängigen Datensätze gelöscht 
+	werden. 
+	Erstellen Sie alle notwendigen SQL-Anweisungen.
+	
+	
+	
+	Hinweis:
+	create table NAME(spaltenname typ constraint);
+
+	alter table add constraint NAME foreign key NAME
+	references NAME(NAME) ON ??????????????????;
+	
+	

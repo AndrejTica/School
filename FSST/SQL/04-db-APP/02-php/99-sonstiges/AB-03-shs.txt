@@ -1,0 +1,92 @@
+﻿-- =================================================================
+AUFGABE: Schüler helfen Schülern (shs)
+-- =================================================================
+ue-shs.txt
+
+* Dauer: ???
+* Themen:
+	DB
+	php und DB
+	xml, javascript
+	google map
+
+* Links:
+	http://www.ogee.de/googlemaps/
+	https://developers.google.com/maps/articles/phpsqlajax?hl=de-DE
+
+
+	
+Vorkenntnisse:
+-- -----------------------------------------------------------------
+https://developers.google.com/maps/articles/phpsqlajax?hl=de-DE
+
+*arbeiten Sie das folgende Beispiel durch, sodass am Ende auf
+ihrem System diese Applikation aufrubar ist.
+
+*notieren Sie den Zeitaufwand.
+
+
+
+AUFGABE: shs WEBZUGANG
+-- -----------------------------------------------------------------
+* Datenbanken/user: 
+	shsadmin	enthält die eigentlichen Daten
+	shspublic	hat nur lesenden Zugriff auf die Daten von shsadmin.
+				Das password lautet: 'comein'
+	
+	
+* Erstellen Sie ein ERD: (Projekt)
+	* Schüler helfen Schülern, indem Sie ihr Wissen in 
+	bestimmten Fächern (AM1, AM2, …) anderen Schülern weitergeben.
+	
+	* Um den Kontakt herstellen zu können, werden der Name, 
+	die Kontaktmöglichkeit (Tel, oder email oder url) angegeben.
+	
+	* Um für die Web-Applikation Google-Map verwenden zu können, 
+	werden lat und lng (Breiten – und der Längengrad) gespeichert.
+
+* Erstellen Sie die Datei shs-ddl.sql, die alle create .... Anweisungen
+	enthält.
+	
+* Erstellen Sie de Datei shs-dml.sql, die mindestens 5 Datensätze 
+	mittels insert into ... in die Tabelle stellt.
+	
+	
+
+Screen Design
+-- -----------------------------------------------------------------
+vgl. maps.google.com
+
+Header
+suchfeld
+liste d. Suchergebnisse				map
+
+Footer
+
+
+AUFGABE: shs ADMIN mit MS-Access
+-- -----------------------------------------------------------------
+* Erzeugen Sie eine ODBC-Datenquelle für den Zugang zur Datenbank
+	shsadmin
+	
+* Erstellen Sie eine Verknüpfung zur Datenbank und Tabelle
+
+* Erstellen Sie mit dem Formularassistenten ein Bearbeitungsformular
+	zum erfassen, update, löschen v. Datensätzen
+	
+* Erstellen Sie einen Report
+
+
++Zusatz
+-- -----------------------------------------------------------------
+* statt google map OpenStreetMap verwenden
+* statt MS-Access mit OpenOffice/Openbase
+* erstellen Sie eine php-Version zur Wartung der Datenbestände
+
+
+Abgabe: shs-NAME.zip
+-- -----------------------------------------------------------------
+shs-ddl.sql
+shs-dml.sql
+
+Demonstration der Ergebnisse

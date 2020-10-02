@@ -1,0 +1,17 @@
+ADD:Anton Hofmann:100
+
+ADD:Beta Hofmann:200
+
+ADD:Gamma Hofmann:300
+
+DEL:Anton Hofmann
+
+ADD:Omega Hofmann:509
+
+FORALL:PLUS:100
+
+FORALL:MINUS:100
+
+FORONE:Omega Hofmann:PLUS:1
+
+FORONE:Omega Hofmann:MINUS:10

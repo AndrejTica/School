@@ -1,0 +1,72 @@
+﻿mab-os-theorie
+-------------------------------------------------------------------------
+-- 1. Gib eine kurze, aber vollständige Erklärung zu folgenden Begriffen:
+	1.1) reentrance
+	1.2) MS-DOS ist nicht reentrant bedeutet .....
+	1.3) preemptives Multitasking
+	1.4) Round Robin
+	1.5) IPC
+	1.6) Signale
+	1.7) Pipes
+	1.8) Semaphore
+	1.9) wechselseitigen Ausschluss
+	1.10) Sperr-Synchronisation
+	1.11) Ereignis-Synchronisation
+	1.12) Lost-Update
+	1.13) Synchronisations-Problem: Erzeuger / Verbraucher
+	1.14) Lost-Update kann mit ??????????? gelöst werden.
+	1.15) Prozesszustände
+	1.16)Unterschied: Thread, Process
+
+-- 2. Was gehört zusammen: ----------------------------------------------
+	a) non preemptives Multitasking			c) preemptives Multitasking
+	b) kooperatives Multitasking			d) verdrängendes Multitasking
+
+-- 3. Was gehört zusammen (Semaphore):-----------------------------------
+	a) signal()					c) wait()
+	b) P()						d) V()
+
+-- 4. Einige Zeilen wurden vertauscht. ----------------------------------
+	struct semaphore{  int count; FIFO queue; } sema;
+	Einige Zeilen wurden vertauscht. ----------------------------------
+	Gib hier die richtige Zeilenfolge an:
+	1,2, ??????
+	
+	 1 wait(sema):
+	 2 	if (sema.count>0){
+	 3 		suspend(pid) 
+	 4 	}
+	 5 	else{
+	 6 		sema.count= sema.count – 1;
+	 7 		addProcess(pid,sema.queue);
+	 8 	}
+	 9         
+	10 signal(sema) :
+	11 	if (isEmpty(sema.queue)== false){
+	12 		sema.count= sema.count + 1;
+	13 		resume(pid); 
+	14 	}else{
+	15 		pid= removeProcess(sema.queue);
+	16 	}
+	
+	
+-- 5. Vervollständige (Semaphore): --------------------------------------
+	struct semaphore{  ??????????? };
+	Reale Maschine =  ?????????????
+	Abstrakte Maschine = ??????????
+	Benutzermaschine = ????????????
+
+-- 6. richtig oder falsch? ----------------------------------------------
+6.1) der prozess hat nur im zustand running zugriff auf die signal-tabelle
+6.2) Semaphore-variablen werden nur zur Sperrsynchronisation verwendet.
+6.3) reentrance bedeutet, dass Betriebssystemdienste globale Variablen nutzen muessen,
+     denn sonst kann der jeweilige Dienst nach einer Prozessumschaltung nicht weiter 
+       machen.
+6.4) Threads haben im Unterschied zu Prozessen kein eigenes Stacksegment.
+6.5) Das Round-Robin Verfahren arbeitet nach der First-Come-First-Serve Methode 
+6.6) Deadlocks treten nur dann auf, wenn Betriebsmittel exklusiv genutzt werden muessen
+
+
+6.7)(2)
+(2) Wie funktioniert ein Semaphore? und 
+(2) Wofür kann man diesen Mechanismus einsetzen?

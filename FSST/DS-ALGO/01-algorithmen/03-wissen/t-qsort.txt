@@ -1,0 +1,46 @@
+﻿mab (6) Sortieren-qsort
+-----------------------------------------------------------------
+
+
+1. (2) Wie funktioniert der QUICK-SORT-Algorithmus?
+-----------------------------------------------------------------
+
+
+2. (2) 
+-----------------------------------------------------------------
+Erklären Sie die Funktionsweise der Partition-Funktion
+	die beim Quick-Sort zum Einsatz kommt.
+
+10	7	16	4	9	18	-3	8	12
+l								r
+key=10
+
+10	7	16	4	9	18	-3	8	12
+		l					r
+
+10	7	?   ?   ?    ?   ?  ?    ?
+
+
+Wie sieht die Zeile aus, wenn l und r gleich sind?
+10	7	?	?	?	?	?	?	?
+						l
+						r
+
+Wie sieht die Zeile aus, wenn key an der richtigen Stelle steht
+?   ?   ?   ?   ?   ?    ?   ?   ?
+-3	7	8	4	9	10	18	16	12
+
+Wie sehen nun die zwei zu sortierenden Teilmengen des Arrays aus?
+?   ?   ?   ?   ?   10   ?   ?   ?
+[rekursion: qsort]	j	[rekursion: qsort]
+
+
+
+3. (2)
+-----------------------------------------------------------------
+Beschreiben Sie die richtige Verwendung der 
+C-Standardfunktion qsort().
+
+a) Aufruf
+b) Was muss der ProgramiererIn sonst noch tun?
+

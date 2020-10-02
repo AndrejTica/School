@@ -1,0 +1,551 @@
+* CPP: Threads
+
+- Sperr-*Synchronisation* mit *Mutex*
+- Ereignis-Synchronisation mit *Condition Variablen*
+- *Future/Async Threads* für längere Input/Output-Operationen
+- g++ filename.cpp -o filename.exe std=c++11 -lpthread
+
+
+* 01-thread-func.cpp: Thread erzeugen durch eine Funktion
+
+- Eine herkömmliche Funktion kann als eigener Thread gestartet werden.
+
+#+BEGIN_SRC cpp
+#include <iostream>
+#include <thread>
+using namespace std;
+
+
+static void func(){
+  cout << "Hello World" << endl;
+}
+
+
+int main(){
+
+  thread t(func);
+
+  t.join();
+
+  return 0;
+}
+#+END_SRC
+
+
+* 02-thread-func-with-args.cpp: Thread erzeugen durch eine Funktion mit Argumenten
+
+#+BEGIN_SRC cpp
+#include <iostream>
+#include <thread>
+ 
+static void func(int a, int b){
+    std::cout << "Hello World: " << a << ", " << b << std::endl;
+}
+ 
+int main(){
+
+    std::thread t(func, 10, 20);
+
+    t.join();
+
+    return 0;
+}
+#+END_SRC
+
+
+* 03-thread-lambda.cpp: Thread erzeugen durch Lambda
+
+#+BEGIN_SRC cpp
+#include <thread>
+#include <iostream>
+using namespace std;
+
+int main(){
+	thread t1([](){ cout << "Hi from thread" << endl;});
+	
+	t1.join();
+	return 0;
+}
+
+#+END_SRC
+
+
+
+* 04-thread-class.cpp: Thread erzeugen durch eine Klasse
+
+#+BEGIN_SRC cpp
+
+#include <iostream>
+#include <thread>
+ 
+class MyThread{
+    public:
+        void operator()(){
+            std::cout << "Hello World" << std::endl;
+        }
+};
+ 
+int main(){
+	MyThread mythread;
+    std::thread t(mythread);
+
+    t.join();
+
+    return 0;
+}
+#+END_SRC
+
+
+
+* 05-thread-punkt-strich.cpp: Thread Beispiel
+
+#+BEGIN_SRC cpp
+
+#include <thread>
+#include <iostream>
+#include <string>
+using namespace std;
+
+class PunktStrich {
+private:
+	string s;
+public:
+	PunktStrich(string s){
+		this->s= s;
+	}
+
+	void operator() (){
+		while(true){
+			cout << s;
+		}
+	}
+};
+
+int main(){
+	PunktStrich obj1(".");
+	PunktStrich obj2("-");
+
+	// treads starten
+	thread t1(obj1);
+	thread t2(obj2);
+
+	// warten.
+	t1.join();
+
+	return 0;
+}
+#+END_SRC
+
+
+
+* 06-lost-update.cpp: Das Lost-Update Problem
+
+- Problem:
+  - Mehrere Threads ändern einen gemeinsam genutzten Speicher.
+  - Das Ändern geschieht durch 3 unterbrechbare Operationen:
+	- read
+	- increment
+	- write
+  - Lost-Update passiert, wenn z.B:
+	- Thread-1: liest
+	- Thread-1: increment
+	  - Thread-2: liest
+	  - Thread-2: increment
+	  - Thread-2: write
+	- Thread-1: write
+
+
+#+BEGIN_SRC cpp
+#include <thread>
+#include <iostream>
+using namespace std;
+
+
+class LostUpdate{
+private:
+	// shared memory
+	static int count;
+
+public:
+	static int getCount(){
+		return count;
+	}
+
+	void operator() (){
+		for (int i=1; i<=10000000; i++)
+			count++;
+	}
+};
+// init shared memory
+int LostUpdate::count=0;
+
+
+int main(){
+	LostUpdate obj1;
+	LostUpdate obj2;
+
+	cout << "LostUpdate Problem: 2 threads increment shared memory (each by 10000000)."<< endl;
+	cout << "... Result should be: " << "20000000"<<endl;
+
+	cout << "... Before incr: Shared memory= " << LostUpdate::getCount() << endl;
+
+	thread t1(obj1);
+	thread t2(obj2);
+ 
+	t1.join();
+	t2.join();
+
+	cout << "... After incr: Shared memory= " << LostUpdate::getCount() << endl;
+
+	return 0;
+}
+
+#+END_SRC
+
+
+* 07-lost-update-mutex.cpp: Lösung durch Sperr-Synchronisation
+- Lösung:
+- Identifiziere den *kritischen Abschnitt* 
+- Kennzeichne den kritischen Abschnitt durch einen *Mutex*
+
+- Mutex:
+- sind sog. Semaphore-Variablen
+
+- Semaphore:
+- Zähler und Queue
+- 2 Operationen:
+  - wait/lock: (den kritischen Abschnitt Passieren)
+  - notify/unlock: (den kritischen Abschnitt Verlassen)
+
+
+#+BEGIN_SRC cpp
+
+#include <thread>
+#include <mutex>
+#include <iostream>
+using namespace std;
+
+
+class LostUpdate{
+private:
+	// shared memory
+	static int count;
+	static mutex m;
+
+public:
+	static int getCount(){
+		return count;
+	}
+
+	void operator() (){
+		for (int i=1; i<=10000000; i++){
+			m.lock(); //!!!!!!!!!!!!!!!!!!!!
+			count++;
+			m.unlock(); // !!!!!!!!!!!!!
+		}
+	}
+};
+// init shared memory
+int LostUpdate::count=0;
+mutex LostUpdate::m;
+
+int main(){
+	LostUpdate obj1;
+	LostUpdate obj2;
+
+	cout << "LostUpdate Problem: 2 threads increment shared memory (each by 10000000)."<< endl;
+	cout << "... Result should be: " << "20000000"<<endl;
+
+	cout << "... Before incr: Shared memory= " << LostUpdate::getCount() << endl;
+
+	thread t1(obj1);
+	thread t2(obj2);
+ 
+	t1.join();
+	t2.join();
+
+	cout << "... After incr: Shared memory= " << LostUpdate::getCount() << endl;
+
+	return 0;
+}
+
+#+END_SRC
+
+
+* 08-lost-update-lock.cpp: Lösung durch Sperr-Synchronisation
+
+- Locks are objects that manage a mutex by associating its access to their own lifetime: lock_guard, unique_lock.
+- [[https://en.cppreference.com/w/cpp/thread/mutex/lock]]
+
+#+BEGIN_SRC cpp
+
+
+#+END_SRC
+
+
+
+* 09-test-fifo.cpp: Exkurs: Testen von Software
+
+#+BEGIN_SRC cpp
+
+#include <stdexcept>
+#include <iostream>
+#include <cassert>
+
+using namespace  std;
+
+
+// ----------------------------------------
+class FIFO {
+private:
+	int* queue;
+	int size, write, read;
+
+public:
+	FIFO(int size){
+		this->size = size+1;
+		this->queue = new int[size+1];  // !!!!!!!
+		write = 0;
+		read = 0;
+	}
+	~FIFO() { delete[] queue;}
+
+	int dequeue()  {
+		if (isEmpty())
+			throw underflow_error("dequeue: underflow_error");
+
+		int value = queue[read];
+		read++;
+		read %= size;
+		return value;
+	}
+
+	bool isEmpty(){
+		if(write == read){
+			return true;
+		}
+		return false;
+	}
+
+	bool isFull(){
+		if(read == (write+1)%size){
+			return true;
+		}
+		return false;
+	}
+
+	void enqueue(int item)  {
+		if(this->isFull()){
+			throw overflow_error("enqueue: overflow_error");
+		}
+		else{
+			queue[write] = item;
+			write++;
+			write%=size;
+		}
+	}
+};
+
+
+
+
+
+// ====================================================
+// TESTS f. class FIFO
+// ====================================================
+int main(){
+// ----------------------------------------------------
+	{
+	FIFO fifo(5); // 5 Elemente haben Platz
+	assert(fifo.isEmpty() && "Test: isEmpty()");
+	}
+// ----------------------------------------------------
+	{
+		FIFO fifo(5); // 5 Elemente haben Platz
+		fifo.enqueue(1);
+		fifo.enqueue(2);
+		fifo.enqueue(3);
+		fifo.enqueue(4);
+		fifo.enqueue(5);
+		assert(fifo.isFull() && "Test: isFull()");
+	}
+// ----------------------------------------------------
+	{
+		FIFO fifo(5); // 5 Elemente haben Platz
+		fifo.enqueue(1);
+		int val= fifo.dequeue();
+		assert(val==1 && "Test: enqueue and dequeue");
+		assert(fifo.isEmpty() && "Test: isEmpty()");
+	}
+// ----------------------------------------------------
+	{
+		try{
+			FIFO fifo(5); // 5 Elemente haben Platz
+			int val= fifo.dequeue();
+
+			assert(false && "fail: underflow_exception ");
+
+		} catch(underflow_error& e){
+			// should come here
+		}
+	}
+// ----------------------------------------------------
+	{
+		try{
+			FIFO fifo(5); // 5 Elemente haben Platz
+			fifo.enqueue(1);
+			fifo.enqueue(2);
+			fifo.enqueue(3);
+			fifo.enqueue(4);
+			fifo.enqueue(5);
+
+			fifo.enqueue(6);
+
+			assert(false && "fail: overflow_exception ");
+
+		} catch(overflow_error& e){
+			// should come here
+		}
+	}
+// ----------------------------------------------------
+
+
+
+	cout << "All tests passed ok ..." << endl;
+
+	return 0;
+}
+#+END_SRC
+
+
+* 10-fifo-threadsafe.cpp: Das Producer-Consumer Problem
+
+- Sperr- und Ereignissynchronisation
+- condition variable
+
+#+BEGIN_SRC cpp
+
+#+END_SRC
+
+
+* 11-future-async.cpp: bei längeren Input/Output-Aufgaben 
+
+- Um gewisse Aufgaben asynchron zur Ausführung zu bringen.
+- Gerne bei länger andauernden Aufgaben (zB: Input/Output-Operationen) verwendet.
+
+#+BEGIN_SRC cpp
+
+#include <future>
+#include <thread>
+#include <chrono>
+#include <iostream>
+#include <string>
+using namespace std;
+
+string get_data_from_DB(){
+	cout << "... waiting for data from DB"<<endl;
+
+	this_thread::sleep_for(chrono::seconds(5)); 
+
+	return "... DATA FROM DB arrived ...";
+}
+
+
+string get_data_from_FILE(){
+	cout << "... waiting for data form FILE"<<endl;
+
+	this_thread::sleep_for(chrono::seconds(5)); 
+
+	return "... DATA FROM FILE arrived ...";
+}
+
+
+
+int main(){
+	cout << endl;
+	cout << "DEMO: Data access via FILE and DB" << endl;
+	cout << endl;
+
+	cout << "1. without multithreading ..." << endl;
+//  ----------------------------------------------------
+	system("date");
+	string data_FILE= get_data_from_FILE();
+	string data_DB=  get_data_from_DB();
+	cout << data_FILE << endl;
+	cout << data_DB <<endl;
+	system("date");
+
+
+
+	cout << endl;
+	cout << "... 2. with multithreading (future, async) ..." << endl;
+//  ----------------------------------------------------
+	system("date");
+	future<string> future_data_FILE= async(get_data_from_FILE);
+	future<string> future_data_DB= async(get_data_from_DB);
+	cout << future_data_FILE.get() << endl;
+	cout << future_data_DB.get() << endl;
+	system("date");
+	cout << endl;
+
+	return 0;
+}
+#+END_SRC
+
+
+* 12-future-async-promise-sqlite.cpp: Ein Beispiel
+- promise und future bei IO-Operationen
+- sqlite Datenbank
+- DB/sql/02-ueben/is_uni.sqlite
+
+#+BEGIN_SRC cpp
+
+#+END_SRC
+
+
+* 99-atomic.cpp: Synchronisation
+
+- http://www.cplusplus.com/reference/atomic/
+- https://en.cppreference.com/w/cpp/language/memory_model
+Threads and data races
+A thread of execution is a flow of control within a program that begins with the invocation of a top-level function by std::thread::thread, std::async, or other means.
+
+Any thread can potentially access any object in the program (objects with automatic and thread-local storage duration may still be accessed by another thread through a pointer or by reference).
+
+Different threads of execution are always allowed to access (read and modify) different memory locations concurrently, with no interference and no synchronization requirements.
+
+When an evaluation of an expression writes to a memory location and another evaluation reads or modifies the same memory location, the expressions are said to conflict. A program that has two conflicting evaluations has a data race unless
+
+both evaluations execute on the same thread or in the same signal handler, or
+both conflicting evaluations are atomic operations (see std::atomic), or
+one of the conflicting evaluations happens-before another (see std::memory_order)
+If a data race occurs, the behavior of the program is undefined.
+
+(in particular, release of a std::mutex is synchronized-with, and therefore, happens-before acquisition of the same mutex by another thread, which makes it possible to use mutex locks to guard against data races)
+
+ 
+#+BEGIN_SRC cpp
+int cnt = 0;
+auto f = [&]{cnt++;};
+std::thread t1{f}, t2{f}, t3{f}; // undefined behavior
+
+#+END_SRC
+
+#+BEGIN_SRC cpp
+std::atomic<int> cnt{0};
+auto f = [&]{cnt++;};
+std::thread t1{f}, t2{f}, t3{f}; // OK
+#+END_SRC
+
+* Links
+- [[http://www.mario-konrad.ch/wiki/doku.php?id=programming:multithreading:tutorial-08]]
+- [[http://www.baptiste-wicht.com/series/cpp11-concurrency-tutorial/]]
+- [[http://marknelson.us/2012/05/23/c11-threading-made-easy/]]
+
+
+* Aufgabe: AB-CPP-THREAD_bank_wordsearch
+Siehe 
+    1. ABS/CPP/AB-CPP-THREAD-bank.txt
+    2. ABS/CPP/AB-CPP-THREAD-wordsearch.txt
+- [[https://thispointer.com/c11-multithreading-part-9-stdasync-tutorial-example/]]
+

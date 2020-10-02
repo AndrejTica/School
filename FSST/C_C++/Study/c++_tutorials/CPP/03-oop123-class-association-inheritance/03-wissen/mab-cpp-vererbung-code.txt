@@ -1,0 +1,126 @@
+mab-cpp-vererbung-code.txt ()
+===========================================================================
+Gegeben ist das folg. Programm.
+
+test-code.cpp
+#include "code.h"
+#include "upper.h"
+#include "lower.h"
+#include "morse.h"
+#include <string>
+#include <iostream>
+using namespace std;
+
+int main(){
+	Code* codeUPPER= new Upper();
+	string lower= "hello, world";
+	string upper;
+
+	cout << "class Upper ..." <<endl;
+	upper= codeUPPER->out(lower);
+	cout <<  "  lower= " << lower << endl;
+	cout <<  "  upper= " << upper << endl;
+	delete codeUPPER;
+
+
+	Code* codeLOWER= new Lower();
+	lower= codeLOWER->out(upper);
+
+	cout << "class Lower ..." <<endl;
+	cout <<  "  lower= " << lower << endl;
+	cout <<  "  upper= " << upper << endl;
+	delete codeLOWER;
+
+	cout << "class Morse ..." <<endl;
+	Code* codeMORSE= new Morse();
+	string morse= codeMORSE->out("SOS");
+
+	cout << "  SOS= " << morse << endl;
+	cout << "  " <<lower<<"= " << codeMORSE->out(lower) << endl;
+
+	delete codeMORSE;
+
+	return 0;
+}
+
+Hier die Ausgabe:
+class Upper ...
+  lower= hello, world
+  upper= HELLO, WORLD
+class Lower ...
+  lower= hello, world
+  upper= HELLO, WORLD
+class Morse ...
+  SOS= ... --- ... 
+  hello, world= .... . .-.. .-.. --- ? .-- --- .-. .-.. -..
+
+
+Sehen Sie nun die Klasse Code
+code.h
+class Code{
+	public:
+		string out(string s);
+
+		virtual string out(char ch)=0;
+};
+
+AUFGABE 1: Zeigen Sie zunächst die Datei code.cpp
+---------------------------------------------------------------------------
+??????
+
+
+
+AUFGABE 2: Erstellen Sie nun die Klassen Upper, Lower, Morse 
+als Unterklassen der Klasse Code.
+---------------------------------------------------------------------------
+??????
+
+
+Hinweise:
+#include <ctype.h>
+int toupper(int c);
+int tolower(int c);
+
+Morse-Zeichen
+	string ziff[]= {
+			"-----",	//0
+			".----",
+			"..---",
+			"...--",
+			"....-",
+			".....",
+			"-....",
+			"--...",
+			"---..",
+			"----."	//9
+	};
+
+	string alpha[]= {
+			".-",      // A
+			"-...",
+			"-.-.",
+			"-..",
+			".",
+			"..-.",
+			"--.",
+			"....",
+			"..",
+			".---",
+			"-.-",
+			".-..",
+			"--",
+			"-.",
+			"---",
+			".--.",
+			"--.-",
+			".-.",
+			"...",
+			"-",
+			"..-",
+			"...-",
+			".--",
+			"-..-",
+			"-.--",
+			"--.."		//Z
+	};
+

@@ -1,0 +1,66 @@
+Beispiel: ERD-Uni-Verwaltungssystem:
+--------------------------------------------------------------------------------
+	>> WER ist zu befragen?
+	>> WELCHE DATEN sind zu speichern?
+	>> WAS soll mit den Daten gemacht werden?
+		
+	TIPP: Merke die Hauptwörter bei den Interviews
+
+
+SCHRITT 1: INTERVIEWS
+--------------------------------------------------------------------------------
+-> Ergebnis: WER arbeitet mit WELCHEN daten
+
+Aufgabenbeschreibung:	
+Es soll ein univ. Verwaltungssystem gebaut werden. Dazu interviewt
+man mehere Personen:
+
+• Professoren:
+Die Studierenden sollen bestimmte Lehrveranstaltungen hören
+(inskribieren) und über diese dann Prüfungen ablegen können.
+
+• Verwaltungspersonal:
+Wir verwalten Professoren und deren Assistenten, wobei 
+
+bei
+->Professoren folg. Daten wichtig sind: Persnr, name, raum, rang.
+Professoren haben je ein eigenes Büro/Raum. 
+
+Bei 
+->Assistenten wird
+zusätzlich der Fachbereich gespeichert. 
+
+Nur Professoren halten Vorlesungen ab. 
+
+Bei 
+->Vorlesungen werden folg. Daten gespeichert:
+Vorlnr, titel, sws. Manche Vorlesungen setzen den Besuch anderer
+Vorlesungen voraus und können ihrerseits wieder Voraussetzung für
+andere Vorlesungen sein.
+
+Bei
+->Studentendaten wird gespeichert: matrnr, name, semester.
+
+Bei 
+->Prüfungen muss gespeichert werden, welcher Student, bei
+welcher Vorlesung und bei welchem Professor welche Note wann
+gemacht hat.
+
+
+SCHRITT 2: WAS soll mit den Daten gemacht werden
+--------------------------------------------------------------------------------
+-> Ergebnis: TEIL-/MODULE des Systems und WER mit diesen arbeitet
+
+Das System muss:
+• Ein Vorlesungsverzeichnis 
+	soll erstellt werden können.
+• Eine Mitarbeiterliste 
+	soll erstellt werden können, gereiht nach Professor und seinen Assistenen.
+• Ein Inskriptionsverzeichnis: 
+	Welcher Student, welche Vorlesung(en) besucht)
+• Ein Prüfungsverzeichnis: 
+	Welcher Student bei welchem Professor zu welcher Vorlesung wann, welche Note 
+	gemacht hat
+• Eine Webanbindung (Vorlesungsverzeichnis) soll realisiert werden.
+• Eine MS-Access / Openoffice base Anwendung zur Verwaltung der
+	Daten und zur Berichterzeugung soll erstellt werden.	

@@ -1,0 +1,81 @@
+AUFGABE: adb2-web-xml 
+=================================================================
+	a)adb2 (bin.Baum) umschreiben, sodass Tourismus-Geodaten 
+		verarbeitet werden und
+		als xml-Datei gespeichert und online zur Verfügung stehen
+	b)Virtuellen Server installieren
+		WEB-Server, der die xml-Datei per php und Ajax einliest.
+	
+
+Gegeben sind:
+_________________________________________________________________
+	test_adb2.c 
+	adb2.c, adb2.h
+	adb_btree.c, adb_btree.h
+	tourist.txt
+
+	tourismus.html
+	marker.xml (ein Beispiel)
+	
+	
+Benötigt werden:
+_________________________________________________________________
+	VirtualBox
+	turnkeylinux lampp
+	FTP-Client: zb: Filezilla
+	
+
+TODO:
+_________________________________________________________________
+1. install: Virtuellen Rechner (VM)
+	virtualbox
+	turnkeylinux-mit-lampp
+
+2. config
+	filezilla einrichten:
+		sftp://192.168.56.101
+		Remote Verzeichnis: /var/www/4tinf
+		Local Verzeichnis: FTP-UPLOAD/192.168.56.101/
+			marker.xml
+			tourist.html
+			
+3. MEILENSTEIN 1: teste configuration
+	http://192.168.56.101/4tinf/tourist.html
+
+4. Programmiere auf realem Rechner (RM)
+	Gegeben:
+		test_adb2.c 
+		adb2.c, adb2.h
+		adb_btree.c, adb_btree.h
+		tourist.txt
+		
+	todo: Kopiere test_adb2.c und alle zugeh. Dateien und ändere
+		diese folgend ab:
+		a)einlesen in Baum der tourist.txt Daten statt der adb.txt
+		b)anzeigen der Daten anpassen
+		c)weitere Menüeinträge:
+!!!!!TODO	* Datensatz erfassen
+			* saveXML (datei: marker.xml)
+
+5. MEILENSTEIN 2: 
+	a)teste test_adb2.exe
+		saveAs marker.xml
+	
+	b)upload neue marker.xml nach
+			marker.xml
+	c)	http://192.168.56.101/4tinf/tourist.html
+
+
+6. FERTIG
+
+
+
+LINK:
+_________________________________________________________________
+http://code.google.com/intl/de-DE/apis/maps/articles/phpsqlajax.html
+
+
+NEXT:
+_________________________________________________________________
+qt und stl und stacki
+dann db und db mit qt

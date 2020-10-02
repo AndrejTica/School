@@ -1,0 +1,34 @@
+mab-posix-fork-kill.txt
+---------------------------------------------------------------
+
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <signal.h>
+
+int main()
+{
+	int chpid = fork();
+
+	if(chpid < 0)
+		puts("fork() failed");
+	else if(chpid == 0)
+	{
+		/* child code */
+		int i;
+		for(i = 0;  ;  i++)
+			printf("%dt", i);
+	}
+	else
+	{
+		/* parent code */
+		sleep(3);
+		kill(chpid, SIGTERM);
+	}
+	exit(0);
+}
+ 
+FRAGE: was macht obiges Programm ?
+-----------------------------------------------------
+ANTWORT: Killt Child nach kurzer Verzögerung 

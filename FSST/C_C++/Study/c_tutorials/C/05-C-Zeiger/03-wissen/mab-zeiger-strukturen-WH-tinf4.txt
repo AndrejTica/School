@@ -1,0 +1,116 @@
+﻿mab: ZEIGER u. STRUKTUREN in C (6)
+------------------------------------------------------------------------------
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+1. (2) ZEIGER ----------------------------------------------------------------
+ Gegeben sei:
+    int a[5]; int *pa; int x;
+    a[0] liege an der Speicherstelle 1000
+    a[1] liege an der Speicherstelle 1002
+    a[2] liege an der Speicherstelle 1004
+    ...
+
+1.1. (1)Wie sieht das Speicherbild nach folgender Anweisung aus ?
+    pa= &a[0];
+    for (i=0;i < 5; i++) {
+       *pa= i+100;
+       pa++;
+    }
+    
+    1000  1002 1004 1006 1008 1010 1012  (Adressen dez.)
+     a[0]  a[1]  a[2]   a[3]   a[4]  pa     x       (Variablennamen)
+   |-----|------|------|------|-----|-----|-----|
+   |     |      |      |      |     |     |     |   (Inhalt)
+   |-----|------|------|------|-----|-----|-----|
+
+1.2.(1)Wie sieht das Speicherbild nach folgender Anweisung aus ?
+    pa= a;
+    x=*pa;
+    a[0]= *(pa+1);
+    pa++;
+    a[1]= *pa+1;
+    
+    1000  1002 1004 1006 1008 1010 1012  (Adressen dez.)
+     a[0]  a[1]  a[2]   a[3]   a[4]   pa     x       (Variablennamen)
+   |-----|------|------|------|-----|-----|-----|
+   |     |      |      |      |     |     |     |   (Inhalt)
+   |-----|------|------|------|-----|-----|-----|
+
+
+2. (4) STRUKTUREN-----------------------------------------------------------
+	gegeben sei:
+	struct datum{
+		int tag;
+		int monat;
+		int jahr;
+		char mon_name[4];
+	};
+	typedef struct datum TDATUM;
+	
+	// F-Deklaration
+	TDATUM getDatum(int tag, int monat, int jahr);
+	
+	// F-Aufruf
+	TDATUM heute;
+	heute= getDatum(20,2,2012);
+	
+Aufgabe:
+	Schreiben Sie getDatum() so um, dass die Rückgabe der Funktion nicht
+	mittels return, sondern mittels call-by-reference zurückgegeben
+	wird. Ersetzen Sie die Fragezeichen.
+
+	(4) void getDatum(int tag, int monat, int jahr, ?????????????){
+		???????????????????????
+	}
+
+mab: ZEIGER u. STRUKTUREN in C (6)
+------------------------------------------------------------------------------
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+
+
+
+1. (4) ZEIGER -----------------------------------------------------------------
+	gegeben sei folgender Funktionsprotoyp
+
+   ?????? find_maxi(int *arr, int anzahl, ???? maxi);
+
+   Der Funktion wird ein Array und dessen Anzahl der Elemente übergeben.
+   
+   *Im Parameter namens maxi soll das Maximum an die aufrufende Funktion
+   übergeben werden. (=Call by Referenz)
+
+   *Die Funktion soll die Adresse des Arrayelementes, das das Maximum enthält
+   mittles return zurückgeben.
+
+1.1. (4) Programmiere die Funktion aus und ersetze die Fragezeichen
+
+   ?????? find_maxi(int *arr, int anzahl, ???? maxi){
+   			????????????????????
+   }
+
+
+2. (2) STRUKTUREN---------------------------------------------------------------
+gegeben sei:
+	struct datum{
+		int tag;
+		int monat;
+		int jahr;
+		char mon_name[4];
+	};
+	typedef struct datum TDATUM;
+	
+	// F-Deklaration
+	TDATUM getDatum(int tag, int monat, int jahr);
+	
+	// F-Aufruf
+	TDATUM heute;
+	heute= getDatum(20,2,2012);
+	
+	
+2.1.(2)	// F-Implementation: Programmiere die Funktion aus 
+		und ersetze die Fragezeichen
+	
+	TDATUM getDatum(int tag, int monat, int jahr){
+		???????????????????????????
+	}
+	

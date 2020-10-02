@@ -1,0 +1,24 @@
+MAB: C Arrays
+
+
+1 (6) charArrayErsetze
+--------------------------------------------------------------------------------
+Gegeben sei folgender Programmcode (Hier in C):
+
+int main()
+{	char s1[] = "ueb immer treu und redlichkeit";
+	char s2[] = "opqrstu";
+
+	// ???????????????
+}
+
+Es soll nun der Text s1 geändert werden, und zwar auf folgende Art: 
+Jedes Zeichen im Text s1, das im Text s2 vorkommt, soll durch ’*’ ersetzt 
+werden.  
+
+Im obigen Beispiel würde s1 dann beinhalten:
+*eb imme* **e* *nd *edlichkei*
+
+Die im Progamm angegebenen Inhalte von s1 und s2 sind nur Beispiele, es 
+könnte sich auch um andere Texte handeln.
+

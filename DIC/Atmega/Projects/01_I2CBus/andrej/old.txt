@@ -1,0 +1,198 @@
+/*****************************************************
+	File: I2C.c
+	Description:
+	 I2C (TWI) interface to Atmel microcontroller ATMega644p
+	 Only Master is supported
+******************************************************/
+
+#include <avr/io.h>
+#include "I2C.h"
+#include "HtlStddef.h"
+#include "twi.h"
+
+static TBool I2CStart(void);
+static TBool I2CSendByte(unsigned char aByte);
+static TBool I2CSendAddressWrite(unsigned char aAddress);
+static TBool I2CSendAddressRead(unsigned char aAddress);
+static void I2CStop(void);
+static TBool I2CReciveByte(unsigned char * aByte);
+
+
+
+
+/**********************************************************
+	Function: I2CInit
+	Description:
+	 Initialises the TWI interface.
+	 
+	 Parameters:
+	  aClkFrequency - The system clock of the microcontroller in Hz
+	  aBitrate		- The I2C bitrate
+	  
+	 Return:
+	  ETRUE if successful otherwise EFALSE
+**********************************************************/
+
+
+TBool I2CInit(unsigned long aClkFrequency, unsigned long aBitrate, TI2CMode aMode )
+{
+	unsigned char PRESCALER[] = {1,4,16,64};
+	unsigned int i;
+	
+	//Pull up
+	PORTC |= 0x03;
+	
+	for (i = 0; i < 4; i++)
+	{
+		TWBR =(aClkFrequency-16*aBitrate) / (2*aBitrate * PRESCALER[i]);
+		 if(TWBR < 256)
+		 {
+			 TWBR = (unsigned char) TWBR;
+			 TWSR = i;
+			 break;
+		 }
+	}
+	
+	
+}
+
+TBool I2CSendData(unsigned char aAddress, unsigned char * aData, unsigned int aSize)
+{
+	unsigned int i;
+	if (! I2CStart())  //immer auf schlecht fall abprüfen
+	 return EFALSE;
+	 
+	 if (! I2CSendAddressWrite( aAddress ))
+	 {
+	  I2CStop();
+	  return EFALSE;
+	 }
+	 
+	 for (i=0; i< aSize; i++)
+	  {
+		  if(!I2CSendByte(&aData[i]))
+		  I2CStop();
+		  return EFALSE;
+	  }
+	
+	I2CStop();
+}
+
+TBool I2CReceiveData(unsigned char aAddress, unsigned char * aData, unsigned int aSize)
+{
+	unsigned int i;
+	
+	if(! I2CSendAddressRead(aAddress))
+	{
+		I2CStop();
+		return EFALSE;
+	}
+	
+	for (i=0; i<aSize-1; i++)
+	{
+		if(!I2CReciveByte(&aData[i]))
+		{
+			I2CStop();
+			return EFALSE;
+		}
+	}
+	if (!I2CReciveByte(&aData[i]))
+	{
+		I2CStop();
+		return EFALSE;
+	}
+	I2CStop();
+}
+
+
+/****************** private functions ******************/
+static TBool I2CStart(void)
+{
+	TWCR = (1<<TWINT)|(1<<TWSTA)|(1<<TWEN);
+	while (!(TWCR & (1<<TWINT)));
+	
+	if ((TWSR & TW_SR_INFO_MASK) != TW_START)
+	return EFALSE;
+	
+  return ETRUE;
+}
+
+static void I2CStop(void)
+{
+	TWCR = (1<<TWINT)|(1<<TWSTA)|(1<<TWEN);
+	TWCR = (1<<TWINT)|(1<<TWEN);
+	
+	while (!(TWCR & (1<<TWINT)));
+	if ((TWSR & TW_SR_INFO_MASK) != TW_MT_SLA_ACK)
+	return EFALSE;
+	
+	return ETRUE;
+}
+
+static TBool I2CSendByte(unsigned char aByte)
+{
+	TWDR = aByte;
+	
+	
+}
+
+static TBool I2CReciveByte(unsigned char * aByte)
+{
+	TWCR = (1<<TWINT) | (1<<TWEN) | (1<< TWEA);
+	
+
+	while (!(TWCR & (1<<TWINT)));
+
+	if((TWSR & 0xF8) != TW_MR_SLA_ACK)
+	{
+		I2CStop();
+		return EFALSE;
+		
+	}
+	
+	
+}
+
+static TBool I2CSendAddressRead(unsigned char aAddress)
+{
+	unsigned char address;
+	unsigned char answer;
+
+	address = aAddress |= 0x01;
+
+	TWDR = address;
+	TWCR = (1<<TWINT) | (1<<TWEN);
+
+	while (!(TWCR & (1<<TWINT)));
+
+	if((TWSR & 0xF8) != TW_MR_SLA_ACK)
+	{
+		I2CStop();
+		return EFALSE;	
+	
+	}
+	return ETRUE;
+}
+
+static TBool I2CSendAddressWrite(unsigned char aAddress)
+{
+	unsigned char address;
+	unsigned char answer;
+	
+	address = aAddress &= ~0x01;
+	
+	TWDR = address;
+	TWCR = (1<<TWINT) | (1<<TWEN);
+	
+	while (!(TWCR & (1<<TWINT)));
+	
+	if((TWSR & 0xF8) != TW_MT_SLA_ACK)
+	{
+		I2CStop();
+		return EFALSE;
+	}
+	return ETRUE;
+}
+
+
+

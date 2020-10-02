@@ -1,0 +1,32 @@
+//fakt.stk
+//a.hofmann
+//
+push 1
+assign ergebnis
+read Faktorielle: VON ?
+assign von
+push 1
+assign i
+// ------------------------------------------------
+while
+vpush i
+vpush von
+le
+//--------- aufsummieren
+vpush ergebnis
+vpush i
+mul
+assign ergebnis
+// ----------------- i++ increment
+vpush i
+push 1
+add
+assign i
+//
+//debug
+endwhile
+// -----------------------------------------------
+vpush ergebnis
+write Faktorielle: DAS ERGEBNIS IST: 
+//debug
+quit

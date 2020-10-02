@@ -1,0 +1,1705 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+
+
+<link rel="stylesheet" type="text/css" href="view_data/styles_002.css">
+
+<link rel="stylesheet" type="text/css" href="view_data/styles.css">
+
+
+
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Arbeitsblatt: Textadventure</title></head><body>
+
+<h1><span style="font-weight: bold; text-decoration: underline;">Arbeitsblatt:
+
+Textadventure</span></h1>
+
+Wir wollen hier das Gelernte anwenden:<br>
+
+<ul>
+
+  <li>C++, Klassen, Konstruktoren, FileStream, Referenzen,
+
+Überladen v. Operatoren<br>
+
+  </li>
+
+</ul>
+
+<br>
+
+In diesem Arbeitsblatt wird ein Textadventure-Game gebaut, das<br>
+
+<ul>
+
+  <li>Räume, Spieler, Monster verwalten kann</li>
+
+  <li>die Spieldatenbank als Textdatei verwaltet<br>
+
+  </li>
+
+</ul>
+
+<br>
+
+<table style="width: 100%; text-align: left;" border="0" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td style="background-color: rgb(204, 204, 204); vertical-align: top;">Textadventure
+
+V1.0: Räume und die Spieldatenbank&nbsp;&nbsp;&nbsp; (4h)<br>
+
+      </td>
+
+    </tr>
+
+  </tbody>
+
+</table>
+
+<br>
+
+<span style="text-decoration: underline;">Beschreibung:</span><br style="text-decoration: underline;">
+
+<br>
+
+Die Räume werden aus einer Textdatei "world.txt" (=Spieldatenbank)
+
+gelesen. <br>
+
+Das Programm ist derart aufgebaut, dass unbegrenzt viele Räume
+
+hinzugefügt werden können, ohne das Programm selbst
+
+verändern zu müssen. Wir können uns von Raum zu Raum
+
+bewegen und die jeweilige Raumbeschreibung einsehen.<br>
+
+<br>
+
+Folgende Benutzereingaben(Befehle) werden unterstützt:<br>
+
+<ul>
+
+  <li><span style="font-style: italic;">schau:</span> zeigt die
+
+Raumbeschreibung</li>
+
+  <li><span style="font-style: italic;">nord, sued, ost, west</span>:
+
+wenn es in diese Richtung einen Raum gibt,
+
+geh dorthin</li>
+
+  <li><span style="font-style: italic;">hilfe:</span> zeigt die Befehle
+
+an</li>
+
+  <li><span style="font-style: italic;">ende:</span> Programmende<br>
+
+  </li>
+
+</ul>
+
+Man erhält ein absolut neues Spiel, indem man die Spieldatenbank
+
+austauscht. Das Programm selbst bleibt unverändert. Wichtig ist
+
+das Format der Spieldatenbank einzuhalten (s.u.).<br>
+
+<br>
+
+<span style="text-decoration: underline;">Hinweis: Files in C++:</span><br style="text-decoration: underline;">
+
+<code>#include &lt;fstream&gt;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br>
+
+...<br>
+
+<br>
+
+ifstream fin;&nbsp;&nbsp; //fin ist eine Instanz der Klasse ifstream
+
+(InputFileStream)<br>
+
+<br>
+
+fin.open("world.txt");&nbsp;&nbsp;&nbsp; <br>
+
+if(fin.fail()) {<br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; cout &lt;&lt; "Konnte " &lt;&lt;
+
+pFilename &lt;&lt; " nicht finden" &lt;&lt; endl;<br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return -1;<br>
+
+}<br>
+
+<br>
+
+<span style="text-decoration: underline;">Hinweis:</span><br>
+
+</code><code>//getline():<br>
+
+//liest alles von der aktuellen Dateiposition bis zum ersten Auftreffen
+
+des Zeichens '*' in strLine<br>
+
+</code><code></code><code>ifstream fin;<br>
+
+string strLine;<br>
+
+getline (fin, strLine, '*');&nbsp;&nbsp; &nbsp;&nbsp; <br>
+
+<br>
+
+//Beispiel:<br>
+
+</code><code>while(getline(fin, strLine, '\n')){<br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if(strLine == strRoom){<br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; getline(fin,
+
+strRoomDescription, '*');&nbsp;&nbsp;&nbsp; <br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; ...<br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; fin &gt;&gt;
+
+strTemp &gt;&gt; strRoomNorth;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; fin &gt;&gt;
+
+strTemp &gt;&gt; strRoomEast;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; fin &gt;&gt;
+
+strTemp &gt;&gt; strRoomSouth;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; fin &gt;&gt;
+
+strTemp &gt;&gt; strRoomWest;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; ...<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+
+}<br>
+
+</code><br>
+
+<code><br>
+
+<span style="text-decoration: underline;">Hinweis:</span><br>
+
+fin &gt;&gt; strInput &gt;&gt; strInput;<br>
+
+//liest das zweite Wort aus der Datei in die Variable strInput<br>
+
+//Bsp: <br>
+
+//&lt;nord&gt; Garderobe <br>
+
+//in strInput steht Garderobe, d.h. das erste Wort wird einfach
+
+überlesen<br>
+
+<br>
+
+</code>
+
+<code><span style="text-decoration: underline;">Hinweis:</span><br style="text-decoration: underline;">
+
+//setze den Filepointer auf den Beginn und lösche das
+
+EOF-Flag<br>
+
+fin.seekg(ios::beg);&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; <br>
+
+fin.clear();&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; <br>
+
+</code><br>
+
+<code></code>Wir wollen nun das Spiel strukturieren. Dazu werden wir
+
+folgende Klassen programmieren:<br>
+
+<ul>
+
+  <li>Ein <span style="font-weight: bold;">Raum</span> besteht aus
+
+Raumbeschreibung und den Namen der Nachbarräume.</li>
+
+  <li>Ein <span style="font-weight: bold;">Spiel</span> stellt die
+
+Schnittstelle zum Spieler zur Verfügung</li>
+
+</ul>
+
+<span style="text-decoration: underline;"><br>
+
+Die Klasse CRaum</span><br>
+
+Die Klasse CRaum hält alle Informationen des aktuellen Raumes.<br>
+
+<br>
+
+<code>&nbsp;&nbsp;&nbsp; string strCurrentRoom;&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; // speichert
+
+den <span style="font-weight: bold;">Namen</span> des aktuellen Raumes<br>
+
+&nbsp;&nbsp;&nbsp; string strRoomDescription;&nbsp; &nbsp; &nbsp;
+
+&nbsp;&nbsp;&nbsp; // <span style="font-weight: bold;">Raum-Beschreibung</span>
+
+<br>
+
+&nbsp;&nbsp;&nbsp; string strRoomNorth;&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; // <span style="font-weight: bold;">Name</span> des
+
+Raumes, der im
+
+<span style="font-weight: bold;">Norden</span> ist<br>
+
+&nbsp;&nbsp;&nbsp; string strRoomEast;&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+
+// -"-&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br>
+
+&nbsp;&nbsp;&nbsp; string strRoomSouth;&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; // -"-<br>
+
+&nbsp;&nbsp;&nbsp; string strRoomWest;&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; // -"-<br>
+
+</code><br>
+
+Pro Raum (Raumbeschreibung und Namen der Nachbarräume) können
+
+die Daten aus der Spieldatenbank geladen werden. D.h. die
+
+Spieldatenbank besteht aus einzelnen Räumen.<br>
+
+<br>
+
+Es wird jeweils nur der aktuelle Raum aus der Spieldatenbank geladen
+
+(s.u.). Wenn dann der Benutzer in eine Richtung (nord, sued, ..) geht,
+
+wird der jeweilige Raum nachgeladen.<br>
+
+<br>
+
+Die Klasse CRaum enthält noch folgende Methoden:<br>
+
+<ul>
+
+  <li>gibt die Raumbeschreibung (strRoomDescription) als string
+
+zurück</li>
+
+  <ul>
+
+    <li><code>string CRaum::</code><code>toString(void) const;<br>
+
+      </code></li>
+
+  </ul>
+
+  <li>gibt die Raumbeschreibung (strRoomDescription) auf die Konsole aus<code></code><br>
+
+  </li>
+
+  <ul>
+
+    <li><code>void CRaum::</code><code>display(void) const;</code> <br>
+
+    </li>
+
+  </ul>
+
+  <li>liest aus der Spieldatenbank die neuen Raumdaten. strRoom
+
+enthält den gewünschten Raumnamen.<br>
+
+  </li>
+
+  <ul>
+
+    <li><code>void CRaum::readRoomInfo(string&amp; strRoom)</code>&nbsp;
+
+      <br>
+
+    </li>
+
+  </ul>
+
+  <li>prüft, ob in die Richtung strRoom ein Raum existiert.
+
+Wenn ja, lies die Raumdaten (readRoomInfo()). (D.h.
+
+moveto() ruft readRoomInfo() auf)<br>
+
+  </li>
+
+  <ul>
+
+    <li><code>void CRaum::moveto(string&amp; strRoom)<br>
+
+      </code> </li>
+
+  </ul>
+
+</ul>
+
+<div style="margin-left: 40px;"><code>//CRoom.h</code><br>
+
+<code>//a.hofmann dez. 2004</code><br>
+
+<code>#ifndef CRoom_h</code><br>
+
+<code>#define CRoom_h CRoom_h</code><br>
+
+<code></code><br>
+
+<code>#include &lt;fstream&gt;</code><br>
+
+<code>using namespace std;</code><br>
+
+<code></code><br>
+
+<code>class CRoom{</code><br>
+
+<code>private:&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; </code><br>
+
+<code>&nbsp;&nbsp;&nbsp; string strCurrentRoom;&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; // speichert
+
+den Namen des aktuellen Raumes</code><br>
+
+<code>&nbsp;&nbsp;&nbsp; string strRoomDescription;&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; // Raum-Beschreibung (s.u.: endet
+
+mit *)</code><br>
+
+<code>&nbsp;&nbsp;&nbsp; string strRoomNorth;&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; // Name des
+
+Raumes, der im Norden ist</code><br>
+
+<code>&nbsp;&nbsp;&nbsp; string strRoomEast;&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; //
+
+-"-&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </code><br>
+
+<code>&nbsp;&nbsp;&nbsp; string strRoomSouth;&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; // -"-</code><br>
+
+<code>&nbsp;&nbsp;&nbsp; string strRoomWest;&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; // -"-</code><br>
+
+<code>&nbsp;&nbsp;&nbsp; </code><br>
+
+<code>&nbsp;&nbsp;&nbsp; ifstream&amp; fin;</code><br>
+
+<code>public:</code><br>
+
+<code>&nbsp;&nbsp;&nbsp; CRoom(ifstream&amp; pfin): fin(pfin) {}&nbsp;
+
+//Merke FileStream zur Datenbasis<br>
+
+<br>
+
+</code><code>&nbsp;&nbsp;&nbsp; void moveto(string&amp; aRoom);<br>
+
+</code><code>&nbsp;&nbsp;&nbsp; void readRoomInfo(string&amp; aRoom);</code><br>
+
+<code>&nbsp;&nbsp;&nbsp; </code><br>
+
+<code>&nbsp;&nbsp;&nbsp; string getCurrentRoom(</code><code>void</code><code>)const{
+
+return
+
+strCurrentRoom; }</code><br>
+
+<code>&nbsp;&nbsp;&nbsp; string getRoomNorth(</code><code>void</code><code>)</code><code>const</code><code>{
+
+return
+
+strRoomNorth; }</code><br>
+
+<code>&nbsp;&nbsp;&nbsp; string getRoomSouth(</code><code>void</code><code>)</code><code>const</code><code>{
+
+return
+
+strRoomSouth; }</code><br>
+
+<code>&nbsp;&nbsp;&nbsp; string getRoomWest(</code><code>void</code><code>)</code><code>const</code><code>{
+
+return strRoomWest;
+
+}</code><br>
+
+<code>&nbsp;&nbsp;&nbsp; string getRoomEast(</code><code>void</code><code>)</code><code>const</code><code>{
+
+return strRoomEast;
+
+}</code><br>
+
+<code>&nbsp;&nbsp;&nbsp; </code><br>
+
+<code>&nbsp;&nbsp;&nbsp; string toString(void)</code><code>{ return
+
+strRoomDescription;
+
+};<br>
+
+</code><code><br>
+
+&nbsp; &nbsp; void display(</code><code>void</code><code>)const;</code><br>
+
+<code>};</code><br>
+
+<code>#endif</code><br>
+
+<code></code></div>
+
+<span style="text-decoration: underline;"><br>
+
+<br>
+
+Die Klasse CGame</span><br>
+
+Die Klasse CGame spielt das Spiel, indem die Benutzerbefehle<br>
+
+<ul>
+
+  <li><span style="font-style: italic;">schau:</span> zeigt die
+
+Raumbeschreibung</li>
+
+  <li><span style="font-style: italic;">nord, sued, ost, west</span>:
+
+wenn es in diese Richtung einen Raum gibt,
+
+geh dorthin</li>
+
+  <li><span style="font-style: italic;">hilfe</span>: zeigt die Befehle
+
+an</li>
+
+  <li><span style="font-style: italic;">ende</span>: Programmende</li>
+
+</ul>
+
+eingegeben werden können und je Befehl die entsprechenden Aktionen
+
+ausgeführt werden.<br>
+
+Wenn zB. "nord" eingegeben wurde, muss überprüft werden, ob
+
+es in diese Richtung einen Raum gibt. Wenn ja, wird dieser
+
+geladen.&nbsp; Zu diesem Zweck wird die Methode moveto(string&amp;
+
+aRoom) der Klasse CRaum aufgerufen.<br>
+
+<br>
+
+Member der Klasse CGame:<br>
+
+<ul>
+
+  <li><code>ifstream fin;</code></li>
+
+</ul>
+
+Methoden der Klasse CGame:<br>
+
+<ul>
+
+  <li>Der Konstruktor der Klasse CGame erhält als Parameter den
+
+Namen der Spieldatenbank und öffnet diese(s.o.). Zudem wird die
+
+Information des ersten
+
+Raumes eingelesenn. (s.u. Spieldatenbasis)<br>
+
+  </li>
+
+  <ul>
+
+    <li><code>CGame::CGame(char* pFilename);</code></li>
+
+  </ul>
+
+  <li>Die Methode start() spielt das Spiel. Es wird in einer
+
+while-Schleife ein Prompt ausgegeben,
+
+die Benutzereingabe gelesen und die entsprechende Aktion
+
+ausgeführt.</li>
+
+  <ul>
+
+    <li><code>void CGame::start(</code><code>void</code><code>)</code><code></code><br>
+
+    </li>
+
+  </ul>
+
+</ul>
+
+<div style="margin-left: 40px;"><code>//CGame.h</code><br>
+
+<code>#ifndef CGame_h</code><br>
+
+<code>#define CGame_h CGame_h</code><br>
+
+<code></code><br>
+
+<code>#include "CRoom.h"</code><br>
+
+<code>#include &lt;fstream&gt;</code><br>
+
+<code>using namespace std;</code><br>
+
+<code></code><br>
+
+<code>class CGame {</code><br>
+
+<code>private:</code><br>
+
+<code>&nbsp;&nbsp;&nbsp; ifstream fin;</code><br>
+
+<code>&nbsp;&nbsp;&nbsp; CRoom *m_Room;&nbsp;&nbsp;&nbsp; //Verweis auf
+
+Raum</code><br>
+
+<code>public:</code><br>
+
+<code>&nbsp;&nbsp;&nbsp; CGame(char* pFilename);</code><br>
+
+<code>&nbsp;&nbsp;&nbsp; void start(void);</code><br>
+
+<code>&nbsp;&nbsp;&nbsp; ~CGame();</code><br>
+
+<code>};</code><br>
+
+<code></code><br>
+
+<code>#endif</code><br>
+
+<code></code></div>
+
+<br>
+
+<br>
+
+<span style="text-decoration: underline;">Hinweis: Die Spieldatenbank:
+
+world.txt</span><br>
+
+Eine Rauminformation besteht aus folgenden Teilen:<br>
+
+<ul>
+
+  <li>Raumname</li>
+
+  <li>Raumbeschreibung (endet mit einem '*')</li>
+
+  <li>Richtungsinformationsblock mit den entsprechenden Raumnamen. Gibt
+
+es keinen Raum in der entsprechenden Richtung wird dies durch "None"
+
+angegeben.<br>
+
+  </li>
+
+</ul>
+
+Hier ein Beispiel:<br>
+
+<code>&lt;Start&gt; Eingang</code>&nbsp;&nbsp; &nbsp;&nbsp; // wir
+
+starten mit dem Raum namens "Eingang"<br>
+
+...<br>
+
+<code>&lt;Eingang&gt;<br>
+
+&nbsp;&nbsp; Ja, endlich. Sie haben es gefunden. Ein unheimliches Haus.
+
+<br>
+
+&nbsp;&nbsp; Eine geheimnisvolle Person aus dem Jenseits hat ihnen<br>
+
+&nbsp;&nbsp; eine schreckliche Nachricht überbracht.<br>
+
+<br>
+
+&nbsp;&nbsp; Ihr Freund wird von dunklen Mächten in einem grossen
+
+Haus<br>
+
+&nbsp;&nbsp; festgehalten. Sie müssen ihn retten. Ja, wirklich,
+
+das sind<br>
+
+&nbsp;&nbsp; sie ihm schuldig.<br>
+
+&nbsp;&nbsp; Also worauf warten Sie, gehen Sie ins Haus!!!!<br>
+
+&nbsp;&nbsp; (hilfe bzw. ?)*<br>
+
+&lt;nord&gt; Mitte<br>
+
+&lt;ost&gt;&nbsp; None<br>
+
+&lt;sued&gt; None<br>
+
+&lt;west&gt; None<br>
+
+</code><br>
+
+Wir wollen nun den Programmablauf beschreiben:<br>
+
+<br>
+
+<span style="text-decoration: underline;">File: main.cpp</span><br>
+
+<code>#include "CGame.h"<br>
+
+int main(){<br>
+
+&nbsp;&nbsp;&nbsp; CGame meinSpiel("world.txt");<br>
+
+<br>
+
+&nbsp;&nbsp;&nbsp; meinSpiel.start();<br>
+
+}<br>
+
+</code><br>
+
+<code style="font-weight: bold; text-decoration: underline;">CGame::start()</code><br style="font-weight: bold; text-decoration: underline;">
+
+liest in der Datei den Namen des Startraumes. In unserem Beispiel der
+
+Raum "Eingang".<br>
+
+Dannach suchen wir in der Datei nach dem String &lt;Eingang&gt;. Dann
+
+lesen wir die gesamte Rauminformation ein (CRaum::readRoomInfo()) und
+
+geben die Raumbeschreibung (CRoom::display()) aus.<br>
+
+<br>
+
+In einer While-Schleife <br>
+
+<div style="margin-left: 40px;">geben wir den Prompt aus (Raumname): und<br>
+
+lesen die Benutzereingabe.<br>
+
+</div>
+
+<br>
+
+Wenn der Benutzer zB. "nord" eingibt, so kennen wir den Raum in diese
+
+Richtung (s. CRaum::strRoomNorth). Wir suchen wie oben beschrieben nun
+
+nach diesem Raum, lesen die Rauminformation geben die Raumbeschreibung
+
+aus. Wenn allerdings in der Richtung "nord" kein Raum gewesen
+
+wären (wird durch "None" gekennzeichnet) geben wir dem Benutzer
+
+den Text aus: "In Richtung nord ist kein Raum vorhanden!".<br>
+
+<br>
+
+Ein Raum mit dem Namen "Ende" gibt das Spielende an. D.h. in unserem
+
+Spiel wird der Raum namens "Ende" immer der letzte Raum sein.<br>
+
+<br>
+
+<code>&lt;Ende&gt;<br>
+
+&nbsp;&nbsp; Endlich haben Sie ihren Freund gefunden!!!!!<br>
+
+&nbsp;&nbsp; Er stammelt für Sie unverständliche Worte. Sie
+
+gehen auf ihn zu.<br>
+
+&nbsp;&nbsp; Aber, da sehen Sie, was er ihnen zurufen möchte.<br>
+
+&nbsp;&nbsp; Die Gefahr ist noch nicht vorüber, sondern beginnt
+
+erst.<br>
+
+&nbsp;&nbsp; To be continued...*<br>
+
+&lt;nord&gt; None<br>
+
+&lt;ost&gt;&nbsp; None<br>
+
+&lt;sued&gt; None<br>
+
+&lt;west&gt; None<br>
+
+<br>
+
+</code><br>
+
+Dies ist nun sehr viel an Information. Am besten wir beginnen nun mit
+
+dem ersten Prototyp:<br>
+
+<br>
+
+<span style="text-decoration: underline;">Arbeitsauftrag: Verzeichnis:</span><br style="text-decoration: underline;">
+
+abgabe\textadventure1<br>
+
+CGame.h<br>
+
+CGame.cpp<br>
+
+CRoom.h<br>
+
+CRoom.cpp<br>
+
+main.cpp<br>
+
+<br>
+
+<br>
+
+<span style="text-decoration: underline;">Anhang: Ein Beispiel für
+
+world.txt</span><br style="text-decoration: underline;">
+
+<code>&lt;Start&gt; Eingang<br>
+
+<br>
+
+&lt;Mitte&gt;<br>
+
+_____________________________________________________________________<br>
+
+&nbsp;&nbsp; Sie befinden Sie genau in der Mitte des Hauses.<br>
+
+<br>
+
+&nbsp;&nbsp; In irgendeinem Zimmer befindet sich ihr Freund,<br>
+
+&nbsp;&nbsp; der von geheimnisvollen Personen festgehalten wird.<br>
+
+<br>
+
+&nbsp;&nbsp; Es gibt eine Tuer in jede Richtung.<br>
+
+&nbsp;&nbsp; (hilfe bzw. ?)<br>
+
+_____________________________________________________________________*<br>
+
+&lt;nord&gt; Oben<br>
+
+&lt;ost&gt;&nbsp; Rechts<br>
+
+&lt;sued&gt; Eingang<br>
+
+&lt;west&gt; Links<br>
+
+<br>
+
+<br>
+
+&lt;Links&gt;<br>
+
+_____________________________________________________________________<br>
+
+&nbsp;&nbsp; Hier befindet sich ein Computer auf dem vielen Fragen
+
+stehen.<br>
+
+&nbsp;&nbsp; Es gibt nur eine Tuer nach west, woher sie gekommen sind.<br>
+
+&nbsp;&nbsp; (hilfe bzw. ?)<br>
+
+_____________________________________________________________________*&nbsp;&nbsp;
+
+<br>
+
+&lt;nord&gt; None<br>
+
+&lt;ost&gt;&nbsp; Mitte<br>
+
+&lt;sued&gt; None<br>
+
+&lt;west&gt; None<br>
+
+<br>
+
+<br>
+
+&lt;Eingang&gt;<br>
+
+_____________________________________________________________________<br>
+
+&nbsp;&nbsp; Ja, endlich. Sie haben es gefunden. Ein unheimliches Haus.
+
+<br>
+
+&nbsp;&nbsp; Eine geheimnisvolle Person aus dem Jenseits hat ihnen<br>
+
+&nbsp;&nbsp; eine schreckliche Nachricht ueberbracht.<br>
+
+<br>
+
+&nbsp;&nbsp; Ihr Freund wird von dunklen Maechten in einem grossen Haus<br>
+
+&nbsp;&nbsp; festgehalten. Sie muessen ihn retten. Ja, wirklich, das
+
+sind<br>
+
+&nbsp;&nbsp; sie ihm schuldig.<br>
+
+&nbsp;&nbsp; Also worauf warten Sie, gehen Sie ins Haus!!!!<br>
+
+&nbsp;&nbsp; (hilfe bzw. ?)<br>
+
+_____________________________________________________________________*<br>
+
+&lt;nord&gt; Mitte<br>
+
+&lt;ost&gt;&nbsp; None<br>
+
+&lt;sued&gt; None<br>
+
+&lt;west&gt; None<br>
+
+<br>
+
+&lt;Rechts&gt;<br>
+
+_____________________________________________________________________<br>
+
+&nbsp;&nbsp; Gleich nachdem Sie durch die Tuer gekommen sind, merkten
+
+Sie <br>
+
+&nbsp;&nbsp; das Unheimliche.<br>
+
+&nbsp;&nbsp; Irgendwer will was von ihnen. Aber, was nur ?<br>
+
+&nbsp;&nbsp; Es gibt hier keine Antwort fuer Sie. <br>
+
+&nbsp;&nbsp; Also zurueck, denn es gibt nur diesen Weg nach Westen.<br>
+
+_____________________________________________________________________*&nbsp;&nbsp;
+
+<br>
+
+&lt;nord&gt; None<br>
+
+&lt;ost&gt;&nbsp; None<br>
+
+&lt;sued&gt; None<br>
+
+&lt;west&gt; Mitte<br>
+
+<br>
+
+&lt;Oben&gt;<br>
+
+_____________________________________________________________________<br>
+
+&nbsp;&nbsp; Ja, Sie hoeren ganz deutlich die Stimme. Sie kommt von oben<br>
+
+&nbsp;&nbsp; Es gibt keinen Weg zurueck. Aber doch es gibt einen Weg
+
+nach <br>
+
+&nbsp;&nbsp; Sueden und einen nach Norden.<br>
+
+&nbsp;&nbsp; Wohin also ?<br>
+
+_____________________________________________________________________*&nbsp;&nbsp;
+
+<br>
+
+&lt;nord&gt; Ende<br>
+
+&lt;ost&gt;&nbsp; None<br>
+
+&lt;sued&gt; Mitte<br>
+
+&lt;west&gt; None<br>
+
+<br>
+
+&lt;Ende&gt;<br>
+
+_____________________________________________________________________<br>
+
+&nbsp;&nbsp; Endlich haben Sie ihren Freund gefunden!!!!!<br>
+
+&nbsp;&nbsp; Er stammelt fuer Sie unverstaendliche Worte. Sie gehen auf
+
+ihn zu.<br>
+
+&nbsp;&nbsp; Aber, da sehen Sie selbst, was er ihnen zurufen moechte.<br>
+
+&nbsp;&nbsp; Die Gefahr ist noch nicht vorueber, sondern beginnt erst.<br>
+
+&nbsp;&nbsp; To be continued...<br>
+
+_____________________________________________________________________*&nbsp;&nbsp;
+
+<br>
+
+&lt;nord&gt; None<br>
+
+&lt;ost&gt;&nbsp; None<br>
+
+&lt;sued&gt; None<br>
+
+&lt;west&gt; None<br>
+
+</code><br>
+
+<span style="text-decoration: underline;"><br>
+
+Aufgabe: (textadventure1-qt)</span><br>
+
+Erweitern Sie obiges Programm, sodass mit dem GUI-Programm Qt (s.unten)
+
+eine ansprechende Oberfläche bereitgestellt werden kann. Zur
+
+Orientierung&nbsp; starten&nbsp; Sie das Programm&nbsp;
+
+./textadventure1-qt <br>
+
+Es sollen folgende Eingabeelemente verwendet werden:<br>
+
+<ul>
+
+  <li>ein TextEditor für world.txt</li>
+
+  <li>ein TextEditor für die Befehlseingabe</li>
+
+  <li>ein TextEditor für die Ausgabe des Raumes</li>
+
+  <li>vier Buttons für nord,sued,west,ost (kreuzförmig
+
+angeordnet)</li>
+
+</ul>
+
+<br>
+
+<span style="text-decoration: underline;">Hinweis Programmerstellung: </span><br>
+
+$&gt;
+
+designer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+... Qt designer starten <br>
+
+<ul>
+
+  <li><small>neues C++Projekt (Name: textadventure1-qt)</small></li>
+
+  <li><small>neues C++ Main-File (main.cpp)</small></li>
+
+  <li><small>neues Widget mit </small></li>
+
+  <li><small>save</small></li>
+
+  <li><small>qmake</small></li>
+
+  <li><small>make</small></li>
+
+  <li><small>./textadventure1-qt</small></li>
+
+</ul>
+
+<br>
+
+<br>
+
+<table style="width: 100%; text-align: left;" border="0" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td style="background-color: rgb(204, 204, 204); vertical-align: top;">Textadventure
+
+V2.0: Objekte in Räumen anzeigen<br>
+
+      </td>
+
+    </tr>
+
+  </tbody>
+
+</table>
+
+<br>
+
+<span style="text-decoration: underline;">Beschreibung:</span><br style="text-decoration: underline;">
+
+Wir wollen nun in den Räumen verschiedene Objekte plazieren und
+
+ansehen können. Dazu erweitern wir unseren Befehlssatz mit dem
+
+Befehl <span style="font-style: italic;">zeige</span> . Wir
+
+müssen ebenfalls die Spieldatenbank um
+
+folgden Eintrag erweitern:<br>
+
+<br>
+
+Hier ein Auszug aus der Spieldatenbank:<br>
+
+<code>&lt;Rechts&gt;<br>
+
+______________________________________________________________________________<br>
+
+&nbsp;&nbsp; Gleich nachdem Sie durch die Tür gekommen sind,
+
+merkten Sie das Unheimliche.<br>
+
+&nbsp;&nbsp; Irgendwer will was von ihnen. Aber, was nur ?<br>
+
+&nbsp;&nbsp; Es gibt hier keine Antwort für Sie. <br>
+
+&nbsp;&nbsp; Also zurück, denn es gibt nur diesen Weg nach Westen.<br>
+
+</code><code>______________________________________________________________________________</code><code>*<br>
+
+&lt;nord&gt; None<br>
+
+&lt;ost&gt;&nbsp; None<br>
+
+&lt;sued&gt; None<br>
+
+&lt;west&gt; Mitte<br>
+
+<span style="font-weight: bold;">&lt;zeige&gt; 1 Fenster</span></code><br>
+
+<br>
+
+<code>&lt;Rechts|Fenster&gt;<br>
+
+.......<br>
+
+Ihre Augen stechen, weil die Sonne durch das Fenster scheint. <br>
+
+Jedesmal,
+
+wenn sie direkt ins Fenster sehen, schreien Sie vor Schmerz.<br>
+
+........*<br>
+
+<br>
+
+</code><span style="text-decoration: underline;"><br>
+
+Zum Programmablauf:</span><br>
+
+Sie erweitern den Code-Teil, der die Rauminformation einliest
+
+(CRaum::readRoomInfo()). Sie lesen wieviele <span style="font-style: italic;">zeige</span>-Einträge&nbsp; im Raum
+
+vorhanden sind. (hier 1) . Anschliessend lesen Sie in einer
+
+for-Schleife die Namen der <span style="font-style: italic;">zeige</span>-Objekte
+
+in ein Stringarray ein. Dieses Stringarray muss als private member in
+
+der Klasse CRaum definiert werden: (Name m_zeigeArray). Das Array soll
+
+maximal 10 Einträge ermöglichen. (#define verwenden).<br>
+
+<br>
+
+Hier ein weiteres Beispiel:<br>
+
+<code><span style="font-weight: bold;">&lt;zeige&gt; 3 Fenster Buch
+
+Kasten<br>
+
+<br>
+
+</span></code>Bei der Ausgabe der Raumbeschreibung, soll dann auch noch
+
+folgendes ausgegeben werden:<br>
+
+&nbsp;&nbsp;&nbsp; ....<br>
+
+&nbsp;&nbsp;&nbsp; Folgende Objekte sind vorhanden: Fenster Buch Kasten<br>
+
+<br>
+
+Wenn der Benutzer nun den Befehl <span style="font-style: italic;">zeige</span>
+
+gefolgt mit einem <span style="font-style: italic;">zeige</span>-Objekt
+
+eingibt (zB: zeige Fenster), prüft das Programm, ob der Name in
+
+m_zeigeArray vorhanden ist. <br>
+
+<ul>
+
+  <li><code>bool CRoom::containsZeigeObjekt(string&amp; pStr);</code></li>
+
+</ul>
+
+Wenn zB: <span style="font-style: italic;">zeige Fenster</span>
+
+eingegeben wurde, wird folgender String gebildet:<br>
+
+aus "&lt;" + Name des aktuellen Raumes + "|" + strInput + "&gt;"
+
+wird ein String gebildet.<br>
+
+Ergebnis: "&lt;Rechts|Fenster&gt;"<br>
+
+<br>
+
+Dann suchen wir nach diesem String in der Datenbasis (genau wie wir
+
+nach einem Raum suchen). Danach lesen wir die zeige-Beschreibung ein
+
+(m_strZeigeDescription).<br>
+
+<ul>
+
+  <li><code>bool CRoom::readZeigeInfo(string&amp; pStr);</code></li>
+
+</ul>
+
+&nbsp;und geben sie aus.<br>
+
+<ul>
+
+  <li><code>void CRoom::displayZeigeDescription(void) const;<br>
+
+    </code></li>
+
+</ul>
+
+<br>
+
+Die Klasse CRaum hat nun weitere Member und Methoden erhalten:<br>
+
+<ul>
+
+  <li><code>string m_zeigeArray[ANZ];</code></li>
+
+  <li><code>int m_zeige_anz;<br>
+
+    </code></li>
+
+  <li><code>string m_strZeigeDescription</code></li>
+
+  <li><code>bool CRoom::containsZeigeObjekt(string&amp; pStr) const;</code></li>
+
+  <li><code>bool CRoom::readZeigeInfo(string&amp; pStr);</code></li>
+
+  <li><code>void CRoom::displayZeigeDescription(void) const;<br>
+
+    </code></li>
+
+</ul>
+
+<br>
+
+<span style="text-decoration: underline;">
+
+Aufageb: (textadventure2-qt)</span><br>
+
+Erstellen Sie textadventure2-qt. Dazu eweitern sie obige Qt-Anwendung
+
+(V1.0) mit den Möglichkeiten der hier besprochenen Version V2.0.<br>
+
+<br>
+
+<br>
+
+<table style="width: 100%; text-align: left;" border="0" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td style="background-color: rgb(204, 204, 204); vertical-align: top;">Textadventure
+
+V3.0: Monster<br>
+
+      </td>
+
+    </tr>
+
+  </tbody>
+
+</table>
+
+<br>
+
+<span style="text-decoration: underline;">Beschreibung:<br>
+
+</span>Wir wollen in diesem Kapitel<br>
+
+<ul>
+
+  <li>Ein Monster pro Raum hinzufügen</li>
+
+  <li>Dem Spieler Attribute geben:<br>
+
+  </li>
+
+</ul>
+
+<div style="margin-left: 80px;">
+
+<ul>
+
+  <li>&lt;name&gt;&nbsp;&nbsp; Superheld</li>
+
+  <li>&lt;health&gt; 275</li>
+
+  <li>&lt;weapon&gt; Dolch</li>
+
+  <li>&lt;damage&gt; 21</li>
+
+</ul>
+
+</div>
+
+<ul>
+
+  <li>Den Befehl status zur Anzeige der Spielerdaten</li>
+
+</ul>
+
+<br>
+
+<br>
+
+<span style="text-decoration: underline;">Monster hinzufügen:</span><br style="text-decoration: underline;">
+
+Wir wollen nun Monster zu den Räumen&nbsp; hinzufügen, die
+
+gegen den Spieler kämpfen. Dazu erstellen wir zwei neue Klassen: <span style="font-style: italic;">CMonster</span> und <span style="font-style: italic;">CSpieler.</span><br>
+
+<br>
+
+In unserem Raum-Objekt wird nun auch ein Monster-Objekt enthalten sein.
+
+Eine neue Methode:<br>
+
+<ul>
+
+  <li><code>&nbsp;&nbsp;&nbsp; bool CRaum::bMonsterInRoom(void) const;</code><br>
+
+  </li>
+
+</ul>
+
+gibt Auskunft darüber, ob im Raum tatsächlich ein Monster
+
+ist. <br>
+
+<br>
+
+Dazu müssen wir die Datenbasis ändern. Wir fügen zur
+
+Rauminformation einen neuen Block namens <span style="font-style: italic;">&lt;feind&gt;.</span><br>
+
+Darin wird der Monstername gespeichert oder <span style="font-style: italic;">None,</span> falls kein Feind im Raum ist.<br>
+
+<code>
+
+&lt;nord&gt; Mitte<br>
+
+&lt;ost&gt;&nbsp; None<br>
+
+&lt;sued&gt; None<br>
+
+&lt;west&gt; None<br>
+
+&lt;feind&gt; None<br>
+
+<br>
+
+oder<br>
+
+<br>
+
+</code><code>&lt;nord&gt; Mitte<br>
+
+&lt;ost&gt;&nbsp; None<br>
+
+&lt;sued&gt; None<br>
+
+&lt;west&gt; None<br>
+
+&lt;feind&gt; gozilla<br>
+
+<br>
+
+</code><br>
+
+Wie beim <span style="font-style: italic;">zeige</span>-Befehl suchen
+
+wir nach dem Monsterinformation mit Hilfe des Monsternamen.<br>
+
+<code>&lt;eingang|gozilla&gt;<br>
+
+&lt;health&gt; 125<br>
+
+&lt;damage&gt; 12<br>
+
+&lt;attack&gt; Gozilla zerkratzt dein rechtes Auge.*<br>
+
+</code><br>
+
+<span style="text-decoration: underline;">Aufgabe: (CMonster)</span><br style="text-decoration: underline;">
+
+<ol>
+
+  <li>Erstellen Sie die Klasse CMonster, die folgende Daten halten kann:<br>
+
+m_health, m_damage, m_attack</li>
+
+  <li>Erstellen Sie die Kontruktoren und die Methode <br>
+
+    <code>void CMonster::setMonsterInfo(int pHealth, int pDamage,
+
+string&amp; pattack)<br>
+
+    <br>
+
+    <br>
+
+    </code></li>
+
+  <li><code></code>Fügen Sie zur Klasse CRoom noch einen Member
+
+m_monster vom Typ CMonster hinzu und</li>
+
+  <li>Erstellen Sie die Methode <code>void
+
+CRoom::readFeindInfo(string&amp; pStr)</code>, die wie beim <span style="font-style: italic;">zeige</span>-Befehl die
+
+Monsterinformationen mit Hilfe des Monsternamens einliest (<code>&lt;eingang|gozilla&gt;</code>).
+
+Sie verwendet CMonster::setMonsterInfo() (s.o.).</li>
+
+  <li>Erstellen Sie die Methode bool CRoom::bFeindInRoom(void), die
+
+angibt, ob ein Monster im Raum ist. Diese Methode kann zur Lösung
+
+in einer der folgenden Aufgaben nützlich sein.<br>
+
+  </li>
+
+</ol>
+
+<br>
+
+<span style="text-decoration: underline;"></span><br>
+
+<span style="text-decoration: underline;"><br>
+
+Die Klasse CSpieler:</span><br>
+
+Wir wollen noch einen neuen Befehl einführen: <span style="font-style: italic;">status<span style="font-style: italic;"></span></span><br>
+
+Dieser Befehl gibt <br>
+
+<ul>
+
+  <li>den Namen des Spielers</li>
+
+  <li>die Waffe des Spielers und seine</li>
+
+  <li>Lebenspunkte</li>
+
+</ul>
+
+<br>
+
+<span style="text-decoration: underline;">Aufgabe: (CSpieler)</span><br style="text-decoration: underline;">
+
+<ul>
+
+  <li>Erstellen Sie die Klasse CSpieler nach folgendem Vorschlag:</li>
+
+</ul>
+
+<div style="margin-left: 80px;"><code>Class CSpieler {<br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; enum tWeapon { Dolch=10,
+
+Schwert=20, Speer=30, Pistole=100};<br>
+
+&nbsp;&nbsp;&nbsp; private:<br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; string m_name;<br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; int m_health;<br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; int m_damage;<br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; tWeapon m_weapon;<br>
+
+&nbsp;&nbsp;&nbsp; public:<br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; CSpieler();<br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; void readSpielerInfo(void);<br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; void display(void) const;<br>
+
+};<br>
+
+</code></div>
+
+<br>
+
+Sehen Sie nochmals eine Liste von Befehlen und eine kurze Beschreibung:<br>
+
+<ul>
+
+  <li><span style="font-style: italic;">schau:</span> zeigt die
+
+Raumbeschreibung</li>
+
+  <li><span style="font-style: italic;">nord, sued, ost, west</span>:
+
+wenn es in diese Richtung einen Raum gibt,
+
+geh dorthin</li>
+
+  <li><span style="font-style: italic;">hilfe:</span> zeigt die Befehle
+
+an</li>
+
+  <li><span style="font-style: italic;">zeige</span>: zeigt ein
+
+spezielles Objekt im Raum</li>
+
+  <li><span style="font-style: italic;">status:</span> zeigt die
+
+aktuelle Information über den Zustand des Spielers<br>
+
+  </li>
+
+  <li><span style="font-style: italic;">ende:</span> Programmende</li>
+
+</ul>
+
+Die Information für den Spieler befinden sich in der Datenbasis am
+
+Beginn:<br>
+
+<code>&lt;Name&gt;&nbsp;&nbsp; Superheld<br>
+
+&lt;health&gt; 275<br>
+
+&lt;weapon&gt; Dolch<br>
+
+&lt;damage&gt; 21<br>
+
+<br>
+
+&lt;Start&gt;&nbsp; Eingang<br>
+
+</code><br>
+
+<br>
+
+<br>
+
+<span style="text-decoration: underline;">Aufgabe: (CGame)</span><br style="text-decoration: underline;">
+
+Bei Programmstart wird zunächst ein Spielerobjket erzeugt und mit
+
+Werten aus der Datenbasis initialisiert. Wenn wir den Raum betreten
+
+greift uns das Monster an. void CMonster::attackSpieler(CSpieler&amp;
+
+pSpieler). Überlegen Sie
+
+sich eine Lösung und realisieren Sie diese. Bereiten
+
+Sie eine 5 minütige Präsentation vor.<br>
+
+<br>
+
+<br>
+
+Wenn Sie alle Aufgaben bis hierher aufmerksam und selbständig
+
+gelöst/programmiert haben, sind Sie in der Lage folgende
+
+Zusatzaufgaben zu lösen und somit ihre C++ Kenntnisse zu
+
+perfektionieren. Viel Erfolg!!!<br>
+
+<br>
+
+<br>
+
+<span style="text-decoration: underline;">Zusatzaufgaben:</span><br style="text-decoration: underline;">
+
+1) Bei einer Monsterattake könnten dem Helden/Spieler per
+
+Zufallszahlengenerator Schadenpunkte zugeordnet werden.<br>
+
+<br>
+
+2) Erlauben Sie dem Spieler einen Kampf gegen ein Monster
+
+auszufechten.&nbsp; Sie wollen vielleicht nicht immer bei Betreten des
+
+Raumes einen Kampf mit dem Monster ausfechten.<br>
+
+<br>
+
+3) Erzeugen Sie per Zufall Monster in verschiedenen Räumen.
+
+Dadurch wird das Spiel interessanter. Getötete Monster sollen
+
+natürlich verschwinden.<br>
+
+<br>
+
+4) Erzeugen Sie Gegenstände, die Sie in den Räumen
+
+positionieren. Der Held geht durch das Spiel und sammelt diese ein.
+
+Dadurch kann der Held seine Waffen, ... vermehren.<br>
+
+<br>
+
+5) Erzeugen Sie einen Beamer Raum. D.h. wenn sie ein Monster töten
+
+oder etwas spezielles aufheben, werden Sie in einen anderen raum
+
+"gebeamt".<br>
+
+<br>
+
+6) Erzeugen sie Leuteobjekte mit denen Sie in den Räumen sprechen
+
+können. Führen Sie den Befehl <span style="font-style: italic;">sprich</span> ein.<br>
+
+<br>
+
+7) Erlauben Sie, dass Sie mit anderen Leute-Objekten eine Gruppe bilden
+
+können und so ein Gruppenspiel entsteht.<br>
+
+<br>
+
+8) Erzeuge Räume, die Sie in eine andere Spieldatenbasis portieren.<br>
+
+<br>
+
+9) Der Spieler soll speichern und laden können, sodass der
+
+laufende Zustand des Spiels mit evtl. per Zufall erzeugten
+
+gegenstände, ... gespeichert werden kann.<br>
+
+<br>
+
+10) Erlauben Sie Zauberei und Zaubersprüche<br>
+
+<br>
+
+11) Erstellen Sie einen Multiple-Choice Test zum Thema: "Programmieren
+
+in C++" bzw. "Linux anwenden". Diesen transformieren Sie in eine
+
+Spieldatenbasis.<br>
+
+<br>
+
+12) Integrieren Sie das textadventure-game in t_minish<br>
+
+<br>
+
+13) Konvertieren Sie dieses Programm in ein Qt-Programm. Protokollieren
+
+Sie alle notwendigen Änderungen und gegeben Sie dieses Protokoll
+
+in Papierform (mit Deckblatt) ab. <br>
+
+<br>
+
+
+</body></html>

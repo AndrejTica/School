@@ -1,0 +1,49 @@
+mab: intarray mischen
+------------------------------------------------------------
+
+1. (6) Erstellen Sie das Programm ARRmischen
+------------------------------------------------------------
+1.1.(2)
+    + verwende #define ANZ 10 bzw. final int ANZ=10;
+    + definieren Sie ein int-Array mit genau ANZ Elementen
+    + schreiben Sie mit einer for-Schleife 
+      in das Arrayelement an der Stelle 0 den Wert 0, 
+      in das Arrayelement an der Stelle 1 den Wert 1, usw.
+
+    + geben Sie das Array aus.
+
+1.2. (2)
+    + mischen Sie nun die Arrayelemente auf folgende Weise
+      100 mal
+	ermittle für die Variable iStelle eine Zufallszahl 
+	im Intervall [0,ANZ].
+  
+	ermittle für die Variable jStelle eine Zufallszahl 
+	im Intervall [0,ANZ].
+
+	tausche die beiden Arrayelemente 
+	an der Stelle iStelle und jStelle.
+
+    + gib das Array aus
+
+
+1.3. (2)
+    + sortiere nun das Array und 
+
+    + gib es erneut aus.
+
+
+Hinweis: Zufallszahlen in C
+  #include <stdio.h>
+  #include <stdlib.h>
+  #include <time.h>
+
+  //ZUfallszahlen
+  srand(time(NULL));
+  zahl= rand() % 100; // 0 ...99
+
+
+Hinweis: Zufallszahlen in Java
+  java.util.Random zufall= new java.util.Random();
+  int zahl= zufall.nextInt(100); // 0 .. 99 
+ 

@@ -1,0 +1,82 @@
+===WH Cpp===
+;Merke: Bei Objekten mit dynamischen Membern (Zeigern)
+:Konstruktor, Copy-Konstruktor, Destruktor, Zuweisungsoperator
+
+
+==new-delete==
+Objekte mit Pointer-membern bedürfen einer speziellen Aufmerksamkeit.
+
+Siehe zur Verwendung von new und delete http://svn.htl-salzburg.ac.at/svn/4ME/UNTERRICHTSMATERIAL/CPP
+
+===Aufgabe: Mystring - Verwendung von new und delete===
+Die Klasse MyString (mystring.h, mystring.cpp) bestehe auf folg. membern:
+ private:
+ 	char* s;
+ 	int size;
+ 	
+Folgendes Programm soll funktionieren:
+...
+#include "mystring.h"
+...
+int main(){
+	MyString s("Hallo");
+	MyString t;
+	
+	
+	s.append(", Welt!);
+	t.append(",Welt!");
+	
+	cout << "s= " << s.toString()<< endl;
+	cout << "t= " << t.toString()<< endl;
+	...
+}
+
+
+Nun soll och der sogenannte Kopierkonstruktor realisiert werden.
+
+Folgendes Programm soll funktionieren:
+...
+#include "mystring.h"
+...
+int main(){
+	MyString s("Hallo");
+	MyString t(s);
+	
+	cout << "s= " << s.toString()<<endl;
+	cout << "t= " << s.toString()<<endl;
+	...
+}
+
+
+==Überladen von Operatoren==
+Gerade bei Objekten mit dynamischen Membern muss man auf den Zuweisungsoperator
+achten.
+
+===Aufgabe: Mystring - Verwendung von new und delete===
+Folgendes Programm soll funktionieren:
+...
+#include "mystring.h"
+...
+int main(){
+	MyString s("Hallo");
+	MyString t("Zeppelin");
+	
+	cout << "s= " << s << endl;
+	cout << "t= " << t << endl;
+	
+	
+	if (s > t)
+		cout << "s ist groesser als t" <<endl;
+	else
+		cout << "s ist kleiner als t" <<endl;
+	
+	
+	t= s;
+	cout << "nach s= t" << endl;
+	
+	cout << "s= " << s << endl;
+	cout << "t= " << t << endl;
+	
+	...
+}
+

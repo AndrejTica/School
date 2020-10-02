@@ -1,0 +1,22 @@
+//gewicht.stk
+//a.hofmann
+//
+push 0
+write IDEALGEWICHT: Bei Frauen (Körpergroesse -100) * 0.85  Bei Männer (Körpergroesse -100) * 0.9
+//
+read Bitte geben sie Ihre Körpergröße in cm ein?  
+assign KG
+//
+vpush KG 
+push 100
+sub
+assign KG_minus_100
+//
+read Geschlechtsfaktor: 0.9 für Männer bzw. 0.85 für Frauen?  
+assign geschlecht
+//
+vpush  KG_minus_100
+vpush geschlecht
+mul
+write IDEALGEWICHT: Ihr Idelgewicht ist: 
+quit

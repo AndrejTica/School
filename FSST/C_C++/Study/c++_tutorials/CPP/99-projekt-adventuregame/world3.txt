@@ -1,0 +1,150 @@
+<name>   Priska
+<gesundheit> 300 
+<waffe> Geschicklichkeit
+<schaden> 10
+<Start> Eingang
+
+<Eingang>
+_____________________________________________________________________
+   Ja, endlich. Sie haben es gefunden. Ein unheimliches Haus. 
+   Eine geheimnisvolle Person aus dem Jenseits hat ihnen
+   eine schreckliche Nachricht ueberbracht.
+
+   Ihr Freund wird von dunklen Maechten in einem grossen Haus
+   festgehalten. Sie muessen ihn retten. Ja, wirklich, das sind
+   sie ihm schuldig.
+   Also worauf warten Sie, gehen Sie ins Haus!!!!
+   (hilfe bzw. ?)
+_____________________________________________________________________*
+<nord> Mitte
+<ost>  None
+<sued> None
+<west> None
+<zeige> 2 fenster frage
+<monster> None
+
+<Eingang|fenster>
+_____________________________________________________________________
+   Ihre Augen stechen, weil die Sonne durch das Fenster scheint.
+   Jedesmal, wenn sie direkt ins Fenster sehen, schreien Sie vor Schmerz.
+_____________________________________________________________________*
+
+<Eingang|frage>
+_____________________________________________________________________
+   Finde deinen Freund und du wirst die Antwort auf diese Frage finden.
+_____________________________________________________________________*
+
+
+<Mitte>
+_____________________________________________________________________
+   Sie befinden Sie genau in der Mitte des Hauses.
+
+   In irgendeinem Zimmer befindet sich ihr Freund,
+   der von geheimnisvollen Personen festgehalten wird.
+
+   Es gibt eine Tuer in jede Richtung.
+   (hilfe bzw. ?)
+_____________________________________________________________________*
+<nord> Oben
+<ost>  Rechts
+<sued> Eingang
+<west> Links
+<zeige> 0
+<monster> None
+
+<Links>
+_____________________________________________________________________
+   Hier befindet sich ein Computer auf dem vielen Fragen stehen.
+   Es gibt nur eine Tuer nach west, woher sie gekommen sind.
+   (hilfe bzw. ?)
+_____________________________________________________________________*
+<nord> None
+<ost>  Mitte
+<sued> None
+<west> None
+<zeige> 2 computer taschenrechner
+<monster> None
+
+<Links|computer>
+_____________________________________________________________________
+   Worin liegt der Unterschied zwischen Prozess
+   und Programm?
+_____________________________________________________________________*
+<Links|taschenrechner>
+_____________________________________________________________________
+   2 2 + 2 / = ?
+_____________________________________________________________________*
+
+
+<Rechts>
+_____________________________________________________________________
+   Gleich nachdem Sie durch die Tuer gekommen sind, merkten Sie 
+   das Unheimliche.
+   Irgendwer will was von ihnen. Aber, was nur ?
+   Es gibt hier keine Antwort fuer Sie. 
+   Also zurueck, denn es gibt nur diesen Weg nach Westen.
+_____________________________________________________________________*
+<nord> None
+<ost>  None
+<sued> None
+<west> Mitte
+<zeige> 0
+<monster> None
+
+<Oben>
+_____________________________________________________________________
+   Ja, Sie hoeren ganz deutlich die Stimme. Sie kommt von oben
+   Es gibt keinen Weg zurueck. Aber doch es gibt einen Weg nach 
+   Sueden und einen nach Norden.
+   Wohin also ?
+_____________________________________________________________________*
+<nord> Ende
+<ost>  None
+<sued> Mitte
+<west> None
+<zeige> 0
+<monster> dracula
+
+<Oben|dracula>
+<gesundheit> 30
+<schaden> 10
+<attacke> 
+---..................................................................
+   Die Fledermaus faellt hinterruecks ueber dich her.
+   Du wehrst dich ...?
+---..................................................................*
+
+<Ende>
+_____________________________________________________________________
+   Endlich haben Sie ihren Freund gefunden!!!!!
+   Er stammelt fuer Sie unverstaendliche Worte. Sie gehen auf ihn zu.
+   Aber, da sehen Sie selbst, was er ihnen zurufen moechte.
+   Die Gefahr ist noch nicht vorueber, sondern beginnt erst.
+   To be continued...
+_____________________________________________________________________*
+<nord> None
+<ost>  None
+<sued> Mitte
+<west> None
+<zeige> 1 note
+<monster> terminator
+
+
+<Ende|note>
+_____________________________________________________________________
+   S  E  H  R      G  U  T  !!!!!
+_____________________________________________________________________*
+
+<Ende|terminator>
+<gesundheit> 30
+<schaden> 10
+<attacke> 
+---..................................................................
+   Der [terminator] faellt hinterruecks ueber dich her.
+   Du wehrst dich dank deiner [geschicklichkeit] erfolgreich und 
+   schlaegst ihn in die Flucht.
+   Mit seinem letzten Atemzug schreit er noch ....
+   ...
+   I'll be back ! 
+
+---..................................................................*

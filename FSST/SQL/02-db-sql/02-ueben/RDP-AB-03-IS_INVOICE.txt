@@ -1,0 +1,61 @@
+RDP-AB-03-IS_INVOICE.txt
+===============================================================================
+
+Gegeben sei als Ausschnitt der Realität eine 'Miniwelt Rechnungschreiben'.
+Das Modell der Miniwelt dokumentiert sich in der folgenden Beispiel-Rechnung:
+
+Hugo Müller
+Gartenstr. 4a     65189 Wiesbaden
+Rechnungsnummer:  R001        Kundennummer: K001     Datum: 2.1.2016
+Rechnungsbetrag:  8.500,00
+
+Pos.  ArtikelNr  Bezeichnung       Anzahl      E-Preis     G-Preis
+___________________________________________________________________
+ 1    A002       Drucker MSP45       4         1.000,00    4.000,00
+ 2    A003       Bildschirm VGA      9           500,00    4.500,00
+
+Die Geschäftsregeln der Miniwelt lassen sich wie folgt fassen: 
+	1. Eine Rechnung geht genau an einen Kunden und existiert ohne Kunden nicht. 
+	2. Ein Kunde kann keine, eine oder mehrere Rechnungen erhalten. 
+	3. Eine Rechnung enthält mindestens eine Rechnungsposition. 
+	4. Eine Rechnungsposition bezieht sich auf genau eine Rechnung und 
+		existiert ohne Rechnung nicht.
+	5. Eine Rechnungsposition betrifft genau einen Artikel und existiert ohne Artikel nicht.
+	6. Ein Artikel kann in keiner, einer oder mehreren Rechnungen auftauchen.
+
+
+Arbeitsanweisungen:
+	1. Aufgabe: Erstelle ein vollständiges ER-Diagramm (Papier)
+	2. Aufgabe: Erstelle ein vollständiges relationales Datenmodell in der Datei: is_invoice.sql
+		(mit 1. create database, 2. create table, 3. Keys, 4. Constraints, 
+			5. referentielle Integrität, 6. Testdaten).
+		Tipp: siehe is_uni-mysql.sql
+	4. Aufgabe: Zeige die SQL-Anweisung, welcher Artikel am meisten verkauft wurde.
+	3. Aufgabe: Zeige die Redundanzfreiheit durch das Einhalten der 3. Normalform und 
+		gib Definitionen zur 1. , 2. und 3. Normalform.
+
+
+-- file: : is_invoice.sql
+-- author: N.N.
+-- date: 2017
+-- demo zu sql
+-- db: is_invoice
+-- user: is_invoice oder is_invoice@localhost
+-- pwd: comein
+-- als root ausführen
+
+drop database if exists is_invoice;
+create database if not exists is_invoice;
+
+grant create,drop, references, select,insert,update,delete 
+on is_invoice.* to is_invoice@localhost identified by 'comein';
+
+use is_invoice;
+
+drop table if exists customer;
+create table customer(
+	id int  primary key,
+	name varchar(80) not null default 'Anton Hofmann',
+	address varchar(80) not null default 'address n/a'
+);
+....
