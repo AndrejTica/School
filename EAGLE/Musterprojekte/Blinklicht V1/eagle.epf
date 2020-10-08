@@ -1,0 +1,28 @@
+[Eagle]
+Version="07 04 00"
+Platform="Windows"
+Serial="62191E841E-LSR-WLM-1EL"
+Globals="Globals"
+Desktop="Desktop"
+
+[Globals]
+AutoSaveProject=1
+UsedLibrary="C:/HTL/Doku_2CHEL/EAGLE/lbr_AttT/Battery_AttT.lbr"
+UsedLibrary="C:/HTL/Doku_2CHEL/EAGLE/lbr_AttT/Led_AttT.lbr"
+UsedLibrary="C:/HTL/Doku_2CHEL/EAGLE/lbr_AttT/Supply_AttT.lbr"
+UsedLibrary="C:/HTL/Doku_2CHEL/EAGLE/lbr_AttT/Transistor_AttT.lbr"
+UsedLibrary="C:/HTL/Doku_2CHEL/EAGLE/lbr_AttT/rcl_AttT.lbr"
+UsedLibrary="C:/EAGLE-7.4.0/lbr/led.lbr"
+UsedLibrary="C:/EAGLE-7.4.0/lbr/transistor-npn.lbr"
+UsedLibrary="C:/HTL/Doku_2BHEL/EAGLE/lbr_AttT/rcl_AttT.lbr"
+UsedLibrary="drilegend.lbr"
+
+[Win_1]
+Type="Control Panel"
+Loc="1476 10 2505 769"
+State=2
+Number=0
+
+[Desktop]
+Screen="2560 1024"
+Window="Win_1"
