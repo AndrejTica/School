@@ -6,8 +6,7 @@
 
 # Moodle:
 # https://elearning2.htl-salzburg.ac.at/Moodle/moodle/
-# Klassenlaufwerk:
-# fs-edu.edu.htl.org
-# Benutzername: edu\name.nachname
+# Klassenlaufwerk tutorial:
+# https://www.youtube.com/watch?v=teN9dCBXHyc&feature=youtu.be
 
 
