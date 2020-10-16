@@ -1,0 +1,7 @@
+﻿  OsBgTask.c
+C:\Users\m.franjic\Documents\DIC\Betriebsystem\Source\OsBgTask.h(20,2): warning C4091: "typedef ": Ignoriert auf der linken Seite von "TOsBgTaskNodeStruct", wenn keine Variable deklariert wurde
+C:\Users\m.franjic\Documents\DIC\Betriebsystem\Source\OsBgTask.c(10,36): error C2011: "TOsBgTaskNodeStruct": "struct" Typneudefinition
+C:\Users\m.franjic\Documents\DIC\Betriebsystem\Source\OsBgTask.h(15): message : Siehe Deklaration von "TOsBgTaskNodeStruct"
+  TestOperatingSystemMain.c
+C:\Users\m.franjic\Documents\DIC\Betriebsystem\Source\OsBgTask.h(20,2): warning C4091: "typedef ": Ignoriert auf der linken Seite von "TOsBgTaskNodeStruct", wenn keine Variable deklariert wurde
+  Code wird generiert...

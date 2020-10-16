@@ -1,0 +1,31 @@
+# <h2>Script für die Bearbeitung der Rahmen der HTBL-Salzburg</h2>
+# <hr><p>
+# <u>Beschreibung:</u><p>
+# <b>Dieses Script dient zur Bearbeitung der Rahmenattribute der Zeichenrahmen der HTBL-Salzburg</b><p>
+# <u>Version: V20</u><p>
+# Passend zu: frames_HTL_V20.lbr<p>
+# -->Device: HTL-A3Q-V20 <br>
+# -->Device: HTL-A4H-V20 <br>
+# -->Device: HTL-A4Q-V20 <p>
+# Eagle Version 9.5.x<p>
+# Bearbeiter: StrH / AttT / PoeH / WenN / 19-20 <p>	
+# <hr>
+# <h3>Anleitung zur Anwendung:</h3><p>
+# <b>Schritt 1:</b> Über das Control Panel (->Script-Dateien) werden die entsprechenden Attribute zwischen den Hochkommazeichen<p> 
+# mit der entsprechenden Information versehen und personalisiert gespeichert.<p>
+# <b>Schritt 2:</b> Ausführen des Scripts  im Schematic-Editor<p>
+# <b>Schritt 3:</b> Einfügen des Zeichenrahmens aus der Bibliothek<p>
+# <b>Schritt 4:</b> Bearbeitung der Attribute (>Bearbeiten>Globale Attribute...)<p>
+# <b>Schritt 5:</b> Bearbeitung der Benennung in der zweiten Zeile ... ist die erste Zeile des  jeweiligen Bescheibungstextes<p>
+# der Schaltplanseite (>Bearbeiten>Beschreibung...>Seite)
+# <hr>
+ATTRIBUTE * ABTEILUNG 'Technische Informatik'
+ATTRIBUTE * BEARBEITER 'Helmut Strasser'
+ATTRIBUTE * DATUM ''
+ATTRIBUTE * DOKUMENTART 'Schaltplan'
+ATTRIBUTE * ID ''
+ATTRIBUTE * GEZ 'StrH'
+ATTRIBUTE * VER '1.0'
+ATTRIBUTE * REV ''
+ATTRIBUTE * BENENNUNG ''
+ATTRIBUTE * STATUS 'Prototyp'

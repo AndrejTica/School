@@ -1,0 +1,13 @@
+<h2>Design-Regeln der HTL Salzburg</h2><hr>
+<u>Beschreibung:</u><p>
+In den Design-Regeln ("Design Rules") legt man alle für die Platine und deren Fertigung relevanten Parameter fest. <br>
+Die Überprüfung eines Layouts kann jederzeit mit dem <b>Design-Rule-Check</b> (<b>DRC</b>-Befehl) erfolgen.<br>
+Bei Verwendung des Autorouters, sind diese Regeln ebenfalls gültig.<p>
+<hr>
+<h3><u>Version:</u></h3><p>
+HTBLuVA Salzburg<p>
+Erstellt: WenN / PoeH<p>
+Gültig: ab Dez. 2018<p>
+Eagle_Ver.7.7.0<p>
+<h3>Die Verwendung dieser DRUs sind für die hausinternen Fertigung Vorausetzung!</h3>
+<hr>
