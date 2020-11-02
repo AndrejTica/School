@@ -1,0 +1,11 @@
+* Y:\Schrempf\EDT_2\093_Transistor\AP_Stab_BasisRv\AP_Stab_BasisRv.asc
+Rb Ub Ube 330k
+Rc Ub Uce 470
+V1 Ub 0 9V
+Q1 Uce Ube 0 0 BC547B
+.model NPN NPN
+.model PNP PNP
+.lib C:\ProgramData\App-V\48E4C2BF-4099-4555-881F-F2116170D516\F43ECB06-CC40-4AB2-BF9B-E3C6B823AE2E\Root\VFS\ProgramFilesX86\LTC\LTspiceIV\lib\cmp\standard.bjt
+.op
+.backanno
+.end
