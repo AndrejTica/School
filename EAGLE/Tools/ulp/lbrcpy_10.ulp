@@ -1,0 +1,418 @@
+#usage "<b>Library Copy V1.0</b><p>\n"
+       "Use this ULP to copy Packages/Symbols from a source library to a destination library "
+       "and delete and rename Packages/Symbols in the destination library.<p>\n"
+       "<author>2002 by Werner Daners (lbrcpy@wolke.ch)</author>." 
+
+// THIS PROGRAM IS PROVIDED AS IS AND WITHOUT WARRANTY OF ANY KIND, EXPRESSED OR IMPLIED
+ 
+string source_fname, target_fname, temp_fname;
+numeric string source_elem[],target_elem[];
+numeric string source_subelem[];
+int source_sel=0,target_sel=0;
+string target_filename,target_pathfilename; 
+string h; 
+int filter=0;
+string ScriptName;
+int index[];
+enum {nrSymbols,nrPackages,nrDevices};
+enum {flgFirst,flgSourceLbr,flgReady,flgRunScr};
+int flag=flgFirst;
+
+string get_project_path() {
+  if (board)     board(B)     return(filedir(B.name));
+  if (schematic) schematic(B) return(filedir(B.name));
+  if (library)   library(B)   return(filedir(B.name));
+}
+
+string work_path = get_project_path();                 // path for temp files
+string source_path = get_project_path();                // path for source lbr
+
+int exist_file(string FileName) {
+string a[];
+  int n = fileglob(a, FileName);  
+  if (n == 0) return 0;
+  else return 1;
+}
+
+void remove_file(string filen)
+{   
+}
+
+string get_ulp_name(void) {
+  string s = strsub(argv[0], 0, strlen(argv[0])-4);
+  return s;
+}
+
+void write_lbr_elem_file(string filen)
+{
+  int AnzGates=0,i;
+  string temp;
+  output(filen)
+  {
+    source_subelem[AnzGates++]="SYMBOL";
+    library(L){ 
+      L.symbols(S) 
+      { 
+        printf("%s.sym\n",S.name);          
+      }
+      L.packages(P)
+      { 
+        printf("%s.pac\n",P.name);
+      }
+      L.devices(D)
+      {
+        printf("%s.dev\n",D.name);
+        if(D.package)
+          printf("->%s.pac\n",D.package.name);
+        D.gates(G)
+        {
+           sprintf(temp,"->%s.sym",G.symbol.name); 
+           if(!lookup(source_subelem,temp,"SYMBOL"))
+             source_subelem[AnzGates++]=temp;
+        }  
+        for(i=1;i<AnzGates;i++)
+          printf("%s\n",source_subelem[i]); 
+      }   
+    }
+  }
+}
+
+void read_lbr_elem_file(string filen,int filter)
+{
+  string temp[];
+  strsplit(source_elem,"",':');    
+  int i,j=0; 
+  int AnzZeilen=fileread(temp,filen);
+  for(i=0;i<AnzZeilen;i++)
+  { 
+    switch(filter)
+    {
+     case nrDevices:if((fileext(temp[i])==".dev")&&(0!=strstr(temp[i],"->"))) 
+        source_elem[j++]=filesetext(temp[i],""); 
+      break;
+      case nrSymbols:if((fileext(temp[i])==".sym")&&(0!=strstr(temp[i],"->")))     
+        source_elem[j++]=filesetext(temp[i],"");   
+      break;
+      case nrPackages:if((fileext(temp[i])==".pac")&&(0!=strstr(temp[i],"->")))
+        source_elem[j++]=filesetext(temp[i],"");
+      break;
+    }
+  }
+}
+
+void read_lbr_elem(int filter)
+{
+  int j=0;
+  strsplit(target_elem,"",':');    
+  library(L)
+  { 
+    switch(filter)
+    {       
+      case nrSymbols: L.symbols(S) 
+                        target_elem[j++]=S.name;         
+      break;
+      case nrPackages: L.packages(P)
+                         target_elem[j++]=P.name;
+      break;
+      case nrDevices: L.devices(D)
+                         target_elem[j++]=D.name;  
+      break;
+    }
+  }   
+}
+
+void read_elem()
+{
+ read_lbr_elem(filter);
+ if(flag==flgReady)
+   read_lbr_elem_file(work_path+"$$$.idx",filter); 
+}
+
+string elem_typ_str(int elem_enum)
+{   
+  return (elem_enum==nrSymbols) ? ".sym" : (elem_enum==nrPackages) ? ".pac" : ".dev"; 
+}
+
+void get_lbr_elem(string lbr_fname,int flg)
+{  
+   string cmd;
+   string cmdz="";
+   if(flg==flgSourceLbr)
+   {  
+     remove_file("x");
+     cmdz="GRID MM FINEST;\nEXPORT SCRIPT "+work_path+"$$$.scr;\nGRID LAST;\n";
+   }
+   if(flg==flgRunScr)
+     cmdz="SCRIPT "+work_path+"$$$$.scr;\nWRITE;\n";
+   sprintf(cmd,"OPEN %s;\n%sRUN %s %d %d %s %s;\n",lbr_fname,cmdz,get_ulp_name(),filter,flg,target_fname,source_fname); 
+   exit(cmd);
+}
+
+void write_elem_copy_scr(string elem,string targetname)
+{   
+  string scriptf;
+  int pos_elem=0;
+  fileread(scriptf,work_path+"$$$.scr");
+  pos_elem=strstr(scriptf,"Edit "+elem+";");
+  if(pos_elem>=0)
+  {     
+    scriptf=strsub(scriptf,pos_elem);
+    pos_elem=strstr(scriptf,";");
+    if(pos_elem)
+      scriptf="Edit "+targetname+strsub(scriptf,pos_elem); 
+    pos_elem=strstr(scriptf,"\nEdit");
+    if(pos_elem>=0)
+    { 
+      scriptf=strsub(scriptf,0,pos_elem);
+    } 
+    else
+      scriptf="";
+  }
+  else
+    scriptf="";
+  output(work_path+"$$$$.scr")
+    printf("GRID mm finest;\nset wire_bend 2;\n%s\nGRID last;",scriptf);
+}
+
+void write_elem_rename_scr(string elem,string newname)
+{
+  output(work_path+"$$$$.scr")
+    printf("RENAME "+elem+" "+newname+";\n"); 
+}
+
+void write_elem_delete_scr(string elem)
+{
+  output(work_path+"$$$$.scr")
+    printf("REMOVE "+elem+";\n"); 
+}
+
+string rename_dlg(string elem,string rentext)
+{  
+  int res=dlgDialog("Rename "+elem) {
+    dlgHBoxLayout {
+      dlgLabel(rentext);
+    }
+    dlgHBoxLayout {
+      dlgStringEdit(elem);
+    }
+    dlgHBoxLayout {
+      dlgPushButton("OK") dlgAccept();
+      dlgPushButton("Cancel") dlgReject();
+    }
+  };
+  elem=(res==1) ? elem : "";
+  return elem;
+}
+
+int elem_name_ok(string n)
+{
+   return (-1==strchr(n,'.'))&&(-1==strchr(n,' '))&&(-1==strchr(n,';'));
+}
+
+void rename_elem()
+{
+  int i;
+  string rena_elem=target_elem[target_sel];
+  if(target_elem[target_sel]!="")
+  {
+    i=0;
+    while((rena_elem!=target_elem[i])&&(target_elem[i])!="")
+      i++;
+    while(((target_elem[i]!="")&&(rena_elem!=""))||(!elem_name_ok(rena_elem)))
+    {
+      string dlgOutText=(elem_name_ok(rena_elem)) ? "A target with the same name exist\n - choose an other, please !":"Unvalid character in element name !";
+      rena_elem=rename_dlg(rena_elem,dlgOutText);
+      i=0;
+      while((rena_elem!=target_elem[i])&&(target_elem[i])!="")
+        i++;       
+    } 
+    if(rena_elem!="")
+    {
+      rena_elem+=elem_typ_str(filter);
+      write_elem_rename_scr(target_elem[target_sel]+elem_typ_str(filter),rena_elem);
+      get_lbr_elem(target_fname,flgRunScr);     
+    }
+  }   
+}
+
+void copy_elem()
+{ 
+  int i;
+  string full_elem,copy_elem;
+  full_elem=source_elem[source_sel];
+  copy_elem=source_elem[source_sel];
+  if(copy_elem!="")
+  {
+    i=0;
+    while((copy_elem!=target_elem[i])&&(target_elem[i])!="")
+      i++;
+    while(((target_elem[i]!="")&&(copy_elem!=""))||(!elem_name_ok(copy_elem)))
+    {
+      string dlgOutText=(elem_name_ok(copy_elem)) ? "A target with the same name exist\n - choose an other, please !":"Unvalid character in element name !";
+      copy_elem=rename_dlg(copy_elem,dlgOutText);
+      i=0;
+      while((copy_elem!=target_elem[i])&&(target_elem[i])!="")
+        i++;       
+    } 
+    if(copy_elem!="")
+    {
+      if(filter!=nrDevices) 
+      {
+        full_elem+=elem_typ_str(filter);
+        copy_elem+=elem_typ_str(filter);
+        write_elem_copy_scr(full_elem,copy_elem);
+        get_lbr_elem(target_fname,flgRunScr);     
+      }
+      else
+        dlgMessageBox("Oh sorry, I add this functionality in next release !");   
+    }
+  }  
+}
+
+void delete_elem()
+{
+  string depends_on="";
+  int depanz=0;
+  if(target_elem[target_sel]!="")
+  {
+    library(L)
+    {
+      L.devices(D)
+      { 
+        switch(filter)
+        {
+          case nrSymbols: 
+          { 
+            D.gates(G)
+            {
+              if((G.symbol.name==target_elem[target_sel])&&(depanz<10))
+              {
+                depends_on+="- "+D.name+"\n";
+                depanz++;
+              }
+            }
+          }
+          break;
+          case nrPackages:
+          {
+            if((D.package.name==target_elem[target_sel])&&(depanz<10))
+            {
+               depends_on+="- "+D.name+"\n";
+               depanz++;
+            }
+          }
+          break;
+        }
+      }
+      if(depanz==10) 
+        depends_on+="and more.";
+    }
+    if(depends_on!="")
+    {
+      dlgMessageBox("Sorry, you can't delete this element, it depends on device(s)\n"+depends_on+"\nDelete Device(s) first, Please.\n");
+    }
+    else
+    {
+      write_elem_delete_scr(target_elem[target_sel]+elem_typ_str(filter));
+      get_lbr_elem(target_fname,flgRunScr);        
+    }
+  }     
+}
+
+/* --- main --------------------------------------------------------------------*/
+if (!library) {
+   dlgMessageBox("<b>ERROR</b><hr>This program can only work in the library editor.");
+   exit(1);
+}
+
+filter= (argv[1]!="") ? strtol(argv[1]) : 0;
+flag= (argv[2]!="") ? strtol(argv[2]) : flgFirst;
+
+source_fname=strlwr(argv[4]);
+if((source_fname=="")&&(flag==flgReady))
+  flag=flgFirst;
+library(L)
+  if(flag==flgFirst)
+  {  target_fname = strlwr(L.name); 
+     dlgMessageBox("<b>lbrcpy 1.0</b><p>\n Remark: When you're prompted to overwrite $$$.scr,\n choose Yes, please !\n");}   // name of loaded library with path
+   else
+  {  target_fname = strlwr(argv[3]); }
+if(flag==flgSourceLbr)
+{
+  write_lbr_elem_file(work_path+"$$$.idx");
+  get_lbr_elem(target_fname,flgReady);
+}
+read_elem();
+if(flag==flgRunScr)
+{
+  //dlgMessageBox(target_fname + "<->" + source_fname);
+  if(target_fname==source_fname)
+  { 
+    get_lbr_elem(target_fname,flgSourceLbr);
+  }
+  else
+  {
+    get_lbr_elem(target_fname,flgReady);
+  }
+}
+
+  
+// start menu
+int Result = dlgDialog("Copy Symbols/Packages/Devices from source library to loaded library") {
+  dlgHBoxLayout {
+    dlgStretch(1);
+    dlgSpacing(600);
+    dlgStretch(1);
+  }
+  dlgHBoxLayout {
+     dlgVBoxLayout {
+       dlgSpacing(400);
+     }
+     dlgVBoxLayout {
+       dlgLabel("Source: "+filename(source_fname));
+       dlgListBox(source_elem,source_sel) {};
+     }
+     dlgVBoxLayout {
+        dlgSpacing(20);
+        dlgGroup("Anzeige von") {
+          dlgRadioButton("Symbols",filter){ target_sel=1000000; source_sel=target_sel; read_elem(); }
+          dlgRadioButton("Packages",filter){ target_sel=1000000; source_sel=target_sel; read_elem();}
+          dlgRadioButton("Devices",filter){ target_sel=1000000; source_sel=target_sel; read_elem();}
+        }
+        dlgPushButton("&Copy ->") { copy_elem(); }
+        dlgSpacing(200);
+     }
+       dlgVBoxLayout {
+       dlgLabel("Destination: "+filename(target_fname));
+       dlgListBox(target_elem,target_sel){ };
+       dlgHBoxLayout{
+         dlgPushButton("&Delete") { delete_elem(); }
+         dlgPushButton("&Rename") { rename_elem(); }
+       }
+     }
+  }
+  dlgSpacing(10);
+  dlgHBoxLayout {
+    dlgLabel("  &Select source library:");
+    temp_fname = source_path;
+    dlgStringEdit(temp_fname);
+    dlgPushButton("+Bro&wse") {
+       temp_fname = dlgFileOpen("Select source library", temp_fname, "*.lbr");
+       if((temp_fname!="") && exist_file(temp_fname))
+       {
+         source_fname=temp_fname;
+         get_lbr_elem(temp_fname,flgSourceLbr);
+       }
+       else
+         temp_fname=source_path;
+     }
+  }
+  dlgSpacing(10);
+  dlgHBoxLayout {
+    dlgStretch(1);
+    dlgPushButton("-&Quit")   dlgReject();
+
+    }
+  };
+
+

@@ -1,0 +1,107 @@
+#usage "sets the value of special packages (MEAS_...) according to the XY-coordinates in mm\n"
+	"these packages --> RFMasze.lbr are used to show the exact measurings of their origin/distance\n"
+	"(these devices are normally arrows in Layer 47)\n"
+	"<author>Author: RFriedemann@web.de </author>"
+
+string h,cmd,mark;
+int winkel,pos;
+real dist;
+if (!board) {
+   dlgMessageBox( "This program requires the board editor.");
+   exit(1);
+   }
+output("sample")
+board(B) 
+{
+	cmd="";
+	B.elements(E)
+	{
+		if (E.package.name=="MEAS_FROMORIGIN_1D")
+		{
+		  winkel=round(E.angle);
+		  switch(winkel)
+          {
+			case 0:dist=u2mm(E.x);
+					break;
+			case 90:dist=u2mm(E.y);
+					break;
+			default:dist=1e30;
+          }			  
+		  h="";	
+		  sprintf(h,"Value '%s' %1.2f;\n",E.name,dist);
+		  cmd+=h;
+		}
+		if (E.package.name=="MEAS_FROMORIGIN_2D")
+ 		{			  
+		  h="";			 
+		  sprintf(h,"Value '%s'  '%1.2f/%1.2f';\n",E.name,u2mm(E.x), u2mm(E.y));
+		  cmd+=h;
+		}
+		if (E.package.name=="MEAS_FROM_MARK_1D")
+ 		{
+		  h="";
+		  sprintf(h,"Value '%s' 'missing -MarkName';\n",E.name);
+		  pos=strchr(E.name,'-');
+		  if(pos>=0)
+		  {
+		     mark=strsub(E.name,pos+1);		//Zielmarke
+		     h="";
+		     sprintf(h,"Value '%s' 'missing Mark: %s';\n",E.name,mark);
+		     B.elements(K)
+             {
+			    if((K.name==mark) && (K.package.name=="MEAS_MARK_1D"))
+			    {	
+			      h="";
+				  sprintf(h,"Value '%s' 'Mark not in Line';\n",E.name);
+				  if((E.x==K.x) || (E.y==K.y))
+				  {
+				     h="";
+				     sprintf(h,"Value '%s' 'wrong angle(s)';\n",E.name);
+				     winkel=round(E.angle-K.angle);
+				      //if(winkel==180)	//think over about this
+                     { 
+				  	   dist=u2mm(abs(E.x-K.x + E.y-K.y));
+					   h="";
+				 	   sprintf(h,"Value '%s' %1.2f;\n",E.name,dist);
+ 				     }			  
+				   }//ifmark in line
+                }//if Zielmarke found
+			}
+		 }
+		  cmd+=h;
+		}
+		if (E.package.name=="MEAS_DRILL_DIAMETER")
+ 		{
+		   h="";sprintf(h,"VALUE '%s'  'cant evaluate Diameter'; \n",E.name);
+		   B.holes(D)
+           {
+		 	 if ((D.x==E.x) && (D.y==E.y))
+             {
+				h="";
+	 			sprintf(h,"VALUE '%s' '%1.2fmm';\n",E.name,u2mm(D.drill));
+             }	 		   						  
+           }				
+		   B.elements(K)
+           {
+				K.package.holes(D)
+				{
+					if ((D.x==E.x) && (D.y==E.y))
+					{
+						h="";
+	 		   			sprintf(h,"VALUE '%s' '%1.2fmm';\n",E.name,u2mm(D.drill));
+					}	 		   						  
+				}
+				K.package.contacts(C)
+				{
+					if ((C.pad.x==E.x) && (C.pad.y==E.y))
+					{
+						h="";
+ 		   				sprintf(h,"VALUE '%s' '%1.2fmm';\n",E.name,u2mm(C.pad.drill));
+					}	 		   						  
+				}
+			}
+		cmd+=h;
+		}
+	}
+}
+exit (cmd);

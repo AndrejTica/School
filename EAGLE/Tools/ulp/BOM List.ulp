@@ -1,0 +1,114 @@
+/*
+ *  This EAGLE User Language Program prints a board's
+ *  Partlist and its "Bill Of Material"
+ *  The Material is sorted by its device-types and its values.
+ *  This program is an improvement of 
+ *  PART.ULP, 22.1.1999 ikrause, Technische Universität Braunschweig
+ *  Institut für Nachrichtentechnik  
+ *  Improvements made by YUM
+ *  (Universtity of Technology Graz, Experimental Physics)
+*/
+
+int ValueLine(string Quantity, string Value, string Package, string Parts)
+  {
+   return printf("          %-6s %-*s %-*s     %s%s",      // die Leerzeichen bilden den Rand zum Lochen
+                Quantity, 
+                ELEMENT_VALUE_LENGTH, Value,
+                PACKAGE_NAME_LENGTH, Package, Parts, Parts != "" ? "\n" : "");  // formatierte Ausgabe
+  }                                                 
+
+
+string Bauteilname(string Teil)                 // nimmt einen String, gibt die Anfangsbuchstaben
+  {						// bis zum ersten anderen Zeichen aus 
+   int i = 0;					// Bauteilname extrahieren, nur Buchstaben
+   int Laenge = 0;    
+ 
+   do   					//solange Buchstaben im Namen
+    {
+     ++Laenge;					// diese Funktion "Bauteilname" ist geprüft, O.K.
+     ++i;
+    }
+   while (isalpha(Teil[i]));
+   return  strsub(Teil,0, Laenge);  		//string der nur Buchstaben enthält als Rückgabewert
+  }
+
+
+if (board) board(B)
+{									      // Anfang board-kontext
+   output(filesetext(B.name, ".bom"))
+ {  
+     printf("%s\n\n", EAGLE_SIGNATURE);                                       // Datei-Info
+     printf("Partlist exported from %s at %s\n", B.name, t2string(time()));   // Datum und Zeit der Dateierstellung
+     printf("\n");
+
+     numeric string ename[], evalue[], pname[], eBaut[];  // string-Felder ename und evalue werden als numeric definiert 
+     int cnt = 0, i, index[];               	 // um mit sort() nach Bauteilenummern  sortieren zu können 
+
+     B.elements(E)                       	 // Loop-member "elements" um auf board-elemente zugreifen zu können
+       {
+       ename[cnt] = E.name;
+       evalue[cnt] = E.value;
+       pname[cnt] = E.package.name;
+       eBaut[cnt] = Bauteilname(E.name);         // die einzige Änderung gegenüber dem Original BOM.ulp
+       cnt++;
+       }
+                             
+
+     sort(cnt, index, eBaut, evalue);		 // nach eBaut sortieren, Bauteile gleichen Typs gruppiert
+ 
+    
+   string Vergleichsname;				// Zahl der verschiedenen Bauteile
+     i = 0;						// feststellen wieviel verschiedene Bauteile
+     int AnzBautNamen = 0;				
+     Vergleichsname = Bauteilname(ename[index[i]]);	
+     
+     for (i = 0  ; i < cnt; i++)			// funktioniert, wenn Matrix nach Namen geordnet
+      {
+        if (Vergleichsname != Bauteilname(ename[index[i]]))
+        {
+         AnzBautNamen++;
+         Vergleichsname = Bauteilname(ename[index[i]]);
+        } 
+      }
+     printf("%d different devices\n\n\n", AnzBautNamen);
+     
+
+     int n1, n2, i1, i2, offset;
+     string quantity;
+     ValueLine("Qty", "Value", "Package", "Parts");                	// Bauteile mit gleichem Wert hintereinander 
+     printf("\n");                     
+    							
+     for (n1 = 0, n2 = 0; ++n2 <= cnt; )			// Anfang for(n1,n2)
+       {						
+         i1 = index[n1];					// Anfang Zählen der Bauteile mit gleichem Wert
+         if (n2 < cnt) 			         		
+         {
+           i2 = index[n2];
+           if ( (evalue[i1] == evalue[i2]) && (pname[i1] == pname[i2]) )
+           continue;
+       								//  Ende Zählen der Bauteile mit gleichem Wert
+         }
+         sprintf(quantity, "%d", n2 - n1);			// Differenz der beiden Zähler n1 und n2 ist
+         offset = ValueLine(quantity, evalue[i1], pname[i1], "");		// die Zahl der Bauteile mit gleichem Wert
+        
+        for (;;) 						// Ausgabge der Bauteilenummern
+           {
+             offset += printf(ename[i1]);
+             if (++n1 < n2) 
+              {
+                i1 = index[n1];
+                offset += printf(", ");
+                if (offset + strlen(ename[i1]) > 77)		// nicht mehr als 77 Zeichen pro Zeile
+                  {
+                    printf("\n");
+                    offset = ValueLine("", "", "", "");
+                  }
+              }
+             else
+            break;
+           }						// Ende for(;;)
+         printf("\n");
+         }						// Ende for(n1,n2)
+     
+   }							// Ende Dateiöffnen
+}							// Ende board-kontext

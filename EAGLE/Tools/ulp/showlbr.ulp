@@ -1,0 +1,79 @@
+// ************ creating library documentation *************************
+// This EAGLE ULP creates a script file from the loaded library
+// and stores it in the same directory where the library is
+// located.
+// Therefore it's a good idea to set the SCR path to the LBR path.
+//
+// Open a new schematic and run the script file named "libraryname.scr".
+//
+// All of the devices (first available gate) will be placed from
+// left to right, top to bottom on the schematic sheet. Additional
+// sheets will be created if necessary.
+// Use Print command to print all of the sheets (Page limit = 1)
+//
+// Due to an EAGLE bug for versions <= 3.54 the Sheet combo box is not
+// updated by script files. Therfore, type "Edit .sX" to load a certain
+// sheet, where X is the sheet number. See top right of each sheet for
+// maximum numer of sheets.
+
+
+real x = 0, y = 0, distx=4, disty=6, dy = 0,
+     x1c=0, x2c=0, y1c=0, y2c=0,
+     x2p=0,
+     xmax = 180, ymax = 240; // maximum print are in mm
+int  sheetnr = 1, sheetmax, i, nr_of_devices = 0;
+library(L) {
+  output(filesetext(L.name, ".scr")) {
+  printf("Grid mm 1 off;\n");
+  printf("Layer Names;\n");
+  printf("Set Undo_log off;\n");
+  printf("Use %s;\n", L.name);
+  printf("Change size 2;\n");
+  printf("Window (0 0)(%3.1f %3.1f);\n",xmax, ymax);
+  printf("Text 'EAGLE Library %s' (0 %3.1f);\n",
+                      L.name,
+                      ymax-disty/2);
+  y=y+disty;
+  L.devices(D) {
+    nr_of_devices++;
+    x2p=x2c;
+    D.gates(G){
+      x1c=u2mm(G.symbol.area.x1);x2c=u2mm(G.symbol.area.x2);
+      y1c=u2mm(G.symbol.area.y1);y2c=u2mm(G.symbol.area.y2);
+      break;
+    }
+    x = x + x2p - x1c + distx;
+    if (x > (xmax - x2c)) {
+       x = -x1c;
+       y = y + dy + disty;
+       dy = 0;
+       }
+    if ((ymax -y -y2c) < abs(y1c)) {
+       sheetnr++;
+       y = 0;
+       x = -x1c;
+       dy = 0;
+       printf("Edit .s%d;\n", sheetnr);
+       printf("Window (0 0)(%3.1f %3.1f);\n",xmax, ymax);
+       printf("Text 'EAGLE Library %s' (0 %3.1f);\n",
+                           L.name,
+                           ymax-disty/2);
+       y=y+disty;
+       }
+    printf("Add %-10s (%3.1f %3.1f);\n", D.name, x, ymax-y-y2c);
+    if (D.package)
+       printf("Text '%s' (%3.1f %3.1f);\n", D.package.name,
+                                            x+x1c, ymax-y-y2c+y1c-disty/2);
+    dy = max(dy, y2c-y1c);
+    }
+  printf("Set Undo_log on;\n");
+  sheetmax=sheetnr;
+  for (i=sheetnr; i>=1; i--){
+      printf("Edit .s%d;\n", i);
+      printf("Text 'Sheet %d/%d' (%3.1f %3.1f);\n", i, sheetmax,
+                            xmax-20, ymax-disty/2);
+      printf("Text 'Devices: %d' (%3.1f %3.1f);\n", nr_of_devices,
+                            xmax-50, ymax-disty/2);
+      };
+  }
+}

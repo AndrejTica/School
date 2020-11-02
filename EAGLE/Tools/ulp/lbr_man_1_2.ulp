@@ -1,0 +1,460 @@
+#usage "<b>Library Manager</b><p>\n"
+       "Use this ULP to copy packages from a source library to a destination library "
+       "and/or to add packages to devices as new variants.<p>\n"
+       "When generating variants, the user can choose a package and add it to "
+       "one, some, or all suitable devices.<p>\n"
+       "<author>Author: support@cadsoft.de</author>"
+
+// September 2002: lbr_man_1_2.ulp 
+//   Slight changes in output statement to avoid problems with
+//   pathnames containig spaces. Thanks to Trampas Stern.
+
+
+string EditPathDestName, EditName, SourceFileName, TmpFileName;
+string h, cmd = "", Status = "press button", Status1 = "press button";
+string ScriptName, PureScriptName;
+string LogName, PureLogName;
+string WorkPath, SourcePath;
+int    i, n, max_exist_pack, pos, nr_of_scriptlines, scr_pointer;
+int    show_script = 0, save_log = 1, nr_of_identical_packs, nr_of_pads;
+string existing_pack_names = "", copy_pack_names = "";
+numeric string existing_packs[], copy_packs[], new_pack_name[], suit_dev_names;
+string script_header;
+numeric string lines[];
+string pack_name, var_name = "", padnames_string;
+string padnames[] = {""}, identical_packages[] = {""};
+
+string HelpText =
+  "<b>Copy packages between libraries and/or generate variants</b><p>\n"
+
+  "You must have write permission for the destination library directory!<p>"
+  "It is advisable to work with a copy of the destination library.<p>"
+
+  "This program is meant as a substitution for the old REPLACE mechanism. "
+  "Unlike REPLACE (from V 4.0 on) it preserves the forward/backannotation. <p>"
+  
+  "<b>How to do a REPLACE:</b> <p>"
+  "From the schematic use exp_project_lbr_x_x.ulp (in multiple lbr mode) to export "
+  "the libraries contained in the schematic.<p>"
+  "Load the library with the device of interest.<p>"
+  "Run this ULP, import the new package if needed, and generate variant(s).<p>"
+  "Use UPDATE new_library_name to update the schematic/board.<p>"
+  "Use the command CHANGE PACKAGE in the schematic.<p>"
+  
+  "<b>Ho to copy packages:</b><p>"
+  "Run the ULP from the destination library, click BROWSE to select source library, "
+  "edit source window so that only the packages you want to copy are shown, click COPY.<p>"
+  "If you select a package for copying which has the same name as a package in the "
+  "destination library, a $ character is attached at the end of the original package name.<p>"
+  "You can repeat the copy process with different source libraries.<p>"
+  
+  "<b>Ho to make variants:</b><p>"
+  "Click VARIANT, select package, edit 'Suitable devices' field (the devices shown get new variant), "
+  "edit Variant name, click GENERATE.<p>"
+  "In the 'Suitable devices' field all of the devices are listed which have at least "
+  "one package variant with the same pad names as the 'new' package. This is a mandatory "
+  "precondition for the automatic variant generation. Variants with different pad names "
+  "must be generated manually.<p>"
+    
+  "<b>User prompts:</b> <p>"
+  "The program creates a temporary file $$$.scr which you can delete after using the "
+  "ULP. At various points during program execution the user has to confirm that this "
+  "file may be overwritten. The library is saved at some point as well which has to be confirmed.<p>"
+
+  ;
+
+void DisplayHelp(void)
+{
+  dlgDialog("Library Manger - Help") {
+    dlgHBoxLayout dlgSpacing(400);
+    dlgHBoxLayout {
+      dlgVBoxLayout dlgSpacing(300);
+      dlgTextView(HelpText);
+      }
+    dlgHBoxLayout {
+      dlgStretch(1);
+      dlgPushButton("-Close") dlgReject();
+      }
+    };
+}
+
+string get_project_path() {
+  if (board)     board(B)     return(filedir(B.name));
+  if (schematic) schematic(B) return(filedir(B.name));
+  if (library)   library(B)   return(filedir(B.name));
+}
+
+int exist_file(string FileName) {
+string a[];
+  int n = fileglob(a, FileName);
+  if (n == 0) return 0;
+  else return 1;
+}
+
+string get_ulp_name(void) {
+  string s = strsub(argv[0], 0, strlen(argv[0])-4);
+  return s;
+}
+
+//----------------------------------------------------------
+
+string get_connects(string devname) {
+  int i;
+  string connects = "";
+
+  library(L) {
+    L.devicesets(DS) {
+      if (DS.name == devname) {
+         //printf("    devname: %s\n", devname);
+         DS.devices(D) {
+            int flag = 0;
+            for (i=0; i<nr_of_identical_packs; i++) { // check if valid package for connects
+                if (D.package.name == identical_packages[i]) flag = 1;
+            }
+
+            D.gates(G) {
+              G.symbol.pins(P) {
+                connects += "Connect '"+G.name+"."+P.name+"' '"+P.contact.name+"';\n";
+                }
+              }
+            return connects;
+            }
+         }
+      }
+    }
+
+  return connects;
+}
+
+//----------------------------------------------------------
+
+string get_valid_devices(string pac) {
+  int i = 0, flag;
+  string valid_devices = "";
+
+  valid_devices = "";
+  Status1 = "Process..";
+
+  library(L) {
+    L.packages(P) { // collect padnames of new package
+      Status1 = "Process "+P.name;
+      if (pac == P.name) {
+         //printf("P: %s\n", pac);
+         P.contacts(C) {
+           padnames[i++] = C.name;
+           }
+         }
+      }
+    nr_of_pads = i;
+    padnames_string = strjoin(padnames, '\n');
+    //printf("Padnamestring: \n%s", padnames_string);
+
+    i = 0;
+    L.packages(P) { // find identical packages
+      Status1 = "Process "+P.name;
+      string padnames_string_used = "";
+      P.contacts(C) {
+        padnames_string_used += C.name+"\n";
+        }
+      //printf("Package: %s\n", P.name);        
+      //printf("Padnamestring_used: \n%s", padnames_string_used);
+      if (padnames_string_used == padnames_string) {
+         identical_packages[i++] = P.name;
+         //printf("Found: %s\n", P.name);
+         }
+      }
+    nr_of_identical_packs = i;
+    //printf(" nr_packs_i: %d\n", i);
+
+    L.devicesets(DS) { // find devicesets with suitable packages
+      Status1 = "Process "+DS.name;
+      //printf("  ds: %s\n", DS.name);
+      flag = 0;
+      DS.devices(D) {
+         //printf("  varname: %s\n", D.name);
+         //printf("  D.package.name: %s\n", D.package.name);
+         for (i=0; i<nr_of_identical_packs;i++) {
+             //printf("       i: %d\n", i);
+             if (D.package) {
+                if (D.package.name == identical_packages[i]) { // error
+                   valid_devices += DS.name+"\n";
+                   flag = 1;
+                   break;
+                   }
+                }
+             }
+         if (flag) break;
+         }
+      }
+  }
+  Status1 = "press button";
+  return valid_devices;
+}
+
+//----------------------------------------------------------
+
+void make_variants(void) {
+  int i;
+  string dnames[];
+
+  //printf("Suit: \n%s", suit_dev_names);
+  int n = strsplit(dnames ,suit_dev_names, '\n');
+  cmd = "";
+  for (i=0; i<n; i++) {
+      Status1 = dnames[i]; dlgRedisplay();
+      cmd += "Edit "+dnames[i]+".dev;\n";
+      cmd += "Package '"+pack_name+"' '"+var_name+"';\n";
+      cmd += get_connects(dnames[i])+"\n";
+      }
+
+  ScriptName = WorkPath+"$$$.scr";
+  output(ScriptName, "wt") printf(cmd);
+  cmd = "";
+  cmd += "script "+ScriptName+";\n";
+  cmd += "open "+EditPathDestName+";\n";
+  cmd += "run '"+get_ulp_name()+"' 2 "+TmpFileName+"\n"; // 2 indicates 2nd run
+  exit(cmd);
+
+
+  Status1 = "press button"; dlgRedisplay();
+ }
+
+//----------------------------------------------------------
+
+void generate_variants(void) {
+   int ix = 0;
+
+   dlgDialog("Generate variants") {
+      dlgVBoxLayout {
+         dlgLabel("Package for variant");
+         dlgComboBox(existing_packs, ix)  {pack_name = existing_packs[ix];
+                                           // printf("P: %s\n",pack_name);
+                                           suit_dev_names = get_valid_devices(pack_name);
+                                           var_name = pack_name;
+                                           }
+         dlgSpacing(20);
+         dlgLabel("Suitable devices");
+         dlgTextEdit(suit_dev_names);
+
+         dlgSpacing(20);
+         dlgLabel("Variant name");
+         dlgStringEdit(var_name);
+
+         dlgStretch(0);
+         dlgSpacing(20);
+         dlgLabel(Status1, 1);
+         }
+      dlgHBoxLayout {
+         dlgStretch(1);
+         dlgPushButton("&Generate") make_variants();
+         dlgSpacing(23);
+         dlgPushButton("-&Quit")   dlgReject();
+         }
+     };
+
+}
+
+//==========================================================
+
+int is_new(string s) { // compare with existing and newly generated names
+  for (int k=0; k<max_exist_pack; k++) { // existing names
+      if (s == existing_packs[k]) {
+         //printf("Exist: %s\n", s);
+         return 1;
+         }
+      }
+  for (k=0; k<i; k++) { // new names
+      if (s == new_pack_name[k]) {
+         //printf("Generated: %s\n", s);
+         return 1;
+         }
+      }
+
+  return 0;
+}
+//----------------------------------------------------------
+
+string read_package(string s, string s_new) {
+  string t;
+  int i=scr_pointer;
+  
+  i = 0; // if source packs are sorted, script must be read from beginning each time
+  
+  while (i<nr_of_scriptlines) {
+    if (s==lines[i]) {
+       t = "Edit "+s_new+".pac\n";
+       while (i<nr_of_scriptlines-1) {
+          i++;
+          if (strsub(lines[i],0,4)!="Edit") {
+             t += lines[i]+"\n";
+             }
+          else return t;
+         }
+       }
+    i++;
+    }
+  scr_pointer = i-2; // avoid to much reading
+  return t;
+}
+
+//----------------------------------------------------------
+
+void copy_packages() {
+  cmd = "set undo_log off;\n"+script_header;
+  n = strsplit(copy_packs, copy_pack_names, '\n');
+  i=0;
+  while (i<n) { // loop through copy names and restore Edit line
+    Status = "Check "+copy_packs[i]; dlgRedisplay();
+    new_pack_name[i] = copy_packs[i];
+    while(is_new(new_pack_name[i])) {
+       new_pack_name[i] += "$";
+      }
+    copy_packs[i] = "Edit "+copy_packs[i]+".pac;";
+    i++;
+    }
+  i=0;
+  scr_pointer = 0;
+  while (i<n) { //
+    Status = "Read "+copy_packs[i]; dlgRedisplay();
+    cmd += read_package(copy_packs[i],new_pack_name[i]);
+    i++;
+    }
+  cmd += "set undo_log on;\n";
+  //printf("%s",cmd);
+  Status = "press button"; dlgRedisplay();
+  ScriptName = WorkPath+"$$$.scr";
+  output(ScriptName, "wt") printf(cmd);
+  cmd = "";
+  cmd += "script "+ScriptName+";\n";
+  cmd += "open "+EditPathDestName+";\n";
+  cmd += "run '"+get_ulp_name()+"' 2 "+TmpFileName+"\n"; // 2 indicates 2nd run
+  exit(cmd);
+  }
+
+//----------------------------------------------------------
+
+void output_source_lbr(void) {
+
+  TmpFileName = WorkPath+"$$$.scr";
+  cmd  = "open "+SourceFileName+";\n";
+  cmd += "grid mic finest;\n";
+  cmd += "export script "+TmpFileName+";\n";
+  cmd += "grid last;\n";
+  cmd += "open "+EditPathDestName+";\n";
+  cmd += "run '"+get_ulp_name()+"' 2 "+TmpFileName+"\n"; // 2 indicates 2nd run
+  //printf(cmd);
+  exit (cmd); // generate script and return to destination lbr
+}
+
+//------------ main ----------------------------------------
+
+//output("c:\\tmp\\debug.txt", "wt") { // for debug purposes
+
+if (!library) {
+   dlgMessageBox("<b>ERROR</b><hr>This program can only work in the library editor.");
+   exit(1);
+   }
+library(L) {
+   EditName = filename(L.name);  // name of loaded library w/o path
+   EditPathDestName = L.name;    // name of loaded library with path
+   }
+
+PureLogName    = filesetext(EditName, ".log"); // name of generated log msgs w/o path
+WorkPath = get_project_path();                 // path for temp files
+SourcePath = get_project_path();               // path for source lbr
+
+library(L){ // read existing packages
+  L.packages(P) {
+    existing_packs[n++] += P.name;
+    existing_pack_names += P.name+"\n";
+    max_exist_pack = n;
+    }
+  }
+
+if (argv[1] == "2") {   // run 2 after saving script
+   n = 0;
+   TmpFileName = argv[2]; // read script file name
+
+   n = fileread(lines, TmpFileName);
+   nr_of_scriptlines = n;
+   copy_pack_names = strjoin(lines, '\n');
+   script_header = "";
+   for (i=0; i<=n-1; i++) {
+       if (strsub(lines[i], 0, 11)!="Description") {
+          script_header += lines[i]+"\n";
+          }
+       else {
+          break;
+          }
+       }
+   // printf("%s\n",script_header);
+
+   copy_pack_names = "";
+   for (i=0; i<=n-1; i++) {
+       pos = strrstr(lines[i],".pac");
+       if (strsub(lines[i], 0, 4)=="Edit" && pos>0) {
+          copy_pack_names += strsub(lines[i], 5, pos-5)+"\n";
+          }
+       }
+   //printf("%s\n",copy_pack_names);
+   
+   // sort source packages
+   numeric string a[];
+   n = strsplit(a, copy_pack_names, '\n');
+   sort(n, a);
+   copy_pack_names = strjoin(a, '\n');   
+
+   } // end of run 2 specific actions
+
+// start menu
+int Result = dlgDialog("Copy packages from source library to loaded library") {
+  dlgHBoxLayout {
+    dlgStretch(1);
+    dlgSpacing(500);
+    dlgStretch(1);
+    }
+  dlgHBoxLayout {
+     dlgVBoxLayout {
+       dlgSpacing(300);
+       }
+    dlgVBoxLayout {
+       dlgLabel("Packages to be copied");
+       dlgTextEdit(copy_pack_names);
+       }
+    dlgVBoxLayout {
+       dlgLabel("Packages in destination library");
+       dlgTextEdit(existing_pack_names);
+       }
+    }
+  dlgSpacing(10);
+  dlgHBoxLayout {
+    dlgLabel("  &Select source library:");
+    SourceFileName = SourcePath;
+    dlgStringEdit(SourceFileName);
+    dlgPushButton("+Bro&wse") {
+       h = SourceFileName;
+       SourceFileName = dlgFileOpen("Select source library", SourceFileName, "*.lbr");
+       if (SourceFileName == "") {
+          SourceFileName = h;
+          }
+       else {
+          output_source_lbr();
+          }
+       }
+   }
+  dlgSpacing(10);
+  dlgHBoxLayout {
+    dlgLabel(Status, 1);
+    dlgStretch(1);
+    dlgPushButton("&Copy")    {if (copy_pack_names == "") dlgMessageBox("Select source library first!","&OK");
+                              else copy_packages();
+                              }
+    dlgPushButton("&Variant") {if (existing_pack_names == "") dlgMessageBox("No packages in library!","&OK");
+                              else generate_variants();
+                              }
+    dlgPushButton("-&Quit")   dlgReject();
+    dlgSpacing(23);
+    dlgPushButton("&Help")    DisplayHelp();
+    }
+  };
+

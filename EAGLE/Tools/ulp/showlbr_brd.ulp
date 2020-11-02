@@ -1,0 +1,67 @@
+// ************ creating library documentation *************************
+// This EAGLE ULP creates a script file from the loaded library
+// and stores it in the same directory where the library is
+// located.
+// Therefore it's a good idea to set the SCR path to the LBR path.
+//
+// Open a new board and run the script file named "libraryname.scr".
+//
+// All of the packages will be placed from
+// bottom to to, left to right on the board.
+// The item name will be set so the package name.
+//
+//
+// based on showlbr.ulp
+//
+// ************************
+// Thomas Mohaupt
+// Version 0.1, 11.09.98 
+// ************************
+
+real x = 0, y = 0,           // current positions
+     dx, dy,		     // size of a package
+     dxMax = 0,              // max x-size of a package in the current col
+     xDis = 0.1, yDis =0.1,      // distance of packages
+     ymax = 11;              // maximum print are in inch
+
+int  nr_of_packages = 0;
+
+library(L) {
+
+  output(filesetext(L.name, ".scr")) {
+    printf("Grid inch 0.05 off;\n");
+
+    printf("Use %s;\n", L.name);
+ 
+    printf("Change size .15;\n");
+    printf("Layer tPlace;\n");
+    printf("Text 'EAGLE Library %s' (0 %3.1f);\n", L.name, ymax-yDis/2);
+
+    x = 0;
+    y = 0;
+    ymax -= .2;
+
+    L.packages(P) {
+
+      nr_of_packages++;
+
+      dx = u2inch(P.area.x2 - P.area.x1);
+
+      dy = u2inch(P.area.y2 - P.area.y1);        // height of package 
+    
+      if (y + dy > ymax) {
+         x = x + dxMax + xDis;
+         y = 0;
+      } // if
+
+      if (dxMax < dx) dxMax = dx;
+
+      printf("Add %-10s '%s' (%3.1f %3.1f);\n", P.name, P.name, x - u2inch(P.area.x1), y - u2inch(P.area.y1));
+
+      y = y + dy + yDis;
+      
+    } // L.packages
+
+  printf("WINDOW FIT;\n");
+  } // Output
+}
