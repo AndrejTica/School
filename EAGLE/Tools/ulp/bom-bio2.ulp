@@ -1,0 +1,887 @@
+#usage "<b>Create a Bill Of Material - Version 051204</b>\n"
+       "<p>"
+       "Generates a project's <i>Bill Of Material</i>."
+       "<p>"
+       "A database with additional information like order codes, manufacturers "
+       "or prices can be created and managed."
+       "<p>"
+       "<author>Author: support@cadsoft.de and Robert A. Rioja (Robert@Unison-Travel.com)</author>"
+
+// THIS PROGRAM IS PROVIDED AS IS AND WITHOUT WARRANTY OF ANY KIND, EXPRESSED OR IMPLIED
+
+string HelpText = usage +
+  "<p>"
+  "<b>How to generate the Bill Of Material</b>"
+  "<p>"
+  "The Bill of Material is extracted from a project's schematic.  Every part in the schematic has the "
+  "following information: Part (name), Value, Device, Package, and Description.  This information is "
+  "displayed in columns in a list box.  In the list's header, you can click on the name of any column to "
+  "sort the list by this column in either ascending or decending order."
+  "<p>"
+  "<b>Database file</b>"
+  "<p>"
+  "You can also maintain a database with additional information about the parts.  A database file must "
+  "consist of lines of text, each of which contains one record consisting of CSV "
+  "(<u>C</u>omma <u>S</u>eparated <u>V</u>alues) or TSV (<u>T</u>ab <u>S</u>eparated <u>V</u>alues) data.  "
+  "The very first line must contain a \"header\", which defines a unique name for each column, "
+  "and the first column of every following line must contain a unique (non-empty) key for this record."
+  "<p>"
+  "The following is an example of a database file:"
+  "<pre>"
+  "Key              Manufacturer       Order Code Price\n"
+  "74LS00N          Saxet Instruments  123-456    0.20\n"
+  "R-EU_0204/5:4k7  Somebody           RES4k7     0.10\n"
+  "</pre>"
+  "Note that the columns are separated by a <b>tab</b> character (you may also use a semicolon (';') "
+  "to separate the columns, but then you will have to make sure none of the data items contains a "
+  "semicolon).  The keys for looking up records in the database are built from the parts' values.  "
+  "If a part's device has defined \"value on\" it means that the user needs to specify a particular value "
+  "for this part, as for example with a resistor.  In such a case the key consists of the device "
+  "name and the user defined value, separated by a colon (':').  If the device has \"value off\", "
+  "only the device name is used as key (if the user has edited the value of such a part and insisted "
+  "on changing it, the edited value will be used)."
+  "<p>"
+  "A database file can be maintained for parts found in several projects.  This way, one database "
+  "can grow as you add new parts to various projects."
+  "<p>"
+  "<b>Opening an existing database</b>"
+  "<p>"
+  "Load a database file with the <b>Open</b> button.  You will see a dialog to pick the file."
+  "<p>"
+  "<b>Creating a new database</b>"
+  "<p>"
+  "Click the <b>New</b> button to create a new database.  You will see a dialog in which you can define "
+  "the names of the column headers for your new database.  The first column always contains the key for "
+  "database lookups and can't be deleted (you can edit it, though, to give it a different name than the "
+  "default \"Key\").  This first column will not be visible in the generated list, so you don't really "
+  "need to worry about it."
+  "<p>"
+  "<b>Editing the database</b>"
+  "<p>"
+  "Once a database has been opened, you can double click a line in the list to bring up a dialog in "
+  "which you can edit the database entry for this part.  Once the database has been edited, you will be "
+  "asked if you want to save it before leaving the program or opening a new database."
+  "<p>"
+  "<b>Selecting columns</b>"
+  "<p>"
+  "Under the Columns heading, there are two lists named <b>Input</b> and <b>Output</b>.  "
+  "The <b>Input</b> list contains all of the column names available.  Double click each one "
+  "that you want to appear in your output, and they will appear in the <b>Output</b> list.  "
+  "Pick the column names in the order that you want them to appear in the output."
+  "You can remove columns from the <b>Output</b> list by double clicking them."
+  "<p>"
+  "<b>Type</b>"
+  "<p>"
+  "The <i>Bill Of Material</i> can be generated either as a list of parts "
+  "(where every part is listed on a line of its own), or as a list of values "
+  "(where all parts with the same value are grouped together in one line).  "
+  "Use the <b>Parts</b> and <b>Values</b> radio buttons to select the list type."
+  "<p>"
+  "<b>Format</b>"
+  "<p>"
+  "Use the radio buttons <b>Text</b>, <b>HTML</b>, or <b>Spreadsheet</b> to choose the output format.  "
+  "The <b>Text</b> format is pure ASCII text ready for printing.  "
+  "The <b>HTML</b> format can be read by browsers, or placed in web pages.  "
+  "The <b>Spreadsheet</b> format produces a comma delimited file with each field surrounded by quotes."
+  "<p>"
+  "<b>What to show</b>"
+  "<p>"
+  "Use the radio buttons <b>Real values only</b>, <b>\"Don't Show\" only</b>, or <b>Everything</b>.  "
+  "If the first button is selected, any part whose <b>value</b> is set to \"don't show\" in the schematic "
+  "will be ignored, and the part will not appear.  If the second button is selected, only parts whose "
+  "<b>value</b> is set to \"don't show\" will appear.  If the third button is selected, all parts will appear."
+  "<p>"
+  "<b>Create output</b>"
+  "<p>"
+  "Click the <b>Preview</b> button to get a preview of the list output.  Click the <b>Save...</b> "
+  "button to save the list to disk.  You will then see a dialog to enter the file name.  "
+  "Click the <b>Print</b> button to send the list to the printer.  Only the default system printer can be used."
+  "<p>"
+  ;
+
+/*
+  TODO: - Query user for missing database entries ("Check" button)
+        - store and retrieve the setup?
+*/
+
+/********************************************************************************/
+/*	THESE ARRAYS CONTAIN THE DATA COLLECTED FROM THE SCHEMATIC.		*/
+/********************************************************************************/
+numeric string PartName[], PartValue[], PartDevice[], PartPackage[], PartHeadline[], PartDescription[];
+int PartValueOn[];
+int Selected;
+int NumParts;			// Number of parts (number of elements of the arrays)
+int OldNumParts;
+
+/********************************************************************************/
+/*	THIS STRING ARRAY CONTAINS THE TEXT OF THE GENERATED PARTS LIST.	*/
+/*	IT IS ASSOCIATED WITH A DIALOG LISTVIEW BOX.				*/
+/********************************************************************************/
+numeric string Lines[];
+
+/********************************************************************************/
+/*	THESE VARIABLES CONTAIN THE DATABASE HEADERS				*/
+/********************************************************************************/
+string Headers[];
+int NumHeaders;
+int SelectedHeader;
+
+/********************************************************************************/
+/*	THIS STRING ARRAY CONTAINS THE COLUMNS THAT ARE AVAILABLE.		*/
+/*	IT IS ASSOCIATED WITH A DIALOG LIST BOX.				*/
+/********************************************************************************/
+string The_columns[];
+
+/********************************************************************************/
+/*	THIS STRING ARRAY CONTAINS THE COLUMNS THAT HAVE BEEN PICKED.		*/
+/*	IT IS ASSOCIATED WITH A DIALOG LIST BOX.				*/
+/********************************************************************************/
+string Picked_columns[];	// The array
+int picked;			// Number of elements in the array
+int Pick_index[];
+
+/********************************************************************************/
+/*	THESE VARIABLES ARE USED TO PICK AND CONTROL THE LIST TYPE.		*/
+/********************************************************************************/
+int ListType = 0;
+enum { ltParts, ltValues };
+
+/********************************************************************************/
+/*	THESE VARIABLES ARE USED TO PICK AND CONTROL THE OUTPUT FORMAT.		*/
+/********************************************************************************/
+int OutputFormat = 0;
+enum { ofText, ofHTML ,ofSpreadsheet};
+
+/********************************************************************************/
+/*	THESE VARIABLES ARE USED TO PICK AND CONTROL WHAT TO SHOW.		*/
+/********************************************************************************/
+int WhatToShow = 0;
+enum { regularValues, dontShowValues, allValues };
+
+/********************************************************************************/
+/*	THIS STRING CONTAINS THE DATABASE FILE NAME, IF ONE IS USED.		*/
+/********************************************************************************/
+string DatabaseFile;
+
+/********************************************************************************/
+/*	THIS STRING ARRAY CONTAINS THE DATABASE THAT WAS READ IN FROM A FILE.	*/
+/*	THE FIRST ELEMENT [0] IS THE HEADER THAT CONTAINS NAMES OF THE COLUMNS.	*/
+/********************************************************************************/
+string Database[];
+
+/********************************************************************************/
+/*	THIS IS THE CHARACTER THAT SEPARATES THE FIELDS OF THE DATABASE.	*/
+/********************************************************************************/
+char DatabaseSeparator = '\t';
+
+/********************************************************************************/
+/*	THIS STRING ARRAY CONTAINS THE NAMES OF THE COLUMNS.			*/
+/********************************************************************************/
+string DatabaseFields[];
+
+int DatabaseModified = 0;
+
+char ValueSeparator = ':';
+
+/********************************************************************************/
+/*	FUNCTION TO STRIP WHITE SPACE FROM THE START AND END OF A STRING.	*/
+/********************************************************************************/
+string StripWhiteSpace(string s)
+{
+  while (s && isspace(s[0]))
+        s = strsub(s, 1);
+  while (s && isspace(s[strlen(s) - 1]))
+        s = strsub(s, 0, strlen(s) - 1);
+  return s;
+}
+
+/********************************************************************************/
+/*	ROUTINE TO COLLECT ALL PART DATA FROM THE SCHEMATIC INTO ARRAYS.	*/
+/*	called only once by the main program					*/
+/********************************************************************************/
+void CollectPartData(void)
+{
+  OldNumParts = NumParts;
+  NumParts = 0;
+
+  project.schematic(SCH) {
+    SCH.parts(P) {
+      if (P.device.package && ((WhatToShow == regularValues && strupr(P.value) != "DON'T SHOW") ||
+         (WhatToShow == dontShowValues && strupr(P.value) == "DON'T SHOW") || (WhatToShow == allValues))) {
+         PartName[NumParts] = P.name;
+         PartValue[NumParts] = P.value;
+         PartDevice[NumParts] = P.device.name;
+         PartPackage[NumParts] = P.device.package.name;
+         PartHeadline[NumParts] = P.device.headline;
+         PartDescription[NumParts] = P.device.description;
+         PartValueOn[NumParts] = P.device.value == "On";
+         NumParts++;
+         }
+      }
+    }
+}
+
+/********************************************************************************/
+/*	FUNCTION TO GET THE NAMES OF THE FIELDS OF THE DATABASE FROM THE FIRST	*/
+/*	RECORD OF THE DATABASE.  THEY ARE PLACED IN A STRING ARRAY CALLED	*/
+/*	DatabaseFields AND THE FUNCTION RETURNS A STRING THAT CONTAINS THEM	*/
+/*	SEPARATED BY TABS.							*/
+/*	called only by GeneratePartList and GenerateValueList			*/
+/********************************************************************************/
+string DatabaseHeader(void)
+{
+  string s;
+
+  if (Database[0]) {
+     string a[];
+     int n = strsplit(a, Database[0], DatabaseSeparator);
+     int i;
+     for (i = 1; i < n; i++) {
+         s += "\t" + a[i];
+         DatabaseFields[i - 1] = a[i];
+         }
+     DatabaseFields[i - 1] = "";
+     }
+  return s;
+}
+
+/********************************************************************************/
+/*	FUNCTION TO RETURN THE KEY FOR A RECORD.				*/
+/*	called only by GeneratePartList and GenerateValueList			*/
+/********************************************************************************/
+string DatabaseKey(int i)
+{
+  string key = PartValue[i];
+  if (PartValueOn[i])
+     key = PartDevice[i] + ValueSeparator + key;
+  return key;
+}
+
+/********************************************************************************/
+/*	FUNCTION TO LOOK UP A RECORD IN THE DATABASE.				*/
+/*	called only by GeneratePartList and GenerateValueList			*/
+/********************************************************************************/
+string DatabaseLookup(string key, int f)
+{
+  return lookup(Database, key, DatabaseFields[f], DatabaseSeparator);
+}
+
+/********************************************************************************/
+/*	ROUTINE TO GENERATE THE LIST BY PARTS.					*/
+/*	THE LIST WILL BE IN A STRING ARRAY CALLED LINES WHICH IS ASSOCIATED	*/
+/*	WITH THE DIALOG LISTVIEW.						*/
+/********************************************************************************/
+void GeneratePartList(void)
+{
+  int NumLines = 0;
+
+  Lines[NumLines++] = "Part\tValue\tDevice\tPackage\tDescription" + DatabaseHeader();
+  for (int i = 0; i < NumParts; i++) {
+      Lines[NumLines] = PartName[i] + "\t" + PartValue[i] + "\t" + PartDevice[i] + "\t" + PartPackage[i] +
+        "\t" + PartHeadline[i];
+      if (Database[0]) {
+         string key = DatabaseKey(i);
+         for (int f = 0; DatabaseFields[f]; f++)
+             Lines[NumLines] += "\t" + DatabaseLookup(key, f);
+         Lines[NumLines] += "\t" + key; // hidden field!
+         }
+      NumLines++;
+      }
+  for (i = NumLines; i <= OldNumParts; i++) Lines[i] = "";
+}
+
+/********************************************************************************/
+/*	ROUTINE TO GENERATE THE LIST BY VALUES.					*/
+/*	THE LIST WILL BE IN A STRING ARRAY CALLED LINES WHICH IS ASSOCIATED	*/
+/*	WITH THE DIALOG LISTVIEW.						*/
+/********************************************************************************/
+void GenerateValueList(void)
+{
+  int NumLines = 0;
+  int Index[];
+  int i1;
+
+  Lines[NumLines++] = "Qty\tValue\tDevice\tParts" + DatabaseHeader();
+  sort(NumParts, Index, PartValue, PartDevice, PartName);
+  for (int n1 = 0, n2 = 0; ++n2 <= NumParts; ) {
+      i1 = Index[n1];
+      if (n2 < NumParts) {
+         int i2 = Index[n2];
+         //XXX value on/off?
+         if (PartValue[i1] == PartValue[i2] && PartDevice[i1] == PartDevice[i2]) continue;
+         }
+      string Quantity;
+      sprintf(Quantity, "%d", n2 - n1);
+      Lines[NumLines] = Quantity + "\t" + PartValue[i1] + "\t" + PartDevice[i1] + "\t";
+      for (;;) {
+          Lines[NumLines] += PartName[i1];
+          if (++n1 < n2) {
+             i1 = Index[n1];
+             Lines[NumLines] += ", ";
+             }
+          else
+             break;
+          }
+      if (Database[0]) {
+         string key = DatabaseKey(i1);
+         for (int f = 0; DatabaseFields[f]; f++)
+             Lines[NumLines] += "\t" + DatabaseLookup(key, f);
+         Lines[NumLines] += "\t" + key; // hidden field!
+         }
+      NumLines++;
+      }
+  for (i1 = NumLines; i1 <= OldNumParts; i1++) Lines[i1] = "";
+}
+
+/********************************************************************************/
+/*	ROUTINE TO GENERATE THE LIST, EITHER BY PARTS OR BY VALUES.		*/
+/*	THE LIST WILL BE IN A STRING ARRAY CALLED LINES WHICH IS ASSOCIATED	*/
+/*	WITH THE DIALOG LISTVIEW.						*/
+/********************************************************************************/
+void GenerateList(void)
+{
+  switch (ListType) {
+    case ltParts:  GeneratePartList(); break;
+    case ltValues: GenerateValueList(); break;
+    }
+  int n=strsplit(The_columns,Lines[0],'\t');
+  for (n = 0; n < picked; n++) {
+    Picked_columns[n] = "";
+    Pick_index[n]=-1;
+    }
+  picked=0;
+
+}
+
+/********************************************************************************/
+/*	FUNCTION TO PREPARE THE TITLE LINE APPEARS AT THE TOP OF THE REPORT.	*/
+/*	called anly by MakeListText and MakeListHTML				*/
+/********************************************************************************/
+string MakeListHeader(void)
+{
+  string s;
+  project.schematic(SCH) sprintf(s, "Bill of Material from %s at %s", filename(SCH.name), t2string(time()));
+  return s;
+}
+
+/********************************************************************************/
+/*	FUNCTION TO READ THE LINES ARRAY AND PRODUCE A LIST READY FOR VIEWING	*/
+/*	OR SAVING.  THIS LIST WILL BE RETURNED AS A STRING AND WILL BE		*/
+/*	IN TEXT OUTPUT FORMAT.							*/
+/********************************************************************************/
+string MakeListText(void)
+{
+  int i, l, n, Width[];
+  int numHeaders;
+  string List;
+
+  for (l = 0; Lines[l]; l++) {
+      string a[];
+      for (n = strsplit(a, Lines[l], '\t'); n--; )
+          Width[n] = max(Width[n], strlen(a[n]));
+      }
+
+  List = MakeListHeader() + "\n\n";
+  for (l = 0; Lines[l]; l++) {
+      string line, a[];
+      n = strsplit(a, Lines[l], '\t');
+      if (l == 0)
+         numHeaders = n;
+      else
+         n = numHeaders; // for the hidden key!
+    for (i = 0; Picked_columns[i]; i++) {
+          string s;
+          sprintf(s, "%s%-*s", line ? " " : "", Width[Pick_index[i]], a[Pick_index[i]]);
+          line += s;
+          }
+      List += line + "\n";
+      }
+  return List;
+}
+
+/********************************************************************************/
+/*	FUNCTION TO READ THE LINES ARRAY AND PRODUCE A LIST READY FOR VIEWING	*/
+/*	OR SAVING.  THIS LIST WILL BE RETURNED AS A STRING AND WILL BE		*/
+/*	IN HTML OUTPUT FORMAT.							*/
+/********************************************************************************/
+string MakeListHTML(void)
+{
+  string List;
+  int i, l, n;
+  int numHeaders;
+
+  List = "<b>" + MakeListHeader() + "</b>\n<p>\n";
+  List += "<table>\n";
+  for (l = 0; Lines[l]; l++) {
+      List += "<tr>";
+      string a[];
+      n = strsplit(a, Lines[l], '\t');
+      if (l == 0)
+         numHeaders = n;
+      else
+         n = numHeaders; // for the hidden key!
+    for (i = 0; Picked_columns[i]; i++) {
+          if (l == 0) a[Pick_index[i]] = "<b>" + a[Pick_index[i]] + "</b>";
+          List += "<td>" + a[Pick_index[i]] + "</td>";
+          }
+      List += "</tr>\n";
+      }
+  List += "</table>\n";
+  return List;
+}
+
+/********************************************************************************/
+/*	FUNCTION TO READ THE LINES ARRAY AND PRODUCE A LIST READY FOR VIEWING	*/
+/*	OR SAVING.  THIS LIST WILL BE RETURNED AS A STRING AND WILL BE		*/
+/*	IN SPREADSHEET OUTPUT FORMAT.						*/
+/********************************************************************************/
+string MakeListSpreadsheet(void)
+{
+  string List;
+  int i, n, l;
+
+  for (l = 0; Lines[l]; l++) {
+    string a[];
+    n = strsplit(a, Lines[l], '\t');
+    for (i = 0; Picked_columns[i]; i++) {
+      List += "\"" + a[Pick_index[i]] + "\"";
+      if (i < n-1) List += ",";
+      }
+    List += "\n";
+    }
+  return List;
+}
+
+/********************************************************************************/
+/*	FUNCTION TO MAKE THE LIST AND RETURN IT IN A STRING READY FOR VIEWING	*/
+/*	OR SAVING.  THE LIST WILL BE OF THE USER SELECTED TYPE AND FORMAT.	*/
+/********************************************************************************/
+string MakeList(void)
+{
+  switch (OutputFormat) {
+    case ofText: return MakeListText(); break;
+    case ofHTML: return MakeListHTML(); break;
+    case ofSpreadsheet: return MakeListSpreadsheet(); break;
+    }
+  return "";
+}
+
+/********************************************************************************/
+/*	ROUTINE TO PREVIEW THE LIST THE WAY IT WOULD BE SAVED (OR PRINTED).	*/
+/********************************************************************************/
+void ViewList(void)
+{
+ dlgDialog("Bill Of Material - Preview") {
+   string s = MakeList();
+   if (OutputFormat == ofText)
+      s = "<pre>" + s + "</pre>";
+   dlgHBoxLayout dlgSpacing(400);
+   dlgHBoxLayout {
+     dlgVBoxLayout dlgSpacing(300);
+     dlgTextView(s);
+     }
+   };
+}
+
+/********************************************************************************/
+/*	ROUTINE TO SAVE THE LIST IN THE PROPER TYPE AND FORMAT TO A FILE.	*/
+/********************************************************************************/
+void SaveList(void)
+{
+  string FilePath;
+  string FileName;
+
+  project.schematic(SCH) {
+    FilePath = filedir(SCH.name);
+    FileName = filename(SCH.name);
+    }
+  switch (OutputFormat) {
+    case ofHTML: FileName=filesetext(FileName,".htm"); break;
+    case ofText: FileName=filesetext(FileName,".txt"); break;
+    case ofSpreadsheet: FileName=filesetext(FileName,".csv");
+    }
+  FilePath += "\\" + FileName;
+  FileName = dlgFileSave("Save Bill Of Material", FilePath);
+  if (FileName) {
+    string a[];
+    if (!fileglob(a, FileName) || dlgMessageBox("File '" + FileName + "' exists\n\nOverwrite?", "+&Yes", "-&No") == 0) {
+      output(FileName, "wt") printf("%s", MakeList());
+      }
+    }
+}
+
+/********************************************************************************/
+/*	ROUTINE TO PRINT THE LIST IN THE PROPER TYPE AND FORMAT.		*/
+/********************************************************************************/
+void PrintList(void)
+{
+  if (dlgMessageBox("This will print to the default printer.", "Print", "Cancel") == 0)
+    output("prn:", "wt") printf("%s",MakeList());
+}
+
+/********************************************************************************/
+/*	FUNCTION TO READ THE DATABASE INTO A STRING ARRAY.			*/
+/*	called only by LoadDatBase						*/
+/********************************************************************************/
+int ReadDatabase(string FileName)
+{
+  string data;
+  if (fileread(data, FileName) > 0) {
+     strsplit(Database, data, '\n');
+     DatabaseSeparator = (strchr(Database[0], '\t') > -1) ? '\t' : ';';
+     DatabaseFile = FileName;
+     return 1;
+     }
+  return 0;
+}
+
+/********************************************************************************/
+/*	FUNCTION TO CHECK IF A HEADER NAME HAS ALREADY BEEN USED.		*/
+/*	called only by NewDatabaseEdit						*/
+/********************************************************************************/
+int NewDatabaseHeaderOk(string Name)
+{
+  for (int i = 0; i < NumHeaders; i++) {
+      if (Name == Headers[i]) {
+         dlgMessageBox("Name already defined!");
+         return 0;
+         }
+      }
+  return 1;
+}
+
+/********************************************************************************/
+/*	FUNCTION TO CREATE THE NEW DATABASE HEADER FIELDS.			*/
+/*	called only by NewDatabase						*/
+/********************************************************************************/
+void NewDatabaseEdit(string Title, string Name)
+{
+  int NewName = !Name;
+  dlgDialog(Title + " Header") {
+    dlgLabel("&Name:");
+    dlgStringEdit(Name);
+    dlgHBoxLayout {
+      dlgStretch(1);
+      dlgPushButton("+Ok") {
+        Name = StripWhiteSpace(Name);
+        if (!NewName) {
+           if (Name == Headers[SelectedHeader] || NewDatabaseHeaderOk(Name)) {
+              Headers[SelectedHeader] = Name;
+              dlgAccept();
+              }
+           }
+        else if (Name) {
+           if (NewDatabaseHeaderOk(Name)) {
+              SelectedHeader = NumHeaders;
+              Headers[NumHeaders] = Name;
+              Headers[++NumHeaders] = "";
+              dlgAccept();
+              }
+           }
+        else
+           dlgMessageBox("Name can't be empty!");
+        }
+      dlgPushButton("-Cancel") dlgReject();
+      }
+    };
+}
+
+/********************************************************************************/
+/*	FUNCTION TO CREATE A NEW DATABASE.					*/
+/********************************************************************************/
+void NewDatabase(void)
+{
+  DatabaseFile = "";
+  Database[0] = "";
+  GenerateList();
+  dlgRedisplay();
+
+  Headers[0] = "Key";
+  Headers[1] = "";
+  NumHeaders = 1;
+  SelectedHeader = -1;
+  int result = dlgDialog("New Database") {
+    dlgHBoxLayout {
+      dlgVBoxLayout {
+        dlgLabel("&Headers");
+        dlgListBox(Headers, SelectedHeader) NewDatabaseEdit("Edit", Headers[SelectedHeader]);
+        }
+      dlgVBoxLayout {
+        dlgPushButton("&Add") NewDatabaseEdit("New", "");
+        dlgPushButton("&Del") {
+          if (SelectedHeader > 0) {
+             for (int i = SelectedHeader; i < NumHeaders - 1; i++)
+                 Headers[i] = Headers[i + 1];
+             Headers[--NumHeaders] = "";
+             if (SelectedHeader >= NumHeaders)
+                SelectedHeader = NumHeaders - 1;
+             }
+          else
+             dlgMessageBox("Can't delete the \"Key\" header!\n\nUse \"Edit\" to change it.");
+          }
+        dlgPushButton("&Edit") NewDatabaseEdit("Edit", Headers[SelectedHeader]);
+        }
+      }
+    dlgHBoxLayout {
+      dlgStretch(1);
+      dlgPushButton("+Ok") {
+        if (NumHeaders > 1)
+           dlgAccept();
+        else
+           dlgMessageBox("Please add at least one header!");
+        }
+      dlgPushButton("-Cancel") dlgReject();
+      }
+    };
+  if (result) {
+     string sep;
+     for (int i = 0; Headers[i]; i++) {
+         Database[0] += sep + Headers[i];
+         sep = "\t";
+         }
+     DatabaseSeparator = '\t';
+     DatabaseModified = 1;
+     GenerateList();
+     }
+}
+
+/********************************************************************************/
+/*	FUNCTION TO LET THE USER SELECT A DATABASE AND THEN OPEN IT.		*/
+/********************************************************************************/
+void LoadDatabase(void)
+{
+  project.schematic(S) DatabaseFile=filedir(S.name);
+  string FileName = dlgFileOpen("Choose database file", DatabaseFile, "Database files (*.tsv *.csv);;All files (*)");
+  if (FileName) {
+    if (ReadDatabase(FileName)) {
+      GenerateList();
+      DatabaseModified = 0;
+      }
+    }
+    int n=strsplit(The_columns,Lines[0],'\t');
+}
+
+/********************************************************************************/
+/*	FUNCTION TO WRITE THE DATABASE BACK TO A FILE.				*/
+/********************************************************************************/
+int SaveDatabase(void)
+{
+  if (!DatabaseFile) {
+     string ext = (DatabaseSeparator == '\t') ? ".tsv" : ".csv";
+     DatabaseFile = dlgFileSave("Save database file", "", "Database files (*" + ext + ");;All files (*)");
+     if (!DatabaseFile)
+        return 0;
+     if (fileext(DatabaseFile) != ext)
+        DatabaseFile += ext;
+     }
+  fileerror();
+  output(DatabaseFile, "wt") {
+    for (int i = 0; Database[i]; i++)
+        printf("%s\n", Database[i]);
+    };
+  return !fileerror();
+}
+
+/********************************************************************************/
+/*	FUNCTION TO EDIT A DATABASE RECORD.					*/
+/*	called only by EditDatabase						*/
+/********************************************************************************/
+void EditDatabaseEntry(string Key, int Entry)
+{
+  string Header[];
+  string Data[];
+  int Fields = strsplit(Header, Database[0], DatabaseSeparator);
+  strsplit(Data, Database[Entry], DatabaseSeparator);
+  if (!Data[0])
+     Data[0] = Key;
+  int result = dlgDialog("Edit Database") {
+    dlgGridLayout {
+      for (int f = 0; f < Fields; f++) {
+          dlgCell(f, 0) dlgLabel(Header[f]);
+          dlgCell(f, 1) if (f) { dlgStringEdit(Data[f]); } else { dlgLabel(Data[f]); }
+          }
+      }
+    dlgHBoxLayout {
+      dlgStretch(1);
+      dlgPushButton("+Ok") dlgAccept();
+      dlgPushButton("-Cancel") dlgReject();
+      }
+    };
+  if (result) {
+     for (int f = 0; f < Fields; f++)
+         Data[f] = StripWhiteSpace(Data[f]);
+     Database[Entry] = strjoin(Data, DatabaseSeparator);
+     DatabaseModified = 1;
+     GenerateList();
+     }
+}
+
+/********************************************************************************/
+/*	FUNCTION TO EDIT A SELECTED DATABASE RECORD.				*/
+/********************************************************************************/
+void EditDatabase(void)
+{
+  if (Database[0]) {
+     if (Selected) {
+        string a[];
+        int KeyField = strsplit(a, Lines[0], '\t');
+        strsplit(a, Lines[Selected], '\t');
+        string key = a[KeyField];
+        string data;
+        int entry;
+        for (entry = 0; Database[entry]; entry++) {
+            strsplit(a, Database[entry], DatabaseSeparator);
+            if (a[0] == key) {
+               data = Database[entry];
+               break;
+               }
+            }
+        EditDatabaseEntry(key, entry);
+        }
+     else
+        dlgMessageBox("Please select a list entry first!");
+     }
+  else
+     dlgMessageBox("Please open a database file first!");
+}
+
+/********************************************************************************/
+/*	FUNCTION TO SAVE AND CLOSE THE DATABASE.				*/
+/********************************************************************************/
+int OkToClose(void)
+{
+  if (DatabaseModified) {
+     switch (dlgMessageBox("Database has been modified\n\nSave?", "+&Yes", "&No", "-Cancel")) {
+       case 0: return SaveDatabase();
+       case 1: break;
+       case 2: return 0;
+       }
+     }
+  return 1;
+}
+
+/********************************************************************************/
+/*	FUNCTION TO DISPLAY THE HELP SCREEN.					*/
+/********************************************************************************/
+void DisplayHelp(void)
+{
+  dlgDialog("Bill Of Material - Help") {
+    dlgHBoxLayout dlgSpacing(800);
+    dlgHBoxLayout {
+      dlgVBoxLayout dlgSpacing(600);
+      dlgTextView(HelpText);
+      }
+    };
+}
+
+/********************************************************************************/
+/*	ROUTINE TO ADD A COLUMN NAME FORM THE PICKED LIST.			*/
+/********************************************************************************/
+void PickColumn(int n)
+{
+  Picked_columns[picked]=The_columns[n];
+  Pick_index[picked]=n;
+  picked++;
+}
+
+/********************************************************************************/
+/*	ROUTINE TO REMOVE A COLUMN NAME FORM THE PICKED LIST.			*/
+/********************************************************************************/
+void UnpickColumn(int n)
+{
+  if (picked==n) {
+    Picked_columns[n]="";
+    Pick_index[n]=-1;
+  }
+  else for (int i=n; i<picked; i++) {
+    Picked_columns[i]=Picked_columns[i+1];
+    Pick_index[i]=Pick_index[i+1];
+    }
+  picked--;
+}
+
+/********************************************************************************/
+/*	FUNCTION TO CHECK IF OUTPUT COLUMNS HAVE BEEN PICKED.			*/
+/********************************************************************************/
+int CheckPicked(void)
+{
+  if (!picked) dlgMessageBox("You must pick columns first.");
+  return picked;
+}
+
+/********************************************************************************/
+/*	THIS IS THE MAIN PROGRAM						*/ 
+/********************************************************************************/
+if (!project.schematic) {
+  dlgMessageBox(usage + 
+    "<hr><b>ERROR: No schematic!</b><p>\nThis program can only work in the schematic editor.");
+  exit(1);
+  }
+
+CollectPartData();
+GenerateList();
+
+dlgDialog("Bill Of Material") {
+
+  dlgListView("", Lines, Selected) EditDatabase();
+  dlgGroup("Database File") {
+    dlgStretch(1);
+    dlgHBoxLayout {
+      dlgLabel("Name:");
+      dlgLabel(DatabaseFile, 1);
+      dlgStretch(1);
+      dlgPushButton("Open") if (OkToClose()) LoadDatabase();
+      dlgPushButton("New")  if (OkToClose()) NewDatabase();
+      dlgPushButton("+Edit") EditDatabase();
+//      dlgPushButton("Edit") dlgMessageBox("Not implemented");
+      }
+    }
+  dlgGroup("Columns") {
+    dlgHBoxLayout {
+      dlgLabel("Input");
+      dlgLabel("Output");
+      }
+    dlgHBoxLayout {
+      int n=0;
+      dlgListBox(The_columns,n) PickColumn(n);
+      n=0;
+      dlgListBox(Picked_columns,n) UnpickColumn(n);
+      }
+    }
+    dlgHBoxLayout {
+      dlgGroup("Type") {
+        dlgRadioButton("Parts", ListType) GenerateList();
+        dlgRadioButton("Values", ListType) GenerateList();
+        }
+      dlgGroup("Format") {
+        dlgRadioButton("Text", OutputFormat);
+        dlgRadioButton("HTML", OutputFormat);
+        dlgRadioButton("Spreadsheet", OutputFormat);
+        }
+      dlgGroup("What to show") {
+        dlgRadioButton("Real values only", WhatToShow) {
+          CollectPartData();
+          GenerateList();
+          }
+        dlgRadioButton("\"Don't Show\" only", WhatToShow) {
+          CollectPartData();
+          GenerateList();
+          }
+        dlgRadioButton("Everything", WhatToShow) {
+          CollectPartData();
+          GenerateList();
+          }
+        }
+      dlgGroup("Create output") {
+        dlgPushButton("Preview") if (CheckPicked()) ViewList();
+        dlgPushButton("Save...") if (CheckPicked()) SaveList();
+        dlgPushButton("Print") if (CheckPicked()) PrintList();
+        }
+      }
+
+  dlgHBoxLayout {
+//    dlgStretch(1);
+    dlgPushButton("Help") DisplayHelp();
+    dlgPushButton("-Exit") if (OkToClose()) dlgAccept();
+    }
+  };

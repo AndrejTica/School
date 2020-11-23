@@ -1,0 +1,159 @@
+#usage "<b>Copies placement of parts</b><br>"
+       "Open ulp for further information!<br>"
+       "Save board before use!<br>"
+       "<author>Jörg Krein</author>"
+
+// This ulp copies the placement of a selected group of parts to another.
+// Draw an rectangle on layer 6 arround the group of properly arranged parts.
+// Then draw an rectangle on layer 7 arround the parts which should be placed
+// the same way. You can do this for more than one target group.
+// Run the ulp, run the script.
+// The grid has to be small enough to allow this!
+// The groups have to consist of the same number and types of elements.
+// The numbering has to be in the same manner.
+// This depends on the behavior of the builtin elements() loop,
+// returning elements in an alphanumerical order. So position and angle
+// of U1 an U2 in the source rectangle will be copied to U10 and U11 in
+// the target rectangle. This seems to work most times but not always!
+// This has to be optimized in many ways. Do it if you like.
+// No warranty whatsoever!
+// Use at own risk!
+
+
+int tCopyFrom= 6;							// Layer# of rect marking source parts
+int tCopyTo= 7;							// Layer# of rect marking target parts
+
+string E_name[];							// keeps the element's data found
+int E_x[], E_y[];							// inside the source rect
+real E_angle[];
+int idx = 0;								// index counter
+
+int RS_x1, RS_y1;							// coordinates of source rectangle
+int RectXOffs, RectYOffs;				// coordinates offset of rectangles
+int AngleDiff;								// angle difference of source and target
+
+string Path = "", BName;
+
+/*
+string ToFirst, FromFirst;	         // Name des jeweils ersten Elements
+int  ToFirstNum, FromFirstNum;		// Nummer des jeweils ersten Elements
+int NumOffs;								// Nummernversatz der ersten Elemente
+*/
+
+
+board(B)
+{
+	// get project path
+	BName = B.name;
+	Path = filedir( BName );
+//	Path = "D:/Programme/EAGLE-4.01/scr/";
+
+	output( Path + "copyplacing.scr", "wt")
+	{
+		B.rectangles(R)							// loop through all rects
+		{												// looking for rect in source layer
+			if (R.layer == tCopyFrom)
+   		{
+   			RS_x1 = R.x1;						// save the source coordinate
+   			RS_y1 = R.y1;
+
+				B.elements(E)						// loop through board elements
+				{
+					if ( (E.x >= R.x1) && (E.x <= R.x2) &&		// look for elements
+						  (E.y >= R.y1) && (E.y <= R.y2) )		// inside the source rect
+					{
+						// save the element's parameters
+						E_x[idx] = E.x;
+						E_y[idx] = E.y;
+						E_name[idx] = E.name;
+						E_angle[idx] = E.angle;
+						idx++;
+						// printf("%s\n", E.name);
+					}
+         	}
+			}
+		} // rectangles
+
+		B.rectangles(R)							// loop through all rects
+		{												// looking for a rect in target layer
+			if (R.layer == tCopyTo)
+   		{
+   			// printf( "Zielrechteck: R.x1=%0.f\t R.y1=%0.f\n", u2mil(R.x1), u2mil(R.y1) );
+   			RectXOffs = RS_x1 - R.x1;		// save offset vector of source
+   			RectYOffs = RS_y1 - R.y1;		// and target rects
+   			// printf( "Rechteckversatz: XOffs=%0.f\tYOffs=%0.f\n", u2mil(RectXOffs), u2mil(RectYOffs) );
+   			// NumOffs = 0;
+   			idx = 0;
+				B.elements(E)						// loop through board elements
+				{
+					if ( (E.x >= R.x1) && (E.x <= R.x2) &&	// look for elements
+						  (E.y >= R.y1) && (E.y <= R.y2) )	// inside the target rect
+      			{
+      			/*	if (!NumOffs)
+      				{
+             			ToFirst = strsub(E.name, 1);
+             			FromFirst = strsub(E_name[0], 1);
+             			ToFirstNum = strtol(ToFirst);
+             			FromFirstNum = strtol(FromFirst);
+             			NumOffs = ToFirstNum - FromFirstNum;
+             			// printf("%s\n", E.name);
+             			// printf("Offset= %d\n", NumOffs);
+             		} */
+             		// add rotate commands for copy rotation of source to target element
+             		// this only works for rotations in 90 degree steps
+             		if ( E_angle[idx] != E.angle )
+             		{
+             			AngleDiff = (int( E_angle[idx]- E.angle ));
+
+             			switch(AngleDiff)
+							{
+								case 90:
+									printf( "ROTATE (%.0f %.0f);\n", u2mil(E.x), u2mil(E.y) );
+                           break;
+
+                        case -90:
+									printf( "ROTATE (%.0f %.0f);\n", u2mil(E.x), u2mil(E.y) );
+									printf( "ROTATE (%.0f %.0f);\n", u2mil(E.x), u2mil(E.y) );
+									printf( "ROTATE (%.0f %.0f);\n", u2mil(E.x), u2mil(E.y) );
+                           break;
+
+                        case 180:
+									printf( "ROTATE (%.0f %.0f);\n", u2mil(E.x), u2mil(E.y) );
+									printf( "ROTATE (%.0f %.0f);\n", u2mil(E.x), u2mil(E.y) );
+                           break;
+
+                        case -180:
+									printf( "ROTATE (%.0f %.0f);\n", u2mil(E.x), u2mil(E.y) );
+									printf( "ROTATE (%.0f %.0f);\n", u2mil(E.x), u2mil(E.y) );
+                           break;
+
+                        case 270:
+									printf( "ROTATE (%.0f %.0f);\n", u2mil(E.x), u2mil(E.y) );
+									printf( "ROTATE (%.0f %.0f);\n", u2mil(E.x), u2mil(E.y) );
+									printf( "ROTATE (%.0f %.0f);\n", u2mil(E.x), u2mil(E.y) );
+                           break;
+
+                        case -270:
+									printf( "ROTATE (%.0f %.0f);\n", u2mil(E.x), u2mil(E.y) );
+                           break;
+
+                        default:
+                             break;
+                       }
+             		}
+
+             		// add the move command for according element
+             		printf("MOVE (%.0f %.0f) (%.0f %.0f);\n",
+             				u2mil(E.x),
+             				u2mil(E.y),
+             				u2mil(E_x[idx] - RectXOffs),
+             				u2mil(E_y[idx] - RectYOffs ) );
+             		idx++;
+             	}
+         	}
+         	printf("# next placing rectangle\n");
+			}
+		} // rectangles
+	} // output
+} // board
+

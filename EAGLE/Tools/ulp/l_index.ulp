@@ -1,0 +1,57 @@
+/*   This ULP generates a text file "lbr_name.idx"
+ *   that list the number and names of all devices and
+ *   packages of a library.
+ */
+
+
+int i = 0, j = 0 ;
+int colCnt = 0, colMax, l;
+
+if (library) library (L) {
+ output (filesetext(L.name, ".IDX")) {
+
+   library(L) { 
+     L.devices(D) {
+      i++ ; }
+
+     L.packages(PAC) {
+      j++ ; }
+    }
+ 
+    printf("%s\n\n", EAGLE_SIGNATURE);
+    printf("Index of EAGLE Library %s\n", L.name);
+    printf("generated at %s \n\n", t2string(time()));
+    printf("Library Filedate: %s\n        Filesize: %d Byte\n\n", 
+            t2string(filetime(L.name)), filesize(L.name));
+    
+    printf("Number of Devices: %d\n\n", i);
+         
+      library(L) {
+        L.devices(D) {
+           
+           l = printf("%-*s  ", DEVICE_NAME_LENGTH, D.name);
+            if (++colCnt == 1)
+             colMax = 75 / l;
+            if (colCnt >= colMax) {
+             printf("\n");
+             colCnt = 0;
+        }
+      }
+    printf("\n\n\n");
+    printf("Number of Packages: %d\n\n", j);
+ 
+      library(L) {
+        L.packages(PAC) {
+           
+           l = printf("%-*s    ", PACKAGE_NAME_LENGTH, PAC.name);
+            if (++colCnt == 1)
+             colMax = 75 / l;
+            if (colCnt >= colMax) {
+             printf("\n");
+             colCnt = 0;   }  
+        }
+      }
+    
+   }
+ }
+}

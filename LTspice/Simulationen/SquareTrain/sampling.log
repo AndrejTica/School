@@ -1,0 +1,25 @@
+Circuit: * Y:\LindnerR\DIC\Digitale_Signalverarbeitung\Sampling_Aliasing\Simulation\SquareTrain\sampling.asc
+
+Limiting rise time of source v1 to 5e-008
+Limiting fall time of source v1 to 5e-008
+WARNING: Less than two connections to node IT.  This node is used by B1.
+.OP point found by inspection.
+
+Date: Wed Jan 15 11:26:24 2020
+Total elapsed time: 73.706 seconds.
+
+tnom = 27
+temp = 27
+method = modified trap
+totiter = 13009896
+traniter = 13009896
+tranpoints = 6503905
+accept = 6499988
+rejected = 3917
+matrix size = 7
+fillins = 0
+solver = Normal
+Matrix Compiler1: 178 bytes object code size  0.1/0.1/[0.1]
+Matrix Compiler2: off  [0.1]/0.6/0.1
+
+

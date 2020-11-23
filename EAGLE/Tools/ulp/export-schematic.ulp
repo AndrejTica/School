@@ -1,0 +1,155 @@
+#usage "<b>Exports a schematic drawing.</b>\n"
+       "<p>"
+       "This ULP exports all elements of a schematic drawing so that it may be regenerated with a script file."
+       "<p>"
+       "<author>Author: klcallan@yahoo.com"
+
+if (schematic)
+
+  schematic(S) {
+
+    string partlist[];  // holds an array of which reference designators have been ADDed
+    int partlistindex;
+    int x;
+    string key;
+    string options;
+
+    partlistindex = 0;
+    key = "";
+    string wirestyle;
+
+    string p = "";
+    string s = "";
+    string e = "";
+
+    s = S.name;
+    char c = '/';
+    int pos = strrchr(s, c);
+    if (pos >= 0) {
+      p = strsub(s, 0, pos + 1);
+    }
+
+    string fileName = p + "temp.scr";
+
+    output(fileName) {
+      printf("GRID INCH 0.005\n");
+
+      S.layers(LAY) {
+        printf("LAYER %d %s;\n", LAY.number, LAY.name);
+      }
+
+      printf("DISPLAY -PINS\n\n");
+
+      S.sheets(SH) {
+        printf("EDIT .S%d\n", SH.number);
+
+        SH.circles(CIR) {
+          printf("LAYER %d;\n", CIR.layer);
+          printf("CIRCLE %5.3f (%5.3f %5.3f) (%5.3f %5.3f);\n", u2inch(CIR.width), u2inch(CIR.x), u2inch(CIR.y), u2inch(CIR.x + CIR.radius), u2inch(CIR.y));
+        }
+        
+        SH.rectangles(REC) {
+          printf("LAYER %d;\n", REC.layer);
+          printf("RECT %5.3f (%5.3f %5.3f) (%5.3f %5.3f);\n", REC.angle, u2inch(REC.x1), u2inch(REC.y1), u2inch(REC.x2), u2inch(REC.y2));
+        }
+
+        SH.texts(TEX) {
+          printf("LAYER %d\n", TEX.layer);
+          printf("TEXT '%s' R%f (%5.3f %5.3f);\n", TEX.value, TEX.angle, u2inch(TEX.x), u2inch(TEX.y));
+          printf("CHANGE SIZE %5.3f (%5.3f %5.3f);\n", u2inch(TEX.size), u2inch(TEX.x), u2inch(TEX.y));
+        }
+
+        printf("SET WIRE_BEND 2;\n");
+        SH.wires(WIR) {
+          printf("LAYER %d\n", WIR.layer);
+          switch (WIR.style) {
+            case 0: wirestyle = "Continuous"; break;
+            case 1: wirestyle = "LongDash"; break;
+            case 2: wirestyle = "ShortDash"; break;
+            case 3: wirestyle = "DashDot"; break;
+            default: wirestyle = "Continuous"; break;
+          }
+          printf("CHANGE STYLE '%s';\n", wirestyle);
+          printf("WIRE %5.3f (%5.3f %5.3f) (%5.3f %5.3f);\n", u2inch(WIR.width), u2inch(WIR.x1), u2inch(WIR.y1), u2inch(WIR.x2), u2inch(WIR.y2));
+        }
+        printf("CHANGE STYLE 'Continuous'\n");
+
+        SH.parts(PAR) {
+          options = "";
+          PAR.instances(PARINS) {
+
+            if(PARINS.mirror) {
+              options = "MR";
+            }
+            else {
+              options = "R";
+            }
+
+            key = lookup(partlist, PAR.name, 1);
+            if(key == "") {  // part has not been added yet
+              printf("ADD '%s' '%s' %s@%s %s%5.3f (%5.3f %5.3f);\n", PAR.name, PARINS.gate.name, PAR.device.name, PAR.device.library, options, PARINS.angle, u2inch(PARINS.x), u2inch(PARINS.y));
+              if((PAR.device.value == "On") && (PARINS.value != "")) {
+                printf("VALUE '%s' (%5.3f %5.3f);\n", PARINS.value, u2inch(PARINS.x), u2inch(PARINS.y));
+              }
+              partlist[partlistindex] = PAR.name + '\t' + '1';  // the part has been seen now so next time use INVOKE
+              partlistindex += 1;
+            }
+            else {
+              printf("INVOKE '%s' '%s' %s%5.3f (%5.3f %5.3f);\n", PAR.name, PARINS.gate.name, options, PARINS.angle, u2inch(PARINS.x), u2inch(PARINS.y));
+            }
+          }
+        }
+
+        SH.busses(BUS) {
+          BUS.segments(BUSSEG) {
+            int bsx, bsy;
+
+            printf("SET WIRE_BEND 2;\n");
+            BUSSEG.wires(BUSSEGWIR) {
+              printf("BUS '%s' (%5.3f %5.3f) (%5.3f %5.3f);\n", BUS.name, u2inch(BUSSEGWIR.x1), u2inch(BUSSEGWIR.y1), u2inch(BUSSEGWIR.x2), u2inch(BUSSEGWIR.y2));
+              bsx = BUSSEGWIR.x1;
+              bsy = BUSSEGWIR.y1;
+            }
+
+            printf("NAME '%s' (%5.3f %5.3f);\n", BUS.name, u2inch(bsx), u2inch(bsy));
+
+            BUSSEG.texts(BUSSEGTEX) {
+              printf("LABEL (%5.3f %5.3f) (%5.3f %5.3f);\n", u2inch(bsx), u2inch(bsy), u2inch(BUSSEGTEX.x), u2inch(BUSSEGTEX.y));
+              printf("CHANGE SIZE %5.3f (%5.3f %5.3f);\n", u2inch(BUSSEGTEX.size), u2inch(BUSSEGTEX.x), u2inch(BUSSEGTEX.y));
+            }
+          }
+        }
+
+        SH.nets(NET) {
+          NET.segments(NETSEG) {
+            int nsx, nsy;
+
+            printf("SET WIRE_BEND 2;\n");
+            NETSEG.wires(NETSEGWIR) {
+              printf("NET '%s' (%5.3f %5.3f) (%5.3f %5.3f);\n", NET.name, u2inch(NETSEGWIR.x1), u2inch(NETSEGWIR.y1), u2inch(NETSEGWIR.x2), u2inch(NETSEGWIR.y2));
+              nsx = NETSEGWIR.x1;
+              nsy = NETSEGWIR.y1;
+            }
+
+            printf("NAME '%s' (%5.3f %5.3f);\n", NET.name, u2inch(nsx), u2inch(nsy));
+
+            NETSEG.texts(NETSEGTEX) {
+              printf("LABEL (%5.3f %5.3f) (%5.3f %5.3f);\n", u2inch(nsx), u2inch(nsy), u2inch(NETSEGTEX.x), u2inch(NETSEGTEX.y));
+              printf("CHANGE SIZE %5.3f (%5.3f %5.3f);\n", u2inch(NETSEGTEX.size), u2inch(NETSEGTEX.x), u2inch(NETSEGTEX.y));
+            }
+          }
+        }
+
+      }
+
+    printf("GRID LAST\n");
+
+    }
+//    sprintf(e, "SCRIPT '%s'", fileName);
+//    exit(e);
+  }
+
+else {
+   dlgMessageBox("\n    Start this ULP in a schematic    \n");
+   exit(0);
+}

@@ -1,0 +1,188 @@
+/*===========================================================================*/
+/*                                                                           */
+/* File     : TCENTER.ULP                                                    */
+/*                                                                           */
+/* Project  : -                                                              */
+/* System   : EAGLE_ULP                                                      */
+/* Version  : 1.01                                                           */
+/*                                                                           */
+/* Customer : -                                                              */
+/*                                                                           */
+/* Company  : miControl                                                      */
+/*            Weststrasse 1                                                  */
+/*            13405 Berlin                                                   */
+/*                                                                           */
+/*            web: http://www.miControl.de                                   */
+/*                                                                           */
+/*            Products: CAN I/O Modules, CAN-Centronics Interface,           */
+/*                      EPROM-Simulator with CAN-Interface, ....             */
+/*                                                                           */
+/* Author   : dariusz parma (dp) <dp@miControl.de>                           */
+/* Date     : 19.11.98                                                       */
+/*                                                                           */
+/*===========================================================================*/
+/* Description:                                                              */
+/*                                                                           */
+/*---------------------------------------------------------------------------*/
+/* History:                                                                  */
+/*                                                                           */
+/*===========================================================================*/
+
+int   SmashFlag   =  1;
+
+real  NameSize    = 20;          // [mil]
+int   NameRatio   = 10;          // [mil]
+
+real  ValueSize   = 20;          // [mil]
+int   ValueRatio  = 10;          // [mil]
+
+real  SnapGrid    =  5;          // [mil]
+
+real  FontW2H     = 0.67;        // font width to height ratio
+real  SpaceW2H    = 0.25;        // space width to height ratio
+
+/*---------------------------------------------------------------------------*/
+real snap (real p, real grid)
+{
+   return (round(p/grid) * grid);
+}
+
+/*---------------------------------------------------------------------------*/
+void txt_center (UL_ELEMENT e, int layer, real size, int ratio, real grid, int offs_x, int offs_y)
+{
+   real  tx, ty, ts;
+   real  new_tx, new_ty;
+   real  ex, ey, ex1, ey1;
+   real  angle;
+   int   i, r;
+   int   side;
+   int   slen;
+   int   offs;
+
+
+   e.texts (t)
+   {
+      if (t.layer == layer)
+      {
+         if (!e.mirror)
+            side =  1;
+         else
+            side = -1;
+
+         tx = u2mil(t.x);
+         ty = u2mil(t.y);
+         ts = u2mil(t.size);
+
+         if (size && size != ts)
+            printf("change size %f (%f %f);\n", size, tx, ty);
+         else
+            size = ts;
+
+         if (ratio && ratio != t.ratio)
+            printf("change ratio %d (%f %f);\n", ratio, tx, ty);
+
+         if (t.angle != 0.0)
+            r = (360.0 - t.angle) / 90.0;
+
+         if (e.angle == 90.0 || e.angle == 270.0)
+         {
+            r++;
+         }
+
+         if (side == -1)
+            r = 4 - r;
+
+         if (r >= 4)
+            r -= 4;
+
+         if (e.mirror != t.mirror)
+            printf ("mirror (%f %f);\n", tx, ty);
+
+         for (i=0; i<r; i++)
+            printf ("rotate (%f %f);\n", tx, ty);
+
+         ex  = u2mil(e.x);
+         ey  = u2mil(e.y);
+
+         slen = strlen(t.value);
+
+         if (slen)
+            offs = -(slen * (size * FontW2H) + (slen-1) * (size * SpaceW2H)) / 2;
+         else
+            offs = 0;
+
+         if (e.angle == 0 || e.angle == 180)
+         {
+            new_tx = snap(ex + (offs + offs_x) * side, grid);
+            new_ty = snap(ey - (size/2 + offs_y), grid);
+         }
+         else
+         {
+            new_tx = snap(ex + (size/2 + offs_y) * side, grid);
+            new_ty = snap(ey + (offs + offs_x), grid);
+         }
+
+         printf ("move (%f %f) (%f %f)\n", tx, ty, new_tx, new_ty);
+      }
+   }
+}
+
+/*---------------------------------------------------------------------------*/
+board(B)
+{
+   output("tcenter.scr")
+   {
+      printf("set undo_log off;\n");
+      printf ("grid mil finest;\n");
+
+      // smash all elements ---------------------------------------------------
+      //
+      if (SmashFlag)
+      {
+         printf ("display none tPlace;\n");
+
+         B.elements(e)
+            if (!e.mirror)
+               printf ("smash (%f %f);\n", u2mil(e.x), u2mil(e.y));
+
+         printf ("display none bPlace;\n");
+
+         B.elements(e)
+            if (e.mirror)
+               printf ("smash (%f %f);\n", u2mil(e.x), u2mil(e.y));
+      }
+
+      // component side -------------------------------------------------------
+      //
+      printf("display none tPlace;\n");
+      printf("display -tOrigins -tValues;\n");
+
+      B.elements(e)
+         txt_center(e, LAYER_TNAMES, NameSize, NameRatio, SnapGrid, 0, 0);
+
+      printf("display -tNames tValues;\n");
+
+      B.elements(e)
+         txt_center(e, LAYER_TVALUES, ValueSize, ValueRatio, SnapGrid, 0, 0);
+
+      // solder side ----------------------------------------------------------
+      //
+      printf("display none bPlace;\n");
+      printf("display -bOrigins -bValues;\n");
+
+      B.elements(e)
+         txt_center(e, LAYER_BNAMES, NameSize, NameRatio, SnapGrid, 0, 0);
+
+      printf("display -bNames bValues;\n");
+
+      B.elements(e)
+         txt_center(e, LAYER_BVALUES, ValueSize, ValueRatio, SnapGrid, 0, 0);
+
+      printf("display none Top Bottom Pads Vias Dimension tPlace bPlace;\n");
+      printf("display -tOrigins -tValues -bOrigins -bValues;\n");
+
+      printf("grid last;\n");
+      printf("set undo_log on;\n");
+   }
+}
+
