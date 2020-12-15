@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/cipher.h
+string
+-
+
+../include/xorsubstitution.h
+cipher.h
+../include/cipher.h
+
+/home/andrej/Documents/LastSchoolYear/FSST/cpp_workspace/03-oop123/04_cipher_diffie_hellman/src/cipher.cpp
+cipher.h
+/home/andrej/Documents/LastSchoolYear/FSST/cpp_workspace/03-oop123/04_cipher_diffie_hellman/src/cipher.h
+
+/home/andrej/Documents/LastSchoolYear/FSST/cpp_workspace/03-oop123/04_cipher_diffie_hellman/src/xorsubstitution.cpp
+xorsubstitution.h
+/home/andrej/Documents/LastSchoolYear/FSST/cpp_workspace/03-oop123/04_cipher_diffie_hellman/src/xorsubstitution.h
+
+/home/andrej/Documents/LastSchoolYear/FSST/cpp_workspace/03-oop123/04_cipher_diffie_hellman/test/test-xorsubstitution.cpp
+string
+-
+xorsubstitution.h
+/home/andrej/Documents/LastSchoolYear/FSST/cpp_workspace/03-oop123/04_cipher_diffie_hellman/test/xorsubstitution.h
+cstdio
+-
+iostream
+-
+

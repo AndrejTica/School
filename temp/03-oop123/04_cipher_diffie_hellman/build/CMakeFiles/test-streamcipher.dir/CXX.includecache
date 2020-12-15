@@ -1,0 +1,44 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/cipher.h
+string
+-
+
+../include/streamcipher.h
+xorsubstitution.h
+../include/xorsubstitution.h
+
+../include/xorsubstitution.h
+cipher.h
+../include/cipher.h
+
+/home/andrej/Documents/LastSchoolYear/FSST/cpp_workspace/03-oop123/04_cipher_diffie_hellman/src/cipher.cpp
+cipher.h
+/home/andrej/Documents/LastSchoolYear/FSST/cpp_workspace/03-oop123/04_cipher_diffie_hellman/src/cipher.h
+
+/home/andrej/Documents/LastSchoolYear/FSST/cpp_workspace/03-oop123/04_cipher_diffie_hellman/src/streamcipher.cpp
+streamcipher.h
+/home/andrej/Documents/LastSchoolYear/FSST/cpp_workspace/03-oop123/04_cipher_diffie_hellman/src/streamcipher.h
+cstdlib
+-
+
+/home/andrej/Documents/LastSchoolYear/FSST/cpp_workspace/03-oop123/04_cipher_diffie_hellman/src/xorsubstitution.cpp
+xorsubstitution.h
+/home/andrej/Documents/LastSchoolYear/FSST/cpp_workspace/03-oop123/04_cipher_diffie_hellman/src/xorsubstitution.h
+
+/home/andrej/Documents/LastSchoolYear/FSST/cpp_workspace/03-oop123/04_cipher_diffie_hellman/test/test-streamcipher.cpp
+string
+-
+streamcipher.h
+/home/andrej/Documents/LastSchoolYear/FSST/cpp_workspace/03-oop123/04_cipher_diffie_hellman/test/streamcipher.h
+cstdio
+-
+iostream
+-
+

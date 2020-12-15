@@ -1,0 +1,1 @@
+/usr/bin/c++    -rdynamic CMakeFiles/test-addsubstitution.dir/test/test-addsubstitution.cpp.o CMakeFiles/test-addsubstitution.dir/src/cipher.cpp.o CMakeFiles/test-addsubstitution.dir/src/addsubstitution.cpp.o  -o test-addsubstitution 

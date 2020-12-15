@@ -1,0 +1,1 @@
+/usr/bin/c++    -rdynamic CMakeFiles/test-xorsubstitution.dir/test/test-xorsubstitution.cpp.o CMakeFiles/test-xorsubstitution.dir/src/cipher.cpp.o CMakeFiles/test-xorsubstitution.dir/src/xorsubstitution.cpp.o  -o test-xorsubstitution 
