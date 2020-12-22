@@ -24,8 +24,8 @@ int main(int argc, char *argv[])
 	string plainText = "Hello, world!";
 	int key = 23;
 
-	Cipher *cipher = new XORSubstitution();
-	string cryptText = cipher->encrypt(plainText, key);
+	Cipher *cipher = new XORSubstitution(); //objekt von XORsubs. Cipher ist abstrackt davon nix erben. Bei new wählt man welche klasse man will
+	string cryptText = cipher->encrypt(plainText, key); //hier bekommen wir einen verschlüsselten text zurück
 
 /*	
 Die Bytes des verschlüsselten Textes werden auf der Konsole gezeigt. In der Regel kann dieser String nicht lesbar ausgegeben werden, weil bei der Verschlüsselung nichtdruckbare Zeichen entstehen.
@@ -46,7 +46,7 @@ Schließlich wird der Geheimtext wieder dechiffriert und zur Kontrolle mit dem u
 	if (plainText == decoded)
 		cout << "true" << endl;
 	else
-		cout << "false" << endl;
+		cout << "false" << endl; //bei false ist ein fehler passiert
 
 	delete cipher;
 

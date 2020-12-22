@@ -24,8 +24,8 @@ int main(int argc, char *argv[])
 	string plainText = "Hello, world!";
 	int key = 23;
 
-	Cipher* cipher = new StreamCipher(); //base class pointer 
-	//StreamCipher* cipher = new StreamCipher(); //base class pointer  
+	Cipher* cipher = new StreamCipher(); //base class pointer, diesmal wähle ich streamcipher, overrode, weil zeiger zeigt drauf. Cipher ist nur der rückgabe wer
+	//StreamCipher* cipher = new StreamCipher(); // 
 	string cryptText = cipher->encrypt(plainText, key);
 
 /*	

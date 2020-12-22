@@ -5,15 +5,15 @@
 #include "post.h"
 using namespace std;
 
-class MessagepPost : public Post {
+class MessagePost : public Post { //würde private stehen, würden alle public in der baseclass private in der subclass sein
 private:
 	string message;
 public:
 	MessagePost(string m, Person &p);
 
-	string getDisplayText(); //
+	string getDisplayText() override; //
 
 
-}
+};
 
 // ENTER CODE

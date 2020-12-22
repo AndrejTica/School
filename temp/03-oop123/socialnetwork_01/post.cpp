@@ -1,4 +1,5 @@
 #include "post.h"
+#include "person.h"
 
 
 Post::Post(Person& p) : sender(p){
@@ -8,9 +9,10 @@ Post::Post(Person& p) : sender(p){
 }
 	
 	void Post::addLike(){
-	likes++	
+	likes++;
 	
 }
+
 	
 	void Post::addCommments(string m){
 	comments.push_back(m);

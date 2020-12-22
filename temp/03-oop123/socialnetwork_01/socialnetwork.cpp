@@ -1,11 +1,13 @@
 #include "socialnetwork.h"
+#include <iostream>
+using namespace std;
 
 void SocialNetwork::addMember(Person& p){
-	members.push_back(&p); //address operator
+	members.push_back(&p); //address operator weil vector ja adressen speichert 
 
 }
-
-void addPost(Post &p){
+ 
+void SocialNetwork::addPost(Post &p){
 	posts.push_back(&p);
 
 }

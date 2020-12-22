@@ -5,7 +5,7 @@
 #include "xorsubstitution.h"
 
     char XORSubstitution::encrypt(char ch, int key){
-        return ch ^ key;
+        return ch ^ key; //x oder verschlüsselm
 
     };
 

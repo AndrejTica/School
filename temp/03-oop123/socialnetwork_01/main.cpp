@@ -15,26 +15,26 @@ int main() {
     schoolBook.addMember(student1);
 
     MessagePost postTeacher1("What is the best coding language?", teacher1);
-  /*  MessagePost postStudent1("I like to design software!", student1);
-    PhotoPost photoPostTeacher1("teacher1.jpg", teacher1);
+    MessagePost postStudent1("I like to design software!", student1);
+  //  PhotoPost photoPostTeacher1("teacher1.jpg", teacher1);
 
     schoolBook.addPost(postTeacher1);
     schoolBook.addPost(postStudent1);
-    schoolBook.addPost(photoPostTeacher1);
+  //   schoolBook.addPost(photoPostTeacher1);
 
-    postTeacher1.addLike();
-    postTeacher1.addLike();
-    postTeacher1.addLike();
+     postTeacher1.addLike();
+     postTeacher1.addLike();
+     postTeacher1.addLike();
 
-    postStudent1.addLike();
+     postStudent1.addLike();
 
-    postTeacher1.addComment("Java, java, java");
-    postTeacher1.addComment("I agree");
-    postStudent1.addComment("software testing is coooool?");
+      postTeacher1.addComment("Java, java, java");
+      postTeacher1.addComment("I agree");
+      postStudent1.addComment("software testing is coooool?");
 
     schoolBook.printPosts();
 
-*/
+
     return 0;
 }
 
