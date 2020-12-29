@@ -1,0 +1,71 @@
+﻿NAME:											KLASSE:			DATUM:
+=============================================================================
+
+
+AUFGABE   : (  ) arrLotto
+-----------------------------------------------------------------------------
+	Fülle die Lücken im Programm. 
+	Die Methode „arrLotto“ soll 6 garantiert verschiedene Zufallszahlen
+	zwischen 1 und 45 in das Array schreiben.
+	
+	Hinweis: Zufallszahlen
+		Random zufall= new Random();
+		int x= zufall.nextInt(100);   // liefert eine Zahl mit 0<= x < 100
+		
+	
+	public _______________ arrLotto(__________________)
+	{
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	}
+	
+	public static void main(String[] args) 
+	{
+		int[] arr = new int [6];
+		
+		arrLotto(arr);
+		
+	}
+	

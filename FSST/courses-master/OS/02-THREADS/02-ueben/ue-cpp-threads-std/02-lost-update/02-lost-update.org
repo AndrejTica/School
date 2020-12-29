@@ -1,0 +1,180 @@
+* Lost-Update
+
+[[https://de.wikipedia.org/wiki/Verlorenes_Update][Lost-Update]]
+
+"Verlorenes Update (auch englisch *lost update*) bezeichnet in der Informatik einen Fehler, der bei mehreren *parallelen Schreibzugriffen* auf eine gemeinsam genutzte Information auftreten kann. Wenn zwei Transaktionen dieselbe Information verändern, dann können die Änderungen der ersten sofort durch die Änderungen der zweiten überschrieben werden."
+
+
+* 06-lost-update.cpp: Das Lost-Update Problem
+
+#+begin_example
+- Problem:
+  - Mehrere Threads ändern einen gemeinsam genutzten Speicher.
+  - Das Ändern einer Variablen geschieht durch 3 unterbrechbare Operationen:
+	1. read
+	2. increment
+	3. write
+
+  - Lost-Update passiert, wenn z.B:
+	- Thread-1: liest
+	- Thread-1: increment
+
+	  - Thread-2: liest
+	  - Thread-2: increment
+	  - Thread-2: write
+
+	- Thread-1: write
+#+end_example
+
+- Das folg. Beispiel zeigt dies.
+
+#+BEGIN_SRC cpp -n
+/*
+g++ 06-lost-update.cpp -o 06-lost-update.exe -lpthread
+*/
+===ENTER CODE===
+#+END_SRC
+
+
+* Sperrsychronisation: critical section
+
+see [[https://de.wikipedia.org/wiki/Kritischer_Abschnitt][Kriticher Abschnitt]]
+
+"In der Informatik ist ein kritischer Abschnitt (engl. ‚critical section’) eine Menge von Anweisungen, in dem sich zu einer Zeit nur ein einziger Prozess/Thread aufhalten darf. Ähnlich einem Bahnübergang, der nur vom Schienenfahrzeug oder nur von Straßenfahrzeugen befahren werden darf, aber nicht von beiden Fahrzeugarten gleichzeitig."
+
+The so-called 'Sperrsynchronisation' uses Mutex to support critical sections.
+
+* Sperrsychronisation: Mutex
+see [[https://de.wikipedia.org/wiki/Mutex][Mutex]] and [[http://www.cplusplus.com/reference/mutex/mutex/][std::mutex]]
+
+
+#+BEGIN_SRC cpp -n
+
+#include <mutex>
+...
+std::mutex mutex;	// mutex and shared var
+int number = 6;
+
+void method1(){
+	mutex.lock();
+	number *= 5;
+	number /= 4;
+	mutex.unlock();
+}
+
+void method2(){
+	mutex.lock();
+	number *= 3;
+	number /= 2;
+	mutex.unlock();
+}
+
+int main (){
+  std::thread th1 (method1);
+  std::thread th2 (method2);
+
+  th1.join();
+  th2.join();
+
+  return 0;
+}
+#+END_SRC
+
+
+* Sperrsychronisation: Semaphore
+see [[https://de.wikipedia.org/wiki/Semaphor_(Informatik)][Semaphor]].
+
+Semaphor(e) ist eine Datenstruktur zur Steuerung eines ausschließenden Zugriffs. Die allgemeine Bedeutung von Semaphor ist Signalmast (Formsignal bei der Eisenbahn).
+
+[[file:../img/os-thread-semaphore-eisenbahn.png]]
+
+
+Wir betrachten in der Folge sog. binäre Semaphore, d.h. sie besitzen 
+1. einen Zähler, der die Werte 0 und 1 annhemen kann und
+2. eine queue, um die Prozess-ID (PID) möglicher wartender Prozesse/Threads zu speichern.
+3. P-Operation (auch wait() genannt)
+4. V-Operation (auch notify() genannt)
+
+
+#+BEGIN_SRC cpp
+1. DEFINE a SEMAPHORE
+	typedef struct semaphor {
+		int counter;
+		Queue* queue; /* Warteschlange */
+	} Semaphor;
+
+
+2. INIT
+void init(Semaphor* sema){
+	sema->counter= 1;
+	sema->queue= new Queue();
+}
+
+
+3. P-Operation/wait 
+   ----------------
+void wait(Semaphor* sema){
+
+===ENTER CODE===
+
+}
+
+
+4. V-Operation/notify
+   ------------------
+void notify(Semaphor* sema){
+
+===ENTER CODE===
+
+}
+#+END_SRC
+
+
+* 07-lost-update-mutex.cpp: Lösung durch Sperr-Synchronisation
+- see [[https://de.wikipedia.org/wiki/Mutex][Mutex]]
+
+Mutex is the basic class for enforcing mutual exclusion. A thread locks a mutex in order to gain access to a shared resource. If a second thread tries to lock the mutex while it is already locked, the second thread will be put to sleep until the first thread completes its task and unlocks the mutex.
+
+
+- Lösung:
+	- Identifiziere den *kritischen Abschnitt* 
+	- Kennzeichne den kritischen Abschnitt durch einen *Mutex*
+
+- Mutex:
+	- sind sog. Semaphore-Variablen
+
+- Semaphore:
+	- Zähler und Queue
+	- 2 Operationen:
+		- wait/lock: (den kritischen Abschnitt Passieren)
+		- notify/unlock: (den kritischen Abschnitt Verlassen)
+
+
+#+BEGIN_SRC cpp -n
+/*
+g++ 07-lost-update-mutex.cpp -o 07-lost-update-mutex.exe -lpthread
+*/
+===ENTER CODE===
+#+END_SRC
+
+
+* 08-lost-update-lock_guard.cpp: Lösung durch Sperr-Synchronisation
+- Mutex Nachteile:
+1. geschieht in einem kritischen Abschnitt eine exception, wird die unlock() Methode nicht ausgeführt. Es kommt in der Folge zu einem *Deadlock*
+2. Programmierer 'vergessen' öfter die unlock() Methode.
+
+- Lösung:
+- [[http://www.cplusplus.com/reference/mutex/lock_guard/][lock_guard]]
+
+
+- AUFGABE:
+- Verwenden Sie statt des Mutex einen sogenannten lock_guard und ändern Sie das Programm entsprechend.
+
+#+BEGIN_SRC cpp -n
+/*
+g++ 08-lost-update-lock_guard.cpp -o 08-lost-update-lock_guard.exe -lpthread
+AUFGABE:
+Verwenden Sie statt des Mutex einen sogenannten lock_guard.
+*/
+===ENTER CODE===
+#+END_SRC

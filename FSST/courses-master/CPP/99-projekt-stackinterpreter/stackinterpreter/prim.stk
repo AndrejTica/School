@@ -1,0 +1,44 @@
+//prim.stk
+//a.hofmann
+//
+read Primzahltest:  x>2 eingeben: ?
+assign x
+//
+if
+vpush x
+push 2
+lt
+vpush x
+write Falsche eingabe
+quit
+endif
+//
+push 3
+assign i
+while
+vpush i
+vpush x
+lt
+vpush x
+vpush i
+mod
+assign ergebnis
+if
+vpush ergebnis
+push 0
+le
+vpush x
+write 
+vpush i
+write teilbar durch 
+quit
+endif
+//
+vpush i
+push 1
+add
+assign i
+endwhile
+vpush x
+write ist PRIM
+quit

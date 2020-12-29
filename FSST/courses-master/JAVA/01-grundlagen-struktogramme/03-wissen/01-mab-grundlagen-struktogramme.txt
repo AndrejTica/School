@@ -1,0 +1,63 @@
+﻿MAB: grundlagen-struktogramme.txt
+-------------------------------------------------------------------
+
+1. Wie machst Du deinen Computer sicher?
+
+2. Was machst Du, dass ein unabsichtliches Löschen oder
+	ein Harddiskfehler dir keine Sorgen bereitet?	
+	
+3. Du kennst folgende Abkürzungen/Begriffe und kannst eine kurze
+	Beschreibung geben:
+	a) CPU
+	b) RAM
+	c) ALU
+	d) AKKUMUKLATOR	
+	e) COMPILER
+
+4. Du weisst, was sich in den versch. Programmbereichen befindet:
+	a) CS
+	b) DS
+	c) SS
+
+5. Mit 5 Bits kann man Zahlen von
+	a) 0 bis 31		b) 1 bis 32
+	c) 0 bis 32		d) 0 bis 64
+	darstellen.
+
+6. Du kennst verschiedene Datentypen
+
+7. Du kannst folgende Begriffe erklären:
+	a) Algorithmus
+	b) Variable
+	c) Konstante
+	d) Anweisung
+	e) Verzweigun
+	f) Schleifen
+	g) Pseudocode
+	h) Struktogramm
+
+8. Was gibt der folg. Algorithmus aus (für m=2 und n= 3)
+	{
+		m=2;
+		n= 3;
+		i= 1;
+		j= m;
+		while (i != n) {
+			i= i + 1;
+			j= j * m;
+		}
+		j ausgeben
+	}
+
+9. Frage: Welcher Wert wird ausgeben, wenn für n der Wert 3 eingegeben wurde?
+{
+	f= 1;
+	n eingeben;
+	
+	i= 1;
+	while( i<=n) {
+		f= f * i;
+		i= i +1;
+	}
+	f ausgeben;
+}

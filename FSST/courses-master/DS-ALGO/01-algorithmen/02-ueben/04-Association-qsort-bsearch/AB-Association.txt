@@ -1,0 +1,117 @@
+================================================================================
+AB-Association.txt
+================================================================================
+<pre>
+
+--------------------------------------------------------------------------------
+LERNZIEL:
+--------------------------------------------------------------------------------
+	Assoziative Speicherverwaltung mit der Programmiersprache C
+	Wiederverwendbare Module erstellen
+	Dynamische Speicherverwaltung: malloc,free_all
+	Sortieren und Suchen: qsort, bsearch
+
+
+--------------------------------------------------------------------------------
+AUFGABE:
+--------------------------------------------------------------------------------
+* Es muss ein assoziativer Speicher für die Verwendung mit C realisiert .
+* Zur Verbesserung der Performance sind die C-Lib-Funktionen: qsort und bsearch
+	zu verwenden.
+* Zu erstellen ist ein
+	** Testprogramm
+	** Der eigentliche Modul: association.h/association.c
+
+
+
+--------------------------------------------------------------------------------
+Beispiel für das Testprogramm:
+--------------------------------------------------------------------------------
+		// ahofmann, 2014
+		// association
+
+		#include <stdio.h>
+		#include <stdlib.h>
+
+		#include "association.h"
+
+
+		int main(){
+			ASSOCIATION* assoc;
+	
+			assoc= createAssociation(5); // capacity
+			if( assoc==NULL){
+				fprintf(stderr, "Error: createAssociation()\n");
+				exit(1);
+			}
+	
+			setAt(assoc, "informatix1", 1);
+			setAt(assoc, "informatix2", 2);
+			setAt(assoc, "informatix3", 3);
+			setAt(assoc, "informatix4", 4);
+			setAt(assoc, "informatix5", 5);
+			setAt(assoc, "informatix5", 55);
+	
+	
+			setAt(assoc, "informatix6", 6);
+	
+	
+	
+			print_all(assoc, stdout);
+	
+	
+			free_all(assoc);
+	
+			return 0;
+		}
+
+
+
+--------------------------------------------------------------------------------
+Beispiel für die Header-Datei: association.h
+--------------------------------------------------------------------------------
+		// ahofmann, 2014
+		// association.h
+
+		#include <stdio.h>
+
+
+		// Datatypes
+		#define KEYLEN 128
+
+		// data structures/types
+		// ---------------------------------------------------------------------
+		struct pair{
+			char key[KEYLEN+1];
+			int value;
+		};
+		typedef struct pair PAIR;
+
+		struct association{
+			int capacity;	// max number of pairs
+			int size;		// index of last pair stored in pairs
+			PAIR* pairs;	// array/vector of pairs
+		};
+		typedef struct association ASSOCIATION;
+
+
+
+		// external function decl.
+		// ---------------------------------------------------------------------
+		ASSOCIATION* createAssociation(int capacity);
+
+		// return 0 ... error
+		int setAt(ASSOCIATION* assoc, char* key, int value);
+
+		void print_all(ASSOCIATION* assoc, FILE* stream);
+
+		void free_all(ASSOCIATION* assoc);
+
+
+--------------------------------------------------------------------------------
+ABGABE:
+--------------------------------------------------------------------------------
+* test-association.c
+* association.h, association.c
+
+========================================== Viel Erfolg =========================

@@ -1,0 +1,100 @@
+* bank-logging-recovery-comment-forall
+
+- [X] Given: BANK_Hofmann-unlimited_2019-01-16_16-02.log
+
+#+BEGIN_SRC bash
+ADD:Adam:1000
+ADD:Eva:2000
+ADD:Lisa:3000
+ADD:Max Mustermann:4000
+DEL:Max Mustermann
+FORALL:PLUS:100
+FORALL:MINUS:50
+FORONE:Adam:PLUS:50
+FORONE:Eva:MINUS:50
+;
+; MAB
+; --------------------------------------------
+; 1. a comment line
+; 2. FORLIST
+; --------------------------------------------
+FORLIST:Adam,Eva,Lisa:PLUS:1
+FORLIST:Adam,Lisa:MINUS:1
+;
+; Ausgabe der Bank ergibt:
+; Adam:1100
+; Eva: 2001
+; Lisa:3050
+: all: 6151
+#+END_SRC
+
+- [X] Given: main.cpp
+
+#+BEGIN_SRC cpp
+// TODO: ENTER YOUR NAME
+// main.cpp
+// bank logging: recovery with logfile
+
+#include <iostream>
+using namespace std;
+
+#include "bank.h"
+
+int main(){
+	Bank* myBank;
+	myBank = new Bank("Hofmann-unlimited");
+	myBank->setLogging(false);
+
+
+	myBank->recovery("BANK_Hofmann-unlimited_2019-01-16_16-02.log");
+
+
+	cout << myBank->getSumDeposits() <<endl;
+
+	delete myBank;
+
+	return 0;
+}
+
+/* output
+6151
+*/
+#+END_SRC
+
+
+- Hint: Filehandling
+#+BEGIN_SRC cpp
+	/**
+	* http://www.cplusplus.com/reference/ios/ios/exceptions/
+	* Get/set exceptions mask
+	*/
+
+	// ios::exceptions
+	#include <iostream>     // std::cerr
+	#include <fstream>      // std::ifstream
+
+	using namespace std;
+
+	int main () {
+		std::ifstream file;
+		string sinput;
+
+		// set exception mask
+		file.exceptions ( std::ifstream::failbit | std::ifstream::badbit );
+
+		try {
+			file.open ("test.txt");
+
+			// zeilenweise lesen mit: std::getline
+			while (std::getline(file, sinput, '\n')) {
+				cout << sinput << endl;
+			}
+
+			file.close();
+		}
+		catch (std::ifstream::failure e) {
+			std::cerr << "Exception opening/reading/closing file\n";
+		}
+		return 0;
+	}
+#+END_SRC

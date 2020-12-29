@@ -1,0 +1,3 @@
+/home/ahofmann/ws-HOWTO-cmake/hello/CMakeFiles/rebuild_cache.dir
+/home/ahofmann/ws-HOWTO-cmake/hello/CMakeFiles/hello.dir
+/home/ahofmann/ws-HOWTO-cmake/hello/CMakeFiles/edit_cache.dir

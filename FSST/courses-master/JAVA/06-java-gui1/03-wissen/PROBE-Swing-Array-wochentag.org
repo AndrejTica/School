@@ -1,0 +1,54 @@
+* Probe: SwingWochentag
+- [ ] Inhalt
+  - [ ] Array
+  - [ ] Swingkomponenten
+
+
+- [ ] User Interface
+  - [ ] je eine Combobox für
+    - [ ] Tag (1..31)
+    - [ ] Monat (1..12)
+  - [ ] ein Textfeld für das Jahr
+  - [ ] ein Label für den Wochentag
+ 
+** Hinweis: Datum, Zeit
+
+#+BEGIN_SRC java
+java.text.SimpleDateFormat df= new java.text.SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+jLabelDigitalZeit.setText(df.format(new java.util.Date()));
+#+END_SRC
+
+
+
+** Hinweis: Formel zur Berechnung des Wochentages
+
+#+begin_src 
+w=[a+int((a/4) - int (a/100) + int(a/400) +d] mod 7;
+
+a jahreszahl des vorjahres
+d anzahl der tage im gefragten jahr (inkl. gewuenschter tag)
+w= 0 so
+w= 1 mo
+w= 2 di
+w= 3 mi
+w= 4 do
+w= 5 fr
+w= 6 sa
+
+Beispiel: 
+Auf welchen Wochentag fiel der 1.03.1984
+a=1983
+d= 31+29+1=61  (1984 ist ein Schaltjahr)
+
+Hinweise zum Schaltjahr:
+Jahr ist ein Schaltjahr, wenn
+1. (Jahr durch 4 teilbar UND
+2. Jahr nicht durch 100 teilbar)
+3. ODER aber Jahr durch 400 teilbar
+
+Beispiel:
+1900 kein Schaltjahr aber 2000 ein Schaltjahr
+java.text.SimpleDateFormat df= new java.text.SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+jLabelDigitalZeit.setText(df.format(new java.util.Date()));
+#+end_src
+

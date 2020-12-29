@@ -1,0 +1,43 @@
+<diagram program="umletino" version="14.3.0"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>50</x><y>390</y><w>260</w><h>130</h></coordinates><panel_attributes>NotenManager
+--
+- name:String
+- tests:List&lt;Test&gt;
+- grades: double[]
+--
++ NotenManager(name:String)
++ readFromFile(filename: String): void
++ printResult():void
+bg=green</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>420</x><y>390</y><w>340</w><h>190</h></coordinates><panel_attributes>Test
+--
+- wann:String
+- erreichbare_punkte:int
+- erreichte_punkte:int
+- beschreibung:String
+--
++ Test(wann:String, erreichbare_punkte:int, 
+            erreichte_punkte:int, beschreibung:String)
++ getWann():String
++ geterreichbarePunkte():int
++ geterreichtePunkte():int
++ toString():String
+bg=yellow</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>300</x><y>390</y><w>140</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;120;10</additional_attributes></element><element><id>UMLNote</id><coordinates><x>40</x><y>10</y><w>730</w><h>320</h></coordinates><panel_attributes>AUFGABE: Meine Noten
+--
+* Das Programm liest eine Datei mit folg. Aufbau ein. 
+* Datei: noten-MAX-MUSTERMANN.txt 
+&gt;=87.5%Note1 
+&gt;=75.0%Note2 
+&gt;=62.5%Note3 
+&gt;=50.0%Note4 
+WANN:ERREICHBARE-PUNKTE:ERREICHTE-PUNKTE:BESCHREIBUNG 
+2013.02.10:25:10:C-Arrays 
+2013.03.10:25:20:C-Funktionen 
+2013.04.22:25:4:C-Dateien 
+2013.05.01:25:5:C-Strukturen 
+
+* Folgende Ausgabe auf den Bildschirm soll dann erzeugt werden: 
+Name:			MAX MUSTERMAN 
+Punktestand: 		39 Punkte von 100 
+Prozent:     		39% 
+Note: 			5 
+Schlechtestes Ergebnis: 	2013.05.01:20:4:C-Dateien 
+Bestes Ergebnis: 		2013.03.10:20:20:C-Funktionen </panel_attributes><additional_attributes></additional_attributes></element></diagram>

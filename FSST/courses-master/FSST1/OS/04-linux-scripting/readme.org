@@ -1,0 +1,6 @@
+* ÜBUNG: DOS und Linux scripting
+
+* Aufgabe 2: 02-linux-scripting
+1. Studieren Sie die Datei 01-readme-linux-scripting.org
+2. Verwenden Sie die Datei ../03-dos-scripting/meine-aufgaben.bat als Vorlage, 
+   um die gleiche Funktionalität auf einem Unix-System als shell-script zur Verfügung zu haben.

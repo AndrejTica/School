@@ -1,0 +1,35 @@
+image: ubuntu:16.04
+
+build:
+  stage: build
+  before_script: 
+    - apt update && apt -y install make autoconf gcc g++
+  script: 
+    - g++ -Wall --coverage -fprofile-arcs -ftest-coverage main.cpp -o template_sortaddress.exe
+    - ls
+  artifacts:
+    paths:
+      - template_sortaddress.exe
+  # depending on your build setup it's most likely a good idea to cache outputs to reduce the build time
+  # cache:
+  #   paths:
+  #     - "*.o"
+
+# run tests using the binary built before
+test:
+  stage: test
+  script:
+    - echo "todo tests with catch.h"
+
+coverage:
+  stage: deploy
+  before_script:
+    - apt-get -qq update && apt-get -qq install -y make autoconf gcc g++ gcovr ggcov lcov
+  script:
+    - ls
+    - g++ -Wall --coverage -fprofile-arcs -ftest-coverage main.cpp -o template_sortaddress.exe
+    - ./template_sortaddress.exe
+    - ls
+    - gcov main.cpp
+    - lcov --directory . --capture --output-file coverage.info
+    - lcov --list coverage.info

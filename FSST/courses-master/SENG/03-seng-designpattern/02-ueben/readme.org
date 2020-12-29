@@ -1,0 +1,337 @@
+* DESIGN PATTERN (Übungen in CPP und JAVA)
+
+ - readme.org (A.Hofmann)
+
+ - Design-Pattern in cpp und java8/java9
+   - Singleton
+   - Observer
+   - MVC (Model View Controller)
+
+
+* 01_WH_FIRMA.zip(cpp: enter code)
+  [[file:img/cfirma.jpg]]
+
+** 1. CAbteilung.cpp (enter code)
+- enter code 
+#+BEGIN_SRC cpp
+double CAbteilung::getGesamtGehalt() const{
+    double summe=0.0;
+	 
+    // TODO ENTER CODE HERE
+	 
+	 
+    return summe;
+}
+#+END_SRC
+
+** 2. CStudent.h/CStudent.cpp (in main.cpp uncomment code + add class CStudent)
+*** in main.cpp uncomment
+#+BEGIN_SRC cpp
+...
+CStudent* stud= new CStudent(22,"Maxi Studiosi", 200, 20.0);
+...
+abteilung->addMitarbeiter(stud);
+...
+delete stud;
+#+END_SRC
+*** add class CStudent
+#+BEGIN_SRC cpp 
+class CStudent ?????? {
+private: 
+   int lines;
+   double price_per_line;
+...
+};
+#+END_SRC
+
+** 3. CPerson.h (change code)
+- change code
+#+BEGIN_SRC cpp
+// TODO CHANGE CODE HERE
+double getGehalt() const {return 0.0;};
+
+#+END_SRC
+
+
+
+* 02_singleton.cpp (cpp: enter code)
+[[file:img/singleton-cpp.png]]
+
+*** Bringen Sie das folgende Programm zum Laufen
+
+#+BEGIN_SRC cpp
+/*
+ @name: 02_singleton.cpp
+ @date:
+ @author:
+*/
+ 
+#include <ctime>
+#include <iostream>
+using namespace std;
+
+
+class Singleton {
+?????????:
+	// you cannot create an object
+	Singleton() {}   
+	
+	// you cannot make a copy of an object
+	Singleton(const ????????????) {}   
+	
+	// you cannot make a copy by assign-operator
+	Singleton& operator=(const ????????????) { return *this; } 
+	 
+	~Singleton() {}
+
+???????????:
+	static Singleton& getInstance(){ 
+		????????????? Singleton instance;
+		return ????????????;
+	}
+
+	// other useful methods  
+	void log(int level, string msg){
+		time_t second;
+		struct tm *atime;
+		char sTime[80];
+		
+		time(&second);
+		atime= localtime(&second);
+		strftime(sTime, 80, "%c", atime);
+		
+		cout << sTime << ":" <<level << ":" << msg<<endl;
+	}
+};
+
+
+int main() {
+	// create the one and only one singleton object.
+	// its created within getInstance(), that returns
+	// reference to the singleton object
+	
+	Singleton logger= Singleton::getInstance();
+
+
+	// Addresses are all the same, because of there is 
+	// only one and only one singleton object
+
+	cout << "\ndemonstration of singleton pattern: " << endl;
+	cout << "   3 addresses should have the same value:" <<endl;
+	cout << "   "<< hex << &logger << endl;
+	cout << "   "<< hex << &Singleton::getInstance() << endl;
+	cout << "   "<< hex << &Singleton::getInstance() << endl;
+
+	// you can use/reference the singleton object 
+	Singleton::getInstance().log(0, "this is my first log entry");
+
+	logger.log(1, "here is my second log entry");
+
+
+	return 0;
+}
+#+END_SRC
+
+
+* 03_observer_fussball.zip (cpp: enter code)
+- das Observer-Pattern (allgemein)
+[[file:img/observer.jpg]]
+
+- das Observer-Pattern (angewandt)
+[[file:img/observer_fussball.jpg]]
+
+** Aufgabe01: (code: presseagentur.h, observable.h, fanclub.cpp)
+ 1. observable.h (fehlt fast)
+ 2. presseagentur.h (fehlt)
+ 3. fanclub.cpp (fehlt)
+ 4. Ersetze alle Fragezeichen in allen Dateien
+
+** Aufgabe02: (abstrakte Oberklassen)
+ 1. aus den Oberklassen sollen -wenn möglich- abstrakte Klassen gemacht werden.
+
+** Aufgabe03: (make)
+ 1. Bringen Sie das Programm zum Laufen
+#+BEGIN_SRC make
+all:
+	g++ -c observable.cpp
+	g++ -c observer.cpp
+	g++ -c presseagentur.cpp
+	g++ -c fanclub.cpp
+	g++ -c fussballverein.cpp
+	g++ -c main.cpp  
+	g++ main.o observable.o observer.o fussballverein.o presseagentur.o fanclub.o -omain.exe
+
+run:
+	./main.exe
+
+clean:
+	rm *.o
+	rm *.exe
+#+END_SRC
+
+** Aufgabe04: (Klassendiagramm)
+
+ 1. Erstellen Sie ein Klassendiagramm (Papier oder draw.io oder Umletino oder ...)
+
+** Frage01: Konstruktoren der Oberklassen
+
+	Warum funktioniert das Programm, obwohl die Konstruktoren
+	der Oberklassen nicht explicit aufgerufen werden?
+
+
+* 04_java8_observer_polizei.zip (java: enter code, compile and run)
+  
+[[file:img/java8-polizei.png]]
+
+1. Java verwendet (bis zur Version 8)
+- die Klasse Observable und 
+- das Interface Observer
+
+2. Aufgabe: Ersetzen Sie bei den Klassen Dieb.java und Polizei.java die Fragezeichen
+#+BEGIN_SRC bash
+javac DemoObserver.java
+java DemoObserver
+#+END_SRC
+
+ 
+* 05_java9_observer_polizei.zip (java: compile and run)
+
+[[file:img/java9-polizei.png]]
+
+Java verwendet im package java.beans die Klassen
+- java.beans.PropertyChangeListener (vgl. Observer)
+- java.beans.PropertyChangeSupport (vgl. Observable)
+
+** Die Observer/View Klasse
+- implements PropertyChangeListener
+- überschreibt die Methode propertyChange()
+#+BEGIN_SRC java
+public void propertyChange(PropertyChangeEvent evt) {
+        System.out.print("Name      = " + evt.getPropertyName());
+        System.out.println("Old Value = " + evt.getOldValue());
+        System.out.println("New Value = " + evt.getNewValue());
+#+END_SRC
+
+** Die Observable/Model Klasse
+- hat ein PropertyChangeSupport Objekt
+#+BEGIN_SRC java
+private PropertyChangeSupport pcs= new PropertyChangeSupport(this);
+#+END_SRC
+- hat eine Methode zum Registrieren der PropertyChangeListener-Objekte
+#+BEGIN_SRC java
+public void addObserver(PropertyChangeListener listener){
+		pcs.addPropertyChangeListener(listener);
+}
+#+END_SRC
+- informiert die registrierten Listener durch
+#+BEGIN_SRC java
+	   pcs.firePropertyChange("name", oldvalue, newvalue);
+#+END_SRC
+
+** Aufgabe: (compile and run)
+#+BEGIN_SRC bash
+javac DemoObserver.java
+java DemoObserver
+#+END_SRC
+
+
+* 06_java8_mvc_lotto.zip (java: enter code)
+** 1. Lotto-Programm mit 1 Model und 1 View. (compile and run)
+  1. Gegeben sind die folg. Dateien:
+	 1. EineZiehungView.java
+	 2. Model.java
+	 3. Main.java
+  2. Bringen Sie das Programm zum Laufen
+#+BEGIN_SRC 
+javac Main.java
+java Main
+#+END_SRC	
+
+** 2. Lotto-Programm mit 1 Model und 2 Views. (code: update())
+  1. Erweitern Sie das Programm mit
+	 1. AlleZiehungenView.java (JFrame mit JTextArea)
+
+#+BEGIN_SRC java
+import javax.swing.*;
+import javax.swing.border.*;
+import java.awt.*;
+
+import java.util.Observer;
+import java.util.Observable;
+
+public class AlleZiehungenView extends JFrame implements ???????????? {
+	// View
+	private JPanel contentPane;
+	private JTextArea textArea;
+	private JScrollPane jscrollpane;
+
+	// Model
+	Model model;
+
+	public AlleZiehungenView(){
+		setTitle("Alle Ziehungen");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(400,100,300,300);
+		contentPane= new JPanel();
+		contentPane.setBorder(new EmptyBorder(5,5,5,5));
+		contentPane.setLayout(null);
+		contentPane.add(getTextArea());		
+		setContentPane(contentPane);
+	}
+
+	public JScrollPane getTextArea(){
+		if (textArea==null){
+			textArea= new JTextArea();
+			textArea.setBounds(5, 5, 100, 100);
+			jscrollpane= new JScrollPane(textArea);
+			jscrollpane.setBounds(5,5,200,200);
+		}
+		return jscrollpane;
+	}
+
+	public void setModel(Model m){
+		model= m;
+	}
+
+	@Override
+	public void update(Observable o, Object arg){
+		Model m= (Model) o;
+
+		// ?????????????????????????????????????
+
+		textArea.setText(s);
+	}
+}
+#+END_SRC	
+
+
+* 07_java9_mvc_lotto.zip (java: Observer/Observable -> PropertyChangeEvent) 
+Aufgabe:
+Ändern Sie das Programm so, dass die veraltete Version des Observer-pattern
+durch die PropertyChangeEvent-Lösung ersetzt wird.
+
+Hinweis:
+Da in der Klasse Model.java die Methode firePropertyChange() Objekte als
+Parameter benötigt könnte man die Lottozahlen zuvor in einen String umwandeln.
+
+
+* RDP-FRAGE: UML-CFIRMA
+Gegeben ist das in der ANLAGE UML CFIRMA (s. 01-lernen) befindliche Klassendiagramm. 
+ 1. Besprechen Sie die darin enthaltenen Elemente: Vererbung und Aggregation.
+ 2. Zeigen Sie die Implementierung der Klassen: CPerson, CMangager und CAbteilung
+ 3. Beantworten Sie die in der Anlage befindlichen Fragen.
+
+
+* RDP-FRAGE: SINGLETON
+Gegeben ist das in der ANLAGE SINGLETON (s. 01-lernen) gegebene Programm.
+Besprechen Sie folgende Punkte:
+ 1. private, public, protected
+ 2. static
+ 3. Referenz
+ 4. Design Pattern
+
+
+* RDP-FRAGE: OBSERVER Pattern
+ 1. Zeichnen Sie das UML Klassen-Diagramm zum Observer Pattern und 
+ 2. besprechen Sie allgemein UML-Klassendiagramme und
+ 3. Design Pattern

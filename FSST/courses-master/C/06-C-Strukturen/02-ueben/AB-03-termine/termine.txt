@@ -1,0 +1,6 @@
+5 
+12.12.2000 13.12.2000 C Programme aus c-zeiger/02-ueben programmiert. 
+12.01.2001 13.01.2001 TODO: C Programme aus c-strukturen/02-ueben programmieren. 
+22.01.2001 23.01.2001 C von A-Z lesen 
+25.02.2001 28.02.2001 Mathematik Hausuebungen fertigstellen. 
+01.03.2001 05.03.2001 TODO: C Dateiumlenkung wiederholen. 

@@ -1,0 +1,25 @@
+﻿-- ==============================================================
+-- Uebungen - Java und Strings (u-java-string.txt)
+-- ==============================================================
+
+
+Aufgabe: StringCGI
+-----------------------------------------------------------------
+Bei der CGI (CommonGatewayProgrammierung) werden oft 
+folg. Strings verarbeitet:
+Feld1=Wert1&Feld2=Wert2&Feld3=Wert3
+
+Beispiel:
+name=Mustermann&alter=19&punkte=18
+
+
+Schreibe ein Programm (StringCGI), das
+* 2 StringArrays definiert (sFeld und sWert)
+* Lies einen String von der Konsole ein (Aufbau des Strings: s.o.)
+* Zerlege den String derart, dass 
+	in sFeld die Feldnamen und 
+	in sWert die entsprechenden Werte sind.
+* Anschließend soll der Benutzer eine Zahl eingeben können. 
+* Das Programm gibt dann den an dieser Stelle befindlichen 
+	Feldnamen und Wert aus.
+

@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>Callback-httpRequest</title>
+
+
+</head>
+
+<body>
+<h1>Callback-httpRequest</h1>
+
+<script language="javascript">
+<!-- 
+var getURL= function(url, callback){
+	var httpRequest;
+	
+	httpRequest= new XMLHttpRequest();
+	
+
+	httpRequest.open('GET' , url, true);
+	httpRequest.send();
+	
+
+	httpRequest.onreadystatechange = function(){
+		if (httpRequest.readyState===4 &&
+			httpRequest.status===200)
+			
+			callback(httpRequest.responseText);
+	};
+
+}
+
+
+//getURL("http://www.zamg.ac.at/ogd/" , function() {
+getURL("/home/tawes1h.csv" , function(data) {
+	alert(data);
+});
+
+-->
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,312 @@
+* Verschlüsselungs-Verfahren
+
+- In den folgenden Verfahren wollen wir nur Groß- und Kleinbuchstaben bearbeiten
+
+** Begriffe:
+- Klartext/Plaintext :: zu verschlüsselnder Text
+- Ciphertext :: verschlüsselter Text
+
+
+* Content  :TOC:
+
+* Cäsar-Verfahren
+** Cäsar-verschlüsseln:
+- Es wird das gesamte Alphabet um eine bestimmte Anzahl von Buchstaben *verschoben* und
+- dadurch jeder Buchstabe des Klartextes einzeln verändert.
+
+- Der "Key" besteht also aus einer Zahl, um die der ASCII-Wert des Plain-Zeichens erhöht wird.
+
+Beispiel: Cäsar verschlüsseln
+- Plaintext: "HALLO"
+- Key: 2
+- Ciphertext: JCNNQ
+
+
+- Wenn das jeweilige CIPHERzeichen > Z
+- dann CiPHERzeichen = CIPHERzeichen  - 26
+
+** Anmerkung: Cäsar-entschlüsseln
+Um den verschlüsselten Text wieder zu entschlüsseln braucht man nur
+- Key= 26 - Key
+- verwenden und den Ciphertext neu verschlüsseln.
+
+Noch eine Anmerkung zu den Zahlen:
+- Der Key "0" entspricht der Verschiebung um 0 Buchstaben, also von "A" nach "A",
+- der Key "25"  ist die höchst mögliche Zahl und entspricht einer Verschiebung von "A" nach "Z".
+
+- Jeder Key wird mit "modulo 26" gerechnet.
+
+** Algorithmus: Cäsar verschlüsseln
+Beim Cäsar-verschlüsseln müssen neben der Eingabe und Ausgabe lediglich zwei Schritte beachtet werden:
+- Im Programm wird in einer Schleife vom ersten bis zum letzten Buchstaben jeder einzelne Buchstabe des Klartextes verändert.
+- Der Buchstabe als einzelnes Zeichen des Textes wird in seinen ASCII-Wert übersetzt.
+- Zum ASCII-Wert als Zahl wird der Key addiert.
+- Der ASCII-Wert wird wieder in den entsprechenden Buchstabe zurück übersetzt.
+  Wird beim zweiten Schritt der Wertebereich von 90 (= 'Z') überschritten,
+  so wird bei 65 (= 'A') wieder angefangen.
+- Analog für die Kleinbuchstaben.
+
+** Aufgabe: Cäsar
+- Textarea
+- Label und Slider für Key (0-25)
+- Button: Caesar encrypt
+- Button: Caesar decrypt (passt auch Slider an: 26-Key)
+
+Hinweis: Entschlüsseln
+- Es muss lediglich die Key geändert werden. (Dekodierungszahl= 26 - Verschiebungszahl).
+
+- Java
+#+BEGIN_SRC java
+    public static String caesarEncrypt(String plain, int key){
+        return "todo";
+    }
+
+    public static String caesarDecrypt(String cipher, int key){
+        return "todo";
+    }
+#+END_SRC
+
+-cpp
+#+BEGIN_SRC cpp
+class Crypto{
+public:
+    static string caesarEncrypt(string plain, int key){return "todo";}
+    static string caesarDecrypt(string cipher, int key){return "todo";}
+};
+#+END_SRC
+
+* Skytale-Verfahren
+** Skytale-verschlüsseln:
+Beim Skytale-Verfahren wird eine Tabelle erstellt, der Text (ggf. ergänzt durch =)
+wird
+- zeilenweise eingelesen und
+- spaltenweise ausgelesen.
+
+Der "Key" besteht aus zwei Zahlen:
+- der Anzahl der Zeilen der Tabelle und
+- der Anzahl der Spalten.
+
+** Beispiel
+Als Beispiel nehmen wir den Klartext
+- "HALLO WELT==" und
+- keyRow 3
+- keyCol 4
+
+| H | A | L | L |
+| O |   | W | E |
+| L | T | = | = |
+
+Der Ciphertext lautet:
+HOLA TLW=LE=
+
+** Skytale-entschlüsseln:
+Zum Entschlüsseln wird der Text in die gleiche Tabelle einfach
+- spaltenweise eingelesen und
+- zeilenweise ausgelesen.
+
+** Aufgabe: Skytale
+- textarea
+- textfield: row
+- textfield: col
+- button: skytale encrypt
+- button: skytale decrypt
+
+#+BEGIN_SRC java
+    public static String skytaleEncrypt(String plain, int keyrow, int keycol){
+        return "todo";
+    }
+
+    public static String skytaleDecrypt(String cipher, int keyrow, int keycol){
+        return "todo";
+    }
+#+END_SRC
+
+-cpp
+#+BEGIN_SRC cpp
+class Crypto{
+public:
+  // ...
+  static string skytaleEncrypt(string plain, int keyrow, int keycol){return "todo";}
+  static string skytaleDecrypt(string cipher, int keyrow, int keycol){return "todo";}
+};
+#+END_SRC
+
+* Vigenere-Verfahren
+
+[wischenär]
+
+Das Vigenère-Verfahren ist eine Weiterentwicklung des Cäsar-Verfahrens,
+es verwendet jedoch statt eines einzigen Keys *ein Key-Wort*.
+
+Damit wird ein Buchstabe des Klartextes nicht immer auf den gleichen Schlüssel-Buchstaben verschoben,
+das Verfahren ist also *polyalphabetisch.*
+
+** Beispiel:
+- Plaintext: HALLO WELT
+- Key: ABC
+
+- Wenn das Key-Wort kürzer als der Plaintext ist:
+  - Man wiederholt das Key-Wort bis die Plaintext gleich lang wie das Keywort ist.
+
+#+BEGIN_SRC
+HALLO WELT
+ABCAB CABC
+#+END_SRC
+
+
+Beim Verschlüsseln
+- ADDIERE (Ascii-Werte) zeichenweise: PLAINzeichen + KEYzeichen -> CIPHERzeichen
+
+#+BEGIN_SRC
+H+A -> ??
+A+B -> ??
+L+C -> ??
+L+A -> ??
+  ...
+T+C -> ??
+#+END_SRC
+
+- wenn die Addition ein Zeichen > Z liefert,
+- dann subtrahiert man 26. Analog für Kleinbuchstaben
+
+Beim Entschlüsseln:
+- SUBTRAHIERE (Ascii-Werte)zeichenweise: CIPHERzeichen - KEYzeichen -> PLAINzeichen
+- wenn Zeichen > 'Z' dann
+- dann addiert man 26. Analog für Kleinbuchstaben.
+
+** Aufgabe: vigenere verschlüsseln
+- textarea: Plaintext
+- textfield: Keywort
+- button: vigenere encrypt
+- button: vigenere decrypt
+
+#+BEGIN_SRC java
+    public static String vigenereEncrypt(String plain, String key){
+        return "todo";
+    }
+
+    public static String vigenereDecrypt(String cipher, String key){
+        return "todo";
+    }
+#+END_SRC
+-cpp
+#+BEGIN_SRC cpp
+class Crypto{
+public:
+  // ...
+  static string vigenereEncrypt(string plain, string key){return "todo";}
+  static string vigenereDecrypt(string cipher,string key){return "todo";}
+};
+#+END_SRC
+
+
+* Mab: TDD
+** Testgetriebene Software-Entwicklung
+- Für wichtige Software-Units
+  - überlege/programmiere zuerst Testfälle
+  - programmiere dann die eigentl. Funktionalität/Programm-Unit
+  - teste die Testfälle, indem Du die Programm-Unit zunächst beim Test fehl schlagen läßt
+  - nun programmiere die Programm-Unit fehlerfrei
+  - teste die Programm-Unit, indem Du alle mögl./sinnvollen Testfälle (auch Test-Suite) genanntanwendest.
+  - fertig!
+  - bei zukünftigen Änderungen an der Programm-Unit kannst Du nach Anwenden der Test-Suite sicher sein.
+** DEMO-CPP: QTest
+
+#+BEGIN_SRC cpp
+// http://doc.qt.io/qtcreator/creator-autotest.html
+// http://doc.qt.io/qt-5/qtest-overview.html#creating-a-test
+// http://doc.qt.io/qt-5/qtest-tutorial.html
+
+#include <QtTest>
+// add necessary includes here
+
+class TestCrypto : public QObject{
+	Q_OBJECT
+private:
+	bool myCondition(){ return true;	}
+public:
+	TestCrypto();
+	~TestCrypto();
+private slots:
+	// -- TESTs -Beispiele --------------------------
+	void test_case1(){
+		QVERIFY(true); // check that a condition is satisfied
+		QCOMPARE(1, 1); // compare two values
+	}
+
+	void test_case2()	{
+		QVERIFY(myCondition());
+		QVERIFY(1 != 2);
+//		QFAIL("so what ???????????????????");
+	}
+
+	// -- TESTs -Crypto-Klasse --------------------------
+	void test_caesar_encrypt(){
+		QCOMPARE(Crypto::caesarEncrypt("abc",1), "bcd");
+		QCOMPARE(Crypto::caesarEncrypt("HALLO",2), "JCNNQ");
+		// ...
+	}
+  // ...
+};
+
+TestCrypto::TestCrypto(){
+	qDebug("Called before everything else.");
+}
+
+TestCrypto::~TestCrypto(){
+	qDebug("Called after myFirstTest and mySecondTest.");
+}
+
+// -- MAIN -------------------------
+QTEST_APPLESS_MAIN(TestCrypto)
+#include "tst_testcrypto.moc"
+
+#+END_SRC
+
+** DEMO-JAVA: netbeans und TestNG
+- select Crypto.java
+- re. Maus-> Tools -> create/update Test
+- run Test File
+
+** DEMO-JAVA: eclipse und JUnit
+- File new JUnit Test case
+
+
+* Mab:Caesar knacken
+
+- Sie sollen eine Funktion zum Knacken der Caesar-Verschlüsselung programmieren.
+
+#+BEGIN_SRC java
+public static int caesar_find_key(String ciphertxt, String plainList);
+#+END_SRC
+
+- Die Funktion hat folgende Parameter:
+  - ciphertxt: der nach dem Caesar-Verfahren verschlüsselte Text.
+	 Beispiel: "ijw bjwbtqk jnsjx sfhmyx jsybnhm ats bjng zsi pnsi zsi xnhm gjlfg"
+
+  - plainList: eine Folge von unverschlüsselten kurzen Wörtern, die oft in einem
+	 Text vorkommen. Beispiel: "der:die:das:ist:hat:von:bin"
+
+- Die Funktion hat folgenden Rückgabewert:
+  - Key zum Entschlüsseln des ciphertxt.
+	- (1 ... 25), wenn gültiger Key gefunden wurde.
+	- -1, wenn kein Key gefunden wurde.
+
+- *AUFGABE 1:* Der Ablauf der Funktion:
+  - Zerlege ciphertxt in einzelne Wörter: (String[] cipherWords)
+  - Zerlege plainList in einzelne Wörter: (String[] plainWords)
+  - Für jedes Wort in cipherWords: (String cipherWord= cipherWords[i])
+	 - Für jeden möglichen Key (1,2,3, ...,25)
+		- verschlüssle: String testWord= caesarEncode(cipherWord, key);
+		- Wenn testWord im Array plainWords vorkommt (Tipp: mit toLower()
+        arbeiten), haben Sie den gesuchten key gefunden und geben diesen mit
+        return zurück.
+  - return -1, Wenn der ciphertxt kein Wort enthält, das in plainList enthalten
+    ist.
+
+- *AUFGABE 2:* Wenn ihre Funktion z.B. 6 zurückgibt, mit welchem Schlüssel wurde
+  dann der ciphertxt verschlüsselt?
+
+
+- *AUFGABE 3:* Bauen Sie die Verwendung dieser Funktion (caesar_find_key() in ihr
+  UI-Programm (SwingCrypto ein).

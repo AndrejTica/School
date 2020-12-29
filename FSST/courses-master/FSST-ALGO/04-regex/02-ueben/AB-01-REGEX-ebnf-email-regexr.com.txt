@@ -1,0 +1,42 @@
+================================================================================
+AB-01-REGEX-email-regexr.txt
+================================================================================
+<pre>
+
+Erstellen Sie einen REGEX-Ausdruck, sodass folgende Muster einer
+vereinfachten email-Adresse als richtig bzw. falsch erkannt werden.
+
+
+Zum Testen verwenden Sie folgende URL:
+http://www.regexr.com/
+
+
+EBNF-Beschreibung einer vereinfachten EMAIL-Adresse:
+
+		email 		::= username "@" subdomains .
+		username	::= word .
+		subdomains	::= subdomain { subdomain}.
+		subdomain	::= topdomain | word ".".
+		topdomain	::= ("bb" "\n")| ("bb" "\0") .
+		word		::= "b" {"b"} .
+
+
+Der REGEX-Ausdruck:
+?????????????????????
+
+
+MATCH:
+b@bb.bb
+b@bbb.bb.bb
+b@bb.bb
+b@bb
+bb@b.bbb.bb
+
+
+NO MATCH:
+b@bb.b
+b@bbb.bb.b
+b@bbb.bb.b
+b@b
+
+</pre>

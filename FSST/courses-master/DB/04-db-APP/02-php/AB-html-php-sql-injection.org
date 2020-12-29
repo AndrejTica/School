@@ -1,0 +1,206 @@
+* HTML-Formulare und Datenbankzugriff mit Sicherheit.
+
+ 1. html Formulare
+ 2. php und Datenbankzugriff
+ 3. sql-injection
+ 4. Lösung gegen sql-injection
+
+
+* 1. Ordner erzeugen: htdocs/dbkurs/html-form
+
+#+BEGIN_SRC bash
+htdocs/dbkurs/html-forms
+#+END_SRC
+
+
+* 2. Formular erzeugen: is_professoren_form.html
+
+ - file: htdocs/dbkurs/html-form/is_professoren_form.html
+ - siehe auch: https://www.w3schools.com/html/html_forms.asp
+
+
+#+BEGIN_SRC html
+<!DOCTYPE html>
+<html>
+<!-- https://www.w3schools.com/html/html_forms.asp -->
+
+<body>
+
+<form action="action_page.php" method="GET">
+  Professor name:<br />
+  <input type="text" name="name" value="Sokrates">
+
+  <br />
+  <br />
+  <input type="submit" value="Submit">
+</form> 
+
+<p>If you click the "Submit" button, the form-data will be sent to a page called "action_page.php".</p>
+
+<p>
+  See also:
+  <ul>
+    <li><a href="https://www.w3schools.com/html/html_forms.asp">https://www.w3schools.com/html/html_forms.asp</a></li>
+  </ul>
+</p>
+
+</body>
+</html>
+#+END_SRC
+
+
+* 3. action_page.php erzeugen
+
+- file: htdocs/dbkurs/html-forms
+
+#+BEGIN_SRC html
+<!DOCTYPE html>
+<html>
+
+<body>
+
+<?php
+	$name= $_GET['name'];
+
+	echo "You entered <b>$name</b> ...";
+?>
+
+<p>
+  See also:
+  <ul>
+    <li><a href="https://www.w3schools.com/php/php_forms.asp">https://www.w3schools.com/php/php_forms.asp</a></li>
+    <li><a href="https://www.w3schools.com/php/php_form_validation.asp">https://www.w3schools.com/php/php_form_validation.asp</a></li>
+  </ul>
+</p>
+
+</body>
+</html>
+#+END_SRC
+
+
+* 4. Testen: http://localhost/dbkurs/html-forms/is_professoren_form.html
+
+
+* 5. DB-Zugriff: Formular anpassen
+
+ - ersetzen Sie in /is_professoren_form.html/ **action_page.php** mit **action_page_sql.php**
+
+#+BEGIN_SRC html
+<form action="action_page_sql.php" method="GET">
+#+END_SRC
+
+
+* 6. DB-Zugriff: action_page_sql.php erzeugen
+
+#+BEGIN_SRC html
+<!DOCTYPE html>
+<html>
+<body>
+
+<?php
+	$name= $_GET['name'];
+
+	echo "You entered <b>$name</b> ...";
+
+
+	$conn= mysqli_connect("localhost", "is_uni","comein","is_uni") or
+					die("Verbindungsversuch fehlgeschlagen");
+											
+	mysqli_select_db($conn, "is_uni") or 
+					die("Konnte die Datenbank nicht waehlen.");
+
+	$sql    = "SELECT persnr, name FROM is_uni.is_professoren" . " where name= '$name';";	// ' or '1'='1
+
+	$query  = mysqli_query($conn, $sql) or 
+					die("Anfrage nicht erfolgreich");
+
+	$anzahl = mysqli_num_rows($query);
+
+	echo "Anzahl der Datensätze: $anzahl";
+	?>
+
+	<table border="1"><tr><td>PERSNR</td><td>NAME</td></tr>
+
+	<?php
+	while ($row = mysqli_fetch_array($query)){
+		print "<tr><td>";
+		print $row['persnr'] . "</td>";
+		print "<td>" . $row['name'] . "</td></tr>";
+	}
+
+	print "</table>";
+
+	// Free resultset
+	mysqli_free_result($query);
+
+	// Closing connection
+	mysqli_close($conn);
+
+?>
+
+<p>
+See also:
+<ul>
+<li><a href="https://www.w3schools.com/php/php_forms.asp">https://www.w3schools.com/php/php_forms.asp</a></li>
+<li><a href="https://www.w3schools.com/php/php_form_validation.asp">https://www.w3schools.com/php/php_form_validation.asp</a></<li><a href="https://www.w3schools.com/sql/sql_injection.asp">https://www.w3schools.com/sql/sql_injection.asp</a></li>
+</ul>
+
+</p>
+
+</body>
+</html>
+#+END_SRC
+
+
+* 7. Testen mit: http://localhost/dbkurs/html-forms/is_professoren_form.html
+
+ - Eingabe: 
+#+BEGIN_SRC 
+Sokrates' or '1'='1
+#+END_SRC
+
+
+
+* 8. Sicherheit für action_page_sql.php
+
+ - unbedingt lesen: https://www.w3schools.com/php/php_form_validation.asp
+   
+#+BEGIN_SRC php
+<?php
+// define variables and set to empty values
+$name = $email = $gender = $comment = $website = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $name = test_input($_POST["name"]);
+  $email = test_input($_POST["email"]);
+  $website = test_input($_POST["website"]);
+  $comment = test_input($_POST["comment"]);
+  $gender = test_input($_POST["gender"]);
+}
+
+function test_input($data) {
+  $data = trim($data);
+  $data = stripslashes($data);
+  $data = htmlspecialchars($data);
+  return $data;
+}
+?>
+#+END_SRC
+
+
+** Aufgabe: action_page_sql.php sicher machen
+
+1. Verwenden Sie das obige Beispiel, um die User-Eingabe sicher zu machen und
+2. Verwenden Sie die Funktion mysqli_real_escape_string(), um auch das SQL-Statement sicher zu achen.
+
+#+BEGIN_SRC php
+$name = mysqli_real_escape_string($conn, test_input($_GET['name']);
+#+END_SRC
+
+siehe auch:
+- [[https://secure.php.net/manual/en/mysqli.real-escape-string.php]]
+- [[https://www.w3schools.com/Php/func_mysqli_real_escape_string.asp]]
+
+
+* Sicherheit bei WEB-Apps
+- siehe: https://gitlab.com/4me/courses/tree/master/SEC/SEC-WEB

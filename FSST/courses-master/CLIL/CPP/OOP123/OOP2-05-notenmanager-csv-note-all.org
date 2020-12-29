@@ -1,0 +1,105 @@
+* Notenmanager: csv
+
+- [X] Given noten-MAX-MUSTERMANN.txt
+#+BEGIN_SRC bash
+>=87.5%Note1
+>=75.0%Note2
+>=62.5%Note3
+>=50.0%Note4
+WANN:SOLL-PUNKTE:IST-PUNKTE:BESCHREIBUNG
+2013.02.10:25:10:C-Arrays
+2013.03.10:25:20:C-Funktionen
+2013.04.22:25:4:C-Dateien
+2013.05.01:25:5:C-Strukturen
+#+END_SRC
+
+- [X] Folgende Ausgabe in die Datei *noten-MAX-MUSTERMANN.csv* soll erzeugt werden:
+
+#+BEGIN_SRC bash
+WANN:ERREICHBARE-PUNKTE:ERREICHTE-PUNKTE:BESCHREIBUNG:PROZENT
+2013.02.10:25:10:C-Arrays:= (C2/B2)*100
+2013.03.10:25:20:C-Funktionen:= (C3/B3)*100
+2013.04.22:25:4:C-Dateien:= (C4/B4)*100
+2013.05.01:25:5:C-Strukturen:= (C5/B5)*100
+#+END_SRC
+
+- [X] starten Sie excel und importieren Sie diese Datei.
+
+
+* Notenmanager: note
+
+- [X] Ändern Sie das Programm: *notenmanager* so, dass auch
+  - [X] die tatsächliche *Note pro Test* und
+  - [X] die *Gesamtnote* ausgeben wird
+
+- [X] Folgende Ausgabe auf den Bildschirm soll dann erzeugt werden:
+
+#+BEGIN_SRC bash
+Name:			MAX MUSTERMAN
+
+WANN:ERREICHBARE-PUNKTE:ERREICHTE-PUNKTE:BESCHREIBUNG:NOTE
+2013.02.10:25:10:5:C-Arrays:5
+2013.03.10:25:20:2:C-Funktionen:2
+2013.04.22:25:4:5:C-Dateien:5
+2013.05.01:25:5:5:C-Strukturen:5
+
+Punktestand: 	39 Punkte von 100
+Prozent:     	39%
+Gesamtnote: 	4,25
+#+END_SRC
+
+
+* Notenmanager: all
+
+- [X] Given noten-MAX-MUSTERMANN.txt
+#+BEGIN_SRC bash
+>=87.5%Note1
+>=75.0%Note2
+>=62.5%Note3
+>=50.0%Note4
+NAME:WANN:SOLL-PUNKTE:IST-PUNKTE:BESCHREIBUNG
+Max:2013.02.10:25:10:C-Arrays
+Max:2013.03.10:25:20:C-Funktionen
+Max:2013.04.22:25:4:C-Dateien
+Max:2013.05.01:25:5:C-Strukturen
+Moritz:2013.02.10:25:11:C-Arrays
+Moritz:2013.03.10:25:21:C-Funktionen
+Moritz:2013.04.22:25:4:C-Dateien
+Moritz:2013.05.01:25:5:C-Strukturen
+Susi:2013.02.10:25:12:C-Arrays
+Susi:2013.03.10:25:22:C-Funktionen
+Susi:2013.04.22:25:4:C-Dateien
+Susi:2013.05.01:25:5:C-Strukturen
+#+END_SRC
+
+
+- [X] Given: main.cpp
+
+#+BEGIN_SRC cpp
+// main.cpp
+#include <iostream>
+using namespace std;
+
+#include "notenmanager.h"
+
+int main(){
+    Notenmanager man("Anton Hofmann");
+
+    man.readFromFile("./noten-anton-hofmann.txt");
+
+    man.printResult("Max");
+
+    return 0;
+}
+
+/*
+- [X] Ausgabe auf Bildschirm
+
+Name:			Max
+Punktestand: 	39 Punkte von 100
+Prozent:     	39%
+Note: 			5
+Schlechtestes Ergebnis: 2013.05.01:20:4:C-Dateien
+Bestes Ergebnis: 		2013.03.10:20:20:C-Funktionen
+*/
+#+END_SRC

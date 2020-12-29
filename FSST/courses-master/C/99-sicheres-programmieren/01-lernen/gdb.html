@@ -1,0 +1,1030 @@
+<html><head>
+<link rel="alternate" type="application/rss+xml" title="RSS" href="http://feeds2.feedburner.com/Cprogrammingcom/">
+<link rel="stylesheet" href="gdb-Dateien/style.css" type="text/css">
+<!--[if IE]>
+    <link rel="stylesheet" href="http://static.cprogramming.com/main_images/style-ie.css?np4" type="text/css">
+<![endif]-->
+
+<link href="gdb-Dateien/shCore.css" rel="stylesheet" type="text/css">
+<link href="gdb-Dateien/shThemeDefault.css" rel="stylesheet" type="text/css">
+
+
+<meta name="keywords" content="GDB, gnu debugger, gdb tutorial, gdb by example">
+<meta name="Description" content="Learn how to wield GDB, the GNU Debugger, by example">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>GDB, The GNU Debugger, By Example - Cprogramming.com</title>
+
+<!-- ADDED DFP -->
+<script async="" src="gdb-Dateien/cbgapi.js"></script><script id="fbjssdk" src="gdb-Dateien/all.js"></script><script gapi_processed="true" id="gplus1js" src="gdb-Dateien/plusone.js"></script><script id="tweetjs" src="gdb-Dateien/widgets.js"></script><script src="gdb-Dateien/ga.js" async="" type="text/javascript"></script><script type="text/javascript" src="gdb-Dateien/google_service.js">
+</script>
+<script type="text/javascript">
+GS_googleAddAdSenseService("ca-pub-2560316224908115");
+GS_googleEnableAllServices();
+</script><script src="gdb-Dateien/google_ads.js"></script>
+<script type="text/javascript">
+GA_googleAddSlot("ca-pub-2560316224908115", "RunOfSite_LargeRectangle_ATF_336x280");
+GA_googleAddSlot("ca-pub-2560316224908115", "RunOfSite_ATF_leaderboard_728x90");
+
+</script>
+<script type="text/javascript">
+GA_googleFetchAds();
+</script>
+<!-- END ADDED DFP -->
+
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-7820175-1']);
+  _gaq.push(['_setDomainName', '.cprogramming.com']);
+  _gaq.push(['_setAllowLinker', true]);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+
+<script src="gdb-Dateien/osd.js" type="text/javascript"></script><style type="text/css">.fb_hidden{position:absolute;top:-10000px;z-index:10001}
+.fb_invisible{display:none}
+.fb_reset{background:none;border-spacing:0;border:0;color:#000;cursor:auto;direction:ltr;font-family:"lucida grande", tahoma, verdana, arial, sans-serif;font-size:11px;font-style:normal;font-variant:normal;font-weight:normal;letter-spacing:normal;line-height:1;margin:0;overflow:visible;padding:0;text-align:left;text-decoration:none;text-indent:0;text-shadow:none;text-transform:none;visibility:visible;white-space:normal;word-spacing:normal}
+.fb_link img{border:none}
+.fb_dialog{background:rgba(82, 82, 82, .7);position:absolute;top:-10000px;z-index:10001}
+.fb_dialog_advanced{padding:10px;-moz-border-radius:8px;-webkit-border-radius:8px}
+.fb_dialog_content{background:#fff;color:#333}
+.fb_dialog_close_icon{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 0 transparent;_background-image:url(http://static.ak.fbcdn.net/rsrc.php/v2/yL/r/s816eWC-2sl.gif);cursor:pointer;display:block;height:15px;position:absolute;right:18px;top:17px;width:15px;top:8px\9;right:7px\9}
+.fb_dialog_mobile .fb_dialog_close_icon{top:5px;left:5px;right:auto}
+.fb_dialog_padding{background-color:transparent;position:absolute;width:1px;z-index:-1}
+.fb_dialog_close_icon:hover{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 -15px transparent;_background-image:url(http://static.ak.fbcdn.net/rsrc.php/v2/yL/r/s816eWC-2sl.gif)}
+.fb_dialog_close_icon:active{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 -30px transparent;_background-image:url(http://static.ak.fbcdn.net/rsrc.php/v2/yL/r/s816eWC-2sl.gif)}
+.fb_dialog_loader{background-color:#f2f2f2;border:1px solid #606060;font-size:24px;padding:20px}
+.fb_dialog_top_left,
+.fb_dialog_top_right,
+.fb_dialog_bottom_left,
+.fb_dialog_bottom_right{height:10px;width:10px;overflow:hidden;position:absolute}
+.fb_dialog_top_left{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/ye/r/8YeTNIlTZjm.png) no-repeat 0 0;left:-10px;top:-10px}
+.fb_dialog_top_right{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/ye/r/8YeTNIlTZjm.png) no-repeat 0 -10px;right:-10px;top:-10px}
+.fb_dialog_bottom_left{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/ye/r/8YeTNIlTZjm.png) no-repeat 0 -20px;bottom:-10px;left:-10px}
+.fb_dialog_bottom_right{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/ye/r/8YeTNIlTZjm.png) no-repeat 0 -30px;right:-10px;bottom:-10px}
+.fb_dialog_vert_left,
+.fb_dialog_vert_right,
+.fb_dialog_horiz_top,
+.fb_dialog_horiz_bottom{position:absolute;background:#525252;filter:alpha(opacity=70);opacity:.7}
+.fb_dialog_vert_left,
+.fb_dialog_vert_right{width:10px;height:100%}
+.fb_dialog_vert_left{margin-left:-10px}
+.fb_dialog_vert_right{right:0;margin-right:-10px}
+.fb_dialog_horiz_top,
+.fb_dialog_horiz_bottom{width:100%;height:10px}
+.fb_dialog_horiz_top{margin-top:-10px}
+.fb_dialog_horiz_bottom{bottom:0;margin-bottom:-10px}
+.fb_dialog_iframe{line-height:0}
+.fb_dialog_content .dialog_title{background:#6d84b4;border:1px solid #3b5998;color:#fff;font-size:14px;font-weight:bold;margin:0}
+.fb_dialog_content .dialog_title > span{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/yd/r/Cou7n-nqK52.gif)
+no-repeat 5px 50%;float:left;padding:5px 0 7px 26px}
+body.fb_hidden{-webkit-transform:none;height:100%;margin:0;left:-10000px;overflow:visible;position:absolute;top:-10000px;width:100%
+}
+.fb_dialog.fb_dialog_mobile.loading{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/yO/r/_j03izEX40U.gif)
+white no-repeat 50% 50%;min-height:100%;min-width:100%;overflow:hidden;position:absolute;top:0;z-index:10001}
+.fb_dialog.fb_dialog_mobile.loading.centered{max-height:590px;min-height:590px;max-width:500px;min-width:500px}
+#fb-root #fb_dialog_ipad_overlay{background:rgba(0, 0, 0, .45);position:absolute;left:0;top:0;width:100%;min-height:100%;z-index:10000}
+#fb-root #fb_dialog_ipad_overlay.hidden{display:none}
+.fb_dialog.fb_dialog_mobile.loading iframe{visibility:hidden}
+.fb_dialog_content .dialog_header{-webkit-box-shadow:white 0 1px 1px -1px inset;background:-webkit-gradient(linear, 0 0, 0 100%, from(#738ABA), to(#2C4987));border-bottom:1px solid;border-color:#1d4088;color:#fff;font:14px Helvetica, sans-serif;font-weight:bold;text-overflow:ellipsis;text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0;vertical-align:middle;white-space:nowrap}
+.fb_dialog_content .dialog_header table{-webkit-font-smoothing:subpixel-antialiased;height:43px;width:100%
+}
+.fb_dialog_content .dialog_header td.header_left{font-size:12px;padding-left:5px;vertical-align:middle;width:60px
+}
+.fb_dialog_content .dialog_header td.header_right{font-size:12px;padding-right:5px;vertical-align:middle;width:60px
+}
+.fb_dialog_content .touchable_button{background:-webkit-gradient(linear, 0 0, 0 100%, from(#4966A6),
+color-stop(0.5, #355492), to(#2A4887));border:1px solid #29447e;-webkit-background-clip:padding-box;-webkit-border-radius:3px;-webkit-box-shadow:rgba(0, 0, 0, .117188) 0 1px 1px inset,
+rgba(255, 255, 255, .167969) 0 1px 0;display:inline-block;margin-top:3px;max-width:85px;line-height:18px;padding:4px 12px;position:relative}
+.fb_dialog_content .dialog_header .touchable_button input{border:none;background:none;color:#fff;font:12px Helvetica, sans-serif;font-weight:bold;margin:2px -12px;padding:2px 6px 3px 6px;text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0}
+.fb_dialog_content .dialog_header .header_center{color:#fff;font-size:16px;font-weight:bold;line-height:18px;text-align:center;vertical-align:middle}
+.fb_dialog_content .dialog_content{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/y9/r/jKEcVPZFk-2.gif) no-repeat 50% 50%;border:1px solid #555;border-bottom:0;border-top:0;height:150px}
+.fb_dialog_content .dialog_footer{background:#f2f2f2;border:1px solid #555;border-top-color:#ccc;height:40px}
+#fb_dialog_loader_close{float:left}
+.fb_dialog.fb_dialog_mobile .fb_dialog_close_button{text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0}
+.fb_dialog.fb_dialog_mobile .fb_dialog_close_icon{visibility:hidden}
+.fb_iframe_widget{position:relative;display:-moz-inline-block;display:inline-block}
+.fb_iframe_widget iframe{position:absolute}
+.fb_iframe_widget_lift{z-index:1}
+.fb_iframe_widget span{position:relative;display:inline-block;vertical-align:text-bottom;text-align:justify}
+.fb_hide_iframes iframe{position:relative;left:-10000px}
+.fb_iframe_widget_loader{position:relative;display:inline-block}
+.fb_iframe_widget_fluid{display:inline}
+.fb_iframe_widget_loader iframe{min-height:32px;z-index:2;zoom:1}
+.fb_iframe_widget_loader .FB_Loader{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/y9/r/jKEcVPZFk-2.gif) no-repeat;height:32px;width:32px;margin-left:-16px;position:absolute;left:50%;z-index:4}
+.fb_button_simple,
+.fb_button_simple_rtl{background-image:url(http://static.ak.fbcdn.net/rsrc.php/v2/yH/r/eIpbnVKI9lR.png);background-repeat:no-repeat;cursor:pointer;outline:none;text-decoration:none}
+.fb_button_simple_rtl{background-position:right 0}
+.fb_button_simple .fb_button_text{margin:0 0 0 20px;padding-bottom:1px}
+.fb_button_simple_rtl .fb_button_text{margin:0 10px 0 0}
+a.fb_button_simple:hover .fb_button_text,
+a.fb_button_simple_rtl:hover .fb_button_text,
+.fb_button_simple:hover .fb_button_text,
+.fb_button_simple_rtl:hover .fb_button_text{text-decoration:underline}
+.fb_button,
+.fb_button_rtl{background:#29447e url(http://static.ak.fbcdn.net/rsrc.php/v2/yL/r/FGFbc80dUKj.png);background-repeat:no-repeat;cursor:pointer;display:inline-block;padding:0 0 0 1px;text-decoration:none;outline:none}
+.fb_button .fb_button_text,
+.fb_button_rtl .fb_button_text{background:#5f78ab url(http://static.ak.fbcdn.net/rsrc.php/v2/yL/r/FGFbc80dUKj.png);border-top:solid 1px #879ac0;border-bottom:solid 1px #1a356e;color:#fff;display:block;font-family:"lucida grande",tahoma,verdana,arial,sans-serif;font-weight:bold;padding:2px 6px 3px 6px;margin:1px 1px 0 21px;text-shadow:none}
+a.fb_button,
+a.fb_button_rtl,
+.fb_button,
+.fb_button_rtl{text-decoration:none}
+a.fb_button:active .fb_button_text,
+a.fb_button_rtl:active .fb_button_text,
+.fb_button:active .fb_button_text,
+.fb_button_rtl:active .fb_button_text{border-bottom:solid 1px #29447e;border-top:solid 1px #45619d;background:#4f6aa3;text-shadow:none}
+.fb_button_xlarge,
+.fb_button_xlarge_rtl{background-position:left -60px;font-size:24px;line-height:30px}
+.fb_button_xlarge .fb_button_text{padding:3px 8px 3px 12px;margin-left:38px}
+a.fb_button_xlarge:active{background-position:left -99px}
+.fb_button_xlarge_rtl{background-position:right -268px}
+.fb_button_xlarge_rtl .fb_button_text{padding:3px 8px 3px 12px;margin-right:39px}
+a.fb_button_xlarge_rtl:active{background-position:right -307px}
+.fb_button_large,
+.fb_button_large_rtl{background-position:left -138px;font-size:13px;line-height:16px}
+.fb_button_large .fb_button_text{margin-left:24px;padding:2px 6px 4px 6px}
+a.fb_button_large:active{background-position:left -163px}
+.fb_button_large_rtl{background-position:right -346px}
+.fb_button_large_rtl .fb_button_text{margin-right:25px}
+a.fb_button_large_rtl:active{background-position:right -371px}
+.fb_button_medium,
+.fb_button_medium_rtl{background-position:left -188px;font-size:11px;line-height:14px}
+a.fb_button_medium:active{background-position:left -210px}
+.fb_button_medium_rtl{background-position:right -396px}
+.fb_button_text_rtl,
+.fb_button_medium_rtl .fb_button_text{padding:2px 6px 3px 6px;margin-right:22px}
+a.fb_button_medium_rtl:active{background-position:right -418px}
+.fb_button_small,
+.fb_button_small_rtl{background-position:left -232px;font-size:10px;line-height:10px}
+.fb_button_small .fb_button_text{padding:2px 6px 3px;margin-left:17px}
+a.fb_button_small:active,
+.fb_button_small:active{background-position:left -250px}
+.fb_button_small_rtl{background-position:right -440px}
+.fb_button_small_rtl .fb_button_text{padding:2px 6px;margin-right:18px}
+a.fb_button_small_rtl:active{background-position:right -458px}
+.fb_share_count_wrapper{position:relative;float:left}
+.fb_share_count{background:#b0b9ec none repeat scroll 0 0;color:#333;font-family:"lucida grande", tahoma, verdana, arial, sans-serif;text-align:center}
+.fb_share_count_inner{background:#e8ebf2;display:block}
+.fb_share_count_right{margin-left:-1px;display:inline-block}
+.fb_share_count_right .fb_share_count_inner{border-top:solid 1px #e8ebf2;border-bottom:solid 1px #b0b9ec;margin:1px 1px 0 1px;font-size:10px;line-height:10px;padding:2px 6px 3px;font-weight:bold}
+.fb_share_count_top{display:block;letter-spacing:-1px;line-height:34px;margin-bottom:7px;font-size:22px;border:solid 1px #b0b9ec}
+.fb_share_count_nub_top{border:none;display:block;position:absolute;left:7px;top:35px;margin:0;padding:0;width:6px;height:7px;background-repeat:no-repeat;background-image:url(http://static.ak.fbcdn.net/rsrc.php/v2/yU/r/bSOHtKbCGYI.png)}
+.fb_share_count_nub_right{border:none;display:inline-block;padding:0;width:5px;height:10px;background-repeat:no-repeat;background-image:url(http://static.ak.fbcdn.net/rsrc.php/v2/yX/r/i_oIVTKMYsL.png);vertical-align:top;background-position:right 5px;z-index:10;left:2px;margin:0 2px 0 0;position:relative}
+.fb_share_no_count{display:none}
+.fb_share_size_Small .fb_share_count_right .fb_share_count_inner{font-size:10px}
+.fb_share_size_Medium .fb_share_count_right .fb_share_count_inner{font-size:11px;padding:2px 6px 3px;letter-spacing:-1px;line-height:14px}
+.fb_share_size_Large .fb_share_count_right .fb_share_count_inner{font-size:13px;line-height:16px;padding:2px 6px 4px;font-weight:normal;letter-spacing:-1px}
+.fb_share_count_hidden .fb_share_count_nub_top,
+.fb_share_count_hidden .fb_share_count_top,
+.fb_share_count_hidden .fb_share_count_nub_right,
+.fb_share_count_hidden .fb_share_count_right{visibility:hidden}
+.fb_connect_bar_container div,
+.fb_connect_bar_container span,
+.fb_connect_bar_container a,
+.fb_connect_bar_container img,
+.fb_connect_bar_container strong{background:none;border-spacing:0;border:0;direction:ltr;font-style:normal;font-variant:normal;letter-spacing:normal;line-height:1;margin:0;overflow:visible;padding:0;text-align:left;text-decoration:none;text-indent:0;text-shadow:none;text-transform:none;visibility:visible;white-space:normal;word-spacing:normal;vertical-align:baseline}
+.fb_connect_bar_container{position:fixed;left:0 !important;right:0 !important;height:42px !important;padding:0 25px !important;margin:0 !important;vertical-align:middle !important;border-bottom:1px solid #333 !important;background:#3b5998 !important;z-index:99999999 !important;overflow:hidden !important}
+.fb_connect_bar_container_ie6{position:absolute;top:expression(document.compatMode=="CSS1Compat"? document.documentElement.scrollTop+"px":body.scrollTop+"px")}
+.fb_connect_bar{position:relative;margin:auto;height:100%;width:100%;padding:6px 0 0 0 !important;background:none;color:#fff !important;font-family:"lucida grande", tahoma, verdana, arial, sans-serif !important;font-size:13px !important;font-style:normal !important;font-variant:normal !important;font-weight:normal !important;letter-spacing:normal !important;line-height:1 !important;text-decoration:none !important;text-indent:0 !important;text-shadow:none !important;text-transform:none !important;white-space:normal !important;word-spacing:normal !important}
+.fb_connect_bar a:hover{color:#fff}
+.fb_connect_bar .fb_profile img{height:30px;width:30px;vertical-align:middle;margin:0 6px 5px 0}
+.fb_connect_bar div a,
+.fb_connect_bar span,
+.fb_connect_bar span a{color:#bac6da;font-size:11px;text-decoration:none}
+.fb_connect_bar .fb_buttons{float:right;margin-top:7px}
+.fb_edge_widget_with_comment{position:relative;*z-index:1000}
+.fb_edge_widget_with_comment span.fb_edge_comment_widget{position:absolute}
+.fb_edge_widget_with_comment span.fb_send_button_form_widget{z-index:1}
+.fb_edge_widget_with_comment span.fb_send_button_form_widget .FB_Loader{left:0;top:1px;margin-top:6px;margin-left:0;background-position:50% 50%;background-color:#fff;height:150px;width:394px;border:1px #666 solid;border-bottom:2px solid #283e6c;z-index:1}
+.fb_edge_widget_with_comment span.fb_send_button_form_widget.dark .FB_Loader{background-color:#000;border-bottom:2px solid #ccc}
+.fb_edge_widget_with_comment span.fb_send_button_form_widget.siderender
+.FB_Loader{margin-top:0}
+.fbpluginrecommendationsbarleft,
+.fbpluginrecommendationsbarright{position:fixed !important;bottom:0;z-index:999}
+/* @noflip */
+.fbpluginrecommendationsbarleft{left:10px}
+/* @noflip */
+.fbpluginrecommendationsbarright{right:10px}
+</style></head>
+
+<body data-twttr-rendered="true">
+<div>
+
+<a href="http://www.cprogramming.com/"><img class="logo noprint" src="gdb-Dateien/title.png" border="0" height="83" width="324"></a> 
+
+<table class="line noprint"><tbody><tr><td></td></tr></tbody></table>
+<div class="noprint" style="padding-top:25px;padding-right:25px;" align="right">
+<!-- SiteSearch Google -->
+<form action="http://www.google.com/cse" id="cse-search-box">
+  <div>
+    <input name="cx" value="partner-pub-2560316224908115:wqvdce-aw4a" type="hidden">
+    <input name="ie" value="ISO-8859-1" type="hidden">
+    <input style="background: url(&quot;http://www.google.com/cse/intl/en/images/google_custom_search_watermark.gif&quot;) no-repeat scroll left center rgb(255, 255, 255);" name="q" size="31" type="text">
+    <input name="sa" value="Search" type="submit">
+  </div>
+<input value="www.cprogramming.com/gdb.html" name="siteurl" type="hidden"><input name="ref" type="hidden"></form>
+<script type="text/javascript" src="gdb-Dateien/brand.js"></script>
+<!-- SiteSearch Google -->
+</div>
+<div>
+  <table class="main">
+    <tbody><tr>
+
+  	<td class="noprint" colspan="5" bgcolor="#EBEBEB">
+  		<img src="gdb-Dateien/spacer-vert.png" height="6" width="0">
+  	   <center>
+    	<div class="leaderboard">
+
+<!-- ADDED DFP -->
+<!-- ca-pub-2560316224908115/Homepage_ATF_leaderboard_728x90 -->
+<script type="text/javascript">
+GA_googleFillSlot("RunOfSite_ATF_leaderboard_728x90");
+</script><script src="gdb-Dateien/ads.js"></script><div id="google_ads_div_RunOfSite_ATF_leaderboard_728x90_ad_wrapper">
+<div id="google_ads_div_RunOfSite_ATF_leaderboard_728x90_ad_container" style="display:inline-block;"><script type="text/javascript"><!--
+	e9 = new Object();
+    e9.size = "728x90,468x60";
+//--></script>
+<script type="text/javascript" src="gdb-Dateien/tags.js"></script><script type="text/javascript" src="gdb-Dateien/displayAd.js"></script><div align="center"><script type="text/javascript" src="gdb-Dateien/j.js"></script><div id="tfac_728901896572932" style="z-index: 2147483638; position: relative; width: 728px;"><script src="gdb-Dateien/tf_adChoice10.js" type="text/javascript"></script><div style="text-align: left; height: 15px; left: 709px; overflow: hidden; position: absolute; top: 0px; width: 19px; z-index: 2147483638;"><img style="margin: 0pt; position: absolute; left: 0px; display: block;" src="gdb-Dateien/ad_choices_i_UR.png" onmouseover="tf_e9AdChoice.expand(this,728,709);" border="0" height="15px" width="19px"><a href="http://a.tribalfusion.com/j.u?rnd=1896572932&amp;redirect=http://www.youronlinechoices.com/at/" target="_blank"><img style="margin: 0pt; position: absolute; display: none;" src="gdb-Dateien/ad_choices_UR.png" onmouseout="tf_e9AdChoice.collapsed(this,728,709);" border="0" height="15px" width="77px"></a></div></div>
+<script language="javascript" defer="defer">
+  (function() {
+    var 	tf_adchoice_width;
+    var 	tf_adchoice_height;
+
+    if (typeof(e9AdChoice) === "undefined")
+     {
+       tf_adchoice_width = 728;
+       tf_adchoice_height = 90;
+     }
+    else
+     {
+       tf_adchoice_width = e9AdChoice.width;
+       tf_adchoice_height = e9AdChoice.height; 
+       e9AdChoice = undefined;
+     }
+
+    var adChoiceObj = {
+        adWidth			: tf_adchoice_width,
+        adHeight		: tf_adchoice_height,
+        adChoiceIconPos 	: "UR".toLowerCase(),
+        adChoiceIconDir 	: "http://cdnx.tribalfusion.com/media/common//adChoice/icon/",
+        adChoiceOptOutPage 	: "http://a.tribalfusion.com/j.u?rnd=1896572932&redirect=http://www.youronlinechoices.com/at/",
+        adChoiceDivId		: "tfac_728901896572932",
+        adChoiceIconVisibility	: "true",
+        rnd                     : "1896572932"
+    };
+
+    var script = document.createElement('script');
+    script.type = "text/javascript";
+    script.src = "http://cdnx.tribalfusion.com/media/common/adChoice/tf_adChoice10.js";
+
+    if (script.readyState) //IE 
+     { 
+       script.onreadystatechange = function() {
+         if (    script.readyState == "loaded" 
+	      || script.readyState == "complete")
+	  {
+            script.onreadystatechange = null;
+   	    window.setTimeout(function() {tf_e9AdChoice.showAdChoiceIcon(adChoiceObj)},2000);
+          }
+       };
+     } 
+    else 
+     { 
+       script.onload = function() {
+   	  window.setTimeout(function() {tf_e9AdChoice.showAdChoiceIcon(adChoiceObj)},2000);
+       };
+     }
+
+    document.getElementById(adChoiceObj.adChoiceDivId).appendChild(script);
+  })();
+</script>
+<!-- START DART (iframe) -->
+<iframe src="gdb-Dateien/a.html" hspace="0" vspace="0" bordercolor="#000000" marginheight="0" marginwidth="0" frameborder="0" height="90" scrolling="no" width="728">
+</iframe>
+<!-- END DART (iframe) -->
+<iframe src="gdb-Dateien/adTag.html" style="visibility: hidden;" marginheight="0" marginwidth="0" frameborder="0" height="0" scrolling="no" width="0"></iframe>
+</div>
+
+
+
+</div>
+</div>
+
+<!-- END ADDED DFP -->
+
+</div>
+		</center>
+		<img src="gdb-Dateien/spacer-vert.png" height="4" width="1">
+  	</td>
+        
+  </tr>
+
+  <tr>
+
+     <td class="noprint" bgcolor="#EBEBEB" valign="top" width="130"> 
+     <div class="menu" valign="top" style="font-size:14px;width:200px">
+     <p class="navcategory" align="left">
+          <img class="bullet" src="gdb-Dateien/bullet.gif" height="14" width="11">    Starting out
+     </p>
+
+     <p class="navlist" style="font-size:14px;" align="left">
+             <a href="http://www.cprogramming.com/c++book/?inl=sb">Get the Ebook</a><br>
+             <a href="http://www.cprogramming.com/begin.html">Get Started with C or C++</a><br>
+             <a href="http://www.cprogramming.com/compilers.html">Getting a Compiler</a><br>
+             <a href="http://www.cprogramming.com/books.html">Book Recommendations</a><br>
+     </p>
+
+     <p class="navcategory" align="left">
+          <br>
+          <img class="bullet" src="gdb-Dateien/bullet.gif" height="14" width="11"> Tutorials
+     </p>
+
+     <p class="navlist" style="font-size:14px;" align="left">
+            <a href="http://www.cprogramming.com/tutorial/c-tutorial.html">C Tutorial</a><br>
+            <a href="http://www.cprogramming.com/tutorial/c++-tutorial.html">C++ Tutorial</a><br>
+            <a href="http://www.cprogramming.com/java-programming.html">Java Tutorial</a><br>
+            <a href="http://www.cprogramming.com/game-programming.html">Game Programming</a><br>
+            <a href="http://www.cprogramming.com/graphics-programming.html">Graphics Programming</a><br>
+            <a href="http://www.cprogramming.com/algorithms-and-data-structures.html">Algorithms &amp; Data Structures</a><br>
+            <a href="http://www.cprogramming.com/debuggers.html">Debugging</a><br>
+            <a href="http://www.cprogramming.com/tutorial.html">All Tutorials</a><br>
+     </p>
+
+     <p class="navcategory" align="left">
+          <br>
+          <img class="bullet" src="gdb-Dateien/bullet.gif" height="14" width="11"> Practice
+     </p>
+
+     <p class="navlist" style="font-size:14px;" align="left">
+            <a href="http://www.cprogramming.com/challenge.html">Practice Problems</a><br>
+            <a href="http://www.cprogramming.com/quiz/">Quizzes</a><br>
+     </p>
+     <p class="navcategory" align="left">
+          <br>
+          <img class="bullet" src="gdb-Dateien/bullet.gif" height="14" width="11"> Resources
+     </p>
+
+     <p class="navlist" style="font-size:14px;" align="left">
+            <a href="http://www.cprogramming.com/cgi-bin/source/source.cgi">Source Code</a><br>
+            <a href="http://www.cprogramming.com/snippets/">Source Code Snippets</a><br>
+            <a href="http://www.cprogramming.com/tips/">C and C++ Tips</a><br>
+            <a href="http://www.cprogramming.com/jobs/">Finding a Job</a>
+     </p>
+
+     <p class="navcategory" align="left">
+          <br>
+          <img class="bullet" src="gdb-Dateien/bullet.gif" height="14" width="11"> References
+     </p>
+
+     <p class="navlist" style="font-size:14px;" align="left">
+            <a href="http://www.cprogramming.com/function.html">Function Reference</a><br>
+            <a href="http://www.cprogramming.com/reference/">Syntax Reference</a><br>
+            <a href="http://www.cprogramming.com/cgi-bin/cdir/Cdirectory.cgi">Programming Links</a><br>
+            <a href="http://faq.cprogramming.com/cgi-bin/smartfaq.cgi">Programming FAQ</a><br>
+     </p>
+
+     <p class="navcategory" align="left">
+          <br>
+          <img class="bullet" src="gdb-Dateien/bullet.gif" height="14" width="11"> Getting Help
+     </p>
+
+     <p class="navlist" style="font-size:14px;" align="left">
+             <a href="http://www.cprogramming.com/board.html">Message Board</a><br>
+             <a href="http://www.cprogramming.com/expert.html">Ask an Expert</a><br>
+             <a href="http://www.cprogramming.com/email.html">Email</a><br>
+             <a href="http://www.cprogramming.com/about.html">About Us</a>
+     </p>
+     </div>
+
+<center>
+      <br><br>
+     <script type="text/javascript"><!--
+     google_ad_client = "pub-2560316224908115";
+     google_ad_width = 120;
+     google_ad_height = 90;
+     google_ad_format = "120x90_0ads_al";
+     google_ad_channel ="0800879710";
+     google_color_border = "EBEBEB";
+     google_color_bg = "EBEBEB";
+     google_color_link = "C30000";
+     google_color_url = "C30000";
+     google_color_text = "000000";
+     //--></script>
+     <script type="text/javascript" src="gdb-Dateien/show_ads.js">
+       </script><ins style="display:inline-table;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:120px"><ins id="aswift_0_anchor" style="display:block;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:120px"><iframe allowtransparency="true" hspace="0" marginwidth="0" marginheight="0" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){i+='.call';setTimeout(h,0)}else if(h.match){i+='.nav';w.location.replace(h)}s.log&amp;&amp;s.log.push(i)}" vspace="0" id="aswift_0" name="aswift_0" style="left: 0pt; position: absolute; top: 0pt;" frameborder="0" height="90" scrolling="no" width="120"></iframe></ins></ins>
+</center>
+
+
+
+    </td>
+	<td class="content" valign="top">
+
+    			<div class="content2">
+
+<h1>A GDB Tutorial with Examples</h1>
+
+
+
+By Manasij Mukherjee
+
+<p>A good debugger is one of the most important tools in a programmer's 
+toolkit.  On a UNIX or Linux system, GDB (the GNU debugger) is a 
+powerful and popular debugging tool; it lets you do whatever you like 
+with your program running under GDB.</p>
+
+<p>Should you read this?</p>
+You should... if you can relate to two or more of the following:
+<ul>
+<li>You have a general idea of programming with C or C++.
+</li>
+<li>You put a lot of cout or printf statements in the code if something goes wrong.
+</li>
+<li>You have used a debugger with an IDE, and are curious about how the command line works.
+</li>
+<li>You've just moved to a Unix-like operating system and would like to know about the toolchain better.
+</li>
+</ul>
+<h2>A crash course on compiling with gcc (or g++)</h2>
+<p>
+<a href="http://www.cprogramming.com/gcc.html">Gcc</a> is the de facto compiler in Linux or any other *nix system. It also has Windows ports but on Windows, you'll probably find the <a href="http://www.cprogramming.com/tutorial/debugging_concepts.html">debugger in Visual Studio</a> 'easier'.</p>
+
+<p>Suppose you have a file called main.cpp containing your c++ code.  You should compile it with the following command:
+
+</p>
+<pre class="example">g++ main.cpp -o main
+</pre>
+
+<p>While this will work fine and produce an executable file called main,
+ you also need to put a -g flag to tell the compiler that you may want 
+to debug your program later.</p>
+
+<p>So the final command turns into:</p>
+<pre class="example">g++ main.cpp -g -Wall -Werror -o main
+</pre>
+<p>(If you're wondering what -Wall and -Werror are, you may find <a href="http://www.cprogramming.com/gcc.html">this page on GCC</a> a useful read.)</p>
+
+<p>Don't worry if it looks cumbersome, you'll get used to it!
+(If you've got multiple source files you should use a good build system like <a href="http://www.cprogramming.com/tutorial/makefiles.html">make</a> or <a href="http://en.wikipedia.org/wiki/SCons">Scons</a>.)</p>
+
+<h2>The Basics of GDB</h2>
+
+<p>Provided you've compiled your program with the debugging symbols 
+enabled, you're ready to start debugging. Any time there is text you 
+should replace, I've put it in &lt;angle brackets&gt;.</p>
+
+<h3>Starting GDB</h3>
+
+To start GDB, in the terminal,
+<pre class="example">gdb &lt;executable name&gt;
+</pre>
+
+For the above example with a program named main, the command becomes
+<pre class="example">gdb main</pre>
+<h3>Setting Breakpoints</h3>
+<p>You'll probably want you program to stop at some point so that you 
+can review the condition of your program.  The line at which you want 
+the program to temporarily stop is called the breakpoint.</p>
+<pre class="example">break &lt;source code line number&gt;
+</pre>
+
+<h3>Running your program</h3>
+To run your program, the command is, as you guessed,
+<pre class="example">run</pre>
+
+<h3>Looking at the code</h3>
+<p>When the program is stopped, you can do a number of important things,
+ but most importantly you need to see which part of the code you've 
+stopped. The command for this purpose is "list". It shows you the 
+neighbouring 10 lines of code.</p>
+
+<h3>Next and Step</h3>
+<p>Just starting and stopping isn't much of a control. GDB also lets you
+ to run the program line-by-line by the commands 'next' and 'step'.  
+There is a little difference between the two, though.  Next keeps the 
+control strictly in the current scope whereas step follows the execution
+ through function calls.</p>
+<p>Look at this example carefully;</p>
+
+<p>Suppose you have a line in the code like</p>
+<div><div id="highlighter_308610" class="syntaxhighlighter  cpp"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="cpp plain">value=display();</code></div><div class="line number2 index1 alt1"><code class="cpp plain">readinput();</code></div></div></td></tr></tbody></table></div></div>
+<p>If you use the next command, the line (and the function, provided 
+there aren't breakpoints in it) gets executed and the control advances 
+to the next line, readinput(), where you can perhaps examine 'value' to 
+get an idea of how display() worked.</p>
+<p>But if you use the step command, you get to follow what display() 
+does directly, and the control advances to the first line of display(), 
+wherever it is.</p>
+
+
+<h3>Examining your Variables</h3>
+<p>When you want to find the misbehaving portion of your program, it 
+often helps to examine local variables to see if anything unexpected has
+ occurred.
+To examine a variable, just use</p>
+<pre class="example">print &lt;var name to print&gt;
+</pre>
+<p>Note: You can also modify variables' values by</p>
+<pre class="example">set &lt;var&gt; = &lt;value&gt;
+</pre>
+<p>You can modify variables to see if an issue is resolved if the 
+variable has another value or to force the program to follow a 
+particular path to see if the reason for a bug was due to a variable 
+having the wrong value.</p>
+
+<h3>Setting Watchpoints</h3>
+<p>Setting watchpoints is like asking the debugger to provide you with a
+ running commentary  of any changes that happen to the variables. 
+Whenever a change occurs, the program pauses and provides you with the 
+details of the change.</p>
+
+<p>The command to set a simple watchpoint (a write watchpoint, i.e you are notified when the value is written) is</p>
+<pre class="example">watch &lt;var&gt;
+</pre>
+<p>Here's some example output when GDB pauses due to a change in &lt;var&gt;:
+
+</p>
+<pre class="example">Continuing.
+Hardware watchpoint 2: variable
+
+Old value = 0
+New value = 1
+0x08048754 at main.cpp:31
+31        variable=isalpha(ch)
+</pre>
+
+<p><em>Note: You can only set watchpoints for a variable when it is in 
+scope. So, to watch something within another function or a inner block, 
+first set a breakpoint inside that scope and then when the program 
+pauses there, set the watchpoint.</em></p>
+
+<h3>Quit</h3>
+
+To stop your program, when it is paused, use kill and to quit GDB itself, use quit.
+
+<h2>An Example Debugging Session</h2>
+
+<p>The given code computes the factorial of a number erroneously.  The 
+goal of the debugging session is to pinpoint the reason of the error.</p>
+
+<div><div id="highlighter_95961" class="syntaxhighlighter  cpp"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2">11</div><div class="line number12 index11 alt1">12</div><div class="line number13 index12 alt2">13</div><div class="line number14 index13 alt1">14</div><div class="line number15 index14 alt2">15</div><div class="line number16 index15 alt1">16</div><div class="line number17 index16 alt2">17</div><div class="line number18 index17 alt1">18</div><div class="line number19 index18 alt2">19</div><div class="line number20 index19 alt1">20</div><div class="line number21 index20 alt2">21</div><div class="line number22 index21 alt1">22</div><div class="line number23 index22 alt2">23</div><div class="line number24 index23 alt1">24</div><div class="line number25 index24 alt2">25</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="cpp preprocessor">#include&lt;iostream&gt;</code></div><div class="line number2 index1 alt1">&nbsp;</div><div class="line number3 index2 alt2"><code class="cpp keyword bold">using</code> <code class="cpp keyword bold">namespace</code> <code class="cpp plain">std;</code></div><div class="line number4 index3 alt1">&nbsp;</div><div class="line number5 index4 alt2"><code class="cpp color1 bold">long</code> <code class="cpp plain">factorial(</code><code class="cpp color1 bold">int</code> <code class="cpp plain">n);</code></div><div class="line number6 index5 alt1">&nbsp;</div><div class="line number7 index6 alt2"><code class="cpp color1 bold">int</code> <code class="cpp plain">main()</code></div><div class="line number8 index7 alt1"><code class="cpp plain">{</code></div><div class="line number9 index8 alt2"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp color1 bold">int</code> <code class="cpp plain">n(0);</code></div><div class="line number10 index9 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">cin&gt;&gt;n;</code></div><div class="line number11 index10 alt2"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp color1 bold">long</code> <code class="cpp plain">val=factorial(n);</code></div><div class="line number12 index11 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">cout&lt;&lt;val;</code></div><div class="line number13 index12 alt2"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">cin.get();</code></div><div class="line number14 index13 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp keyword bold">return</code> <code class="cpp plain">0;</code></div><div class="line number15 index14 alt2"><code class="cpp plain">}</code></div><div class="line number16 index15 alt1">&nbsp;</div><div class="line number17 index16 alt2"><code class="cpp color1 bold">long</code> <code class="cpp plain">factorial(</code><code class="cpp color1 bold">int</code> <code class="cpp plain">n)</code></div><div class="line number18 index17 alt1"><code class="cpp plain">{</code></div><div class="line number19 index18 alt2"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp color1 bold">long</code> <code class="cpp plain">result(1);</code></div><div class="line number20 index19 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp keyword bold">while</code><code class="cpp plain">(n--)</code></div><div class="line number21 index20 alt2"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">{</code></div><div class="line number22 index21 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">result*=n;</code></div><div class="line number23 index22 alt2"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">}</code></div><div class="line number24 index23 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp keyword bold">return</code> <code class="cpp plain">result;</code></div><div class="line number25 index24 alt2"><code class="cpp plain">}</code></div></div></td></tr></tbody></table></div></div>
+
+<h3>Into the Debugger</h3>
+<p>Now follow the commands and the outputs carefully, especially the watchpoints.  What I'm doing is basically:</p>
+<ul>
+<li>Setting a breakpoint just in the line of the function call
+</li>
+<li>Stepping into the function from that line 
+</li>
+<li>Setting watchpoints for both the result of the calculation and the input number as it changes.
+</li>
+<li>Finally, analyzing the results from the watchpoints to find problematic behaviour
+</li>
+</ul>
+<pre class="example">1.      $ g++ main.cpp -g -Wall -o main
+2.      $ gdb main
+3.      GNU gdb (GDB) Fedora (7.3-41.fc15)
+4.      Copyright (C) 2011 Free Software Foundation, Inc.
+5.      This GDB was configured as "i686-redhat-linux-gnu".
+6.      For bug reporting instructions, please see:
+7.      &lt;http://www.gnu.org/software/gdb/bugs/&gt;...
+8.      Reading symbols from /home/manasij7479/Documents/main...done.
+<b>9.      (gdb) break 11</b>
+10.     Breakpoint 1 at 0x80485f9: file main.cpp, line 11.
+<b>11.     (gdb) run</b>
+12.     Starting program: /home/manasij7479/Documents/main
+13.     3
+14.     
+15.     Breakpoint 1, main () at main.cpp:11
+16.     11        long val=factorial(n);
+<b>17.     (gdb) step</b>
+18.     factorial (n=3) at main.cpp:19
+19.     19        long result(1);
+<b>20.     (gdb) list</b>
+21.     14        return 0;
+22.     15      }
+23.     16
+24.     17      long factorial(int n)
+25.     18      {
+26.     19        long result(1);
+27.     20        while(n--)
+28.     21        {
+29.     22          result*=n;
+30.     23        }
+<b>31.     (gdb) watch n</b>
+32.     Hardware watchpoint 2: n
+<b>33.     (gdb) watch result</b>
+34.     Hardware watchpoint 3: result
+<b>35.     (gdb) continue</b>
+36.     Continuing.
+37.     Hardware watchpoint 3: result
+38.     
+<b>39.     Old value = 0
+40.     New value = 1</b>
+</pre>
+Notice that result starts from 0 and is initialized to 1. 
+<pre class="example">41.     factorial (n=3) at main.cpp:20
+42.     20        while(n--)
+<b>43.     (gdb)</b>
+</pre>
+
+Notice that I didn't put in a command, I just hit &lt;return&gt;. It re-executes the last command.
+<pre class="example">44.     Continuing.
+45.     Hardware watchpoint 2: n
+46.     
+<b>47.     Old value = 3
+48.     New value = 2</b>
+</pre>
+
+Notice that n gets is immediately decremented from 3 to 2.
+
+<pre class="example">49.     0x08048654 in factorial (n=2) at main.cpp:20
+50.     20        while(n--)
+<b>51.     (gdb)</b>
+52.     Continuing.
+<b>53.     Hardware watchpoint 3: result
+54.     
+55.     Old value = 1
+56.     New value = 2</b>
+</pre>
+Now result becomes 2 (by multiplying result's earlier value with n's value).
+We've found the first bug! 
+result is supposed to be evaluated by multiplying 3 * 2 * 1 but here the multiplication starts from 2.
+To correct it, we have to change the loop a bit, but before that, lets see if the rest of the calculation is correct.
+
+<pre class="example">57.     factorial (n=2) at main.cpp:20
+58.     20        while(n--)
+<b>59.     (gdb)</b>
+60.     Continuing.
+61.     Hardware watchpoint 2: n
+62.     
+<b>63.     Old value = 2
+64.     New value = 1</b>
+</pre>
+n gets decremented from 2 to 1. Result doesn't change since n is 1.
+<pre class="example">65.     0x08048654 in factorial (n=1) at main.cpp:20
+66.     20        while(n--)
+<b>67.     (gdb)</b>
+68.     Continuing.
+69.     Hardware watchpoint 2: n
+70.     
+<b>71.     Old value = 1
+72.     New value = 0</b>
+</pre>
+n gets decremented from 1 to 0.
+<pre class="example">73.     0x08048654 in factorial (n=0) at main.cpp:20
+74.     20        while(n--)
+<b>75.     (gdb)</b>
+76.     Continuing.
+77.     Hardware watchpoint 3: result
+78.     
+<b>79.     Old value = 2
+80.     New value = 0</b>
+</pre>
+
+Now result becomes 0 (by multiplying result's earlier value with n's 
+value, 0).
+
+Another bug! How can result hold the value of the factorial when it is 
+multiplied by 0?  The loop must be stopped before n reaches 0.
+<pre class="example">81.     factorial (n=0) at main.cpp:20
+82.     20        while(n--)
+<b>83.     (gdb)</b>
+84.     Continuing.
+85.     Hardware watchpoint 2: n
+86.     
+87.     Old value = 0
+88.     New value = -1
+89.     0x08048654 in factorial (n=-1) at main.cpp:20
+90.     20        while(n--)
+<b>91.     (gdb)</b>
+92.     Continuing.
+</pre>
+
+Now n becomes -1 and the loop isn't permitted to run anymore because n--
+ returns 0, and the function returns result's current value 0. Let's see
+ what happens when the function exits.
+
+<pre class="example">93.     
+94.     Watchpoint 2 deleted because the program has left the block in
+95.     which its expression is valid.
+96.     
+97.     Watchpoint 3 deleted because the program has left the block in
+98.     which its expression is valid.
+</pre>
+This is what happens to a watchpoint when the variable goes out of scope.
+<pre class="example">99.     0x08048605 in main () at main.cpp:11
+100.    11        long val=factorial(n);
+<b>101.    (gdb) print val
+102.    $1 = 1293357044</b>
+</pre>
+print val shows a garbage value because gdb points to a line before it is executed, not after.
+<pre class="example"><b>103.    (gdb) next</b>
+104.    12        cout&lt;&lt;val;
+<b>105.    (gdb) continue</b>
+106.    Continuing.
+107.    0[Inferior 1 (process 2499) exited normally]
+<b>108.    (gdb) quit</b>
+</pre>
+
+Here's what the fix should look like:
+
+
+<div><div id="highlighter_404481" class="syntaxhighlighter  cpp"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="cpp keyword bold">while</code><code class="cpp plain">(n&gt;0) </code><code class="cpp comments">//doesn't let n reach 0</code></div><div class="line number2 index1 alt1"><code class="cpp plain">{</code></div><div class="line number3 index2 alt2"><code class="cpp spaces">&nbsp;&nbsp;</code><code class="cpp plain">result*=n;</code></div><div class="line number4 index3 alt1"><code class="cpp spaces">&nbsp;&nbsp;</code><code class="cpp plain">n--;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="cpp comments">//decrements only after the evaluation</code></div><div class="line number5 index4 alt2"><code class="cpp plain">}</code></div></div></td></tr></tbody></table></div></div>
+
+<h2>GDB in Conclusion</h2>
+<p>You have now seen enough to try GBD out on your own.  Some important topics
+have not been touched upon here for the sake of simplicity, such as dealing with <a href="http://www.cprogramming.com/debugging/segfaults.html">segmentation faults and other kinds of crashes</a> or using tools like <a href="http://www.cprogramming.com/debugging/valgrind.html">Valgrind</a> to find memory leaks.</p>
+<p>Remember that GDB comes built in with an excellent help system. Just 
+type help in the (gdb) prompt and you will be presented with options of 
+what you could need help with. For  details about a specific command, 
+use the syntax 
+</p>
+<pre class="example">help &lt;command&gt;
+</pre>
+
+Another important point to note is the use of shortcuts (like 'q' for
+'quit'). GDB lets you use shortcuts for commands when it is not ambigious.  
+
+<p>After learning about GDB, you
+do not have to panic the next time your program goes crazy. You have an
+excellent weapon in your arsenal now.</p>
+
+
+
+     
+<br><br><b>Read more...</b>
+<br><br><a href="http://www.cprogramming.com/gdbtutorial.html">Advanced GDB Debugging</a>
+<br><br><a href="http://www.cprogramming.com/debugging/valgrind.html">Learn about
+Valgrind, a memory leak detector and memory error hunter</a>
+<br><br><a href="http://www.cprogramming.com/debugging/segfaults.html">More information
+about finding and debugging segmentation faults (segfaults)</a><br><br><a href="http://www.cprogramming.com/tutorial/debugging_concepts.html">Debugging
+with Visual Studio</a>
+
+<div id="footer" class="noprint">
+
+<div id="social" style="margin-top:5px;height:23px;">
+<table>
+<tbody><tr>
+<td> 
+<div class=" fb_reset" id="fb-root"><div style="position: absolute; top: -10000px; height: 0pt; width: 0pt;"><div></div><div><iframe src="gdb-Dateien/xd_arbiter.html" name="fb_xdm_frame_http" id="fb_xdm_frame_http"></iframe><iframe src="gdb-Dateien/xd_arbiter_002.html" name="fb_xdm_frame_https" id="fb_xdm_frame_https"></iframe></div></div></div>
+<div data-href="http://www.cprogramming.com/gdb.html" id="fb-recommend" class="fb-like fb_edge_widget_with_comment fb_iframe_widget" data-send="false" data-width="120" data-height="21" data-layout="button_count" data-action="recommend"><span style="height: 20px; width: 130px;"><iframe src="gdb-Dateien/like.html" class="fb_ltr " title="Like this content on Facebook." style="border: medium none; overflow: hidden; height: 20px; width: 130px;" name="fd8c4b5a356c" id="f5b0ab31f7f366" scrolling="no"></iframe></span></div>
+</td>
+<td>
+<iframe title="Twitter Tweet Button" style="width: 107px; height: 20px;" class="twitter-share-button twitter-count-horizontal" src="gdb-Dateien/tweet_button.html" allowtransparency="true" frameborder="0" scrolling="no"></iframe>
+</td>
+<td>
+<div style="height: 20px; width: 90px; display: inline-block; text-indent: 0pt; margin: 0pt; padding: 0pt; background: none repeat scroll 0% 0% transparent; border-style: none; float: none; line-height: normal; font-size: 1px; vertical-align: baseline;" id="___plusone_0"><iframe title="+1" src="gdb-Dateien/fastbutton.html" name="I0_1338449213119" id="I0_1338449213119" vspace="0" tabindex="0" style="position: static; top: 0pt; width: 90px; margin: 0px; border-style: none; height: 20px; left: 0pt; visibility: visible;" marginwidth="0" marginheight="0" hspace="0" allowtransparency="true" frameborder="0" scrolling="no" width="100%"></iframe></div>
+</td>
+</tr>
+</tbody></table>
+</div>
+
+<div style="font-size:14px;padding:10px;margin-top:5px;margin-bottom:5px;">
+<div style="width:400px;margin-top:5px">
+<div style="float:left"><a href="http://www.cprogramming.com/c++book/?inl=ft-nhp"><img src="gdb-Dateien/small_3d.jpg" border="0"></a></div>Want to become a C++ programmer? The Cprogramming.com ebook, Jumping into C++, will walk you through it, step-by-step. <a href="http://www.cprogramming.com/c++book/?inl=ft-nhp">Get Jumping into C++ today!</a>
+</div>
+<div style="clear: both"></div>
+
+<b>Popular pages</b>
+<ul>
+ <li><a href="http://www.cprogramming.com/begin.html">Exactly how to get started with C++ (or C) today</a> 
+</li><li><a href="http://www.cprogramming.com/tutorial/c-tutorial.html">C Tutorial</a>
+</li><li><a href="http://www.cprogramming.com/tutorial/c++-tutorial.html">C++ Tutorial</a>
+</li><li><a href="http://www.cprogramming.com/how_to_learn_to_program.html">5 ways you can learn to program faster</a> 
+</li><li><a href="http://www.cprogramming.com/beginner_programming_mistakes.html">The 5 Most Common Problems New Programmers Face</a>
+</li><li><a href="http://www.cprogramming.com/code_blocks/">How to set up a compiler</a>
+</li><li><a href="http://www.cprogramming.com/tutorial/common.html">8 Common programming Mistakes</a> 
+</li><li><a href="http://www.cprogramming.com/c++11/what-is-c++0x.html">What is C++11?</a>
+</li><li><a href="http://www.cprogramming.com/tutorial/game_programming/same_game_part1.html">How to make a game in 48 hours</a>
+</li></ul>
+
+<b>Recent additions</b> <a href="http://feeds2.feedburner.com/Cprogrammingcom" rel="alternate" type="application/rss+xml"><img src="gdb-Dateien/feed-icon16x16.png" alt="subscribe to a feed" style="border: 0pt none;" height="16" width="16"></a>
+<ul>
+<li><a href="http://www.cprogramming.com/tutorial/shared-libraries-linux-gcc.html">How to create a shared library on Linux with GCC</a> - December 30, 2011</li>
+<li> <a href="http://www.cprogramming.com/c++11/c++11-nullptr-strongly-typed-enum-class.html">Enum classes and nullptr in C++11</a> - November 27, 2011</li>
+<li><a href="http://www.cprogramming.com/tutorial/computersciencetheory/hash-table.html">Learn about The Hash Table</a> - November 20, 2011</li>
+<li><a href="http://www.cprogramming.com/c++11/rvalue-references-and-move-semantics-in-c++11.html">Rvalue References and Move Semantics in C++11</a> - November 13, 2011</li>
+<li><a href="http://www.cprogramming.com/java/c-and-c++-for-java-programmers.html">C and C++ for Java Programmers</a> - November 5, 2011</li>
+<li><a href="http://www.cprogramming.com/tutorial/c++-iostreams.html">A Gentle Introduction to C++ IO Streams</a> - October 10, 2011</li>
+</ul>
+
+</div>
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-bottom" style="background-color:#FFFFFF;color:#000000;width:50%; margin:auto">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input name="cx" value="partner-pub-2560316224908115:0581759109" type="hidden">
+        <input name="ie" value="UTF-8" type="hidden">
+        <input name="q" size="55" type="text">
+        <input name="sa" value="Search" type="submit">
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="gdb-Dateien/poweredby_FFFFFF.gif" alt="Google">
+  </div>
+  <div class="cse-branding-text">
+    Custom Search
+  </div>
+</div>
+
+<center>
+<script type="text/javascript">
+<!--
+google_ad_client = "pub-2560316224908115";
+/* link_ads_bottom */
+google_ad_slot = "2258412831";
+google_ad_width = 728;
+google_ad_height = 15;
+//-->
+</script> 
+<script type="text/javascript" src="gdb-Dateien/show_ads.js"> </script><ins style="display:inline-table;border:none;height:15px;margin:0;padding:0;position:relative;visibility:visible;width:728px"><ins id="aswift_1_anchor" style="display:block;border:none;height:15px;margin:0;padding:0;position:relative;visibility:visible;width:728px"><iframe allowtransparency="true" hspace="0" marginwidth="0" marginheight="0" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){i+='.call';setTimeout(h,0)}else if(h.match){i+='.nav';w.location.replace(h)}s.log&amp;&amp;s.log.push(i)}" vspace="0" id="aswift_1" name="aswift_1" style="left: 0pt; position: absolute; top: 0pt;" frameborder="0" height="15" scrolling="no" width="728"></iframe></ins></ins> 
+ 
+<script type="text/javascript" src="gdb-Dateien/618210012.js"></script><style type="text/css">#af-form-618210012 .af-body .af-textWrap{width:98%;display:block;float:none;}#af-form-618210012 .af-body a{color:#AA0101;text-decoration:underline;font-style:normal;font-weight:normal;}#af-form-618210012 .af-body input.text, #af-form-618210012 .af-body textarea{background-color:#FFFFFF;border-color:#000000;border-width:1px;border-style:solid;color:#000000;text-decoration:none;font-style:normal;font-weight:normal;font-size:12px;font-family:Verdana, sans-serif;}#af-form-618210012 .af-body input.text:focus, #af-form-618210012 .af-body textarea:focus{background-color:#FFFFFF;border-color:#AA0101;border-width:1px;border-style:solid;}#af-form-618210012 .af-body label.previewLabel{display:block;float:none;text-align:left;width:auto;color:#000000;text-decoration:none;font-style:normal;font-weight:normal;font-size:12px;font-family:Verdana, sans-serif;}#af-form-618210012 .af-body{padding-bottom:15px;background-repeat:no-repeat;background-position:inherit;background-image:none;color:#000000;font-size:12px;font-family:Verdana, sans-serif;}#af-form-618210012 .af-footer{padding-right:15px;padding-left:15px;background-color:#transparent;border-width:1px;border-bottom-style:none;border-left-style:none;border-right-style:none;border-top-style:none;color:#000000;font-size:12px;font-family:Verdana, sans-serif;}#af-form-618210012 .af-header{padding-bottom:95px;padding-top:20px;padding-right:115px;padding-left:10px;background-color:transparent;background-repeat:no-repeat;background-position:top right;background-image:url("http://forms.aweber.com/images/forms/sign-up-below/big-red/header.png");border-width:1px;border-bottom-style:none;border-left-style:none;border-right-style:none;border-top-style:none;color:#AA0101;font-size:16px;font-family:Verdana, sans-serif;}#af-form-618210012 .af-quirksMode .bodyText{padding-top:2px;padding-bottom:2px;}#af-form-618210012 .af-quirksMode{padding-right:15px;padding-left:15px;}#af-form-618210012 .af-standards .af-element{padding-right:15px;padding-left:15px;}#af-form-618210012 .bodyText p{margin:1em 0;}#af-form-618210012 .buttonContainer input.submit{background-color:#0479c2;background-image:url("http://forms.aweber.com/images/forms/sign-up-below/big-red/button.png");color:#FFFFFF;text-decoration:none;font-style:normal;font-weight:normal;font-size:14px;font-family:Verdana, sans-serif;}#af-form-618210012 .buttonContainer input.submit{width:auto;}#af-form-618210012 .buttonContainer{text-align:center;}#af-form-618210012 body,#af-form-618210012 dl,#af-form-618210012 dt,#af-form-618210012 dd,#af-form-618210012 h1,#af-form-618210012 h2,#af-form-618210012 h3,#af-form-618210012 h4,#af-form-618210012 h5,#af-form-618210012 h6,#af-form-618210012 pre,#af-form-618210012 code,#af-form-618210012 fieldset,#af-form-618210012 legend,#af-form-618210012 blockquote,#af-form-618210012 th,#af-form-618210012 td{float:none;color:inherit;position:static;margin:0;padding:0;}#af-form-618210012 button,#af-form-618210012 input,#af-form-618210012 submit,#af-form-618210012 textarea,#af-form-618210012 select,#af-form-618210012 label,#af-form-618210012 optgroup,#af-form-618210012 option{float:none;position:static;margin:0;}#af-form-618210012 div{margin:0;}#af-form-618210012 fieldset{border:0;}#af-form-618210012 form,#af-form-618210012 textarea,.af-form-wrapper,.af-form-close-button,#af-form-618210012 img{float:none;color:inherit;position:static;background-color:none;border:none;margin:0;padding:0;}#af-form-618210012 input,#af-form-618210012 button,#af-form-618210012 textarea,#af-form-618210012 select{font-size:100%;}#af-form-618210012 p{color:inherit;}#af-form-618210012 select,#af-form-618210012 label,#af-form-618210012 optgroup,#af-form-618210012 option{padding:0;}#af-form-618210012 table{border-collapse:collapse;border-spacing:0;}#af-form-618210012 ul,#af-form-618210012 ol{list-style-image:none;list-style-position:outside;list-style-type:disc;padding-left:40px;}#af-form-618210012,#af-form-618210012 .quirksMode{width:429px;}#af-form-618210012.af-quirksMode{overflow-x:hidden;}#af-form-618210012{background-color:transparent;border-color:#CFCFCF;border-width:1px;border-style:none;}#af-form-618210012{display:block;}#af-form-618210012{overflow:hidden;}.af-body .af-textWrap{text-align:left;}.af-body input.image{border:none!important;}.af-body input.submit,.af-body input.image,.af-form .af-element input.button{float:none!important;}.af-body input.text{width:100%;float:none;padding:2px!important;}.af-body.af-standards input.submit{padding:4px 12px;}.af-clear{clear:both;}.af-element label{text-align:left;display:block;float:left;}.af-element{padding:5px 0;}.af-form-wrapper{text-indent:0;}.af-form{text-align:left;margin:auto;}.af-header,.af-footer{margin-bottom:0;margin-top:0;padding:10px;}.af-quirksMode .af-element{padding-left:0!important;padding-right:0!important;}.lbl-right .af-element label{text-align:right;}body {}</style><form method="post" class="af-form-wrapper" action="http://www.aweber.com/scripts/addlead.pl"><div style="display: none;"><input name="meta_web_form_id" value="618210012" type="hidden"><input name="meta_split_id" value="" type="hidden"><input name="listname" value="cprogramming" type="hidden"><input name="redirect" value="http://www.cprogramming.com/ml_thankyou.html" id="redirect_54659f0e12c5906aca20af3fcf8ad53e" type="hidden"><input name="meta_adtracking" value="inline" type="hidden"><input name="meta_message" value="1" type="hidden"><input name="meta_required" value="email" type="hidden"><input name="meta_tooltip" value="" type="hidden"></div><div id="af-form-618210012" class="af-form"><div id="af-header-618210012" class="af-header"><div class="bodyText"><center><div><div>Join our mailing list to keep up with the latest news and updates about Cprogramming.com!</div>&nbsp;</div></center></div></div><div id="af-body-618210012" class="af-body af-standards"><div class="af-element"><label class="previewLabel" for="awf_field-28821296">Name</label><div class="af-textWrap"><input id="awf_field-28821296" name="name" class="text" tabindex="500" type="text"></div><div class="af-clear"></div></div><div class="af-element"><label class="previewLabel" for="awf_field-28821297">Email</label><div class="af-textWrap"><input class="text" id="awf_field-28821297" name="email" tabindex="501" type="text"></div><div class="af-clear"></div></div><div class="af-element"><div class="bodyText"><center></center></div><div class="af-clear"></div></div><div class="af-element buttonContainer"><input name="submit" id="af-submit-image-618210012" class="image" style="background: none repeat scroll 0% 0% transparent;" alt="Submit Form" src="gdb-Dateien/button.png" tabindex="502" type="image"><div class="af-clear"></div></div><div class="af-element" style="text-align: center"><img src="gdb-Dateien/a.png" alt="Subscriber Counter"></div></div><div id="af-footer-618210012" class="af-footer"><div class="bodyText"><p>&nbsp;</p></div></div></div></form><script type="text/javascript">    <!--    (function() {        var IE = /*@cc_on!@*/false;        if (!IE) { return; }        if (document.compatMode && document.compatMode == 'BackCompat') {            if (document.getElementById("af-form-618210012")) {                document.getElementById("af-form-618210012").className = 'af-form af-quirksMode';            }            if (document.getElementById("af-body-618210012")) {                document.getElementById("af-body-618210012").className = "af-body inline af-quirksMode";            }            if (document.getElementById("af-header-618210012")) {                document.getElementById("af-header-618210012").className = "af-header af-quirksMode";            }            if (document.getElementById("af-footer-618210012")) {                document.getElementById("af-footer-618210012").className = "af-footer af-quirksMode";            }        }    })();    --></script>
+
+<div class="footer-links" style="padding:10px">
+<a href="http://www.cprogramming.com/advertising.html">Advertising</a> | <a href="http://www.cprogramming.com/privacy.html">Privacy policy</a> |
+<a href="http://www.cprogramming.com/use.html">Copyright © 1997-2011 Cprogramming.com. All rights reserved.</a> | <a href="mailto:webmaster@cprogramming.com">webmaster@cprogramming.com</a>
+</div>
+</center></div>
+</div>
+</td>
+    	
+
+
+<td class="content noprint" rowspan="1" bgcolor="#EBEBEB" valign="top">
+<div class="content2"><br><div class="verticalad">
+
+
+
+
+
+
+
+<script type="text/javascript"><!--
+        e9 = new Object();
+    e9.size = "160x600,120x600";
+//--></script>
+<script type="text/javascript" src="gdb-Dateien/tags.js"></script><div align="center"><script type="text/javascript" src="gdb-Dateien/j_002.js"></script><script type="text/javascript"><!--
+google_ad_client = "pub-2560316224908115";
+/* TF Default Sky 160x600 */
+google_ad_slot = "2755247931";
+google_ad_width = 160;
+google_ad_height = 600;
+//-->
+</script>
+<script type="text/javascript" src="gdb-Dateien/show_ads.js">
+</script><ins style="display:inline-table;border:none;height:600px;margin:0;padding:0;position:relative;visibility:visible;width:160px"><ins id="aswift_2_anchor" style="display:block;border:none;height:600px;margin:0;padding:0;position:relative;visibility:visible;width:160px"><iframe allowtransparency="true" hspace="0" marginwidth="0" marginheight="0" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){i+='.call';setTimeout(h,0)}else if(h.match){i+='.nav';w.location.replace(h)}s.log&amp;&amp;s.log.push(i)}" vspace="0" id="aswift_2" name="aswift_2" style="left: 0pt; position: absolute; top: 0pt;" frameborder="0" height="600" scrolling="no" width="160"></iframe></ins></ins>
+</div>
+
+
+
+
+</div><br>
+
+<style type="text/css">
+.sidebar-box { width: 150px; margin-bottom:5px; }
+</style>
+    <div id="side-images">
+        <div style="padding:5px;margin-top:5px">
+            <div style="margin-bottom: 5px">
+                <b>Popular pages</b>
+            </div>
+            <div>
+                
+                <!--http://www.flickr.com/photos/baslow/5620208/sizes/o/in/photostream/ -->
+                <div class="sidebar-box">
+                    <a href="http://www.cprogramming.com/tutorial/c-tutorial.html">
+                    <img src="gdb-Dateien/5620208_bff9c514e6_s.jpg" alt="C tutorial" border="0" height="75" width="75">
+                    <br>
+                    C Tutorial
+                    </a>
+                </div>
+                
+
+                
+                <!--http://www.flickr.com/photos/29233640@N07/2855530649/sizes/sq/in/photostream/-->
+                <div class="sidebar-box">
+                    <a href="http://www.cprogramming.com/begin.html">
+                    <img src="gdb-Dateien/2855530649_905f7862fd_s.jpg" alt="Get started" border="0" height="75" width="75">
+                    <br>
+                    Exactly how to get started with C++ (or C) today</a>
+                </div>
+                
+
+                
+                <!--http://www.flickr.com/photos/mikecogh/6505012533/sizes/sq/in/photostream/-->
+                <div class="sidebar-box">
+                    <a href="http://www.cprogramming.com/how_to_learn_to_program.html">
+                    <img src="gdb-Dateien/6505012533_55c83fdfa0_s.jpg" alt="Learn to program" border="0" height="75" width="75">
+                    <br>
+                    5 ways you can learn to program faster</a>
+                </div>
+                
+
+                
+                <div class="sidebar-box">
+                    <a href="http://www.cprogramming.com/tutorial/c++-tutorial.html">
+                    <img src="gdb-Dateien/c-img.png" alt="C++ tutorial" border="0" height="75" width="75">
+                    <br>
+                    C++ Tutorial</a>
+                </div>
+                
+
+                
+                <!--http://www.flickr.com/photos/giopuo/3441263816/sizes/sq/in/photostream/-->
+                <div class="sidebar-box">
+                    <a href="http://www.cprogramming.com/beginner_programming_mistakes.html">
+                    <img src="gdb-Dateien/3441263816_95f132a884_s.jpg" alt="Problems new programmers face" border="0" height="75" width="75">
+                    <br>
+                    The 5 Most Common Problems New Programmers Face</a>
+                </div>
+                
+
+                
+                <div class="sidebar-box">
+                   <a href="http://www.cprogramming.com/tutorial/game_programming/same_game_part1.html">
+                    <img src="gdb-Dateien/same_game_small.png" alt="Learn to make a game" border="0" height="42" width="42">
+                    <br>
+                   How to make a game in 48 hours</a>
+                </div>
+                
+
+                
+                <div class="sidebar-box">
+                   <a href="http://www.cprogramming.com/tutorial/common.html">
+                    <img src="gdb-Dateien/2291127824_087a497bea_s.jpg" alt="Common problems" border="0" height="75" width="75">
+                    <br>
+                   8 Common Programming Mistakes</a>
+                </div>
+                
+
+                
+                <div class="sidebar-box">
+                   <a href="http://www.cprogramming.com/c++11/what-is-c++0x.html">
+                    <img src="gdb-Dateien/c11.png" alt="C++11" border="0" height="75" width="75">
+                    <br>
+                   What is C++11?</a>
+                </div>
+                
+            </div>
+        </div>
+        <div style="display:block">
+            <a href="http://www.cprogramming.com/image_credits.html">Image credits</a>
+        </div>
+    </div>
+</div>
+</td>  	
+
+</tr>
+</tbody></table>
+</div>
+
+
+<script>
+(function(w, d, s) {
+  var cur_url = window.location;
+  var loc = cur_url;
+  if ( /htm(l?)/.test( cur_url.pathname ) ) {
+    loc = cur_url.protocol + "//" + cur_url.host + cur_url.pathname.replace( /\+/g, "%2b" );
+  }
+  d.getElementById( "fb-recommend" ).setAttribute( "data-href", loc );
+  function go(){
+    var js, fjs = d.getElementsByTagName(s)[0], load = function(url, id) {
+          if (d.getElementById(id)) {return;}
+          js = d.createElement(s); js.src = url; js.id = id;
+          fjs.parentNode.insertBefore(js, fjs);
+        };
+    load('//connect.facebook.net/en_US/all.js#xfbml=1&channelUrl=http%3A%2F%2Fwww.cprogramming.com%2Ffb%2Fchannel.html', 'fbjssdk');
+    load('https://apis.google.com/js/plusone.js', 'gplus1js');
+    load('//platform.twitter.com/widgets.js', 'tweetjs');
+  }
+  if (w.addEventListener) { w.addEventListener("load", go, false); }
+  else if (w.attachEvent) { w.attachEvent("onload",go); }
+}(window, document, 'script'));
+</script>
+
+
+
+
+
+<script type="text/javascript" src="gdb-Dateien/shCore.js"></script>
+<script type="text/javascript" src="gdb-Dateien/shBrushCpp.js"></script>
+<script type="text/javascript">
+         SyntaxHighlighter.all();
+</script>
+
+
+
+</div></body></html>

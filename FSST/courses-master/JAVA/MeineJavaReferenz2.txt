@@ -1,0 +1,165 @@
+﻿Lernstoff f. ainf test
+----------------------
+
+1. Grundlagen
+-------------
+package
+	enthält die Klassen
+	java.util
+	java.io
+	javax.swing.
+	
+Klasse
+	vergleichbar mit Datentypen. Hat aber viel mehr
+	Eigenschaften und mehr Methoden
+	java.util.Random
+	JButton
+	java.io.BufferedReader
+	
+Objekt
+	vergleichbar mit Variablen.
+	Random zufall= new Random();
+	BufferedReader eingabe;
+	eingabe= new BufferedReader(new InputStreamReader(System.in));
+	JButton jButtonEnde= new JButton();
+	
+	Die Klassen sind:
+		Random, BufferedReader, JButton
+	Die Objekte sind:
+		zufall, eingabe, jButtonEnde
+		
+Methoden
+	sind Funktionen, die den Objekten zugeordnet sind
+	int zahl= zufall.nextInt(46);
+	String s= jTextField.getTect();
+	
+	Methoden sind:
+		getText(), nextInt()
+		
+	Achtung, es gilt:
+		Objekt.Methode(Parameter);
+		zufall.nextInt(45)
+		zufall ...... Objekt
+		nextInt() ... Methode
+		45 .......... Parameter
+		
+Ereignis
+	wird vom Benutzer oder vom System (JRE) erzeugt.
+	wenn das Formular geöffnet wird
+	wenn der Benutzer auf einen Button klickt
+	wenn das Formular neu gezeichnet werden soll
+	wenn der Timer abläuft
+	
+Ereignisprozedur
+	wird aufgerufen, wenn ein Ereignis eintrifft
+	actionPerformed()
+	windowOpened()
+	stateChanged()
+	
+	
+lokale Variablen/Objekte
+	werden INNERHALB einer Funktion/Methode definiert
+	sind nur INNERHALB dieser Funktion/Methode sichtbar/verwendbar
+	
+globale Variablen/Objekte
+	werden AUSSERHALB einer Funktion/Methode definiert. 
+	Meist im oberen Bereich einer Klasse 
+	private int alter;
+	
+	sind in jeder Funktion/Methode sichtbar/verwendbar
+	
+	
+
+
+
+2. Dialogelemente und Methoden
+------------------------------
+JTextField
+JLabel
+JButton
+
+JList
+	String[] sSortiert= new String[10];
+	....
+	for(int i=0; i< values.length; i++)
+		sSortiert[i]= String.valueOf(values[i]);
+	jListSortiert.setListData((Object[])sSortiert) ;
+					
+	
+
+JComboBox
+	for(int i=0; i< values.length; i++)
+		jComboBoxSortiert.addItem((Object) sSortiert[i]);
+		
+					
+JScrollPane
+JSlider
+
+
+
+3. Typkonvertierungen
+------------------------
+Im SwingFormular werden NUR Texte (Strings) dargestellt. Oft wird
+im Programm aber mit Zahlen gerechnet.
+
+Beispiel:
+
+// Text vom Formular einlesen
+String s= jTextFieldAlter.getText();
+
+// text umwandeln
+int alter = Integer.parseInt(s);
+
+// rechnen
+alter+= 10;	
+
+// ergebnis wieder ins Formular schreiben
+s= String.valueOf(alter);
+jTextFieldAlter.setText(s);
+
+
+
+
+
+4. Funktionen und Arrays
+------------------------
+Array definieren und verwenden
+int[] a;
+
+a= new int[100];
+
+for (int i=0; i < a.length; i++)
+	a[i]= i;
+	
+
+
+String s="Hello, World!";
+
+char[] sArray;
+sArray= s.toCharArray();
+
+for (int i=0; i < s.length; i++){
+	// Grossbuchstaben
+	if (sArray[i] >= 'A' && sArray[i] <= 'Z' ) {
+		.........
+	}
+	
+	// Kleinbuchstaben
+	if (sArray[i] >= 'a' && sArray[i] <= 'z' ) {
+		.........
+	}
+}
+	
+		
+char ch= s.charAt(2);
+		
+
+5. Programme
+--------------
+SwingLucky7 (Zufallszahlen, if .....)
+SwingPassword (Timer, String)
+SwingButton1/2 (Positionierung, actionPerformed()
+SwingBildlauf (Slider)
+SwingVisualSort (graphics, drawRecht(), paint)
+SwingMyAlgo
+MyAlgo.java

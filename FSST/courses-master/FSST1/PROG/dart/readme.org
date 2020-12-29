@@ -1,0 +1,8 @@
+* Learn Dart FSST1: 
+** Dart Bootcamp (Beginner)
+- [[https://da-bootcamp.firebaseapp.com/?course=start_programming_dart][bootcamp]]
+
+
+
+* todo: Learn Dart FSST?: video (5 min sessions)
+- https://vimeo.com/showcase/5967695

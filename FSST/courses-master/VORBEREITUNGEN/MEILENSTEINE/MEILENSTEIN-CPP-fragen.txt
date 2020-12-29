@@ -1,0 +1,15 @@
+﻿MEILENSTEIN-CPP-fragen:
+---------------------------------------------------------------------------
+Beantworten Sie folgende Fragen:
+
+1. * protected ?
+2. * Welcher Kontruktor wird zuerst fertig ausgeführt:
+	der oberklasse
+	der unterklasse
+3. * Was ist ein base initializer ? Wozu wird er benötigt ?
+4. * Wozu werden base class pointers verwendet ?
+5. * Warum sollte eine Klasse, die virtuelle Methoden definiert, unbedingt 
+  einen virtuellen Destruktor definieren ?
+6. * Worauf ist bei der Verwendung des Schlüsselwortes protected zu achten ?
+7. * Was ist eine abstrakte Klasse?
+8. * Warum gibt es eigentlich Vererbung, base class pointer?

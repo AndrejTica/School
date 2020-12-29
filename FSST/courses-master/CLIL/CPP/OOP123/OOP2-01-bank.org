@@ -1,0 +1,389 @@
+* class Account
+- [X] Create class Account with the following structure.
+
+#+BEGIN_SRC plantuml :file img/account.png
+class Account{
+	private:
+		static int accountNumber;
+		string owner_;
+		int number_;
+		double amount_;
+
+	public:
+		Account(string name, double d);
+		void setAmount(double d);
+		double getAmount() const;
+		string getOwner() const;
+		void deposit(double d);
+		void withdraw(double d);
+		string toString() const;
+		~Account();
+}
+#+END_SRC
+
+#+attr_latex: :width 100px :height 100px
+[[file:img/account.png]]
+
+- [X] Hint :: static members (static int accountNumber) are 'class members'
+- [X] static members are available at class-level (not at object-level).
+- [X] All objects of class Account can access this variable.
+- [X] class members have to be defined in account.cpp
+#+BEGIN_SRC cpp
+int Account::accountNumber=0;
+#+END_SRC
+- [X] Account's constructor can use this class member to get unique numbers.
+#+BEGIN_SRC cpp
+Account::Account(string name, double value){
+	this->owner_= name;
+	this->amount_= value;
+	this->number_= accountNumber;
+
+	accountNumber++;
+}
+#+END_SRC
+
+
+* class Bank
+- [X] Create class Bank with the following structure.
+
+#+BEGIN_SRC plantuml :file img/bank.png
+class Bank{
+	private:
+		string name_;
+		vector<Account*> accounts_;
+
+	public:
+		Bank(string name);
+		~Bank();
+		void addAccount(Account& other);
+		void addInterest(double value);
+		void charges(double value);
+		void delAccount(Account& other);
+		Account& getAccount(int nr);
+		string toString() const;
+		Account& getMaxAccount() const;
+		double getAverageAmount() const;
+}
+#+END_SRC
+
+#+attr_latex: :width 120px :height 120px
+[[file:img/bank.png]]
+
+- [X] addInterest(double value) :: add value to each account
+- [X] charges(double value) :: subtract value from each account
+- [X] getMaxAccount() :: get Account with highest amount
+
+
+* Bank has many Accounts
+
+#+BEGIN_SRC plantuml :file img/bank-account.png
+Bank o- Account : has many
+#+END_SRC
+
+#+attr_latex: :width 6cm :height 2cm
+[[file:img/bank-account.png]]
+
+- [X] Create a main program to test Account and Bank:
+
+#+BEGIN_SRC cpp
+#include <iostream>
+using namespace std;
+
+#include "account.h"
+#include "bank.h"
+
+int main(){
+
+	Bank myB("Hofmann Unlimited");
+
+	Account a1("Anton Hofmann",1000.0);
+	Account a2("Beta Hofmann", 1000.0);
+	Account a3("Gamma Hofmann",1000.0);
+
+	myB.addAccount(a1);
+	myB.addAccount(a2);
+	myB.addAccount(a3);
+
+	cout << "The Bank: BEFORE calculating the charges *********" << endl;
+	cout << myB.toString() << endl;
+
+	myB.charges(10.0);
+	cout << "The Bank: AFTER calculating the charges *********" << endl;
+	cout << myB.toString() << endl;
+
+	myB.addInterest(5.0);
+	cout << "The Bank: AFTER adding the interest *********" << endl;
+	cout << myB.toString()  << endl;
+
+	myB.delAccount(a3);
+	cout << "The Bank: AFTER deleting a3 (Gamma Hofmann) *********" << endl;
+	cout << myB.toString() << endl << endl;
+
+	return 0;
+}
+#+END_SRC
+
+
+* friend class Bank
+
+- [X] For security reason, class Account should implement its constructors as a *private* method!
+- [X] so no one can create Account objects.
+- [X] But class Account declares class Bank as a *friend class*.
+- [X] This gives Bank access to the private methods of class Account.
+#+BEGIN_SRC cpp
+friend class Bank;
+#+END_SRC
+- [X] This means that ONLY class Bank is able to create Account objects.
+
+- [X] Take care (!) if you use *new and delete* for creation of Account objects.
+- [X] Especially take a look at
+  - [X] delAccount() and the
+  - [X] destructor of class bank.
+
+
+- [X] Create/change  main.cpp to test Account and Bank
+
+#+BEGIN_SRC cpp
+// main.cpp
+#include <iostream>
+using namespace std;
+
+#include "account.h"
+#include "bank.h"
+
+int main(){
+	Bank *myBank;
+	myBank = new Bank("Hofmann unlimited");
+
+	cout << "\n\n"<<endl;
+	cout << "-------------------------------------------------"<<endl;
+	cout << " TEST: STATIC members "<<endl;
+	cout << "-------------------------------------------------"<<endl;
+
+	myBank->addAccount("Anton Hofmann", 100.0);
+	myBank->addAccount("Beta Hofmann", 200.0);
+	myBank->addAccount("Gamma Hofmann",300.0);
+	cout << myBank->toString() << endl;
+
+	cout << "\n\n"<<endl;
+	cout << ".... delete Account: Anton Hofmann and add Account: Omega Hofmann";
+	cout << " Look at the account number!!!"<<endl;
+
+	myBank->delAccount("Anton Hofmann");
+	myBank->addAccount("Omega Hofmann", 900.0);
+
+	cout << myBank->toString() << endl;
+	cout << endl;
+
+
+	cout << "\n\n"<<endl;
+	cout << "-------------------------------------------------"<<endl;
+	cout << " TEST: FRIEND class "<<endl;
+	cout << "-------------------------------------------------"<<endl;
+	cout << " ONLY class bank can create new Account-objects" <<endl;
+
+	Account k1("Anton Hofmann", 123.0); 	// error, because constructor is private
+
+	int accountNr= myBank->addAccount("Anton Hofmann", 100.0);
+	myBank->getAccount(accountNr).deposit(9000.0);
+
+	cout << myBank->toString() << endl;
+	cout << endl;
+
+	delete myBank;
+
+    return 0;
+}
+
+#+END_SRC
+
+
+* test yourself
+
+- [X] Given: main.cpp
+- [X] adapt your classes
+
+#+BEGIN_SRC cpp
+#include <iostream>
+using namespace std;
+
+#include "bank.h"
+#include "account.h"
+
+int main(){
+	Bank *myBank;
+	myBank = new Bank("Hofmann unlimited");
+
+	cout << "\n\n"<<endl;
+	cout << "-------------------------------------------------"<<endl;
+	cout << " TEST: STATIC members "<<endl;
+	cout << "-------------------------------------------------"<<endl;
+
+
+	myBank->addAccount("Anton Hofmann", 100.0);
+	myBank->addAccount("Beta Hofmann", 200.0);
+	myBank->addAccount("Gamma Hofmann", 300.0);
+
+	cout << myBank->toString() << endl;
+
+
+	cout << "\n\n"<<endl;
+	cout << ".... delete Account: Anton Hofmann and add Account: Omega Hofmann";
+	cout << " Look at the account number!!!"<<endl;
+
+	myBank->delAccount("Anton Hofmann");
+	myBank->addAccount("Omega Hofmann", 900.0);
+
+	cout << myBank->toString() << endl;
+	cout << endl;
+
+
+	cout << "\n\n"<<endl;
+	cout << "-------------------------------------------------"<<endl;
+	cout << " TEST: FRIEND class "<<endl;
+	cout << "-------------------------------------------------"<<endl;
+	cout << " ONLY class bank can create new Account-objects" <<endl;
+
+//	Account k1("Anton Hofmann", 123.0); 	// error, because cons is private
+
+	int accountNr= myBank->addAccount("Anton Hofmann", 100.0);
+	myBank->getAccount(accountNr).deposit(9000.0);
+
+	cout << myBank->toString() << endl;
+	cout << endl;
+
+
+	cout << "-------------------------------------------------"<<endl;
+	cout << " TEST: Prepare "<<endl;
+	cout << "-------------------------------------------------"<<endl;
+
+	cout << "... 1. double d= myBank->getMaxAccount().getAmount(); "<<endl;
+	double d= myBank->getMaxAccount().getAmount();
+	cout << "...    Maximal amount = " << d << endl <<endl;
+
+	cout << "... 2. double d= myBank->getMaxAccount().getAmount(); "<<endl;
+	d= myBank->getStandardDeviation();
+	cout << "...    Standard Deviation = " << d << endl << endl;
+
+	cout << "... 3. myBank->delAccount(myBank->getAverageAmount()); "<<endl;
+	cout << "...    delete all Account having less then the average amount"<<endl;
+	cout << "...    Average Amount= " << myBank->getAverageAmount() << endl<<endl;
+	myBank->delAccount(myBank->getAverageAmount());
+
+	cout << myBank->toString() << endl;
+	cout << endl;
+
+	d= myBank->getStandardDeviation();
+	cout << "Standard Deviation = " << d << endl << endl;
+
+	delete myBank;
+
+	return 0;
+}
+
+
+/*
+- [X] The output should be:
+
+-------------------------------------------------
+ TEST: STATIC members
+-------------------------------------------------
+
+Bank: Hofmann unlimited
+...Account-owner: Anton Hofmann
+...Account-number: 1
+...Account-amount: 100
+
+...Account-owner: Beta Hofmann
+...Account-number: 2
+...Account-amount: 200
+
+...Account-owner: Gamma Hofmann
+...Account-number: 3
+...Account-amount: 300
+
+
+.... delete Account: Anton Hofmann and add Account: Omega Hofmann Look at the account number!!!
+Account destructor ...
+
+Bank: Hofmann unlimited
+...Account-owner: Beta Hofmann
+...Account-number: 2
+...Account-amount: 200
+
+...Account-owner: Gamma Hofmann
+...Account-number: 3
+...Account-amount: 300
+
+...Account-owner: Omega Hofmann
+...Account-number: 4
+...Account-amount: 900
+
+
+-------------------------------------------------
+ TEST: FRIEND class
+-------------------------------------------------
+ ONLY class bank can create new Account-objects
+
+Bank: Hofmann unlimited
+...Account-owner: Beta Hofmann
+...Account-number: 2
+...Account-amount: 200
+
+...Account-owner: Gamma Hofmann
+...Account-number: 3
+...Account-amount: 300
+
+...Account-owner: Omega Hofmann
+...Account-number: 4
+...Account-amount: 900
+
+...Account-owner: Anton Hofmann
+...Account-number: 5
+...Account-amount: 9100
+
+
+-------------------------------------------------
+ TEST: Prepare
+-------------------------------------------------
+... 1. double d= myBank->getMaxAccount().getAmount();
+...    Maximal amount = 9100
+
+... 2. double d= myBank->getMaxAccount().getAmount();
+...    Standard Deviation = 3747.92
+
+... 3. myBank->delAccount(myBank->getAverageAmount());
+...    delete all Account having less then the average amount
+...    Average Amount= 2625
+
+Account destructor ...
+Account destructor ...
+Account destructor ...
+
+Bank: Hofmann unlimited
+...Account-owner: Anton Hofmann
+...Account-number: 5
+...Account-amount: 9100
+
+Standard Deviation = 0
+
+Account destructor ...
+
+
+
+Hint: vector.erase();
+	After vector.erase(); decrement iterator
+
+Hint: Standard Deviation
+https://en.wikipedia.org/wiki/Standard_deviation
+
+...In statistics, the standard deviation is a measure that is used to
+quantify the amount of variation of a set of data values.
+
+A standard deviation close to 0 indicates that the data points tend to be
+very close to the mean (also called the expected value) of the set, while
+
+a high standard deviation indicates that the data points are spread out
+over a wider range of values.
+*/
+#+END_SRC

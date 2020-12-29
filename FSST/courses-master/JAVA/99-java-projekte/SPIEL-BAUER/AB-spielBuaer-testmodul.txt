@@ -1,0 +1,164 @@
+===============================================================================
+AUFGABE: DAS SPIEL ERWEITERN mit einem TESTMODUL
+===============================================================================
+
+1. Beim Start folg. eingeben: 
+-------------------------------------------------------------------------------
+	Spieler: ahofmann
+	Fragen_Datei: fragen-spiel-bauer.xml
+	
+
+
+2. Beim Abschiessen des Helis
+-------------------------------------------------------------------------------
+	nächste Frage stellen
+	Antwort/Punkte speichern (bei falscher Antwort-> 0 Punkte)
+
+
+
+3. Wenn alle Fragen beantwortet:
+-------------------------------------------------------------------------------
+	Speichern unter: fragendateiname_ergebnis_name_datum_.txt
+	Inhalt:	NAME:
+			DATUM-start:
+			DATUM-end:
+			DAUER:
+			Fragen_Datei_Name:
+			Mögliche Gesamt-Punkte:
+			Erreichte Punkte:  .... (Prozentanteil)
+			Log: .... alle fragen und antworten und gegebenen Antworten 
+
+
+
+
+4. Richtlinie: Aufbau einer Fragen-Datei
+-------------------------------------------------------------------------------
+<?xml version="1.0" encoding="UTF-8"?>
+<fragen>
+<frage>
+<fragentext>
+BEISPIEL: SINGLE-CHOICE-Frage
+Objekte, die nicht mehr benötigt werden, müssen gelöscht
+werden. Dazu wird eine boolsche Variable remove verwendet. 
+In welcher Klasse wird Sie definiert?
+a) Sprite b) Rocket c) GamePanel d) Explosion
+</fragentext>
+<loesungstext>a</loesungstext>
+<punkte>10</punkte>
+</frage>
+
+<frage>
+<fragentext>
+BEISPIEL: SINGLE-CHOICE-Frage
+Das tatsächliche Löschen der Objekte erfolgt in
+a) GamePanel.doLogic() b) Rocket.doLogic 
+</fragentext>
+<loesungstext>a</loesungstext>
+<punkte>10</punkte>
+</frage>
+
+
+<frage>
+<fragentext>
+BEISPIEL: MULTIPLE-CHOICE: mit , trennen
+Von Ihnen programmierte Klassen im Spiel:
+a) GamePanel b) Rocket c) Image d) Movable
+</fragentext>
+<loesungstext>a,b</loesungstext>
+<punkte>20</punkte>
+</frage>
+
+
+<frage>
+<fragentext>
+BEISPIEL: SINGLE-LÜCKEN-Frage: 
+Was gehört statt ??? geschrieben.
+public class GamePanel extends JPanel ??? Runnable{...}
+</fragentext>
+<loesungstext>implements</loesungstext>
+<punkte>10</punkte>
+</frage>
+
+
+<frage>
+<fragentext>
+BEISPIEL: MULTIPLE_LÜCKEN-Frage: Antworten mit , trennen
+Was gehört statt ??? geschrieben.
+Thema: Threads erzeugen
+public class GamePanel ... Runnable{
+	...
+	public void ??? (){ 
+		// hier läuft der Thread
+		...
+	}
+	...
+	
+	public void init(){
+		Thread t= new Thread(???);
+		t.start();
+	}
+}
+</fragentext>
+<loesungstext>run,this</loesungstext>
+<punkte>20</punkte>
+</frage>
+
+<frage>
+<fragentext>
+BEISPIEL: WAHR od. FALSCH Frage: 
+wahr bzw. falsch eingeben: 
+Java unterstützt Mehrfachevererbung
+</fragentext>
+<loesungstext>falsch</loesungstext>
+<punkte>10</punkte>
+</frage>
+
+
+</fragen>
+
+
+
+
+5. Beispiel für Ausgabedatei:
+fragen-spiel-bauer.xml_ergebnis_ahofmann_2013-02-21-21:02.txt
+-------------------------------------------------------------------------------
+NAME: ahofmann
+DATUM-start: 2013-02-21-21:02
+DATUM-end: 2013-02-21-21:02
+DAUER: 28sec
+FRAGEN-DATEI: fragen-spiel-bauer.xml
+Mögliche Gesamt PUNKTE: 80
+Erreichte PUNKTE: 20 (25.0 %)
+---- LOG ----
+FRAGE:======================================================
+SINGLE-CHOICE:
+			Objekte, die nicht mehr benötigt werden, müssen
+			gelöscht
+			werden. Dazu wird eine boolsche Variable remove
+			verwendet. In welcher
+			Klasse wird Sie definiert?
+			a) Sprite b) Rocket c) GamePanel d)
+			Explosion
+LÖSUNG:....................................................
+a
+PUNKTE:....................................................
+10
+GEGEBENE ANTWORT-------------------------------------------
+a
+ERREICHTE PUNKTE: .........................................
+10
+
+
+FRAGE:======================================================
+Das tatsächliche Löschen der Objekte erfolgt in
+			a)GamePanel.doLogic() b) Rocket.doLogic
+LÖSUNG:....................................................
+a
+PUNKTE:....................................................
+10
+GEGEBENE ANTWORT-------------------------------------------
+a
+ERREICHTE PUNKTE: .........................................
+10
+
+

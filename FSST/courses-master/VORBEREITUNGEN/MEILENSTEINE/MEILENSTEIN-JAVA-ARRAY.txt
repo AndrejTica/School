@@ -1,0 +1,99 @@
+﻿MEILENSTEIN-JAVA-ARRAY.txt
+===========================================================================
+
+
+AUFGABE   : (  ) arrInv
+---------------------------------------------------------------------------
+	Fülle die Lücken im Programm. 
+	Die Methode „arrInv“ soll die Reihenfolge eines  Int-Array
+	umkehren, also {2,4,3,1} -> {1,3,4,2} . Schreibe die Methode „arrInv“.
+
+	public _______________ arrInv(__________)
+	{
+		
+
+
+
+
+
+
+
+
+
+
+
+	}
+	
+	public static void main(String[] args) 
+	{
+		int[] arr = {1,2,3,4,5};
+		String result= arrInv(arr);
+		System.out.println( result );
+	}
+
+
+AUFGABE   : (  ) arrHatDoppelte
+---------------------------------------------------------------------------
+	Fülle die Lücken im Programm. 
+	Die Methode „arrHatDoppelte“ soll überprüfen, ob Im Array Elemente
+	doppelt bzw. mehrfach vorkommen. Schreibe die Methode „arrHatDoppelte“.
+
+	public _______________ arrHatDoppelte(__________)
+	{
+		
+
+
+
+
+
+
+
+
+
+
+
+	}
+	
+	public static void main(String[] args) 
+	{
+		int[] arr = {1,2,3,4,5};
+		boolean hatDoppelte= arrHatDoppelte(arr);
+		System.out.println( "arr hat doppelte: " + hatDoppelte );
+	}
+
+
+
+
+
+
+AUFGABE   : (  ) arrLotto
+---------------------------------------------------------------------------
+	Fülle die Lücken im Programm. 
+	Die Methode „arrLotto“ soll 6 garantiert verschiedene Zufallszahlen
+	zwischen 1 und 45 in das Array schreiben.
+	
+	public _______________ arrLotto(__________)
+	{
+		
+
+
+
+
+
+
+
+
+
+
+
+	}
+	
+	public static void main(String[] args) 
+	{
+		int[] arr = new int [6];
+		
+		arrLotto(arr);
+		...
+	}
+
+

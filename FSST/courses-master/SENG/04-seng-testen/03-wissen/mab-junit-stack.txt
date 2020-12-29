@@ -1,0 +1,63 @@
+﻿mab: Junit-stack
+----------------------------------------------------------------------------
+1. (6) 
+In der Realisierung im Skriptum der Klasse Stack ist ein Fehler. 
+	(../01-lernen/u-seng-testen-junit.odt)	...
+	Die Klasse Element kann nicht gefunden werden. 
+
+Aufgabe:
+	Sie sollen diesen Fehler korrigieren und das fehlerfreie Funktionieren 
+	Ihrer Lösung mit Ihrer Test-Suite (StackTest.java) testen.	
+
+Hinweis: Stack
+	Ein einfacher Stack kann in Java als eine rekursive Datenstruktur 
+	in Form einer einfach geketteten Liste. 
+	Die Knoten der Liste werden in diesem Beispiel Element genannt. 
+	
+	Ein Element hat 2 Member (value und next).
+	Value ist zB. vom Typ Object und next ist vom Typ Element. 
+	Sehen/Erkennen Sie die Rekursion?
+
+Antwort:
+// class Stack                                	******
+// ***************************************************
+public class Stack {
+	private Element head;
+
+	public boolean isEmpty() {
+(1)		return (head == ??????????????????);
+	}
+
+	public void push(Object o) {
+(1)		head = ?????????? Element (?????????, head);
+	}
+
+	public Object pop() throws StackEmptyException{
+		if (this.isEmpty()) {
+			throw new StackEmptyException();
+		} else {
+(1)			Object h = ???????????.getValue();
+(1)			head = ???????????.getNext();
+			
+			return h;
+		}
+	}
+}
+// class Element                                ******
+// ***************************************************
+class Element {
+	final Object value;
+	final Element next;		// Verweis zum nächsten Element
+	
+	Element(Object value, Element next) {
+(1)		????????????
+	}
+
+	public Element getNext() {
+(.5)		??????????????;
+	}
+
+	public Object getValue() {
+(.5)		??????????????;
+	}
+}

@@ -1,0 +1,226 @@
+# AB-03-java-oop2-gegenstand-inventar-spieler-kampf
+---------------------------------------------------------------------------
+
+1. Create project: 04-JAVA-OOP1-gegenstand-inventar
+2. Create package: oop1 and test
+3. Create class: Gegenstand, Inventar in package oop1
+4. Create Test-Programs T01_Inventar.java (see below)
+	to test your classes in oop1
+	
+	
+~~~
+package test;
+import oop1.Gegenstand;
+import oop1.Inventar;
+
+public class T01_Inventar {
+	public static void main(String[] args) {
+		Gegenstand g1;
+		Gegenstand g2;
+		Gegenstand g3;
+		Gegenstand g4;
+
+		// Gegenstand(String bezeichnung, double angriffswert, double verteidigungswert, double heilwert, double gewicht) {
+		
+		g1= new Gegenstand("Dolch", 5.0, 5.0, 0.0, 1.0);
+		g2= new Gegenstand("Heil-H2O", 0.0, 0.0, 10.0, 1.0);
+		g3= new Gegenstand("ZauberBuch", 5.0, 5.0, 5.0, 5.0);
+		g4= new Gegenstand("Judo-Skill", 10.0, 10.0, 0.0, 0.0);
+		
+		Inventar rucksack= new Inventar(1500.0);
+		rucksack.addGegenstand(g1);
+		rucksack.addGegenstand(g2);
+		rucksack.addGegenstand(g3);
+		rucksack.addGegenstand(g4);
+		
+		System.out.println(rucksack.toString());
+		
+		System.out.println("\n---> AFTER deleting DOLCH --->\n");
+		rucksack.removeGegenstand("Dolch");
+		
+		System.out.println(rucksack.toString());
+		
+	}
+}
+~~~
+
+
+OUTPUT:
+*** INVENTAR: maxGewicht= 1500.0
+... GEGENSTAND: Dolch
+    Angriff: 5.0
+    Verteidigung: 5.0
+    Heilwert: 0.0
+    Gewicht: 1.0
+... GEGENSTAND: Heil-H2O
+    Angriff: 0.0
+    Verteidigung: 0.0
+    Heilwert: 10.0
+    Gewicht: 1.0
+... GEGENSTAND: ZauberBuch
+    Angriff: 5.0
+    Verteidigung: 5.0
+    Heilwert: 5.0
+    Gewicht: 5.0
+... GEGENSTAND: Judo-Skill
+    Angriff: 10.0
+    Verteidigung: 10.0
+    Heilwert: 0.0
+    Gewicht: 0.0
+
+
+---> AFTER deleting DOLCH --->
+
+*** INVENTAR: maxGewicht= 1500.0
+... GEGENSTAND: Heil-H2O
+    Angriff: 0.0
+    Verteidigung: 0.0
+    Heilwert: 10.0
+    Gewicht: 1.0
+... GEGENSTAND: ZauberBuch
+    Angriff: 5.0
+    Verteidigung: 5.0
+    Heilwert: 5.0
+    Gewicht: 5.0
+... GEGENSTAND: Judo-Skill
+    Angriff: 10.0
+    Verteidigung: 10.0
+    Heilwert: 0.0
+    Gewicht: 0.0
+
+
+
+HINT: Vector: Objekte in Containern speichern
+Wenn man viele Objekte zu verwalten hat 
+(wie z. B.: Die Klasse SchoolClass, ...), weiß man oft nicht wie viele Objekte 
+(z.B. Student) tatsächlich zur Laufzeit des Programms gespeichert werden sollen.
+Arrays haben den Nachteil, dass man bereits zur Übersetzungszeit (=statisch) 
+die maximale Anzahl der Arrayelemente angeben muss. 
+Hier hilft uns die Klasse Vector aus java.util. 
+Sie kann zur Laufzeit beliebig viele Objekte speichern. 
+Und man kann mit Vectoren gleich arbeiten wie mit den bekannten Arrays.
+
+Hier nun ein einfaches Beispiel: (www.javabuch.de)
+
+* DemoVector.java
+~~~
+import java.util.*;
+
+public class DemoVector
+{
+  public static void main(String[] args)
+  {
+    Vector<String> v = new Vector<String>();
+
+    v.addElement("eins");
+    v.addElement("drei");
+    v.insertElementAt("zwei",1);
+
+ 
+    v.remove("eins");
+    v.insertElementAt("1",0);
+
+   // Eine bekannte Form der for-Schleife für Collection-Klassen
+   for (int i=0; i < v.size(); i++){
+      System.out.println(v.elementAt(i));
+   }
+
+   // Eine neue Art der for-Schleife für Collection-Klassen
+   for (String s : v){
+      System.out.println(s);
+   }
+   
+}
+~~~
+
+
+# Die Klasse Spieler
+---------------------------------------------------------------------------
+
+Fügen Sie die Klasse Spieler zum Projekt:
+Sehen Sie hier einen ersten Vorschlag, den Sie übernehmen aber
+auch gerne selbständig anpassen/verändern können:
+
+SPIELER:
+- name: String
+- rucksack: Inventar
+- hand: int (index zum ausgewählten Gegenstand im Inventar)
+- lebt: boolean
+
+Die Methoden bitte selbständig entwerfen, programmieren und testen
+
+
+# Die Verwendung der Klassen
+---------------------------------------------------------------------------
+Mehrere Spieler werden erzeugt und kämpfen gegeneinander...
+Hier ein kleines Beispiel, das Sie beliebig ändern/anpassen 
+können. Wenn Sie wollen, lassen Sie Ihrer Phantasie freien Lauf.
+
+~~~
+package test;
+import oop1.Gegenstand;
+import oop1.Inventar;
+import oop1.Spieler;
+
+public class T02_Spieler {
+	public static void main(String[] args) {
+
+		// Gegenstand(String bezeichnung, double angriffswert, double verteidigungswert, double heilwert, double gewicht) {
+		
+		Inventar rucksack= new Inventar(1500.0);
+		rucksack.addGegenstand(new Gegenstand("Dolch", 5.0, 5.0, 0.0, 1.0));
+		rucksack.addGegenstand(new Gegenstand("ZauberBuch", 5.0, 5.0, 5.0, 5.0));
+
+		Inventar sack= new Inventar(1500.0);
+		sack.addGegenstand(new Gegenstand("Heil-H2O", 0.0, 0.0, 10.0, 1.0));
+		sack.addGegenstand(new Gegenstand("Judo-Skill", 10.0, 10.0, 0.0, 0.0));
+
+		Spieler hero= new Spieler("Herkules", rucksack, 0);
+		// Herkules hält in seiner Hand den Gegenstand "Dolch"
+
+		Spieler monster= new Spieler("Dark Monster", sack, 1);
+		// Dark Monster hält in seiner Hand den Gegenstand "Judo-Skill"
+
+		
+		System.out.println("\n*** BEFORE fight ***\n");
+		System.out.println(hero.toString());
+		System.out.println(monster.toString());
+		// Ausgabe:
+		// name, rucksakc, hand, leben
+
+		hero.fightWith(monster);
+		
+		System.out.println("\n*** AFTER fight ***\n");
+		System.out.println(hero.toString());
+		System.out.println(monster.toString());
+		
+	}
+}
+~~~
+
+# Der Kampf
+---------------------------------------------------------------------------
+1. Auswahl: (optional)
+	Jeder wählt aus seinem Rucksack einen Gegenstand für den Kampf.
+	Siehe private member hand.
+
+2. Der Kampf:
+	Spieler A: greift Spieler B: an
+		B.hand.verteidigungswert -= A.hand.angriffswert
+	Spieler B: greift im Gegenzug Spieler A: an
+		A.hand.verteidigungswert -= B.hand.angriffswert
+
+3. Nach dem Kampf
+	WENN der Gegenstand in der hand einen negativen angriffswert oder
+	einen negativen verteidigunswert hat, DANN lösche diesen Gegenstand
+	aus dem rucksack und wähle einen anderen in die hand.
+
+	WENN der rucksack leer DANN lebt=false (tot)
+
+	WENN rucksack hat keinen angriffs- bzw. verteidigungswert,
+	DANN WENN Gegenstand mit heilwert existiert DANN 
+	erfolgt eine Umwandlung nach folg. Regel:
+	Es wird ein neuer Gegenstand in den rucksack gelegt, dessen
+	angriffswert= heilwert/2 und verteidigungswert= heilwert/2 ist.
+	Der 'Heilwert-Gegenstand' wird aus dem rucksack gelöscht.
+	

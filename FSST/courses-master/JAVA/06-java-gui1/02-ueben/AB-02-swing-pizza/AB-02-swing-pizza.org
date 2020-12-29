@@ -1,0 +1,290 @@
+* SwingAMPEL
+1) zeigt die Verwendung versch. Dialogelemente und
+2) externe Bibliotheken anbinden: Java-EXCEL, Java-PDF, Logging (sl4j)
+
+
+* Projekt anlegen und Folder erzeugen
+- Projekt: SwingAmpel
+- SwingForm: ui.SwingAmpel
+- Folder: pizza_modules-ext
+  - externe Bibliotheken
+- Folder: pizza_resources
+  - pizza.xls, pizza.pdf
+
+
+* Schritt-01: ui.SwingAmpel.java
+- use absolute Layout
+- ButtonGroup
+  - RadioButton (Gross, Mittel, Klein) dieser ButtonGroup zuordnen
+
+- [[file:img/swingpizza.png]]
+
+* Schritt-02: Button "Beleg" erstellen
+- windowOpend: init GUI (see above)
+- Tipp: Combobox und Listbox (siehe unten: pdf export)
+- Globale Variablen/Methoden
+#+BEGIN_SRC java
+    /**
+     * glob vars
+     */
+    // Zwischenbeträge
+    private double groesseBetrag = 100.0;
+    private double auflagenBetrag = 0.0;
+    private double zutatenBetrag = 0.0;
+
+    // Preise
+    private final double PIZZA_GROSS = 100.0;
+    private final double PIZZA_MITTEL = 90.0;
+    private final double PIZZA_KLEIN = 80.0;
+
+    // Auflage: checkbox
+    private final double AUFLAGE_OLIVEN = 1.0;
+    private final double AUFLAGE_SPECK = 1.0;
+    private final double AUFLAGE_ZWIEBEL = 1.0;
+
+    // Zutaten: liste - alles kostet gleich viel
+    private final double ZUTATEN_PREIS = 10.0;
+
+    // Zutatenliste
+    String[] zutatenListData = {"Ketchup", "Salat", "Mineral"};
+
+    // ---------------------------------------------
+    /*
+     * PDF, Excel, Word aufrufen
+     */
+    private final String doPDF = "/usr/bin/okular ";
+    private final String doExcel = "/usr/bin/libreoffice6.1 --calc";
+    private final String doWord = "/usr/bin/soffice ";
+
+    /**
+     * Hilfsfunktionen
+     */
+    private void setBetrag() {
+        // Groesse
+        if (jRadioButtonGROSS.isSelected()) {
+            groesseBetrag = PIZZA_GROSS;
+        } else if (jRadioButtonMITTEL.isSelected()) {
+            groesseBetrag = PIZZA_MITTEL;
+        } else {
+            groesseBetrag = PIZZA_KLEIN;
+        }
+
+        // Auflage
+        auflagenBetrag = 0.0;
+        if (jCheckBoxOLIVEN.isSelected()) {
+            auflagenBetrag += AUFLAGE_OLIVEN;
+        }
+        if (jCheckBoxZWIEBEL.isSelected()) {
+            auflagenBetrag += AUFLAGE_ZWIEBEL;
+        }
+        if (jCheckBoxSPECK.isSelected()) {
+            auflagenBetrag += AUFLAGE_SPECK;
+        }
+
+        // Zutaten: Ketchup, Salat, Mineral
+        // alle Zutaten kosten gleich viel
+        zutatenBetrag = 0.0;
+        List<String> list_selected = jListZUTATEN.getSelectedValuesList();
+        for (String sZutat : zutatenListData) {
+            if (list_selected.contains(sZutat)) {
+                zutatenBetrag += ZUTATEN_PREIS;
+            }
+        }
+
+        double preis = groesseBetrag + auflagenBetrag + zutatenBetrag;
+
+        jLabelBETRAG.setText(String.valueOf(preis));
+    }
+#+END_SRC
+
+
+
+* Schritt-03: Vorbereitungen für excel und pdf export
+- [[file:img/netbeans-libraries.png]]
+- download: pizza_modules_ext.zip
+  - enthält Bibliotheken (notwendige Auszüge)
+	 - https://archive.apache.org/dist/poi/release/bin/poi-bin-4.0.1-20181203.zip
+	 - https://github.com/itext/itext7/releases/download/7.1.5/iText7-Core-7.1.5.zip
+	 - https://www.slf4j.org/download.html
+
+- Bibliotheken hinzufügen
+  - eclipse: [[https://javabeginners.de/Grundlagen/Bibliothek_einbinden.php]]
+  - netbeans: Libraries - re.Maus - add Library - create
+	 - name: iText and select all jar-files from iText7-...
+	 - name: poi_apache and select all jar-files from poi-...
+	 - name: slf4j and select all jar-files from slf4j-...
+
+* Schritt-03: Button "excel export"
+- [[file:img/excel.png]]
+1. Erstelle die Excel-Datei: pizza_resources/pizza.xls
+	- Zeile-01: FirmenLogo
+	- Zeile-02: Gesammtsumme;Formel= Summe (XX:YY)
+	- Zeile-03: Name;Datum;Betrag
+2. Erstelle das folgende Programm
+
+#+BEGIN_SRC java
+        // https://poi.apache.org/components/spreadsheet/quick-guide.html
+        try {
+            //Reading and Rewriting Workbooks
+            //POIFSFileSystem file_in= new POIFSFileSystem(new FileInputStream("pizza.xls"));
+            InputStream file_in = new FileInputStream("pizza_resources/pizza.xls");
+
+            HSSFWorkbook wb = new HSSFWorkbook(file_in);
+            HSSFSheet sheet = wb.getSheetAt(0);
+
+            //	Create a row and put some cells in it. Rows are 0 based.
+            int rows = sheet.getLastRowNum();
+            HSSFRow row = sheet.createRow((short) rows + 1);	// neue Zeile
+
+            // Create a cell and put a value in it.
+            // name
+            HSSFCell cell0 = row.createCell((short) 0, CellType.STRING);
+            cell0.setCellValue(jTextFieldKUNDE.getText());
+
+            // datum
+            HSSFCell cell1 = row.createCell((short) 1, CellType.STRING);
+
+            Date today = new Date();
+            java.text.DateFormat df;
+            df = java.text.DateFormat.getDateInstance(java.text.DateFormat.LONG, Locale.GERMAN);
+            cell1.setCellValue(df.format(today));
+
+            // betrag
+            HSSFCell cell2 = row.createCell((short) 2, CellType.NUMERIC);
+            CellStyle style = wb.createCellStyle();
+            style.setAlignment(HorizontalAlignment.RIGHT);
+            style.setDataFormat(wb.createDataFormat().getFormat("0.00"));
+
+            cell2.setCellStyle(style);
+
+            double betrag = Double.parseDouble(jLabelBETRAG.getText());
+            cell2.setCellValue(betrag);
+
+            // Write the output to a file
+            OutputStream fileOut = new FileOutputStream("pizza.xls");
+            wb.write(fileOut);
+            fileOut.close();
+
+            // open excel
+            Runtime.getRuntime().exec(doExcel + " pizza_resources/pizza.xls");
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+#+END_SRC
+
+* Schritt-04: Button "pdf export"
+- [[file:img/pdf.png]]
+#+BEGIN_SRC java
+        File file_out = new File("hofa_resources/pizza.pdf");
+        PdfDocument pdf;
+        try {
+            pdf = new PdfDocument(new PdfWriter(file_out));
+
+            Document document = new Document(pdf);
+            //document.add(createTable(rohit));
+            //document.add(createTable(bruno));
+
+            // Header
+            String txtHeader = "";
+            txtHeader += "*******************************************\n";
+            txtHeader += "*** RECHNUNG **** PIZZA ***** Unlimited ***\n";
+            txtHeader += "*******************************************\n\n";
+
+            String txtDate = java.text.DateFormat.getDateInstance().format(new Date());
+
+            // Footer
+            String txtFooter = "\nBetrag:...................................... "
+                    + jLabelBETRAG.getText()
+                    + "\n\nWir danken für Ihr Vertrauen\n";
+
+            Paragraph pHeader = new Paragraph(txtHeader);
+            pHeader.setFont(PdfFontFactory.createFont(StandardFontFamilies.HELVETICA));
+            pHeader.setFontSize(18);
+            //       pHeader.setFontColor(Color.makeColor(PdfName.ColorSpace.)Color.RED);
+            pHeader.setBold();
+            pHeader.setTextAlignment(TextAlignment.CENTER);
+
+            // Datum
+            Paragraph pDate = new Paragraph("Salzburg, " + txtDate);
+            pDate.setFont(PdfFontFactory.createFont(StandardFontFamilies.COURIER));
+            pDate.setFontSize(12);
+            //pDate.setFontColor(Color.BLACK);
+            pDate.setBold();
+            pDate.setTextAlignment(TextAlignment.RIGHT);
+
+            // Tabelle
+            Table t = new Table(2);// 2 spalten
+            t.setBorder(new SolidBorder(1));
+            t.setPadding(5);
+            t.setHorizontalBorderSpacing(0);
+            t.addHeaderCell("Produkt");
+            t.addHeaderCell("Ihre Bestellung");
+
+            t.addCell("GRÖSSE");
+            String txt = "";
+            if (jRadioButtonGROSS.isSelected()) {
+                txt += "-> GROSS" + "\n";
+            } else if (jRadioButtonMITTEL.isSelected()) {
+                txt += "-> Mittel" + "\n";
+            } else {
+                txt += "-> klein" + "\n";
+            }
+            t.addCell(txt);
+
+            t.addCell("AUFLAGEN:");
+            txt = "";
+            //Checkbox
+            if (jCheckBoxOLIVEN.isSelected()) {
+                txt += "-> mit Oliven" + "\n";
+            }
+            if (jCheckBoxSPECK.isSelected()) {
+                txt += "-> mit Speck" + "\n";
+            }
+            if (jCheckBoxZWIEBEL.isSelected()) {
+                txt += "-> mit Zwiebel" + "\n";
+            }
+            t.addCell(txt);
+
+            t.addCell("ZUTATEN:");
+            txt = "";
+            //  ListBox
+            List<String> zutaten = jListZUTATEN.getSelectedValuesList();
+
+            for (String s : zutaten) {
+                txt += "-> mit " + s + "\n";
+            }
+            t.addCell(txt);
+
+            t.addCell("BEZAHLUNG:");
+            txt = "";
+            //Combobox
+            txt += "-> " + jComboBoxBeZAHLUNG.getSelectedItem() + "\n";;
+            t.addCell(txt);
+
+            t.addCell("BESTELLER:");
+            txt = "";
+            txt += "-> " + jTextFieldKUNDE.getText() + "\n";
+            t.addCell(txt);
+
+            t.addCell("BETRAG:");
+            txt = "";
+            txt += "-> " + jLabelBETRAG.getText() + "\n";
+            t.addCell(txt);
+
+            t.setHorizontalAlignment(com.itextpdf.layout.property.HorizontalAlignment.CENTER);
+
+            Paragraph pFooter = new Paragraph(txtFooter);
+            pFooter.setTextAlignment(TextAlignment.LEFT);
+
+            document.add(pHeader);
+            document.add(pDate);
+            document.add(t);
+            document.add(pFooter);
+
+            document.close();
+            Runtime.getRuntime().exec(doPDF + " pizza_resources/pizza.pdf");
+        } catch (Exception ex) {
+            ex.printStackTrace(System.out);
+        }
+#+END_SRC

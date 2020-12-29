@@ -1,0 +1,153 @@
+* ARRAY mit JUnit, Interface am Beispiel Lotto 
+- JUnit und Interface verwenden
+- Algorithmen mit Arrays
+
+
+* Projekt und Pakete test und lotto erzeugen 
+- Projektname: array-junit-interface-lotto
+- Pakte: test und lotto
+
+* Interface lotto.ILotto erzeugen
+- im Paket lotto das Interface ILotto erzeugen
+#+begin_src java
+package lotto;
+
+public interface ILotto {
+	void getLottoTip(int[] a);
+  void sort(int[] a);
+	boolean isUnique(int[] a);
+	boolean isSorted(int[] a);
+	boolean hasOnly(int[] a, int start, int end); // [start, end[   bsp: 1,46
+	int getWin(int[] tip, int[] drawing );
+}
+
+#+end_src
+
+* KLASSE lotto.Lotto erzeugen
+- Im Paket lotto die Klasse Lotto erzeugen
+- implements ILotto hinzufügen
+- von Eclipse die zu implementierenden Methoden erzeugen lassen
+#+begin_src java
+package lotto;
+
+public class Lotto implements ILotto{
+
+	@Override
+	public void getLottoTip(int[] a) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void sort(int[] a) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean isUnique(int[] a) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isSorted(int[] a) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean hasOnly(int[] a, int start, int end) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public int getWin(int[] tip, int[] drawing) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+}
+
+#+end_src
+
+* Klasse test.Testcase_lotto erzeugen
+- im Paket test Junit Testcase erzeugen: Testcase_lotto
+- zu testende Klasse eingeben (Class under Test): lotto.Lotto
+- next drücken und die Klasse Lotto und alle Methoden checken
+
+#+begin_src java
+package test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import lotto.Lotto;
+
+class Testcase_lotto {
+
+	@BeforeEach
+	void setUp() throws Exception {
+	}
+
+	@AfterEach
+	void tearDown() throws Exception {
+	}
+
+	@Test
+	void testGetLottoTip() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testsort() {
+		fail("Not yet implemented");
+	}
+	
+	@Test
+	void testIsUnique() {
+		Lotto game= new Lotto();
+		
+		int[] a= {1,2,3,4,5,6};
+		boolean ret= game.isUnique(a);
+		assertEquals(true, ret);
+		
+		int[] b= {1,2,3,4,6,6};
+		ret= game.isUnique(b);
+		assertEquals(false, ret);		
+	}
+
+	@Test
+	void testIsSorted() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testHasOnly() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testGetWin() {
+		fail("Not yet implemented");
+	}
+
+}
+#+end_src
+
+* Run as Junit Test
+- test.Testcase_lotto mit Run as Junit Test starten
+- studieren Sie den Erfolg der Test-Methoden 
+
+* Testdriven coding
+1. in test.Testcase_lotto eine Test-Methode programmieren
+   1. verwende assertEquals(), assertArrayEquals(), ... macros
+2. in lotto.Lotto dazu passende Methode programmieren
+3. test.Testcase_lotto mit Run as Junit Test starten
+4. wenn Test-Methode keinen Fehler anzeigt weiter zur nächsten.
+

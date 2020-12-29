@@ -1,0 +1,104 @@
+# AUFGABE: MY-WEB-PAGE
+
+* Aufgabe:
+	** Lernen/üben Sie die Verwendung von HTML,CSS und Javascript.
+	** Erstellen Sie auch folgende Ordner-Strukturen
+		img/ ... für Bilder 
+		css/ ... für css Dateien
+	** Verwenden Sie folgende Unterlagen
+		[] http://www.w3schools.com
+		[] https://developer.mozilla.org/de/docs/Learn
+		
+* Erstellen Sie unter Verwendung eines w3C-Frameworks ihre 'homepage'. 
+* Sie muss
+- [ ] sehr gut aussehen
+- [ ] fehlerfrei sein (keine Rechtschreibfehler, keine HTML-Fehler)
+- [ ] ihr persönliches Recht auf Privatsphäre nicht verletzen
+- [ ] für beeinträchtigte Personen verwendbar sein
+- [ ] für web-crawler/automatisierte Datensammler nicht nutzbar sein
+- [ ] nochmals sehr gut aussehen und fehlerfrei sein.
+- [ ] Bilder müssen im Ordner img liegen
+- [ ] evtl. css-Dateien im Ordner css
+- [ ] Folgende Inhalte/Dateien müssen enthalten sein:
+1.) homepage.html
+	Name
+	Adresse
+	Bild
+	SLIDESHOW: "ICH und die HTL"
+	Links zu:
+		about-me
+		contact
+		cv
+		internship
+		os
+		glossary
+	
+2.) about-me.html
+	Name
+	Wohnort (link-> contact.html google-Karte)
+	Warum HTL/Elektronik?
+	Mein Home-Computing Center
+	Berufswunsch
+	Firmen, die ich kenne bzw. besuchen möchte
+	Studiermöglichkeiten
+	Hobby/Interessen
+3.) contact.html
+	Name und Bild mit GEO-location
+4.) cv.html
+	Lebenslauf
+5.) internship.html
+	Bewerbungsschreiben/letter of application
+6.) os.html
+	Betriebssysteme: Befehls-Referenz
+7.) literature.html
+	Meine Bookmark-Sammlung als Tabelle:
+	Literatur/Bücher/Zeitschriften/Blogs zu den Themen
+		- Elektronik, 
+		- Web, 
+		- Programmierung, ...
+		
+8.) glossary.html
+	Abkürzungen und Erklärungen als Tabelle:
+	(verwende Internet-Recherchen (z.B: Wikipedia))
+
+	Beispiel:
+	Begriff       | Beschreibung
+	--------------+----------------------------------------------------------
+	IP            |	* Internet-Protkoll
+	              |	* <a href=https://de.wikipedia.org/wiki/Internet_Protocol
+	              |	* 32 Bit-Wert.
+	              |	* 141.201.53.80 (extranet)
+	              |	* lokale IP-Adressen werden nicht ins Internet geroutet
+	              |	* 172.16.48.130 (intranet)
+	              |	* 10.0.0.34 (intranet)
+	              |	* 192.168.1.104 (intranet)
+
+
+		html
+		css
+		http und https
+		url
+		jpg
+	Erkläre folg. Begriff bzw. gib ein Beispiel:
+		Domain-Name-System	https://de.wikipedia.org/wiki/Domain_Name_System
+		Rechnername
+		Sub-Domain
+		Top-Level-Domain
+		intranet
+		internet
+		StandardGateway
+
+		Befehle:
+			ipconfig
+			ping
+			nslookup
+			netstat
+			hostname
+
+		Zahlensysteme:
+			255(dez)=       (dual)
+			256(dez)=       (dual)
+	Links zu:
+		W3School-HTML-Quiz
+		W3School-CSS-Quiz
+		

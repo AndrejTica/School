@@ -1,0 +1,63 @@
+MAB: DB-Normalformen
+------------------------------------------------------------
+1) Sie kennen folgende Begriffe
+	Geben Sie die Beschreibung für 
+	1.1) Datenanomalien		1.2) Funktionale Abhängigkeit
+
+2) Sie können die richtig Zuordnung treffen
+	Begriffe:	1 Konsistenz	2 Redundanz	
+	Beschreibung:
+		A in mehreren versch. Tabellen wird immer wieder
+			ZUNAME,VORNAME,ADR,... gehalten
+		B Die Postleitzahl bestimmt auch die Attribute
+			Bundesland und Ort
+	Antwort (zB: X-9):  	
+	
+3) Überprüfe, ob die angegeb. FDs (a-d) beim Erstellen der 
+	Relation eingehalten wurden A B C D E F 
+	  A B C D E F
+	• a e 3 g 5 p
+	• a c 4 h 1 g
+	• a b 3 f 5 p
+	• a e 2 g 4 g
+	• a k 3 f 7 p
+	• a k 2 f 4 g
+	Antwort: streiche eventuell das Wort nicht
+	a) AB->D 		Antwort: Wurde nicht eingehalten
+	b) C-->E 		Antwort: Wurde nicht eingehalten
+	c) C-->F  		Antwort: Wurde nicht eingehalten
+	d) ABC-->E 		Antwort: Wurde nicht eingehalten
+
+4) Sind Attribute von einem Superschlüssel voll funktional abhängig?
+	Antwort: JA   NEIN
+
+5) Gegeben sei die Tabelle 
+	PERSONAL (PersNr, Name, AbtNr, AbtBez) mit 
+	folg. funkt.Abhängigkeiten
+		PersNr -> PERSONAL (insbes.: PersNR -> AbtNr)
+		AbtNr -> AbtBez
+	Antwort: AbtBez ist ??????????????? abhängig von PersNr
+
+6) Beschreiben Sie kurz die Merkmale der
+	1. Normalform	2. Normalform	3. Normalform
+
+7) Warum ist die Einhaltung der Normalformen so wichtig?
+
+8) Normalisieren Sie die folgende, nicht normalisierte Tabelle
+	bis zur dritten Normalform.  T ... Teilnehmer,  F ... Firma
+	TNR	TName	FNR	FName	KursTyp	KursTypName	Ort	Datum
+	19	Hauser	56	HutAG	K1010	DB1			A	12.12.2010
+	18	Auer	56	HutAG	K1111	DB2			A	13.12.2010
+	17	Wiese	77	TAGAG	K1122	Betriebssys	D	10.12.2010
+	...
+	
+9) Gegeben sei das Relationenschema   
+R = {A;B;C;D;E; F} mit den funktionalen Abhängigkeiten
+BC -> C		E -> BC			C -> AD		F -> D
+D -> CE		F ist der Schlüssel
+Alle Attribute A bis F sind einelementig.
+
+1.Beschreibe die 1. 2. und 3. Normalform
+2.R ist in der 1. Normalform.
+  Ist R auch in der 2. Normalform? Begründen Sie ihre Antwort.
+3.Warum ist R nicht in der 3. Normalform?

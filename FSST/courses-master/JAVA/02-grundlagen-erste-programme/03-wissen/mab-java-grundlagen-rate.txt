@@ -1,0 +1,42 @@
+﻿/*
+mab: java-grundlagen- Rate
+--------------------------------------------------------------
+Schreiben Sie ein 
+
+1. Programm und 
+2. Struktogramm
+
+das den Benutzer eine Zahl raten lässt. 
+
+Das Struktogramm/Programm soll den Benutzer begrüßen, eine Zahl 
+zwischen 0 und 100 zufällig auswählen und auf eine Eingabe warten. 
+Nachdem der Benutzer eine Zahl eingegeben hat, soll dieser Rateversuch 
+mit der zufällig gewählten Zahl verglichen werden, und entsprechend 
+"Zahl zu groß", "Zahl zu klein" oder eine Erfolgsmeldung und die 
+Anzahl der Versuche bei richtigem Raten ausgegeben werden. 
+War der Rateversuch nicht richtig, sollen solange neue Rateversuche 
+möglich sein, bis die Zahl geraten wurde. 
+
+Hinweis: Eine Zufallszahl kann mit:
+	java.util.Random zufall= new java.util.Random();
+	int zahl;
+	
+	zahl= zufall.nextInt(100); // liefert eine Zahl zw. 0 .. 99
+
+Hinweis: Ausgabe:
+	javax.swing.JOptionPane.showMessageDialog(null,
+									"zu klein", "Rate", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+									
+
+Hinweis: eingabe:
+	String s= javax.swing.JOptionPane.showInputDialog("Ihr Rateversuch", "");
+	eingabe= Integer.parseInt(s);
+*/
+
+
+public class Rate {
+
+	public static void main(String[] args) {
+		??????????????
+	}
+}

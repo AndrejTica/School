@@ -1,0 +1,34 @@
+Probe-MAB: C Arrays (6)	name:					date:
+================================================================================
+
+1) (3) chararray - Count ......................................................
+Gegeben sei folgender Programmcode (Hier in C):
+
+int main()
+{	char s1[] = "ueb immer treu und redlichkeit";
+	char s2[] = "opqrstu";
+	// ???????????????
+}
+Es soll gezählt und ausgegeben werden, wie oft die Zeichen auss2 in s1 vorkommen.
+Im obigen Beispiel würde folg ausgegeben werden:
+Im Text <ueb immer treu und redlichkeit>
+kommen die Zeichen <em> 7 mal vor
+
+Die im Progamm angegebenen Inhalte von s1 und s2 sind nur Beispiele, es 
+könnte sich auch um andere Texte handeln.
+
+
+2) (3) intarray - histogramm ...................................................
+- definiere ein int-array namens arr mit genau 10 Elementen
+- definiere ein int-array namens arr_histo_abs mit genau 20 Elementen
+- schreib 0 ins Array arr_histo_abs
+- schreib Zufallszahlen (Bereich [0-19]) ins Array arr
+- das array arr_histo_abs soll dann die Anzahl der jeweiligen Zahl im
+	array arr speichern.
+	Also wieviele 0-er, 1-er, ..., 19-er gibt es im array arr.
+- gib die beiden Arrays aus.
+
+Tipp: Random
+#include <time.h>
+srand(time(NULL));
+int zufall= rand()

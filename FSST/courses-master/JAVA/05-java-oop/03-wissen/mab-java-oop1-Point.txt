@@ -1,0 +1,18 @@
+OOP-Point (java)
+--------------------------------------------------------------------------------
+	Create the class Point so that the following code works.
+
+		Point a= new Point(0, 200);   // x-coordinate, y-coordinate
+		Point b= new Point(a);
+		Point c;
+	
+		c= a.add(b);	// add the coordinate-values	
+		System.out.println ( "c= " + c.toString());
+
+
+	The output should be:
+	c= [0,400]
+		
+SOLUTION: (use x and y)
+	public class Point{ 
+

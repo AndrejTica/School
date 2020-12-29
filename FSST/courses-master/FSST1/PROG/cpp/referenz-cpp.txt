@@ -1,0 +1,204 @@
+# CPP Referenz
+======================================================
+
+## Inhalt:
+------------------------------------------------------
+## Datentypen und Variablen
+## Operatoren
+## Ein/Ausgabe
+## Schleifen/Wiederholungen
+## Verzweigungen
+## Beispiel: Einen Variableninhalt um 1 erhöhen
+## Beispiel: Variableninhalte austauschen
+## Beispiel: Eine gerade Zahl erkennen
+## Beispiel: einlesen wie oft man "hallo" ausgeben soll
+## Beispiel: nur poitive Zahlen aufsummieren
+## Beispiel: x hoch y berechnen
+## Beispiel: Die Quersumme einer Zahl berechnen
+
+
+
+## Datentypen und Variablen
+------------------------------------------------------
+
+char zeichen= 'Z';
+int anzahl=10;
+float gewicht= 70.5;
+bool fertig= false;
+string txt= "Hallo, Welt!";
+
+
+## Operatoren
+------------------------------------------------------
+
++, *, -, /, % 
+==, != , <, <=, >, >=
+ &&, ||, !
+
+  
+## Ein/Ausgabe
+------------------------------------------------------
+
+#include <iostream>
+using namespace std;
+
+cout << "Einen Wert für anzahl eingeben: ";
+cin >> anzahl;
+cout << "Sie haben " << anzahl << " eingeben" << endl;
+
+
+
+## Schleifen/Wiederholungen
+------------------------------------------------------
+
+for (int i=1; i<=10; i++){
+    cout << i << endl;
+}
+
+
+int i=1;
+while (i<=10){
+      cout << i << endl;
+
+      i++;
+}
+
+
+int zahl;
+do{
+  cout << "Nur eine negative Zahl eingeben: ";
+  cin >> zahl;
+}while( zahl > 0);
+
+
+int zahl;
+do{
+  cout << "Nur eine Zahl zwischen 1 und 9 (inkl) eingeben: ";
+  cin >> zahl;
+}while( zahl < 0 || zahl > 9);
+
+
+
+
+## Verzweigungen
+------------------------------------------------------
+if (punkte < 5){
+   cout << "Sie haben zu wenig Punkte";
+}
+
+
+if (zahl%2 == 0) {
+   cout << "Eine gerade Zahl";
+}else{
+   cout << "Eine ungerade Zahl";
+}
+
+
+if (jahr%400 == 0 || (jahr%4==0 && jahr%100!=0)){
+   cout << jahr << " ist ein Schaltjahr";
+}else{
+   cout << jahr << " ist KEIN Schaltjahr";
+}
+
+
+if (zahl<0){
+   cout << "Eine negative Zahl";
+}else if (zahl==0){
+   cout << "Eine 0 als Zahl";
+}else {
+   cout << "Eine positive Zahl";
+}
+
+
+
+## Beispiel: Einen Variableninhalt um 1 erhöhen
+------------------------------------------------------
+int x=1;
+
+x++;
+
+
+## Beispiel: Variableninhalte austauschen
+------------------------------------------------------
+int x= 1;
+int y= 9;
+int h;
+
+h= x;
+x= y;
+y= h;
+
+
+## Beispiel: Eine gerade Zahl erkennen
+------------------------------------------------------
+int zahl= 20;
+int rest;
+
+rest= zahl%2;
+
+if (rest==0){
+	 cout << zahl << " ist durch 2 teilbar." << endl;
+}
+
+
+## Beispiel: einlesen wie oft man "hallo" ausgeben soll
+------------------------------------------------------
+cout << "Einen Wert für anzahl eingeben: ";
+cin >> anzahl;
+
+for (int i=1; i<=anzahl; i++){
+	 cout << "hallo" << endl;
+}
+
+## Beispiel: nur poitive Zahlen aufsummieren
+------------------------------------------------------
+int summe=0;
+int zahl;
+do{
+	 cout << "Zahl eingeben: ";
+	 cin >> zahl;
+	 
+	 if (zahl>0){
+		  summe= summe + zahl;
+	 }
+
+}while (summe < 10);
+
+
+## Beispiel: x hoch y berechnen
+------------------------------------------------------
+int x;
+int y;
+int ergebnis;
+
+cout << "x eingeben: ";
+cin >> x;
+
+cout << "y eingeben: ";
+cin >> y;
+
+ergebnis= 1;
+for (int i=1; i<=y; i++){
+	 ergebnis= ergebnis * x;
+}
+
+
+## Beispiel: Die Quersumme einer Zahl berechnen
+------------------------------------------------------
+int zahl;
+int quersumme;
+
+cout << "zahl eingeben: ";
+cin >> zahl;
+
+quersumme=0;
+
+while(zahl>0){
+	 int einerstelle= zahl%10;
+	 quersumme= quersumme + einerstelle;
+	 
+	 zahl= zahl/10; // schiebe alle Ziffern nach rechts.
+}
+
+cout << "Quersumme von " << zahl << " ist " << quersumme << endl;
+

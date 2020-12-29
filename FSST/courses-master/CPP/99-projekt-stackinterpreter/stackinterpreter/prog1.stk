@@ -1,0 +1,8 @@
+push 2000
+push 3
+add
+push 1
+mul
+push 4
+add
+quit

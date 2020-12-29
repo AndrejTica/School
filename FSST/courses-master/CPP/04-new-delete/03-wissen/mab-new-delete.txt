@@ -1,0 +1,28 @@
+mab: new, delete
+------------------------------------------------------------------
+ 
+1.(1) Ergänzen Sie, um ein int-Array mit 10 Elementen zu 
+		alloziieren
+
+  int* a;
+  a= __________________________________
+
+
+2.(1) Um den obigen Speicher wieder freizugebebn
+
+     __________________________________
+
+
+
+3.(2) Gesucht ist der Konstruktor der Klasse Matrix.
+
+  Member:
+  int** a;
+  int rows, cols;
+
+
+
+
+
+4.(2) gesucht ist der Destruktor der Klasse Matrix
+

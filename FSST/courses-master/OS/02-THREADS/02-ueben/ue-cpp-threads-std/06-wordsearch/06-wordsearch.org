@@ -1,0 +1,326 @@
+* Überblick: Wordsearch
+- [[http://marknelson.us/2012/05/23/c11-threading-made-easy/][quelle]]
+	
+- Ziele:
+	- STL, regex, Async, Mutex, ...
+
+- Überblick:
+
+Das Programm ./wordsearch.exe soll eine grosse Textdatei einlesen und alle Worte aus der Textdatei ausgeben, die einem bestimmten Muster entsprechen.
+
+- Bsp:
+#+BEGIN_EXAMPLE
+./wordsearch.exe ..turn
+Found 3 matches for ..turn
+Saturn
+return
+upturn
+#+END_EXAMPLE
+	
+1. Version: wordsearch.cpp (sequentielle Version)
+2. Version: async-wordsearch.cpp (multithreaded Version)
+3. Version: async-wordsearch-mutex.cpp (multithreaded mit mutex)
+					
+- MaMakefile:
+#+BEGIN_SRC bash
+all:
+	g++ wordsearch.cpp -o wordsearch.exe -lpthread
+	g++ async-wordsearch.cpp -o async-wordsearch.exe -lpthread
+	g++ async-wordsearch-mutex.cpp -o async-wordsearch-mutex.exe -lpthread
+run:
+	./wordsearch.exe ..turn
+	./async-wordsearch.exe ..turn
+	./async-wordsearch-mutex.exe ..turn
+clean:
+	rm *.exe
+#+END_SRC
+
+
+* wordsearch-read-only.cpp:  Ein- u. Ausgabe
+
+1. (done) Erzeuge die Datei input.txt mit 
+#+BEGIN_SRC bash
+cp /usr/share/dict/words input.txt
+#+END_SRC
+	
+2. Lies die Datei input.txt wortweise ein und speichere die Worte in einer deque
+[[http://www.cplusplus.com/reference/deque/deque/][deque]]	
+
+3. gib die Worte aus der deque auf die Konsole aus.
+
+4. Miss die verbrauchte Zeit mit der Klasse TLog (s. tlog.h)
+
+
+#+BEGIN_SRC cpp -n
+/*
+g++ wordsearch-read-only.cpp -o wordsearch-read-only.exe
+*/
+
+===ENTER CODE===
+
+#+END_SRC
+
+
+
+* regex: Die Funktion find_matches()
+Erzeuge die Funktion find_matches(), die alle strings in der deque namens backlog, die zum Parameter pattern passen/matchen, in einem vector<string> zurückgibt.
+
+
+#+BEGIN_SRC cpp -n
+vector<string> find_matches( string pattern, deque<string> &backlog ){
+    vector<string> results;
+    
+    while ( backlog.size() ) {
+        string word = backlog.front();
+        backlog.pop_front();   // remove word from dequeu
+
+        if ( regex_match( word.begin(), word.end(), regex(pattern)) )
+            results.push_back( word );
+    }
+    return results;
+}
+#+END_SRC
+
+- Hier noch der Aufruf der Funktion find_matches():
+
+#+BEGIN_SRC cpp -n
+vector<string> words = find_matches( pattern, backlog );
+cout << "Found " << words.size()
+        << " matches for " << pattern
+        << endl;
+
+for ( auto s : words )
+    cout << s << "\n";
+
+#+END_SRC
+        
+        
+- Folgender Aufruf muss möglich sein:
+#+BEGIN_SRC bash
+./wordsearch.exe ..turn
+
+gibt alle Worte aus, die dem Pattern entsprechen. Also zB:
+Found 2 matches for ..turn
+return
+upturn
+
+#+END_SRC
+
+
+* Hinweis: regex
+- [[http://www.cplusplus.com/reference/regex/][regex]]
+
+
+- Hinweis-1: regex_match
+#+BEGIN_SRC cpp -n
+// demo-regex.cpp
+//
+// regex_match()
+// liefert true, nur wenn der GESAMTE string dem Muster entspricht.
+//
+// 	g++ demo-regex.cpp -o demo-regex.exe
+#include <regex> 
+#include <iostream> 
+using namespace std;
+  
+int main(){ 
+	bool ret;
+		
+	string str = "Hello"; 
+	regex muster("..ll."); 
+
+	ret= regex_match(str.begin(), str.end(), muster);
+	if (ret){
+		cout <<endl;
+		cout <<__FILE__ <<":"<<__LINE__<< " ..."<< endl;
+		cout << "string= " << str <<endl;
+		cout << "muster= " << "..ll." <<endl;
+		cout << "regex_match(str.begin(), str.end(), muster); liefert true" << endl;		
+	}
+	
+	return 0;
+}
+#+END_SRC
+
+
+- Hinweis-2: regex_match
+#+BEGIN_SRC cpp -n
+if (std::regex_match ("subject", std::regex("(sub)(.*)") ))
+  std::cout << "string literal matched\n";
+#+END_SRC
+
+
+
+- Hinweis-3: regex_search
+- [[http://www.cplusplus.com/reference/regex/match_results/suffix/][regex_search]]
+#+BEGIN_SRC cpp -n
+// match_results::prefix/suffix
+// - using smatch, a standard alias of match_results<string::iterator>
+#include <iostream>
+#include <string>
+#include <regex>
+
+int main ()
+{
+    std::string s ("there is a needle in this haystack");
+    std::smatch m;
+    std::regex e ("needle");
+
+    std::cout << "searching for needle in [" << s << "]\n";
+    std::regex_search ( s, m, e );
+
+    if (m.ready()) {
+        std::cout << m[0] << " found!\n";
+        std::cout << "prefix: [" << m.prefix() << "]\n";
+        std::cout << "suffix: [" << m.suffix() << "]\n";
+    }
+
+    return 0;
+}
+
+/*
+Output:
+
+searching for needle in [there is a needle in this haystack]
+needle found!
+prefix: [there is a ]
+suffix: [ in this haystack]
+*/
+#+END_SRC
+
+
+* wordsearch.cpp: mit regex (find_matches())
+
+#+BEGIN_SRC cpp -n
+/*
+g++ wordsearch.cpp -o wordsearch.exe
+*/
+===ENTER CODE===
+
+#+END_SRC
+
+
+* Multithreading
+- Wir wollen nun eine sogenannte Multi-Threaded Implementation erzeugen. Verwende für den Aufruf von find_match() den in C++11 vefügbaren async wrapper:
+#+BEGIN_SRC cpp
+   auto f1 = async( launch::async, find_matches, pattern, backlog );
+#+END_SRC
+   
+Der return Wert von async() wird future genannt. D.h. f1 enthält zunächst keinen Wert, den man gleich verwenden kann. Aber nachdem der Thread beendet wurde, kann man über f1 durch die Methode get() den eigentlichen Rückgabewert von find_match() erhalten.
+
+#+BEGIN_SRC cpp
+    vector<string> words = f1.get();
+#+END_SRC
+
+
+Weil beim Aufruf von asnc() der Parameter std::launch::async verwendet wurde, wird der Aufruf von get() bewirken, dass gewartet (vgl. join()) wird, bis der Thread fertig ist. Wenn also der Thread fertig ist, liefert get() das gewünschte Ergebnis. Eine sehr einfache Variante, um Asynchronität zu erreichen.
+
+
+
+* async-wordsearch.cpp: find_matches () als async-thread
+1. Kopieren Sie das obige Programm wordsearch.cpp in async-wordsearch.cpp
+2. Es sollen nun 2 Threads mit find_matches()-Aufrufen gestartet werden.
+
+- Beachten Sie:
+#+BEGIN_SRC cpp
+   auto f1 = async( launch::async, find_matches, pattern, backlog );
+   auto f2 = async( launch::async, find_matches, pattern, backlog );
+#+END_SRC
+
+- ist zuwenig, weil
+#+BEGIN_SRC cpp
+	vector<string> 
+	find_matches( string pattern, deque<string>& backlog );
+#+END_SRC
+arbeitet mit einer *Referenz auf backlog*.
+
+
+- Wir müssen also beim Aufruf von async darauf Rücksicht nehmen, sodass die 3 Threads alle auf dem *gleichen Datenbestand (backlog)* arbeiten:
+
+#+BEGIN_SRC cpp
+#include <future>
+#include <functional>
+...
+auto f1 = async( launch::async, find_matches, pattern, ref(backlog) );
+auto f2 = async( launch::async, find_matches, pattern, ref(backlog) );
+
+//Die Ergebnisse einsammeln:
+vector<string> words1= f1.get();
+vector<string> words2= f2.get();
+#+END_SRC
+  
+
+- Bringen Sie das Programm zum Laufen.
+- Frage: Was können Sie feststellen?
+
+#+BEGIN_SRC cpp -n
+/*
+g++ async-wordsearch.cpp -o asynch-wordsearch.exe -lpthread
+*/
+
+===ENTER CODE===
+
+#+END_SRC
+
+
+
+* async-wordsearch-mutex.cpp: mutex verwenden
+- Das obige Programm stürzt ab, weil Objekte aus der STL wie deque nicht thread-safe sind.
+
+1. Kopieren Sie async-wordsearch.cpp nach async-wordsearch-mutex.cpp
+
+2. Mutex verwenden, um den Zugriff auf deque zu synchronisieren, sodass zu einer Zeit immer (garantiert) nur ein Thread deque verwenden kann. (Sperrsynchronisation).
+
+
+- Hier ein Beispiel:
+#+BEGIN_SRC cpp
+//...
+vector<string> find_matches( string pattern, deque<string> &backlog ){
+  vector<string> results;
+  for ( ; ; ) {
+		// EINTRITT in Critical Section.........................
+    mutex_sperr.lock();
+    if ( backlog.size() == 0 ) {
+      mutex_sperr.unlock();
+      return results;
+    }
+    string word = backlog.front();
+    backlog.pop_front();
+		// AUSTRITT aus Critical Section.........................
+    mutex_sperr.unlock(); 
+    if ( regex_match( word.begin(), word.end(), regex(pattern) ) )
+      results.push_back( word );
+  }
+}
+//...
+#+END_SRC
+
+- Nun müsste das Programm funktionieren. Machen Sie einige Versuche.
+#+BEGIN_SRC bash
+./async-wordsearch-mutex.exe ..turn
+./async-wordsearch-mutex.exe .e
+#+END_SRC
+
+- Sehen Sie hier eine Lösung
+#+BEGIN_SRC cpp -n
+/*
+g++ async-wordsearch-mutex.cpp -oasync-wordsearch-mutex.exe -lpthread
+
+*/
+
+===ENTER CODE===
+
+
+#+END_SRC
+
+* Vergleiche mit dem Standardprogramm grep:
+
+#+BEGIN_SRC bash
+grep "^.e$" input.txt|sort
+./async-wordsearch-mutex.exe .e 2> /dev/null | grep -v "Found.*" |sort
+
+Der folgende Aufruf zeigt, dass unser Programm den gleichen Output
+liefert wie grep:
+
+./async-wordsearch-mutex.exe .e 2> /dev/null | grep -v "Found.*" |sort | diff - <(grep "^.e$" input.txt|sort)
+#+END_SRC

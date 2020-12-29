@@ -1,0 +1,37 @@
+﻿================================================================
+Aufgabe: REKURSION
+================================================================
+rek_ggt.c, rek_pow.c, rek_pow_fast.c
+
+
+
+Schreiben Sie zu folgenden Aufgabenstellungen die Programme:
+
+Aufgabe: rek_ggt.c
+----------------------------------------------------------------
+ggT (a,b) = a, wenn b==0
+			oder 
+ggT (a,b) = ggT (b, a%b)
+
+
+
+
+Aufgabe: rek_pow.c
+----------------------------------------------------------------
+pow (x,n) = 1, wenn n==0
+			oder sonst
+pow (x,n) = x * pow(x,n-1)
+
+
+
+Aufgabe: rek_pow_fast.c
+----------------------------------------------------------------
+pow (x,n) = wenn n gerade:
+			ret= pow (x,n/2)
+			ret*= ret
+			oder sonst
+pow (x,n) = wenn n ungerade
+			ret= pow (x,n/2)
+			ret*= ret
+			ret*= x
+			

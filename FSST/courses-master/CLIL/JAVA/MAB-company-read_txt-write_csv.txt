@@ -1,0 +1,59 @@
+MAB-company-read_txt-write_csv.txt
+============================================
+1. Gegeben sei die Datei mab.Main.java:
+
+	package mab;
+
+	import company.*;
+	
+	public class Main {
+	
+		public static void main(String[] args) {
+	
+				Company company1= new Company("IT unlimited");
+	
+				company1.addEmployeeFromFile("company-input.txt");
+	
+				System.out.println( "*** The Company *****************************************");
+				System.out.println( company1.toString() );
+	
+				System.out.println( "*** The payroll *****************************************" );
+				double payroll= company1.getPayroll();
+	
+				System.out.println( "The Payroll is " + payroll );
+	
+				System.out.println( "*** Write company-output.csv *****************************************" );
+				company1.write2csv("company-output.csv");
+		}
+	
+	}
+	// Hints:
+	// 1. object.getClass().getSimpleName() ... get Classname of object
+	//
+	// 2. structure of company-output.csv:
+	// class;wage;name;age
+	//
+	// 3. String.format("%.2f", adouble_variable);
+	//
+
+2. Gegeben sei die Datei company-input.txt
+Manager:40:Manager1:1000.0
+Worker:50:Worker1:10:100.0
+Seller:40:Seller1:40:100.0:10:1.0
+Manager:40:Manager2:2000.0
+Manager:40:Manager3:3000.0
+Seller:40:Seller2:40:100.0:10:2.0
+Manager:40:Manager4:4000.0
+Seller:40:Seller3:40:100.0:10:3.0
+Worker:50:Worker2:20:200.0
+Worker:50:Worker3:30:300.0
+
+3. Das obige Programm 
+	a) liest die Datei company-input.txt und
+	b) erzeugt die Datei company-output.csv mit folgender Struktur
+		class;wage;name;age
+
+4. Excel: Lesen Sie die Datei company-output.csv mit Excel ein
+5. Excel: Fügen Sie eine Pivot-Tabelle ein
+6. Excel: Fügen Sie auf der Grundlage der Pivot Tabelle ein Balkendiagramm ein,
+			das pro Mitarbeiter-Typ das jeweilige Gesamt-Gehalt anzeigt.

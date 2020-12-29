@@ -1,0 +1,136 @@
+﻿* LINUX anwenden shell commands (by A.Hofmann)
+
+- Arbeiten mit der Shell
+- Permission
+- Programme übersetzen
+
+
+* Arbeiten mit der Shell
+- ls,cd,pwd,mkdir,rmdir,cp,mv,rm, more, cat, find
+- Aufgabe: probieren Sie die folgenden Befehle
+
+#+BEGIN_SRC bash
+ls
+ls -l
+ls -la
+
+pwd
+
+cd
+cd /home/informatik
+cd /etc
+cd .
+cd ..
+
+cd 
+mkdir bla schule privat public_html
+rmdir bla
+
+mkdir backup
+mkdir temp
+mkdir ws-javascripts
+mkdir ws-c
+mkdir ws-cpp
+mkdir ws-java
+mkdir ws-python
+
+cd
+cp /etc/passwd temp
+
+cd temp
+cp passwd passwd-copied
+
+cd
+mv temp backup
+
+cd
+rm backup/temp/passwd-copied
+
+
+cat /etc/passwd
+more /etc/passwd
+	space, enter, f, b, q
+
+find / -name "passwd"
+	
+cd
+tar cvfz backup/schule.tgz schule
+
+#+END_SRC
+
+* Permission
+- id, ls -l, /etc/passwd, /etc/group, chmod, chown
+- Aufgabe: probieren Sie die folgenden Befehle
+
+#+BEGIN_SRC bash
+id
+
+cd
+touch bla.txt
+ls -l
+chmod g+w bla.txt
+ls -l
+chmod o+w bla.txt
+ls -l
+chmod 644 bla.txt
+ls -l
+chmod 755 bla.txt
+rm bla.txt
+
+cd
+cp /etc/passwd .
+ls -l
+
+
+
+sudo chown root passwd
+ls -l 
+sudo chown root:root passwd
+ls -l
+sudo rm passwd
+
+rm bla.txt
+#+END_SRC
+
+
+* Editor
+- nano
+
+
+* C-Programme
+#+BEGIN_SRC c
+/*
+hello.c
+gcc hello.c -o hello.exe
+./hello.exe
+*/
+#include <stdio.h>
+
+int main(){
+	printf("hello, world!\n");
+	return 0;
+}
+#+END_SRC
+
+* Java-Programme
+#+BEGIN_SRC java
+/*
+Hello.java
+javac Hello.java
+java Hello
+*/
+public class Hello{
+	public static void main(String[] args){
+		System.out.println("hello, world!");
+	}
+}
+#+END_SRC
+
+* Python-Program
+#+BEGIN_SRC python
+"""
+hello.py
+python hello.py
+"""
+print("hello, world!\n")
+#+END_SRC

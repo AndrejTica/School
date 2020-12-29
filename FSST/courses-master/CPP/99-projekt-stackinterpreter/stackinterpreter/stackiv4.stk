@@ -1,0 +1,21 @@
+//stackiv4.stk read/write
+//KG einlesen
+read Bitte geben sie Ihre Körpergröße in cm ein?  
+assign KG
+//
+vpush KG 
+push 100
+sub
+assign KG_minus_100
+//
+vpush  KG_minus_100
+//mann oder Frau
+read Geschlechtsfaktor: 0.9 für Männer bzw. 0.85 für Frauen?  
+assign geschlecht
+//
+vpush geschlecht
+debug
+mul
+write Ihr Idelgewicht ist: 
+quit
+

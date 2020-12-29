@@ -1,0 +1,28 @@
+// file: stackiv5if.stk
+read Bitte einen Wert für ende (11 bedeutet programmende)
+assign ende
+while
+push ende
+push 10
+lt
+read x=? 
+assign x
+read y=? 
+assign y 
+if
+vpush x
+vpush y
+lt
+push -10
+write x ist kleiner als y
+else
+push 10
+write x ist GROESSER als y
+endif
+//
+read Bitte einen Wert für ende (-1 bedeutet programmende)
+assign ende
+debug
+endwhile
+quit
+//  ergebnis: 1.4  x=14  y=10

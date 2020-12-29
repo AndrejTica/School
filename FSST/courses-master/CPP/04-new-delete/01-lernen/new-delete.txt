@@ -1,0 +1,128 @@
+new, delete ...
+------------------------------------------------------------------
+Speicherverwaltung in c++
+
+
+In C:
+-----
+In C++ werden statt den C-Funktionen
+#include <stdlib.h>
+
+ void *
+ malloc(size_t size);
+
+ void
+ free(void *ptr);
+
+die Operatoren new und delete verwendet.
+
+
+
+In C++:
+---------
+Ein einfaches Beispiel soll die Verwendung demonstrieren.
+
+...
+int* a;
+int len;
+
+cout << "Wieviel Speicher soll alloziiert werden? ";
+cin >> len;
+
+a= new int[len];
+
+// jetzt kann mit dem Speicher gearbeitet werden
+for (int i=0; i < len; i++)
+	a[i]= 123;
+
+// wenn der Speicher nicht mehr bnötigt wird
+// MUSS man ihn freigeben
+
+delete [] a;
+...
+//ACHTEN Sie auf dier richtige Angabe der [] Klammern.
+
+
+
+
+Beispiel für einen 1-dimensionalen Speicher: Klasse: IntArray
+-------------------------------------------------------------
+
+class IntArray {
+	private:
+		int* a;
+		...
+		
+	public:
+		//constructor
+		IntArray(int len){
+			a= new int[len];
+		}
+
+		...
+		
+		
+		// destructor
+		~IntArray(){
+			delete [] a;
+		}
+};
+
+
+
+Beispiel für einen 2-dimensionalen Speicher: Klasse: Matrix
+-----------------------------------------------------------
+
+class Matrix {
+	private:
+		int** a; int rows,cols;
+		
+	public:
+		//constructor
+		Matrix(int rows, int cols){
+			this->rows=rows;
+			this->cols=cols;
+			a= new int*[rows];
+			
+			for (int i=0; i < rows; i++)
+				a[i]= new int[cols];
+		}
+
+		...
+		
+		
+		// destructor
+		~Matrix(){
+			for (int i=0; i < rows; i++)
+				delete [] a[i];
+		
+			delete [] a;
+		}
+};
+
+
+Anmerkung:
+---------
+Hier wurden nur int-Werte behandelt. Natürlich funktioniert
+new für alle möglichen Datentypen (auch Klassen) von C++.
+
+Achtung:
+-------
+Was ist, wenn kein Speicher mehr vorhanden ist?
+Dieses Thema wird im Kapitel Exception besprochen.
+
+
+
+
+Übungen:
+--------
+Bearbeiten Sie die Übungen im Ordner 02-ueben
+
+
+
+sichern/Test:
+-------------
+Siehe Ordner 04-sichern
+
+
+

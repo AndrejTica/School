@@ -1,0 +1,27 @@
+﻿mab-matrix (6)
+--------------------------------------------------------
+
+class Matrix{
+	private:
+		int** a;
+		int r, c;
+	
+	public:
+		Matrix(int r, int c){
+(3)			???????????????		
+		}
+		
+		~Matrix(){
+(3)			???????????????		
+		}
+
+
+};
+
+int main(){
+	Matrix m(10,10);	
+	Matrix* p= new Matrix(3,3);
+	// ...
+	
+	delete p;
+}

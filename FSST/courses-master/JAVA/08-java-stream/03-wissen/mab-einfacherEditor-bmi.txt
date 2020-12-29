@@ -1,0 +1,53 @@
+﻿mab-einfacherEditor-openBMI
+------------------------------------------------------------------
+
+1. Projekt: SwingEditor: Erstellen Sie die Datei
+	bmi.txt:
+
+	<comment>
+	text ...
+	...
+	</comment>
+	Anton Hofmann
+	74
+	170
+	Beta Hofmann
+	85
+	170
+	Gamma Hofmann
+	95
+	170
+
+2. Erstelle im Projekt GMyAlgo Datei GMyAlgo.java folg. Funktion 
+
+	static double getBMI(double gewicht, double groesse_in_m)
+
+	Hinweis: Berechne den BMI:
+	
+	double gewicht;
+	double groesse_in_m;
+	double bmi_wert;
+	
+	bmi_wert= gewicht / (groesse_in_m * groesse_in_m);
+
+
+3. Erzeuge einen Menüeintrag
+	Datei -> OpenBMI
+
+4. OpenBMI: liest die Datei adb.txt (FileDialog verwenden) ein 
+	und gibt die einzelnen Datensätze in folg Form in der
+	EditorPane aus:
+	
+	Name: Anton Hofmann
+	Gewicht: 74
+	Groesse: 170
+	BMI: 24.0
+	Name: .........
+	.........
+
+Hinweis: 
+	﻿NumberFormat nf = NumberFormat.getInstance(Locale.GERMAN);
+	nf.setMaximumFractionDigits(2);
+	nf.setMinimumFractionDigits(2);
+
+	System.out.println (nf.format(bmi));

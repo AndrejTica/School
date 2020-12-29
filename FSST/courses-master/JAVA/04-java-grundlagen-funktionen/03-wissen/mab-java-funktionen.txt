@@ -1,0 +1,54 @@
+﻿mab-java-funktionen (8)
+---------------------------------------------------------
+
+1 (3) ---------------------------------------------------
+Erstellen Sie in der Klasse FKTMyAlgo die Methode 
+	public static boolean isPrim(int zahl);
+	die den Parameter zahl auf eine Primzahl testen
+	soll.
+	
+Hinweis: Primzahl
+	kleinste Primzahl ist 2
+	testen bis teiler <= Math.sqrt(zahl)
+	
+
+2 (2) ---------------------------------------------------
+Cube1: Was gibt das folgende Programm aus:
+public class Cubes1 { 
+	public static int cube(int i) {
+		int j = i * i * i; 
+		return j;
+	}
+	public static void main(String[] args) { 
+		int N = 5; 
+		for (int i = 1; i <= N; i++)
+			System.out.println(i + " " + cube(i));
+		}
+	}
+}	
+	
+3 (3) -------------------------------------------------
+3.1.(2) Gegeben sie die Funktion in FKTMyAlgo.
+	Ersetzen Sie die Fragezeichen
+	public static int dezimal2int(String ziffern){
+		int zahl=0;
+		for (int i = 0; i < ziffern.length(); i++) {
+			zahl= zahl*10 + ?????????????????;
+		}
+
+		???????????????
+	}
+
+3.2. (1) Gegeben ist der Aufruf der obigen Funktion.
+	Ersetzen Sie die Fragezeichen.
+
+	String input;
+	int zahl;
+	
+	input= JOptionPane.showInputDialog(
+			"Bitte eine Zahl im Deziamlsystem(0-9): ", "123");
+	
+	// obige Funktion aufrufen
+	zahl= ???????????????????????????
+	
+	System.out.println(input + " hat den Wert: " + zahl);

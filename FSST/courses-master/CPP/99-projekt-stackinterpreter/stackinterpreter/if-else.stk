@@ -1,0 +1,23 @@
+// file: if-else.stk
+// dividieren oder addieren
+//
+push 300
+assign x
+push 100
+assign y
+if
+vpush y
+push 0
+neq
+vpush x
+vpush y
+div
+else
+vpush x
+vpush y
+add
+endif
+quit
+
+//Ergebnis: 3.0
+

@@ -1,0 +1,166 @@
+* Das lokale Arbeiten mit git
+- [ ] wie man git für das lokale Arbeiten nutzen kann
+- [ ] Sicherungen erstellen
+- [ ] auf verschiedene Sicherungen 'zurückspulen'
+- [ ] parallel Versuche starten und diese
+  - [ ] übernehmen oder
+  - [ ] verwerfen
+
+
+* lokales REPO anlegen
+#+BEGIN_SRC bash
+mkdir demo-git
+cd demo-git
+git init
+#+END_SRC
+
+
+
+* ADD, MV (umbenennen)
+#+BEGIN_SRC bash
+touch f1
+git add f1
+git mv f1 file1
+#+END_SRC
+
+
+
+* RM (löschen)
+** wenn file nur in working area
+#+BEGIN_SRC bash
+rm file
+#+END_SRC
+
+
+** wenn file bereits im index
+*** wenn sie NUR aus index gelöscht werden soll
+#+BEGIN_SRC bash
+git rm --cached file
+oder
+git reset --head file
+#+END_SRC
+
+
+*** wenn sie aus index UND working area gelöscht werden soll
+#+BEGIN_SRC bash
+git rm -f file
+#+END_SRC
+
+
+** wenn file bereits commited
+#+BEGIN_SRC bash
+git rm file
+#+END_SRC
+
+
+* Löschen rückgängig machen
+#+BEGIN_SRC bash
+git checkout -- file3
+#+END_SRC
+
+
+* 1. Sicherung machen
+#+BEGIN_SRC bash
+touch file1
+git add file1
+git commt -m "Sicherung 1"
+
+git log
+
+# commit ea0..
+# Author .....
+# Date: ....
+# 	  Sicherung 1
+#
+#+END_SRC
+
+
+
+
+* 2. Sicherung machen
+#+BEGIN_SRC bash
+touch file2
+git add file2
+git commit -m"Sicherung 2"
+#+END_SRC
+
+
+
+* 3. Sicherung machen
+
+#+BEGIN_SRC bash
+touch file3
+git add file3
+git commit -m"Sicherung 3"
+
+
+git log
+
+# commit 54c3a4052518e551d4386e6add504c74a5f4067c (HEAD -> master)
+# Author: Anton Hofmann <anton.hofmann@htl-salzburg.ac.at>
+# Date:   Wed Feb 6 21:18:45 2019 +0100
+
+#     Sicherung 3
+
+# commit e5afb503a5238b6aeb48cc0027d8370d490ba1e6
+# Author: Anton Hofmann <anton.hofmann@htl-salzburg.ac.at>
+# Date:   Wed Feb 6 21:18:32 2019 +0100
+
+#     Sicherung 2
+
+# commit 5f82d38fcd3e3441c255a1ca04e8dd921c9ad542
+# Author: Anton Hofmann <anton.hofmann@htl-salzburg.ac.at>
+# Date:   Wed Feb 6 21:18:21 2019 +0100
+
+#     Sicherung 1
+
+#+END_SRC
+
+
+
+
+
+* 3. Sicherung endgültig wegwerfen
+- weilz.B. die Arbeiten von Sicherung 2 bis Sicherung 3
+- nur Fehler enthalten
+
+#+BEGIN_SRC bash
+git reset --hard e5afb
+
+
+git log
+commit e5afb503a5238b6aeb48cc0027d8370d490ba1e6 (HEAD -> master)
+Author: Anton Hofmann <anton.hofmann@htl-salzburg.ac.at>
+Date:   Wed Feb 6 21:18:32 2019 +0100
+
+    Sicherung 2
+
+commit 5f82d38fcd3e3441c255a1ca04e8dd921c9ad542
+Author: Anton Hofmann <anton.hofmann@htl-salzburg.ac.at>
+Date:   Wed Feb 6 21:18:21 2019 +0100
+
+    Sicherung 1
+
+
+#+END_SRC
+
+* TODO 2. Sicherung nur kurzfristig verlassen
+
+git checkout 5f82d
+
+
+
+
+
+git revert 6d73
+
+git log
+
+ls
+# v1 v2
+
+# weil ein Irrtum passiert ist,
+# soll das Wegwerfen der 3. Sicherung
+# rückgängig gemacht werden.
+# das geht, weil beim revert wegwerfen ein
+#

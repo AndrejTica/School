@@ -1,0 +1,156 @@
+* Topologisches Sortieren
+- A.Hofmann
+- https://de.wikipedia.org/wiki/Topologische_Sortierung
+
+* Das Problem
+- Dinge in die richtige Reihenfolge bringen
+- Oftmals wird die Beziehung "Vorgänger/Nachfolger" verwendet.
+- Es existieren Bedingungen wie "Aufgabe A muss vor Aufgabe B erledigt werden"
+- Eine Reihenfolge, die alle Bedingungen erfüllt, nennt man *topologische Sortierung* der Menge von Aufgaben.
+- Beachte: Im Gegensatz zur Sortierung einer sogenannten Totalordnung, ist die Reihenfolge nicht eindeutig, sondern es kann mehrere Möglichkeiten geben.
+- Zyklenfreiheit gefordert:
+  - gegenseitige Abhängigkeiten können eine topologische Sortierung unmöglich machen.
+    - Alice gewinnt gegen Bob
+    - Bob gewinnt gegen Carol
+    - Carol gewinnt gegen Alice
+* Beispiel
+1. Das Unterhemd vor dem Pullover
+2. Die Unterhose vor der Hose
+3. Den Pullover vor dem Mantel
+4. Die Hose vor dem Mantel
+5. Die Hose vor den Schuhen
+6. Die Socken vor den Schuhen
+
+- Mögliche Lösungen:
+   - Erst die Unterhose, dann die Socken, Hose, Unterhemd, Pullover, Mantel, Schuhe.
+   - Erst das Unterhemd, dann die Unterhose, dann Pullover, Socken, Hose, Schuhe, Mantel.
+
+- Jedoch nicht(da das Unterhemd vorher angezogen werden muss.): 
+   - Erst den Pullover,...
+
+* Darstellung als gerichteter Graph
+[[file:kleidergraph.png]]
+
+
+Die Kleidungsstücke kann man topologisch sortieren, indem man sie linear anordnet und darauf achtet, dass alle Pfeile nur von links nach rechts weisen: 
+
+[[file:kleidergraphsortiert.png]]
+
+
+* Algorithmus
+** Die Datenstrukturen/Klassen
+Die Aufgabenstellung wird als gerichteter Graph gelöst. Dabei kann man zwischen 2 Datenstrukturen wählen:
+1. Adjazenz-Matrix (Nachbar-Matrix)
+2. Adjazenz-Listen (Nachbar-Listen)
+
+Wir wollen hier die Adjazenz-Listen verwenden.
+- Die Klasse zum Topologischen Sortieren nennen wir TopoSort.
+- Als sog. Node-List wollen wir die Menge aller Elemente/Nodes, die topologisch zu sortieren sind, definieren.
+- Die Elemente/Nodes werden hier als strings gespeichert. (zB: Mantel, ...)
+- Als Nachbar-Liste (speichert Vorgänger- und deren Nachfolger-Nodes) wollen wir eine map verwenden.
+- Um die Anzahl der jeweiligen Vorgänger-Nodes zu speichern, verwenden wir ebenfalls eine map.
+
+#+begin_src cpp
+class TopoSort{
+private:
+  list<string> node_list;
+  map<string, list<string> > successor_list;
+  map<string, int> predecessor_counter_list;
+...
+#+end_src
+
+** Aufgabe: Topologische Sortierung mit Adjazenz-Listen
+
+#+begin_src cpp
+#include "toposort.h"
+
+int main(){
+  TopoSort topo;  
+  
+  topo.add("Unterhemd","Pullover");
+  topo.add("Unterhose","Hose");
+  topo.add("Pullover","Mantel");
+  topo.add("Hose","Mantel");
+  topo.add("Hose","Schuhe");
+  topo.add("Socken", "Schuhe");
+  
+  topo.print_sucessor_list();
+  topo.topo_sort();
+
+  cout << endl;
+  return 0;
+}
+#+end_src
+
+- sehen Sie hier die successor_list:
+
+|-----------+---------------|
+| Vorgänger | Nachfolger    |
+|-----------+---------------|
+| Hose      | Mantel,Schuhe |
+| Mantel    |               |
+| Pullover  | Mantel        |
+| Schuhe    |               |
+| Socken    | Schuhe        |
+| Unterhemd | Pullover      |
+| Unterhose | Hose          |
+|-----------+---------------|
+
+- sehen Sie hier die predecessor_count_list:
+
+|-----------+---------------------|
+| Node      | Anzahl d. Vorgänger |
+|-----------+---------------------|
+| Hose      |                   1 |
+| Mantel    |                   2 |
+| Pullover  |                   1 |
+| Suche     |                   2 |
+| Socken    |                   0 |
+| Unterhemd |                   0 |
+| Unterhose |                   0 |
+|-----------+---------------------|
+
+
+** Der Algorithmus - Beschreibung
+- Der Algorithmus verwendet einen gerichteten Graphen.
+- Der Algorithmus wiederholt folg:
+  1. entfernt Knoten ohne Vorgänger.
+  2. ermittelt die neuen Knoten, die nun keine Vorgänger haben
+
+- Berechne zu jedem Node die Anzahl der Vorgänger-Nodes.
+- Gib alle Nodes aus, die keine Vorgänger haben und markiere sie als bereits abgearbeitet.
+- Aktualisiere bei den direkten Nachfolgern der Nodes aus 2., dass sie jetzt keine Vorgänger mehr haben.
+- Gehe zu 2. solange nicht-markierte Nodes vorhanden sind.
+
+- Entfernung von Nodes ohne Vorgänger
+[[file:TopSortVorgaenger1.png]]
+
+- ermittelt neue Knoten ohne Vorgänger
+[[file:TopSortVorgaenger2.png]]
+
+- es bleiben dann noch
+[[file:TopSortVorgaenger3.png]]
+
+
+
+
+* tsort Programm
+Unter Linux gibt es das Programm tsort:
+
+$ tsort <<Ende
+> Unterhemd Pullover
+> Unterhose Hose
+> Pullover Mantel
+> Hose Mantel
+> Hose Schuhe
+> Socken Schuhe
+> Ende
+
+Socken
+Unterhemd
+Unterhose
+Pullover
+Hose
+Schuhe
+Mantel
+

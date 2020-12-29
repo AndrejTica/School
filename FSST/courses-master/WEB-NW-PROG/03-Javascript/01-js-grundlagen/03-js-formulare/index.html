@@ -1,0 +1,79 @@
+﻿<html>
+<head>
+<title>Formular-Überprüfung</title>
+<script type="text/javascript"><!--
+function pruefen() {
+   var f = document.forms[0];
+   var fehler = "";  //enthält die Bezeichnungen
+                     //der nicht ausgefüllten Felder
+   // *** Überprüfung auf vollständige Ausfüllung
+   while (f.Vorname.value == "") {
+      var vorname = prompt("Bitte geben Sie Ihren Vornamen ein!");
+      if (vorname) {
+         f.Vorname.value = vorname;
+      }
+   }
+   while (f.Nachname.value == "") {
+      var nachname = prompt("Bitte geben Sie Ihren Nachnamen ein!");
+       if (nachname) {
+         f.Nachname.value = nachname;
+      }
+   }
+   while (f.Email.value == "") {
+      var email = prompt("Bitte geben Sie Ihre E-Mail-Adresse ein!");
+      if (email) {
+         f.Email.value = email;
+      }
+   }
+   if (!(f.Geschlecht[0].checked || f.Geschlecht[1]
+   .checked)) {
+      fehler += "Geschlecht ";
+   }
+   if (!f.Flash.checked && !f.JavaScript.checked &&
+   !f.ActionScript.checked) {
+      fehler += "Lieblingsbuch ";
+   }
+
+   if (f.Cover.selectedIndex==0) {
+      fehler += "Cover ";
+   }
+   // *** Gegebenenfalls Fehlermeldung
+   if (fehler != "") {
+      var fehlertext = "Die folgenden Felder wurden nicht vollständig ausgefüllt:\n";
+      fehlertext += fehler;
+      alert(fehlertext);
+      return false;
+   }
+   return true;
+}
+//--></script>
+</head>
+<body>
+<h1>Anmeldeformular</h1>
+<form action="#" name="Fragebogen"
+onsubmit="return pruefen()">
+Vorname: <input type="text" name="Vorname" /><br />
+Nachname: <input type="text" name="Nachname" /><br />
+E-Mail-Adresse: <input type="text" name="Email" /><br />
+<input type="radio" name="Geschlecht" value="m" />
+männlich |
+   <input type="radio" name="Geschlecht" value="w" />
+   weiblich<br />
+Welche Bücher von Galileo Press besitzen Sie?<br />
+   <input type="checkbox" name="Flash" /> Flash |
+   <input type="checkbox" name="JavaScript"> JavaScript |
+   <input type="checkbox" name="ActionScript">
+   Einstieg in ActionScript<br />
+Welches der Bücher hat das schönste Cover?
+   <select name="Cover">
+   <option>Bitte wählen</option>
+   <option value="Flash">Flash</option>
+   <option value="JavaScript">JavaScript</option>
+   <option value="ActionScript">Einstieg in ActionScript
+</option>
+   </select><br />
+<input type="submit" value="Absenden" />
+<input type="reset" value="Formular löschen" />
+</form>
+</body>
+</html>

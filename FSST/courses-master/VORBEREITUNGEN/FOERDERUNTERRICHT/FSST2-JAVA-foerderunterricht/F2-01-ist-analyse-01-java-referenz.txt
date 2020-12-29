@@ -1,0 +1,193 @@
+# Meine Java-Referenz
+===========================================
+
+## Datentypen
+-------------------------------------------
+
+- int, 
+- char,
+- float, double, 
+- boolean
+- String 
+
+## Operatoren
+-------------------------------------------
+
+- %, ==, =, <, <=, !=, >, >=, &&, ||, !
+
+
+
+## Ein/Ausgabe
+-------------------------------------------
+
+java.util.Scanner cin= new java.util.Scanner(System.in);
+String text;
+int i;
+
+text= cin.readLine();
+i= cin.nextInt()
+
+System.out.println("Eingegebene Zahl: " + i);
+System.out.println("Eingegebener Text: " + text);
+
+
+## Umwandeln: Text <->Zahl
+-------------------------------------------
+
+String text="1234";
+int zahl;
+
+zahl= Integer.parseInt(text);
+
+text="3.14";
+double wert; 
+
+wert= Double.parseDouble(text);
+
+
+zahl= 17;
+
+text= String.valueOf(zahl);
+
+
+## if, switch, for, while,
+-------------------------------------------
+
+do {
+	zahl= cin.nextInt();
+}while (zahl > 5);
+
+
+if (3==zahl){
+	System.out.print("Das war 3");
+}
+
+
+if (3==zahl){
+	System.out.print("Das war 3");
+}
+else {
+	System.out.print("sonst");
+}
+
+if (3==zahl){
+	System.out.print("Das war 3");
+}
+else if (4==zahl){
+	System.out.print("Das war 4");
+}
+else {
+	System.out.print("sonst");
+}
+
+
+zahl= eingabe.nextInt();
+switch (zahl){
+	case 1:
+		System.out.print("1 war das");
+		break;
+	case 2:
+		System.out.print("2 war das");
+		break;
+	default:
+		System.out.print("sonst");
+		break;
+}
+
+for (i=0; i < 10; i++){
+	System.out.print(i);
+}
+
+
+i=0;
+while(i < 10){
+	System.out.print(i);
+	i++;
+}
+
+
+## Arrays und Zufallszahlen
+-------------------------------------------
+
+int[] a;
+
+...
+a= new int[10];
+
+for (i=0; i < a.length; i++){
+	a[i]= eingabe.nextInt();
+}
+
+
+
+java.util.Random zufall= new java.util.Random();
+for (i=0; i < a.length; i++){
+	a[i]= zufall.nextInt(100); // 0-99
+}
+
+
+## Strings und charArrays
+-----------------------------------------
+
+String text="hallo, welt";
+char ch= text.charAt(0); // h
+
+char[] arr= text.toCharArray();
+
+for (int i=0; i< arr.length; i++){
+	if (arr[i]=='a'){
+		arr[i]= 'e';
+	}
+}
+
+String s= String.valueof(arr);
+
+
+if (s.equals(text)){
+	// ...
+}
+
+
+
+## package, Klassen, Objekte,  Methoden
+----------------------------------------
+
+package
+	enthält die Klassen
+	java.util
+	java.io
+	javax.swing.
+	
+Klasse
+	vergleichbar mit Datentypen. Hat aber viel mehr
+	Eigenschaften und mehr Methoden
+	java.util.Random
+	JButton
+	java.io.BufferedReader
+	
+Objekt
+	vergleichbar mit Variablen.
+	Random zufall= new Random();
+	BufferedReader eingabe;
+	eingabe= new BufferedReader(new InputStreamReader(System.in));
+	JButton jButtonEnde= new JButton();
+	
+	Die Klassen sind:
+		Random, BufferedReader, JButton
+	Die Objekte sind:
+		zufall, eingabe, jButtonEnde
+		
+Methoden
+	sind Funktionen, die den Objekten zugeordnet sind
+	int zahl= zufall.nextInt(46);
+	String s= jTextField.getTect();
+	
+	Methoden sind:
+		getText(), nextInt()
+		
+	Achtung, es gilt:
+		Objekt.Methode(Parameter);
+		zufall.nextInt(45)
+		zufall ...... Objekt
+		nextInt() ... Methode
+		45 .......... Parameter

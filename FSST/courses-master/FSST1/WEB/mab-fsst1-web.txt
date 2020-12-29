@@ -1,0 +1,107 @@
+MAB-fsst1-WEB.txt (16)		name:											date:
+================================================================================
+
+1. (1) Mit welchem Befehl kannst Du die IP-Adresse Deines Rechners ermitteln?
+
+
+
+2. (1) Was machst Du, dass ein unabsichtliches Löschen oder
+	ein Harddiskfehler dir keine Sorgen bereitet?	
+
+
+
+
+
+3. (1) Verwendest Du eine Suchmaschine, die Deine Suchbegriffe nicht speichert?
+	Wenn Ja: Welche?
+
+
+
+4. (1) IP-Adressen, die nicht ins Internet "geroutet" werden, sind
+	(o) 10.0.2.5
+	(o) 192.168.62.25
+	(o) 172.16.48.100
+	(o) 141.201.10.33
+
+5. (1) Mit 5 Bits kann man Zahlen von
+	(o) 0 bis 31		(o) 1 bis 32
+	(o) 0 bis 32		(o) 0 bis 64
+	darstellen.
+
+
+6. (5) Du kennst folgende Abkürzungen/Begriffe und kannst eine kurze
+	Beschreibung geben:
+
+	a) HTML
+
+
+
+	b) HTTP
+
+
+
+	c) IP
+
+
+
+	d) Top-Level-Domain
+	
+
+
+	e) URL
+	
+
+
+7. (4) Du kannst die folg. HTML-Befehle verwenden/vervollständigen:
+
+	a) <img
+
+	b) <a
+
+	c) <ol> 
+
+	d) <table>....
+
+	
+8. (2) CSS-Befehle verwenden können. 
+
+8.1.(1) FRAGE: Stimmen die folg. Information?
+
+		a) Eine CSS-Datei einbinden
+			<head>
+				<link rel="stylesheet" type="text/css" href="mystyle.css">
+			</head> 
+
+		b) Die Datei mystyle.css könnte so aussehen
+				
+			body {
+				background-color: lightblue;
+			}
+
+			h1 {
+				color: navy;
+				margin-left: 20px;
+			}
+
+	ANTWORT: (o) stimmt 		(o) stimmt nicht
+		
+
+8.2.(1) FRAGE: Wenn im mystyle.css folg. Eintrag existiert:
+		#para1 {
+			text-align: center;
+			color: red;
+		}
+		
+		.center {
+			text-align: center;
+			color: blue;
+		}
+
+	Dann kann man folg. HTML-Element definieren:
+
+		<body id="para1"> 
+
+		<H1 class="center">
+	
+	ANTWORT: (o) stimmt 		(o) stimmt nicht
+	

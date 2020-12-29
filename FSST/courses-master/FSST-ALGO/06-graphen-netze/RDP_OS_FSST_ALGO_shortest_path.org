@@ -1,0 +1,24 @@
+* mRDP-OS-FSST-ALGO: Kürzester Pfad
+- aus: https://de.wikipedia.org/wiki/K%C3%BCrzester_Pfad
+
+Ein kürzester Pfad ist in der Graphentheorie ein Pfad zwischen zwei unterschiedlichen Knoten s , t ∈ V eines Graphen, 
+welcher minimale Länge bezüglich einer Kantengewichtsfunktion c : E → R hat. 
+[...]
+In der Literatur wird das Problem oft als Shortest Path Problem bezeichnet.
+
+1. Besprechen Sie die graphentheoretischen Grundlagen, indem Sie
+   - die Mengen V, E näher beschreiben
+2. Besprechen Sie dazu
+   - mögliche Speicherstrukturen und
+   - skizzieren Sie Lösungen in CPP.
+
+3. In der ANLAGE DIJKSTRA-SSSP finden Sie 
+   - ein konkretes Beispiel, mit dessen Hilfe Sie den DIJKSTRA-SSSP-Algorithmus erklären.
+
+4. Ein weiterer Algorithmus von FLOYD-WARSHALL berechnet APSP.
+   - Was versteht man unter APSP?
+   - Beschreiben Sie den Algorithmus von FLOYD-WARSHALL
+
+5. Besprechen Sie weitere typische Algorithmen aus der Graphentheorie:
+   - Stabile Hochzeit
+   - Topologisches Sortieren

@@ -1,0 +1,220 @@
+--------------------------------------------------------------------------------
+AB-CPP-OOP-02-student-bank.txt
+--------------------------------------------------------------------------------
+<https://gitlab.com/4me/courses/blob/master/CLIL/JAVA/AB-JAVA-OOP-02-student-bank.txt>
+
+Topic: 
+	Association/Aggregation/HasA - Relationship between classes
+
+
+
+OOP-student (java)
+--------------------------------------------------------------------------------
+	Create the classes Student, SchoolClass so that the following code works.
+
+	//...
+	Student maxi= new Student("Max Musterman", 70.0);
+	Student moritz= new Student("Moritz Mustermann", 60.0);
+	//...
+	
+	SchoolClass schoolclass= new SchoolClass("1AHELI");
+	schoolclass.add(maxi);
+	schoolclass.add(moritz);
+	//...
+	
+	// print class name and all associated students
+	System.out.println(schoolclass.toString());
+
+	
+	Student massiest= schoolclass.getMassiest();
+
+	// print name and weight
+	System.out.println( "Massiest is: " + massiest.toString() );
+	//...
+
+
+SOLUTION: 
+	class Student:
+		...
+		constructor
+		toString()
+		getWeight()
+ 
+	class ClassRoom
+		...
+		constructor
+		add()
+		toString()
+		getMassiest()
+
+
+The output should be:
+	SchoolClass [name=1AHELI]
+	Student [name=Max Musterman, weight=70.0]
+	Student [name=Moritz Mustermann, weight=60.0]
+
+	Massiest is: Student [name=Max Musterman, weight=70.0]
+
+
+
+OOP-bank (java)
+--------------------------------------------------------------------------------
+
+Account:
+	Create a class Account with the following structure.
+	Member: 
+		private int number_; 
+		private String owner_; 
+		private double amount_; 
+	Methods (consider the parameters and return values): 
+		Constructor / Destructor 
+		Getter and setter methods
+		toString() 
+		withdraw() 
+		deposit() 
+
+	Write a short program for testing the class.
+
+Bank:
+	Write a class Bank and add Account as class member: 
+		private String name_; 
+		private ArrayList<Account> accounts_; 
+
+	Methods (consider the parameters and return values): 
+		Constructor / Destructor 
+		Getter and setter methods
+		toString() 
+		addAccount(), delAccount()
+		addInterest() 
+		charges() 
+
+
+BankMain:
+	Create a main program for testing the classes Account and Bank:
+
+	package main;
+	import oop.bank.*;
+
+	public class BankMain {
+
+		public static void main(String[] args) {
+			Bank myB= new Bank("Hofmann Unlimited");
+
+			Account a1= new Account("Anton Hofmann",1000.0);
+			Account a2= new Account("Beta Hofmann", 1000.0);
+			Account a3= new Account("Gamma Hofmann",1000.0);
+
+			myB.addAccount(a1);
+			myB.addAccount(a2);
+			myB.addAccount(a3);
+
+			System.out.println( "The Bank: BEFORE calculating the charges *********" );
+			System.out.println( myB.toString() );
+
+			myB.charges(10.0);
+			System.out.println( "The Bank: AFTER calculating the charges *********" );
+			System.out.println( myB.toString() );
+
+			myB.addInterest(5.0);
+			System.out.println( "The Bank: AFTER adding the interest *********" );
+			System.out.println( myB.toString()  );
+
+			myB.delAccount(a3);
+			System.out.println( "The Bank: AFTER deleting a3 (Gamma Hofmann) *********" );
+			System.out.println( myB.toString() );
+
+			//...
+		}
+	}
+
+    
+
+
+The output should be:
+	The Bank: BEFORE calculating the charges *********
+	BANK: ...Hofmann Unlimited... 
+	ACCOUNT: 
+	  owner: Anton Hofmann
+	  number: 1
+	  amount: 1000.0
+	ACCOUNT: 
+	  owner: Beta Hofmann
+	  number: 2
+	  amount: 1000.0
+	ACCOUNT: 
+	  owner: Gamma Hofmann
+	  number: 3
+	  amount: 1000.0
+
+	The Bank: AFTER calculating the charges *********
+	BANK: ...Hofmann Unlimited... 
+	ACCOUNT: 
+	  owner: Anton Hofmann
+	  number: 1
+	  amount: 990.0
+	ACCOUNT: 
+	  owner: Beta Hofmann
+	  number: 2
+	  amount: 990.0
+	ACCOUNT: 
+	  owner: Gamma Hofmann
+	  number: 3
+	  amount: 990.0
+
+	The Bank: AFTER adding the interest *********
+	BANK: ...Hofmann Unlimited... 
+	ACCOUNT: 
+	  owner: Anton Hofmann
+	  number: 1
+	  amount: 995.0
+	ACCOUNT: 
+	  owner: Beta Hofmann
+	  number: 2
+	  amount: 995.0
+	ACCOUNT: 
+	  owner: Gamma Hofmann
+	  number: 3
+	  amount: 995.0
+
+	The Bank: AFTER deleting a3 (Gamma Hofmann) *********
+	BANK: ...Hofmann Unlimited... 
+	ACCOUNT: 
+	  owner: Anton Hofmann
+	  number: 1
+	  amount: 995.0
+	ACCOUNT: 
+	  owner: Beta Hofmann
+	  number: 2
+	  amount: 995.0
+
+
+
+OOP-bank-protected (java)
+--------------------------------------------------------------------------------
+ATTENTION: 
+For security reasons NOBODY (except class Bank) should be able
+to create Accounts!
+
+SOLUTION:
+a) Put Bank and Account into a package called bank.
+b) Make the constructor of class Account protected.
+c) in Main.java change this code
+		Account a1= new Account("Anton Hofmann",1000.0);
+		Account a2= new Account("Beta Hofmann", 1000.0);
+		Account a3= new Account("Gamma Hofmann",1000.0);
+
+		myB.addAccount(a1);
+		myB.addAccount(a2);
+		myB.addAccount(a3);
+
+to
+
+		myB.addAccount("Anton Hofmann",1000.0);
+		myB.addAccount("Betta Hofmann",1000.0);
+		myB.addAccount("Gamma Hofmann",1000.0);
+
+d) method addAccount() creates Account objects.
+
+MAB:
+each account object should get an unique account number.
+

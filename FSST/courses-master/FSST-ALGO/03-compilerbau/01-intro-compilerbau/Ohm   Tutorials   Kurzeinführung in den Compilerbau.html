@@ -1,0 +1,398 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0109)http://schorsch.efi.fh-nuernberg.de/roettger/index.php?n=Tutorials.Compilerbau&action=publish&include=include -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Ohm | Tutorials / Kurzeinführung in den Compilerbau</title>
+  <meta name="description" content="$WikiMetaDesc">
+  
+  <link rel="stylesheet" href="./Ohm   Tutorials   Kurzeinführung in den Compilerbau_files/print.css" type="text/css">
+<!--HeaderText--><style type="text/css"><!--
+  ul, ol, pre, dl, p { margin-top:0px; margin-bottom:0px; }
+  code.escaped { white-space: nowrap; }
+  .vspace { margin-top:1.33em; }
+  .indent { margin-left:40px; }
+  .outdent { margin-left:40px; text-indent:-40px; }
+  a.createlinktext { text-decoration:none; border-bottom:1px dotted gray; }
+  a.createlink { text-decoration:none; position:relative; top:-0.5em;
+    font-weight:bold; font-size:smaller; border-bottom:none; }
+  img { border:0px; }
+  
+p.question { margin-top: 2.0em; }
+p.question:first-letter {
+    float: left;
+    font-family: Old English, Georgia, serif;
+    color: #777777;
+    font-size: 200%;
+    line-height: 1.0em;
+    margin-right: 0.2em;
+}
+div.breaklist { text-align: right; }
+div.breaklist strong { background-color: yellow; }
+div.breakpage { text-align: right; }.editconflict { color:green; 
+  font-style:italic; margin-top:1.33em; margin-bottom:1.33em; }
+
+  table.markup { border:2px dotted #ccf; width:90%; }
+  td.markup1, td.markup2 { padding-left:10px; padding-right:10px; }
+  table.vert td.markup1 { border-bottom:1px solid #ccf; }
+  table.horiz td.markup1 { width:23em; border-right:1px solid #ccf; }
+  table.markup caption { text-align:left; }
+  div.faq p, div.faq pre { margin-left:2em; }
+  div.faq p.question { margin:1em 0 0.75em 0; font-weight:bold; }
+  div.faqtoc div.faq * { display:none; }
+  div.faqtoc div.faq p.question 
+    { display:block; font-weight:normal; margin:0.5em 0 0.5em 20px; line-height:normal; }
+  div.faqtoc div.faq p.question * { display:inline; }
+   
+    .frame 
+      { border:1px solid #cccccc; padding:4px; background-color:#f9f9f9; }
+    .lfloat { float:left; margin-right:0.5em; }
+    .rfloat { float:right; margin-left:0.5em; }
+a.varlink { text-decoration:none; }
+
+--></style>
+  <script type="text/javascript" src="./Ohm   Tutorials   Kurzeinführung in den Compilerbau_files/LaTeXMathML.js"> </script>
+  <meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" type="text/css" href="./Ohm   Tutorials   Kurzeinführung in den Compilerbau_files/local.css">
+
+</head>
+<body>
+  <div id="printhead">
+    <p id="wikisubtitle"> From Ohm</p>
+    <h1 id="printheader">Kurzeinführung in den Compilerbau</h1>
+  </div><div id="publish">
+  <div id="headtext">
+    
+  </div>
+<!--PageText-->
+<div id="wikitext">
+<p><a name="pubtop" id="pubtop"></a>
+</p>
+<div class="vspace"></div><ul><li><a href="http://schorsch.efi.fh-nuernberg.de/roettger/index.php?n=Tutorials.Compilerbau&action=publish&include=include#pub1">Intro</a>
+</li><li><a href="http://schorsch.efi.fh-nuernberg.de/roettger/index.php?n=Tutorials.Compilerbau&action=publish&include=include#pub2">Erweiterte Backus Naur Form</a>
+</li><li><a href="http://schorsch.efi.fh-nuernberg.de/roettger/index.php?n=Tutorials.Compilerbau&action=publish&include=include#pub3">EBNF Beispiel</a>
+</li><li><a href="http://schorsch.efi.fh-nuernberg.de/roettger/index.php?n=Tutorials.Compilerbau&action=publish&include=include#pub4">Arithmetische Ausdrücke</a>
+</li><li><a href="http://schorsch.efi.fh-nuernberg.de/roettger/index.php?n=Tutorials.Compilerbau&action=publish&include=include#pub5">Ein Beispiel-Parser</a>
+</li><li><a href="http://schorsch.efi.fh-nuernberg.de/roettger/index.php?n=Tutorials.Compilerbau&action=publish&include=include#pub6">Arithmetische Auswertung</a>
+</li></ul>
+<div class="pagehead1"><h1><a name="pub1" id="pub1"></a><span class="section">1 </span> <a class="wikilink" href="http://schorsch.efi.fh-nuernberg.de/roettger/index.php/Compilerbau/Intro?action=print">Intro</a></h1>
+</div><p>Diese kurze Einführung in den Compilerbau setzt Programmiersprachenkenntnisse voraus (also z.B. <a class="wikilink" href="http://schorsch.efi.fh-nuernberg.de/roettger/index.php/Lectures/C-Programmierung?action=print">C/C++</a>). Sie verdeutlicht den konzeptuellen Aufbau eines Compilers anhand eines einfachen <a class="wikilink" href="http://schorsch.efi.fh-nuernberg.de/roettger/index.php/Compilerbau/EBNF?action=print">EBNF</a> Beispiels ohne Berücksichtigung der vielfältigen Details eines echten Compilers.
+</p>
+<div class="pagehead1"><h1><a name="pub2" id="pub2"></a><span class="section">2 </span> <a class="wikilink" href="http://schorsch.efi.fh-nuernberg.de/roettger/index.php/Compilerbau/EBNF?action=print">Erweiterte Backus Naur Form</a></h1>
+</div><p class="vspace">Das wichtigste Werkzeug zum Bau eines <a class="wikilink" href="http://schorsch.efi.fh-nuernberg.de/roettger/index.php/Schlagworte/Compiler?action=print">Compilers</a> ist die Erweiterte Backus Naur Form (EBNF).
+</p>
+<p class="vspace">Die EBNF ist eine <strong>Metasprache</strong> zur formalen Beschreibung der sogenannten Syntax von regulären Programmiersprachen wie <a class="wikilink" href="http://schorsch.efi.fh-nuernberg.de/roettger/index.php/Lectures/C-Programmierung?action=print">C</a> oder Pascal. Sie wurde ursprünglich von <cite>Niklaus Wirth</cite> [<b><a href="http://schorsch.efi.fh-nuernberg.de/roettger/index.php?n=Tutorials.Compilerbau&action=publish&include=include#end1">1</a></b>] als Erweiterung der Backus Naur Form (BNF) zur Darstellung der Syntax der Programmiersprache Pascal eingeführt.
+</p>
+<p class="vspace">Mit der <a class="wikilink" href="http://schorsch.efi.fh-nuernberg.de/roettger/index.php/Schlagworte/Syntax?action=print">Syntax</a> ist die Abfolge von <a class="wikilink" href="http://schorsch.efi.fh-nuernberg.de/roettger/index.php/Schlagworte/Token?action=print">Schlüsselwörtern</a> (Token) gemeint. Eine Abfolge von Schlüsselwörtern nenn man auch <strong>Satz</strong>. Typischerweise hängt die Abfolge von den vorangegangenen Schlüsselwörtern ab, d.h. dass nicht alle möglichen Abfolgen erlaubt sind.
+</p>
+<p class="vspace">Mit der EBNF wird nun festgelegt, welche Abfolgen erlaubt sind und welche nicht:
+</p>
+<p class="vspace">Die erlaubte Reihenfolge der Schlüsselworter in einem Satz strikt identisch mit der Reihenfolge in der EBNF Definition. Zusätzlich benutzt EBNF die Metazeichen <code class="escaped"> [] {} | () </code>, um eine alternative Reihenfolge der Sprachschlüsselwörter festzulegen.
+</p>
+<div class="vspace"></div><ul><li><code class="escaped"> [ wort ... ] </code> bedeutet, dass ein <code class="escaped">wort</code> (oder mehrere) optional vorkommen kann.
+</li><li><code class="escaped"> { wort ... } </code> bedeutet, dass ein <code class="escaped">wort</code> (oder mehrere) beliebig oft vorkommen kann (inkl. keinmal)
+</li><li><code class="escaped"> wort1 | wort2 </code> bedeutet, dass eine von zwei Varianten, d.h. <code class="escaped">wort1</code> oder <code class="escaped">wort2</code>, vorkommen kann.
+</li><li>Zur Gruppierung von Worten benutzt man runde Klammern: <code class="escaped"> ( wort1 wort2 ... ) </code>
+</li></ul><p class="vspace">Um Mehrdeutigkeiten zwischen Schlüsselwörtern und Metazeichen zu vermeiden setzt man häufig die betreffenden Schlüsselwörter in Anführungszeichen.
+</p>
+<p class="vspace">Jede so definierte Abfolge von Wörtern nennt man <strong>Regel</strong>. Jede Regel hat einen Namen:
+</p>
+<div class="vspace"></div><pre class="escaped">regel_name ::= Abfolge
+</pre>
+<p class="vspace">oder einfach
+</p>
+<div class="vspace"></div><pre class="escaped">regel_name = Abfolge
+</pre>
+<p class="vspace">Ein Regelname kann in anderen Regeln als Abkürzung für die zugehörige Wortfolge eingesetzt werden. Wenn im umgekehrten Fall der Regelname durch die zugeordnete Wortfolge ersetzt wird, nennt man dies <strong>Ableitung</strong>.
+</p>
+<p class="vspace">Daher nennt man die obigen Regeln auch <strong>Ableitungsregeln</strong> und man sagt, dass ein Satz <strong>formal korrekt</strong> ist, wenn er sich mit Hilfe der Ableitungsregeln erzeugen läßt. Die Summe der Ableitungsregeln nennt man <strong>Grammatik</strong>.
+</p>
+<p class="vspace">Ein Programm, welches einen bestimmten Satz anhand einer Grammatik ableitet und auf Korrektheit überprüft nennt man <a class="wikilink" href="http://schorsch.efi.fh-nuernberg.de/roettger/index.php/Schlagworte/Parser?action=print">Parser</a>. Der Parser ist der zentrale Bestandteil eines <a class="wikilink" href="http://schorsch.efi.fh-nuernberg.de/roettger/index.php/Schlagworte/Compiler?action=print">Compilers</a>.
+</p>
+<div class="pagehead1"><h1><a name="pub3" id="pub3"></a><span class="section">3 </span> <a class="wikilink" href="http://schorsch.efi.fh-nuernberg.de/roettger/index.php/Compilerbau/EBNFBeispiel?action=print">EBNF Beispiel</a></h1>
+</div><p>Als Anwendungsbeispiel für die EBNF Metasprache betrachten wir die formale Definition des [vereinfachten] deutschen Satzbaus:
+</p>
+<div class="vspace"></div><pre class="escaped">deutsch   = subjekt verb praedikat objekt
+subjekt   = ich | (die katze)
+verb      = spiele | spielt
+praedikat = [ gerne ]
+objekt    = tafli | fangen
+</pre>
+<p class="vspace">Damit sind die formal erlaubten Sätze:
+</p>
+<div class="vspace"></div><pre class="escaped">ich spiele tafli
+ich spiele gerne tafli
+die katze spielt fangen
+die katze spielt gerne fangen
+</pre>
+<p class="vspace">Neben obigen semantisch korrekten Sätzen erlaubt die Sprachdefinition aber auch die formal bzw. syntaktisch, aber nicht semantisch korrekten Sätze:
+</p>
+<div class="vspace"></div><pre class="escaped">ich spielt tafli
+die katze spielt tafli
+usw.
+</pre>
+<p class="vspace">Die Sprachdefinition mittels EBNF kann also einfache Sprachzusammenhänge wiedergeben, aber nicht alle Feinheiten einer natürlichen Sprache, die sich häufig nur aus dem Kontext ergeben. In diesem Zusammenhang spricht man auch davon, dass man mit EBNF <strong>kontextfreie Grammatiken</strong> definieren kann.
+</p>
+<p class="vspace">Für natürliche Sprachen ist EBNF daher ungeeignet, für einfache Compilersprachen wie C ist es aber hinreichend. Im Gegenteil, es ist sogar gewünscht, Compilersprachen mittels EBNF zu definieren, da sich der Aufwand für den Compilerbau dann aufgrund der einfachen Syntax in Grenzen hält. Es lassen sich sogar <a class="wikilink" href="http://schorsch.efi.fh-nuernberg.de/roettger/index.php/Schlagworte/Compiler?action=print">Compiler</a> bzw. Parser automatisch aus einer EBNF-Definition erzeugen (<cite>Lex/Yacc</cite> [<b><a href="http://schorsch.efi.fh-nuernberg.de/roettger/index.php?n=Tutorials.Compilerbau&action=publish&include=include#end2">2</a></b>]).
+</p>
+<p class="vspace question">Q EBNF ist selber eine Sprache, wenn auch eine Metasprache, kann sie sich selber definieren?</p>
+<p> Ja, wenn man das damit verbundene Henne-Ei Problem außer acht läßt:
+</p>
+<div class="vspace"></div><pre class="escaped">grammatik  = { regel }
+regel      = regel_name "::=" | "=" abfolge
+abfolge    = { variante }
+variante   = wort { "|" wort } 
+wort       = ( "[" abfolge "]" ) |
+             ( "{" abfolge "}" ) |
+             ( "(" abfolge ")" ) |
+             "wort" | "regel_name"
+</pre>
+<div class="pagehead1"><h1><a name="pub4" id="pub4"></a><span class="section">4 </span> <a class="wikilink" href="http://schorsch.efi.fh-nuernberg.de/roettger/index.php/Compilerbau/ArithmetischeAusdruecke?action=print">Arithmetische Ausdrücke</a></h1>
+</div><p class="vspace">Ein weiteres EBNF Beispiel anhand von arithmetischen Ausdrücken:
+</p>
+<div class="vspace"></div><pre class="escaped">expression = term [ + | - term ]
+term       = factor [ * | / factor ]
+factor     = value | ( "(" expression ")" )
+</pre>
+<p class="vspace">Folgende Ausdrücke sind korrekte Sätze im Sinne der obigen Grammatik, d.h. sie lassen sich formal mit Hilfe der Grammatikregeln ableiten:
+</p>
+<div class="vspace"></div><pre class="escaped">2*(3+4)
+2+3*4
+</pre>
+<p class="vspace">Anwendung der Ableitungsregeln am Beispiel des letzteren Ausdrucks:
+</p>
+<div class="vspace"></div><pre class="escaped">2+3*4 = term [ + | - term ]
+      = factor [ * | / factor ] [ + | - term ]
+      = value [ * | / factor ] [ + | - term ]
+      = 2 [ * | / factor ] [ + | - term ]
+      = 2 [ + | - term ]
+      = 2 + term
+      = 2 + factor [ * | / factor ]
+      = 2 + value [ * | / factor ]
+      = 2 + 3 [ * | / factor ]
+      = 2 + 3 * factor
+      = 2 + 3 * value
+      = 2 + 3 * 4
+</pre>
+<p class="vspace">Die Reihenfolge der Ableitungen spiegelt die Priorität der verwendeten arithmetischen Operatoren wieder.
+</p>
+<p class="vspace">Folgende Ausdrücke lassen sich nicht ableiten, sind also kein formal korrekter arithmetischer Ausdruck im Sinne der EBNF-Definition:
+</p>
+<div class="vspace"></div><pre class="escaped">2(3+4)
+2+3+4
+2*(3+4
+</pre>
+<p class="vspace">Überprüfung der Ableitbarkeit am Beispiel des letzten Ausdrucks:
+</p>
+<div class="vspace"></div><pre class="escaped">2*(3+4 = term [ + | - term ]
+       = factor [ * | / factor ] [ + | - term ]
+       = value [ * | / factor ] [ + | - term ]
+       = 2 [ * | / factor ] [ + | - term ]
+       = 2 * factor [ + | - term ]
+       = 2 * ( expression ) [ + | - term ]
+       = 2 * ( term [ + | - term ] ) [ + | - term ]
+       = 2 * ( factor [ * | / factor ] [ + | - term ] ) [ + | - term ]
+       = 2 * ( value [ * | / factor ] [ + | - term ] ) [ + | - term ]
+       = 2 * ( 3 [ * | / factor ] [ + | - term ] ) [ + | - term ]
+       = 2 * ( 3 [ + | - term ] ) [ + | - term ]
+       = 2 * ( 3 + term ) [ + | - term ]
+       = 2 * ( 3 + factor [ * | / factor ] ) [ + | - term ]
+       = 2 * ( 3 + value [ * | / factor ] ) [ + | - term ]
+       = 2 * ( 3 + 4 [ * | / factor ] ) [ + | - term ]
+       = 2 * ( 3 + 4 ) [ + | - term ]
+      != 2 * ( 3 + 4
+</pre>
+<p class="vspace">Die Ableitung des Ausdrucks ergibt, dass als nächstes Token zwingend eine schliessende Klammer erwartet wird. Da sie jedoch nicht im Originalausdruck vorhanden ist, bedeutet dies, dass sich der Ausdruck nicht ableiten lässt.
+</p>
+<p class="vspace">An dieser Stelle würde ein Compiler eine entsprechende Fehlermeldung ausgeben: “token ) erwartet nach zahl 4″.
+</p>
+<p class="vspace question">Q Warum ist <code class="escaped">2+3+4</code> kein formal korrekter Ausdruck im Sinne der Grammatik?</p>
+<p class="vspace question">Q Wie muss man die obigen Ableitungsregeln umformulieren, so dass auch die Ausdrücke <code class="escaped">2+3+4</code> usw. zum Umfang der erlaubten arithmetischen Ausdrücke dazugehören?</p>
+<p class="vspace question">Q Wie muss man einen Parser aufbauen, damit er die obige Grammatik anhand der bisher aufgetretenen Schlüsselwörter erkennt?</p>
+<p> <a class="wikilink" href="http://schorsch.efi.fh-nuernberg.de/roettger/index.php/Compilerbau/ExpressionParser?action=print">Lösung</a>
+</p>
+<div class="pagehead1"><h1><a name="pub5" id="pub5"></a><span class="section">5 </span> <a class="wikilink" href="http://schorsch.efi.fh-nuernberg.de/roettger/index.php/Compilerbau/ExpressionParser?action=print">Ein Beispiel-Parser</a></h1>
+</div><p class="vspace">Ziel ist es, anhand von arithmetischen Ausdrücken beispielhaft zu zeigen, wie ein Compiler im Prinzip aufgebaut ist. Dazu definiert man zuerst eine entsprechende Grammatik und bastelt dazu einen Parser.
+</p>
+<p class="vspace"><a class="wikilink" href="http://schorsch.efi.fh-nuernberg.de/roettger/index.php/Schlagworte/EBNF?action=print">EBNF</a> Grammatik für arithmetische Ausdrücke:
+</p>
+<div class="vspace"></div><pre class="escaped">expression = term { + | - term }
+term       = factor { * | / factor }
+factor     = value | ( "(" expression ")" )
+value      = &lt;decimal number&gt;
+</pre>
+<p class="vspace">Man beachte: die EBNF Regeln für arithmetische Ausdrücke sind rekursiv, d.h. ein Ausdruck kann in Klammern wieder einen Ausdruck enthalten, der wiederum kann einen weiteren geklammerten Ausdruck enthalten usw. Der entsprechende Parser gehört damit auch zur Klasse der <a class="wikilink" href="http://schorsch.efi.fh-nuernberg.de/roettger/index.php/C-Programmierung/Rekursion?action=print">rekursiven Funktionen</a>.
+</p>
+<p class="vspace">Man setzt nun voraus, dass eine Methode <code class="escaped">gettoken()</code> vorhanden ist, welche das nächste Wort (Token) liefert und den dazwischen liegenden Zwischenraum bzw. <em>white space</em> (CR LF TAB SPC) überliest. Diesen Vorgang nennt man <em>lexikalische Analyse</em>. Es wird vereinbart, dass die globale Variable <code class="escaped">token</code> das jeweils aktuell gelesene Wort enthält, d.h. das nächste Wort wird mittels <code class="escaped">token=gettoken()</code> eingelesen.
+</p>
+<p class="vspace">Die Umsetzung der EBNF-Regeln in einen Parser geschieht nun derart, dass eine dedizierte <strong>Parser-<a class="wikilink" href="http://schorsch.efi.fh-nuernberg.de/roettger/index.php/C-Programmierung/Funktionen?action=print">Funktion</a> für jede EBNF-Regel</strong> konstruiert wird.
+</p>
+<p class="vspace">Jede Parser-Funktion überprüft die Ableitbarkeit, indem sie Schritt für Schritt den nächsten Token einliest und auf Übereinstimmung mit der dazugehörigen Regel überprüft. Es gelten dabei folgende Konventionen:
+</p>
+<div class="vspace"></div><ul><li>Für jedes Schlüsselwört einer Regel wird ein Wort gelesen.
+</li><li>Wenn ein gelesenes Wort nicht mit dem Schlüsselwort übereinstimmt, gilt der Satz als nicht ableitbar. Es wird eine Fehlermeldung ausgegeben.
+</li><li>Ein Regelname wird in den entsprechenden Funktionsaufruf übersetzt.
+</li><li>Bei jedem Funktionsaufruf enthält <code class="escaped">token</code> das nächste Schlüsselwort. Selbiges gilt nach einem Funktionsruf.
+</li></ul><p class="vspace">Der Beispiel-<a class="wikilink" href="http://schorsch.efi.fh-nuernberg.de/roettger/index.php/Schlagworte/Parser?action=print">Parser</a> für arithmetische Ausdrücke lautet damit in <a class="wikilink" href="http://schorsch.efi.fh-nuernberg.de/roettger/index.php/Schlagworte/Pseudocode?action=print">Pseudo-Code</a>:
+</p>
+<div class="vspace"></div>
+<div class="sourceblock " id="sourceblock1">
+  <div class="sourceblocktext"><div class="c"><span class="kw4">void</span> expression<span class="br0">(</span><span class="br0">)</span><br>
+<span class="br0">{</span><br>
+&nbsp; &nbsp;term<span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span><br>
+<br>
+&nbsp; &nbsp;<span class="kw1">while</span> <span class="br0">(</span>token<span class="sy0">==</span><span class="st0">"+"</span> <span class="sy0">||</span> token<span class="sy0">==</span><span class="st0">"-"</span><span class="br0">)</span> <span class="br0">{</span><br>
+&nbsp; &nbsp; &nbsp; token<span class="sy0">=</span>gettoken<span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span><br>
+<br>
+&nbsp; &nbsp; &nbsp; term<span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span><br>
+&nbsp; &nbsp;<span class="br0">}</span><br>
+<br>
+&nbsp; &nbsp;exit<span class="br0">(</span><span class="nu0">0</span><span class="br0">)</span><span class="sy0">;</span> <span class="co1">// sentence is correct</span><br>
+<span class="br0">}</span><br>
+<br>
+<span class="kw4">void</span> term<span class="br0">(</span><span class="br0">)</span><br>
+<span class="br0">{</span><br>
+&nbsp; &nbsp;factor<span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span><br>
+<br>
+&nbsp; &nbsp;<span class="kw1">while</span> <span class="br0">(</span>token<span class="sy0">==</span><span class="st0">"*"</span> <span class="sy0">||</span> token<span class="sy0">==</span><span class="st0">"/"</span><span class="br0">)</span> <span class="br0">{</span><br>
+&nbsp; &nbsp; &nbsp; token<span class="sy0">=</span>gettoken<span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span><br>
+<br>
+&nbsp; &nbsp; &nbsp; factor<span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span><br>
+&nbsp; &nbsp;<span class="br0">}</span><br>
+<span class="br0">}</span><br>
+<br>
+<span class="kw4">void</span> factor<span class="br0">(</span><span class="br0">)</span><br>
+<span class="br0">{</span><br>
+&nbsp; &nbsp;<span class="kw1">if</span> <span class="br0">(</span>token<span class="sy0">==</span><span class="st0">"("</span><span class="br0">)</span> <span class="br0">{</span><br>
+&nbsp; &nbsp; &nbsp; token<span class="sy0">=</span>gettoken<span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span><br>
+<br>
+&nbsp; &nbsp; &nbsp; expression<span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span><br>
+<br>
+&nbsp; &nbsp; &nbsp; <span class="kw1">if</span> <span class="br0">(</span>token<span class="sy0">!=</span><span class="st0">")"</span><span class="br0">)</span> error<span class="br0">(</span><span class="nu0">1</span><span class="br0">)</span><span class="sy0">;</span> <span class="co1">// error encountered</span><br>
+<br>
+&nbsp; &nbsp; &nbsp; token<span class="sy0">=</span>gettoken<span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span><br>
+&nbsp; &nbsp;<span class="br0">}</span><br>
+&nbsp; &nbsp;<span class="kw1">else</span> <span class="br0">{</span><br>
+&nbsp; &nbsp; &nbsp; value<span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span><br>
+&nbsp; &nbsp;<span class="br0">}</span><br>
+<span class="br0">}</span><br>
+<br>
+<span class="kw4">void</span> value<span class="br0">(</span><span class="br0">)</span><br>
+<span class="br0">{</span><br>
+&nbsp; &nbsp;<span class="kw1">if</span> <span class="br0">(</span><span class="sy0">!</span>is_value<span class="br0">(</span>token<span class="br0">)</span><span class="br0">)</span> error<span class="br0">(</span><span class="nu0">2</span><span class="br0">)</span><span class="sy0">;</span><br>
+<br>
+&nbsp; &nbsp;token<span class="sy0">=</span>gettoken<span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span><br>
+<span class="br0">}</span><br>
+<br>
+<span class="kw4">void</span> error<span class="br0">(</span><span class="kw4">int</span> code<span class="br0">)</span> <span class="br0">{</span><br>
+&nbsp; &nbsp;exit<span class="br0">(</span>code<span class="br0">)</span><span class="sy0">;</span> <span class="co1">// sentence is not correct</span><br>
+<span class="br0">}</span></div></div>
+  <div class="sourceblocklink"><a href="http://schorsch.efi.fh-nuernberg.de/roettger/index.php/Compilerbau/ExpressionParser?action=sourceblock&num=1" type="text/plain">[<font face="verdana"><math title="[Get Code]]"><mstyle fontfamily="verdana"><mo maxsize="1">[</mo><mi>G</mi><mi>e</mi><mi>t</mi><mi>C</mi><mi>o</mi><mi>d</mi><mi>e</mi><mo maxsize="1">]</mo><mo maxsize="1">]</mo></mstyle></math></font></a></div>
+</div>
+
+<p class="vspace">Die obigen Funktionen sind nicht direkt rekursiv, aber indirekt <a class="wikilink" href="http://schorsch.efi.fh-nuernberg.de/roettger/index.php/C-Programmierung/Rekursion?action=print">rekursiv</a> über 3 Ebenen.
+</p>
+<p class="vspace question">Q Wie kann man die Ausdrücke um die mathematischen Funktionen sqrt() und pow() sowie die trigonometrischen Funktionen sin(), cos() und tan() erweitern?</p>
+<div class="pagehead1"><h1><a name="pub6" id="pub6"></a><span class="section">6 </span> <a class="wikilink" href="http://schorsch.efi.fh-nuernberg.de/roettger/index.php/Compilerbau/ArithmetischeAuswertung?action=print">Arithmetische Auswertung</a></h1>
+</div><p>Zum Auswerten der arithmetischen Ausdrücke organisiert man die Funktionen so um, dass sie den Wert des entsprechenden Teilausdrucks als Funktionswert zurückliefern. Der Gesamtwert eines beliebigen arithmetischen Ausdrucks entspricht damit dem Funktionswert der Parser-Funktion <em>expression</em>:
+</p>
+<div class="vspace"></div>
+<div class="sourceblock " id="sourceblock2">
+  <div class="sourceblocktext"><div class="c"><span class="kw4">double</span> expression<span class="br0">(</span><span class="br0">)</span><br>
+<span class="br0">{</span><br>
+&nbsp; &nbsp;<span class="kw4">double</span> result<span class="sy0">;</span><br>
+<br>
+&nbsp; &nbsp;result<span class="sy0">=</span>term<span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span><br>
+<br>
+&nbsp; &nbsp;<span class="kw1">while</span> <span class="br0">(</span>token<span class="sy0">==</span><span class="st0">"+"</span> <span class="sy0">||</span> token<span class="sy0">==</span><span class="st0">"-"</span><span class="br0">)</span><br>
+&nbsp; &nbsp; &nbsp; <span class="kw1">if</span> <span class="br0">(</span>token<span class="sy0">==</span><span class="st0">"+"</span><span class="br0">)</span> <span class="br0">{</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;token<span class="sy0">=</span>gettoken<span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span><br>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;result<span class="sy0">+=</span>term<span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span><br>
+&nbsp; &nbsp; &nbsp; <span class="br0">}</span><br>
+&nbsp; &nbsp; &nbsp; <span class="kw1">else</span> <span class="br0">{</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;token<span class="sy0">=</span>gettoken<span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span><br>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;result<span class="sy0">-=</span>term<span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span><br>
+&nbsp; &nbsp; &nbsp; <span class="br0">}</span><br>
+<br>
+&nbsp; &nbsp;<span class="kw1">return</span><span class="br0">(</span>result<span class="br0">)</span><span class="sy0">;</span><br>
+<span class="br0">}</span><br>
+<br>
+<span class="kw4">double</span> term<span class="br0">(</span><span class="br0">)</span><br>
+<span class="br0">{</span><br>
+&nbsp; &nbsp;<span class="kw4">double</span> result<span class="sy0">;</span><br>
+<br>
+&nbsp; &nbsp;result<span class="sy0">=</span>factor<span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span><br>
+<br>
+&nbsp; &nbsp;<span class="kw1">while</span> <span class="br0">(</span>token<span class="sy0">==</span><span class="st0">"*"</span> <span class="sy0">||</span> token<span class="sy0">==</span><span class="st0">"/"</span><span class="br0">)</span><br>
+&nbsp; &nbsp; &nbsp; <span class="kw1">if</span> <span class="br0">(</span>token<span class="sy0">==</span><span class="st0">"*"</span><span class="br0">)</span> <span class="br0">{</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;token<span class="sy0">=</span>gettoken<span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span><br>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;result<span class="sy0">*=</span>factor<span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span><br>
+&nbsp; &nbsp; &nbsp; <span class="br0">}</span><br>
+&nbsp; &nbsp; &nbsp; <span class="kw1">else</span> <span class="br0">{</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;token<span class="sy0">=</span>gettoken<span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span><br>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;result<span class="sy0">/=</span>factor<span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span><br>
+&nbsp; &nbsp; &nbsp; <span class="br0">}</span><br>
+<br>
+&nbsp; &nbsp;<span class="kw1">return</span><span class="br0">(</span>result<span class="br0">)</span><span class="sy0">;</span><br>
+<span class="br0">}</span><br>
+<br>
+<span class="kw4">double</span> factor<span class="br0">(</span><span class="br0">)</span><br>
+<span class="br0">{</span><br>
+&nbsp; &nbsp;<span class="kw4">double</span> result<span class="sy0">;</span><br>
+<br>
+&nbsp; &nbsp;<span class="kw1">if</span> <span class="br0">(</span>token<span class="sy0">==</span><span class="st0">"("</span><span class="br0">)</span> <span class="br0">{</span><br>
+&nbsp; &nbsp; &nbsp; token<span class="sy0">=</span>gettoken<span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span><br>
+<br>
+&nbsp; &nbsp; &nbsp; result<span class="sy0">=</span>expression<span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span><br>
+<br>
+&nbsp; &nbsp; &nbsp; <span class="kw1">if</span> <span class="br0">(</span>token<span class="sy0">!=</span><span class="st0">")"</span><span class="br0">)</span> error<span class="br0">(</span><span class="nu0">1</span><span class="br0">)</span><span class="sy0">;</span><br>
+<br>
+&nbsp; &nbsp; &nbsp; token<span class="sy0">=</span>gettoken<span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span><br>
+&nbsp; &nbsp;<span class="br0">}</span><br>
+&nbsp; &nbsp;<span class="kw1">else</span> <span class="br0">{</span><br>
+&nbsp; &nbsp; &nbsp; result<span class="sy0">=</span>value<span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span><br>
+&nbsp; &nbsp;<span class="br0">}</span><br>
+<br>
+&nbsp; &nbsp;<span class="kw1">return</span><span class="br0">(</span>result<span class="br0">)</span><span class="sy0">;</span><br>
+<span class="br0">}</span><br>
+<br>
+<span class="kw4">double</span> value<span class="br0">(</span><span class="br0">)</span><br>
+<span class="br0">{</span><br>
+&nbsp; &nbsp;<span class="kw4">double</span> result<span class="sy0">;</span><br>
+<br>
+&nbsp; &nbsp;<span class="kw1">if</span> <span class="br0">(</span><span class="sy0">!</span>is_value<span class="br0">(</span>token<span class="br0">)</span><span class="br0">)</span> error<span class="br0">(</span><span class="nu0">2</span><span class="br0">)</span><span class="sy0">;</span><br>
+<br>
+&nbsp; &nbsp;result<span class="sy0">=</span>get_value<span class="br0">(</span>token<span class="br0">)</span><span class="sy0">;</span><br>
+<br>
+&nbsp; &nbsp;token<span class="sy0">=</span>gettoken<span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span><br>
+<br>
+&nbsp; &nbsp;<span class="kw1">return</span><span class="br0">(</span>result<span class="br0">)</span><span class="sy0">;</span><br>
+<span class="br0">}</span></div></div>
+  <div class="sourceblocklink"><a href="http://schorsch.efi.fh-nuernberg.de/roettger/index.php/Compilerbau/ArithmetischeAuswertung?action=sourceblock&num=2" type="text/plain">[<font face="verdana"><math title="[Get Code]]"><mstyle fontfamily="verdana"><mo maxsize="1">[</mo><mi>G</mi><mi>e</mi><mi>t</mi><mi>C</mi><mi>o</mi><mi>d</mi><mi>e</mi><mo maxsize="1">]</mo><mo maxsize="1">]</mo></mstyle></math></font></a></div>
+</div>
+
+<p class="vspace">Die arithmetischen Ausdrücke und deren Auswertung stellen nur einen kleinen Auschnitt aus dem Gesamtsprachumfang eines <a class="wikilink" href="http://schorsch.efi.fh-nuernberg.de/roettger/index.php/Schlagworte/Compiler?action=print">Compilers</a> dar. Sie sind allerdings der zentrale Bestandteil eines jeden Compilers. Damit verdeutlicht der obige <a class="wikilink" href="http://schorsch.efi.fh-nuernberg.de/roettger/index.php/Schlagworte/Parser?action=print">Parser</a>, wie ein solcher Compiler im Kern aufgebaut ist.
+</p>
+<p class="vspace">Als weiterführende Literatur nach dieser kurzen Einführung sei das Buch <strong>Compilerbau</strong> von <cite>Niklas Wirth</cite> [<b><a href="http://schorsch.efi.fh-nuernberg.de/roettger/index.php?n=Tutorials.Compilerbau&action=publish&include=include#end3">3</a></b>] empfohlen.
+</p>
+</div>
+
+  <div id="foottext">
+    
+  </div>
+<!--PageFooterFmt-->
+  </div><div id="endnotes">
+     <h1>Links</h1>
+<ol><li><a name="end1" id="end1"></a> <a class="urllink" href="http://de.wikipedia.org/wiki/Niklaus_Wirth" title="" rel="nofollow">de.wikipedia.org/wiki/Niklaus_Wirth</a>
+</li><li><a name="end2" id="end2"></a> <a class="urllink" href="http://en.wikipedia.org/wiki/Yacc" title="" rel="nofollow">en.wikipedia.org/wiki/Yacc</a>
+</li><li><a name="end3" id="end3"></a> <a class="urllink" href="http://de.wikipedia.org/wiki/Niklaus_Wirth" title="" rel="nofollow">de.wikipedia.org/wiki/Niklaus_Wirth</a>
+</li></ol>
+
+  </div><div id="printfoot">
+    <p class="from">Retrieved from http://schorsch.efi.fh-nuernberg.de/roettger/index.php/Tutorials/Compilerbau</p>
+    <p class="lastmod">Page collection published on August 16, 2013, at 12:32 PM</p></div>
+
+
+</body></html>

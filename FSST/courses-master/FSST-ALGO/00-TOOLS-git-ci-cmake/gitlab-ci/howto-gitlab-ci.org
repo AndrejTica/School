@@ -1,0 +1,154 @@
+* howto-gitlab-ci
+- https://about.gitlab.com/2016/07/29/the-basics-of-gitlab-ci/
+
+
+- https://gitlab.com/help/topics/autodevops/index.md
+
+Auto DevOps provides pre-defined CI/CD configuration which allows you to automatically detect, build, test,
+deploy, and monitor your applications. Leveraging CI/CD best practices and tools, Auto DevOps aims
+to simplify the setup and execution of a mature & modern software development lifecycle.
+
+* quick start
+If you are using GitLab.com, see the quick start guide
+for how to use Auto DevOps with GitLab.com and a Kubernetes cluster on Google Kubernetes
+Engine (GKE).
+
+* Features
+Comprised of a set of stages, Auto DevOps brings these best practices to your
+project in a simple and automatic way:
+
+Auto Build
+Auto Test
+Auto Code Quality [STARTER]
+Auto SAST (Static Application Security Testing) [ULTIMATE]
+Auto Dependency Scanning [ULTIMATE]
+Auto License Management [ULTIMATE]
+Auto Container Scanning
+Auto Review Apps
+Auto DAST (Dynamic Application Security Testing) [ULTIMATE]
+Auto Deploy
+Auto Browser Performance Testing [PREMIUM]
+Auto Monitoring
+
+As Auto DevOps relies on many different components, it's good to have a basic
+knowledge of the following:
+
+Kubernetes
+Helm
+Docker
+GitLab Runner
+Prometheus
+
+
+* Enabling/disabling Auto DevOps at the project-level
+If enabling, check that your project doesn't have a .gitlab-ci.yml, or if one exists, remove it.
+
+Go to your project's Settings > CI/CD > Auto DevOps.
+Toggle the Default to Auto DevOps pipeline checkbox (checked to enable, unchecked to disable)
+When enabling, it's optional but recommended to add in the base domain
+that will be used by Auto DevOps to deploy your application
+and choose the deployment strategy.
+Click Save changes for the changes to take effect.
+
+When the feature has been enabled, an Auto DevOps pipeline is triggered on the default branch.
+
+
+
+4 Versionen:
+1. .gitlab-ci.yml
+2. ohne .gitlab-ci.yml
+3. google kubernet engine runner
+4. local runner
+
+
+* Getting started with gitlab ci/cd
+- https://gitlab.com/help/ci/quick_start/README
+
+GitLab offers a continuous integration service. If you
+add a .gitlab-ci.yml file to the root directory of your repository,
+and configure your GitLab project to use a Runner, then each commit or
+push triggers your CI pipeline.
+The .gitlab-ci.yml file tells the GitLab runner what to do. By default it runs
+a pipeline with three stages: build, test, and deploy. You don't need to
+use all three stages; stages with no jobs are simply ignored.
+If everything runs OK (no non-zero return values), you'll get a nice green
+checkmark associated with the commit. This makes it
+easy to see whether a commit caused any of the tests to fail before
+you even look at the code.
+Most projects use GitLab's CI service to run the test suite so that
+developers get immediate feedback if they broke something.
+There's a growing trend to use continuous delivery and continuous deployment to
+automatically deploy tested code to staging and production environments.
+So in brief, the steps needed to have a working CI can be summed up to:
+
+Add .gitlab-ci.yml to the root directory of your repository
+Configure a Runner
+
+From there on, on every push to your Git repository, the Runner will
+automagically start the pipeline and the pipeline will appear under the
+project's Pipelines page.
+
+
+* Übung: gitlab-ci basic
+1. create a project (howto-gitlab-ci) at gitlab.com
+2. git clone https://gitlab.com/NAME/howto-gitlab-ci.git
+
+
+* Creating a simple .gitlab-ci.yml file
+
+Note:
+.gitlab-ci.yml is a YAML file
+so you have to pay extra attention to indentation. Always use spaces, not tabs.
+
+You need to create a file named .gitlab-ci.yml in the root directory of your
+repository. Below is an example for
+
+#+begin_src yaml
+
+#+end_src
+
+
+
+
+* creating a not so simple 
+
+image: maven:latest
+
+variables:
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
+
+cache:
+  paths:
+    - .m2/repository/
+
+build:
+  stage: build
+  script:
+    - mvn $MAVEN_CLI_OPTS compile
+
+test:
+  stage: test
+  script:
+    - mvn $MAVEN_CLI_OPTS test
+  artifacts:
+    paths:
+      - target/site/jacoco/
+pages:
+  stage: deploy
+  dependencies:
+    - test
+  script:
+   - mkdir public
+   - mv target/site/jacoco/index.html public
+  artifacts:
+    paths:
+      - public
+
+deploy:
+  stage: deploy
+  script:
+    - mvn $MAVEN_CLI_OPTS verify
+  only:
+    - master
+

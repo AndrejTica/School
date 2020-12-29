@@ -1,0 +1,76 @@
+* PROG-matrix-FSST-ALGO-floyd-warshall
+
+** CPP: Die Klasse Matrix
+Gegeben ist das CPP-Programm *matrix.h*
+Besprechen Sie das Programm und gehen Sie dabei insbesondere auf folgende Themen ein:
+
+1. Templates
+2. Speicherverwaltung
+3. Überladen von Operatoren
+4. Exception
+5. Programmieren Sie noch den fehlenden Destruktor.
+6. Programmieren Sie auch den Zuweisungsoperator.
+6. Warum liefert der Zuweisungsoperator eine Referenz und der Multiplikationsoperator keine Referenz?
+
+
+** FSST-ALGO: Shortest-Path-floyd-warshall
+- aus: [[https://de.wikipedia.org/wiki/K%C3%BCrzester_Pfad][wiki: kürzester Pfad]] 
+
+- Ein kürzester Pfad ist in der Graphentheorie 
+- ein Pfad zwischen zwei unterschiedlichen Knoten s , t ∈ V eines Graphen, 
+- welcher minimale Länge bezüglich einer Kantengewichtsfunktion c : E -> R hat. 
+- In der Literatur wird das Problem oft als Shortest Path Problem bezeichnet.
+
+1. Besprechen Sie die graphentheoretischen Grundlagen, indem Sie
+   - die Mengen V, E näher beschreiben
+
+2. Besprechen Sie dazu
+   - mögliche Speicherstrukturen und
+   - skizzieren Sie Lösungen in CPP.
+
+4. Der Algorithmus von FLOYD-WARSHALL berechnet APSP.
+   - Was versteht man unter APSP?
+   - Beschreiben Sie den Algorithmus von FLOYD-WARSHALL
+
+5. RDP-Vorbereitung: Programmier-Übung
+#+BEGIN_SRC 
+    - Gegeben: Skriptum: /VORBEREITUNGEN/ZUR_RDP/2016-17-sRDP/aufgabenstellungen/RDP-99-WEITERE_UEBUNGEN/PROG-matrix-FSST-ALGO-floyd-warshall/RDP-CPP-ALGO-floyd-warshall-all-pair-shortest-path.pdf
+    - Gegeben: Template Klasse: matrix.h (s.o.)
+    - Gegeben: net.h
+    - Gegeben: main.cpp
+    - GESUCHT: net.cpp
+
+
+    - Gegeben: Folgendes Netz
+        - 0(Salzburg) 	<-> 2(Linz)			: 120
+        - 0(Salzburg) 	<-> 3(Innsbruck)	: 100
+        - 0(Salzburg) 	<-> 4(Graz)			: 200
+        - 2(Linz) 		<-> 1(Wien)			: 230
+        - 4(Graz) 		<-> 1(Wien)			: 260
+
+				........ (2/L) ........
+				.                     .
+				.                     .
+				120                   230
+				.                     .
+				.                     .
+(3/I)...100...(0/S)                  (1/W)
+				.                     .
+				.                     .
+				.                     .
+				200                   260
+				.                     .
+				.                     .
+				........ (4/G).........
+				
+
+
+    - Folgende Ausgabe muss generiert werden, wenn der
+	    kürzeste Weg von Innsbruck nach Wien gesucht wird.
+
+	Kürzeste Verbindung: von (3/I) nach (1/W): 450 
+	Route:
+	(3/I) nach (0/S): 100
+	(0/S) nach (2/L): 120
+	(2/L) nach (1/W): 230
+#+END_SRC

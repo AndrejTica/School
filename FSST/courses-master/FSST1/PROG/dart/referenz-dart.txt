@@ -1,0 +1,97 @@
+* CPP Referenz
+==================================
+
+- siehe auch: Dart Bootcamp (Beginner)
+- https://da-bootcamp.firebaseapp.com/?course=start_programming_dart
+
+
+** Datentypen und Variablen
+----------------------------------
+ - [ ] int anzahl=10;
+ - [ ] double gewicht= 70.5;
+ - [ ] bool fertig= false;
+ - [ ] String txt= "Hallo, Welt!";
+
+** Operatoren
+----------------------------------
+ - [ ] +, *, -, /, % 
+ - [ ] ==, != , <, <=, >, >=
+ - [ ] &&, ||, !
+ 
+** Ein/Ausgabe
+----------------------------------
+ import 'dart:io';
+
+void main(){
+
+  int laenge;
+  int breite;
+  int flaeche;
+	
+  // Eingabe
+  stdout.write("Länge? ");
+  laenge= int.parse(stdin.readLineSync());
+
+  stdout.write("Breite? ");
+  breite= int.parse(stdin.readLineSync());
+
+  // Berechnung
+  flaeche= laenge*breite;
+
+  // Ausgabe
+  stdout.writeln("Flaeche= ${flaeche}");
+}
+
+
+** Schleifen/Wiederholungen
+----------------------------------
+for (int i=1; i<=10; i++){
+  stdout.writeln("i= ${i}");
+}
+
+
+int i=1;
+while (i<=10){
+   stdout.writeln("i= ${i}");
+
+   i++;
+}
+
+
+int zahl;
+do{
+  stdout.writeln("Nur eine negative Zahl eingeben: ");
+  zahl= int.parse(stdin.readLineSync());
+}while( zahl > 0);
+
+
+
+** Verzweigungen
+----------------------------------
+if (punkte == 0){
+   stdout.writeln("Sie haben zu wenig Punkte");
+}
+
+
+if (zahl%2 == 0) {
+   stdout.writeln("Eine gerade Zahl");
+}else{
+   stdout.writeln("Eine ungerade Zahl");
+}
+
+
+if (jahr%400 == 0 || (jahr%4==0 && jahr%100!=0)){
+   stdout.writeln("${jahr} ist ein Schaltjahr");
+}else{
+   stdout.writeln("${jahr} ist ein KEIN Schaltjahr");
+}
+
+
+if (zahl<0){
+   stdout.writeln("Eine negative Zahl");
+}else if (zahl==0){
+   stdout.writeln("Eine 0 als Zahl");
+}else {
+   stdout.writeln("Eine positive Zahl");
+}
+

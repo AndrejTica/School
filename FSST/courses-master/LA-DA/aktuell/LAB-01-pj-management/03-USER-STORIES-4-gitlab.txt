@@ -1,0 +1,135 @@
+title;description
+"DOKU: DA Antrag";"diplomarbeiten.berufsbildendeschulen.at"
+"DOKU: 1. Diplomarbeit";"DA_2016-17_5BHEL_HofA_S1_S2_KurzT.pdf, Beauftragter"
+"DOKU: 2. Diplomarbeit";"indiv. Zielsetzung-Gantt-Diagramm"
+"DOKU: 3. Diplomarbeit";"Einleitung, Pflichtenheft"
+"DOKU: 4. Diplomarbeit";"Grundlagen u. Methoden"
+"DOKU: 5. Diplomarbeit";"Ergebnisse"
+"DOKU: 6. Diplomarbeit";"Begleitprotokoll"
+"DOKU: 7. Diplomarbeit";"Anhänge"
+"DOKU: 1. Vorlagen";"Diplomarbeit"
+"DOKU: 2. Vorlagen";"Begleitprotokoll"
+"DOKU: 3. Vorlagen";"Besprechungsprotokoll"
+"DOKU: 1. Individ. Themenstellung";"Titel,Inhalts-u.Literaturverzeichnis"
+"DOKU: 2. Individ. Themenstellung";"Einleitung"
+"DOKU: 3. Individ. Themenstellung";"Hauptteil"
+"DOKU: 4. Individ. Themenstellung";"Ergebnisse,Abgabe"
+"PJM: Tool-Wahl";"zur Projektverwaltung (agil:teamgantt,kanbanflow,taiga,...,shared folder)"
+"PJM: Gantt-Diagramm erstellen";"s. Vorlagen"
+"PJM: 1. Review-10";"Systemspezifikation,Pflichtenheft"
+"PJM: 1. Review-11";"1. Prototyp"
+"PJM: 2. Review-12";"1. Präsentation, Award-Teilnahmen"
+"PJM: 3. Review-01";"TdOT"
+"PJM: 4. Review-02";"Produkt/Ergebnis: Abnahmeprotokoll"
+"PJM: 5. Review-03";"DA,DA-Verteidigung, Begleitprotokoll"
+"ABGABE: DA-Verteidigung";"Vorbereitung"
+"ABGABE: 1. Diplomarbeit";"Produkt/Ergebnis: Abnahmeprotokoll"
+"ABGABE: 2. Diplomarbeit";"zur Kontrolle"
+"ABGABE: 3. Diplomarbeit";"zur Benotung"
+"BSP: 1. User Story:";"Marktstudie (inkl. Entscheidung)"
+"BSP: 2. User Story:";"Einarbeitung (openGL,...)"
+"BSP: 3. User Story:";"Gehäuse aussuchen"
+"BSP: 4. User Story:";"Stromversorung"
+"BSP: 5. User Story:";"Server: Install and Config"
+"LAB: Projektverwaltung";"Scrum, Pflichtenheft, ..."
+"LAB: ConfigurationManagement";"Versionsrwaltung mit git,..."
+"LAB: Literaturrecherche";"Bibliothekenverbund, Zotero.org,..."  
+"RECHT: Kooperationsvertrag";"nur wenn nötig"
+
+
+
+
+# hofa: hofa-user-stories.gitlab.csv
+
+"* [ ]  10.PJM: gitlab Boards erstellen (,....)";""
+"* [ ]  10.PJM:pro Person: import User.Stories (issues List -> import)";""
+"* [ ]  10.PJM:pro Person: edit: User.Stories (Assignee, due date, milestone)";""
+"* [ ]  10.PJM: Sprint.10 besprechen";""
+"* [ ]  10.PJM: Sprint.11 planen";""
+"* [ ]  10.DA: als Word gestartet";""
+"* [ ]  10.DA: Big Picture";""
+"* [ ]  10.DA: Projekt-Organisation: Gantt-Diagramm";""
+"* [ ]  10.PROD: Arbeitsplatz einrichten, Einarbeiten";""
+"* [ ]  11.DA: Begleitprotokoll, Betreuungsprotokoll, Projekttagebuch";""
+"* [ ]  11.DA: Projekt-Organisation: Scrum";""
+"* [ ]  11.DA: Pflichtenheft beginnen";""
+"* [ ]  11.PROD: 1.Prototyp fertigstellen";""
+"* [ ]  12.DA: Pflichtenheft fertigstellen";""
+"* [ ]  12.DA: Powerpoint";""
+"* [ ]  12.PROD: 2. Prototyp fertigstellen";""
+"* [ ]  01.DA: Powerpoint";""
+"* [ ]  01.PROD: Produktpräsentation";""
+"* [ ]  02.DA: Produktpräsentation";""
+"* [ ]  02.DA/PROD: Abnahmeprotokoll";""
+"* [ ]  03.DA: Abgabe";""
+"* [ ]  03.DA-Verteidigung: 7 min Folien";""
+"* [ ]  03.DA-Verteidigung: 7 min Gesprächsnotizen";""
+
+
+
+
+
+# Arbeiten mit GITLAB-Board
+
+1. Meilensteine(Sprints) anlegen
+sprint.10
+sprint.11
+sprint.12
+sprint.01
+sprint.02
+sprint.03
+
+2. User Stories als Liste importieren
+
+3. User Story editieren (assignee, due-date, milestone)
+
+4. Board erstellen
+open, todo, doing, closed
+
+5. Board filtern nach
+(assignee, due-date, milestone)
+
+
+
+sprint.10.spezifikation.pjm
+* [ ]  10.PJM: gitlab Boards erstellen (,....)
+* [ ]  10.PJM:pro Person: import User.Stories (issues List -> import)
+* [ ]  10.PJM:pro Person: edit: User.Stories (Assignee, due date, milestone)
+* [ ]  10.PJM: Sprint.10 besprechen
+* [ ]  10.PJM: Sprint.11 planen
+* [ ]  10.DA: als Word gestartet
+* [ ]  10.DA: Big Picture
+* [ ]  10.DA: Projekt-Organisation: Gantt-Diagramm
+* [ ]  10.PROD: Arbeitsplatz einrichten, Einarbeiten
+
+
+sprint.11.Prototyp
+* [ ]  11.DA: Begleitprotokoll, Betreuungsprotokoll, Projekttagebuch
+* [ ]  11.DA: Projekt-Organisation: Scrum
+* [ ]  11.DA: Pflichtenheft beginnen
+* [ ]  11.PROD: 1.Prototyp fertigstellen
+
+
+sprint.12.Präsentation/Awards
+* [ ]  12.DA: Pflichtenheft fertigstellen
+* [ ]  12.DA: Powerpoint
+* [ ]  12.PROD: 2. Prototyp fertigstellen
+
+
+sprint.01.TdoT
+* [ ]  01.DA: Powerpoint
+* [ ]  01.PROD: Produktpräsentation
+
+
+sprint.02.Produkt/Ergebnis: Abnahmeprotokoll
+* [ ]  02.DA: Produktpräsentation
+* [ ]  02.DA/PROD: Abnahmeprotokoll
+
+
+sprint.03.DA-Verteidigung
+* [ ]  03.DA: Abgabe
+* [ ]  03.DA-Verteidigung: 7 min Folien
+* [ ]  03.DA-Verteidigung: 7 min Gesprächsnotizen
+
+
+

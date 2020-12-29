@@ -1,0 +1,134 @@
+mab: search (6)______NAME:__________________________________________DATE:________
+
+1. (2)
+----------------------------------------------------------------------------------------
+A recursive function should return the sum of 1 to its parameter n.
+    (for example: 1+2+ .... + (n-1) + n)
+
+Q:correct this recursive function
+    int sum(int n){
+        return sum (n-1);
+    }
+
+A: CORRECTION:
+    int sum(int n){
+
+
+
+
+
+
+
+
+
+
+
+
+   
+2. (4)
+----------------------------------------------------------------------------------------
+given:
+    typedef struct rect{int length; int width;} rectangle_t;
+    ...
+    rectangle_t search;
+    search.length=3;
+    search.width=5;
+    pFound= bsearch( & search, all, 5, sizeof(rectangle_t), cmp);
+    ....
+
+Q: define the variables pFound and all:
+
+__________________________________ all ____________________________________
+
+__________________________________ pFound __________________________________
+
+
+Q: define the compare-function for bsearch. Use the component length.
+
+
+______________ cmp (____________________________pa, _______________________pb){
+
+
+
+
+
+
+
+
+
+
+
+}
+
+Hint: bsearch()
+void* bsearch(void* arr, size_t nelements, size_t size, int (*f)(const void*, const void*));
+
+
+
+
+mab: search (6)______NAME:__________________________________________DATE:________
+
+1. (2)
+----------------------------------------------------------------------------------------
+   
+What is the output of this programm:
+    ....
+    void foo(int n){
+        if (n/2 > 0){
+            foo(n/2);
+            printf("%i", n%2);
+        }else{
+            printf("%i", n%2);       
+        }
+    }
+
+    int main(){
+        foo(11);
+    }
+
+
+Q:OUTPUT: ___________________________________________
+
+
+
+2. (4)
+----------------------------------------------------------------------------------------
+given:
+    typedef struct rect{int length; int width;} rectangle_t;
+    ....
+    rectangle_t rectangles[5];
+    ...
+    rectangle_t search;
+    search.length=3;
+    search.width=5;
+    ...
+    int found= myBsearch(&search, rectangles, 0, 4);
+
+   
+Q: To use the binary search algorithm the array has to be __________________________
+   
+   
+Q: Complete the following code. You should search for component length.
+
+int myBsearch(rectangle_t* key, rectangle_t* array, int left, int right){
+   
+    while (left <= right){
+        int m= (left + right)/2;
+   
+        if (
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+    } // while
+   
+    return -1;
+}

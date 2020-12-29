@@ -1,0 +1,37 @@
+Agile Methoden-Grundlagen
+================================================================================
+File: AB-SENG-03-agile.txt
+
+AUFGABE: Agile Methoden Übersicht
+--------------------------------------------------------------------------------
+Lesen Sie 
+<https://gitlab.com/4me/courses/blob/master/SENG/01-seng-grundlagen/01-lernen/scrum.pdf>
+
+
+AUFGABE: SCRUM Training Series (by COLLABNET)
+--------------------------------------------------------------------------------
+1. Introduction to Scrum
+	<https://www.youtube.com/watch?v=D8vT7G0WATM>
+
+2. Backlog Refinement Meeting
+	<https://www.youtube.com/watch?v=b_WeHcZcx1w>
+
+3. Sprint Planing Meeting
+	<https://www.youtube.com/watch?v=wPvG9NZNUa4>
+
+4. Daily Scrum Meeting
+	<https://www.youtube.com/watch?v=cUOoWxi_NB0>
+
+5. Sprint Review Meeting
+	<https://www.youtube.com/watch?v=f8JVSfICRew>
+
+
+AUFGABE: Agile Methoden Übersicht
+--------------------------------------------------------------------------------
+1. Studieren Sie: https://tree.taiga.io oder http://www.kanbanflow.com
+
+2. Verwenden Sie eines der obigen Systeme zu Ihrer DA/Projektverwaltung
+
+3. Beantworten Sie die Fragen: 
+	MAB: SENG Scrum (Begriffe)
+	<https://elearning.htl-salzburg.ac.at/mod/quiz/view.php?id=9545>

@@ -1,0 +1,34 @@
+//summe.stk
+//a.hofmann
+//
+push 0
+assign summe
+read Summe berechnen: VON ?
+assign von
+read Summe berechnen: BIS ?
+assign bis
+vpush von
+assign i
+// ------------------------------------------------
+while
+vpush i
+vpush bis
+le
+//--------- aufsummieren
+vpush summe
+vpush i
+add
+assign summe
+// ----------------- i++ increment
+vpush i
+push 1
+add
+assign i
+//
+//debug
+endwhile
+// -----------------------------------------------
+vpush summe
+write DAS ERGEBNIS IST: 
+//debug
+quit

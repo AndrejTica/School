@@ -1,0 +1,46 @@
+﻿mab: (6) intarray::getSubArray: (new, delete)
+------------------------------------------------------------------ 
+Gegeben: 
+	Die Klasse Intarray mit den Membern: 
+		int* a; 
+		int size;
+
+1.(1) ____________________________________________________________
+Gegeben:
+	Intarray* Intarray::getSubArray(int von_idx, int bis_idx){
+		int len= bis_idx - von_idx + 1;
+		int* arr= new int[len];
+	
+		for (int i= 0; i < len; i++)
+			arr[i]= this->a[i + von_idx];
+	
+		Intarray* p= new Intarray(arr,len);
+		return p;
+	}
+
+Frage: Was ist an obiger Methode falsch?
+
+(1) Antwort: Korrigieren Sie den Fehler.
+
+
+
+2. (5) ------------------------------------------------------------
+Gegeben ist:
+
+	CIntarray* CIntarray::getSubArray(int von_idx, int bis_idx){
+		CIntarray* ptr;	
+		ptr= new CIntarray(& a[von_idx], bis_idx - von_idx + 1);
+		return ptr;
+	}
+
+
+Frage: Was muss alles gemacht/programmiert werden, sodass diese
+		Methode funktioniert?
+
+(1) Antwort: intarray.h
+
+
+(4) Antwort: intarray.cpp
+	
+	
+	

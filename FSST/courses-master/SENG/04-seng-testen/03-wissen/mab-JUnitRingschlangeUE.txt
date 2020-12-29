@@ -1,0 +1,29 @@
+﻿mab: (6) JUnitRingschlangeUE
+--------------------------------------------------------------
+
+1. importieren Sie das Java-Projekt JUnitRingschlangeUE.zip
+-----------------------------------------------------------
+
+/*
+ * Unterlage: 
+ * 	4ME/SENG/04-seng-testen/*
+ * 
+(3) * Aufgabe 1:
+ * 
+ * Der Test liefert einen Error.
+ * Korrigieren Sie dies und führen Sie nach jeder Änderung 
+ * einen Testlauf durch.
+ * 
+ * 
+(3) * Aufgabe 2:
+ * 
+ * Erstellen Sie noch den Test für toString()
+ * (siehe: JUnitStack)
+ * @Test	
+	public void testtoString() throws FullException{
+		...
+	}
+ */
+
+
+

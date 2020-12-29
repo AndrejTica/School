@@ -1,0 +1,24 @@
+﻿easyUI-kurs:
+================================================================
+http://www.jeasyui.com/demo/main/index.php
+
+
+1. 
+----------------------------------------------------------------
+Studieren Sie die Demos auf
+	http://www.jeasyui.com/demo/main/index.php
+
+
+2. 
+----------------------------------------------------------------
+Verwenden Sie 
+	Web DEMOS -> Basic CRUD Application
+	http://www.jeasyui.com/tutorial/app/crud.php
+
+und passen Sie diese Vorlage an, um die Professoren-Tabelle
+	is_uni/comein
+	is_uni.is_professoren 
+zu verwalten.
+
+Abgabe:
+	home/easyuikurs/

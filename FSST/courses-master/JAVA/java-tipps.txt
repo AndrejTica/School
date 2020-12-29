@@ -1,0 +1,52 @@
+// 2015, Java und email
+//
+//Verwendete Links:
+//http://www.java-forum.org/java-basics-anfaenger-themen/157273-email-versenden-java.html
+//http://www.zdnet.de/39139929/e-mails-in-java-verschicken-es-gibt-mehr-als-eine-moeglichkeit/
+//https://cloud.google.com/appengine/docs/java/mail/usingjavamail
+//http://stackoverflow.com/questions/3649014/send-email-using-java
+
+
+
+public void actionPerformed(ActionEvent arg0) {
+				
+				final String username = "valentina.tollinger@gmail.com";		//Eigene Email Adresse eingeben
+				final String password = "!!!!!!!!!!!!!!!"; 				//Passwort einfügen
+				final String recipient = "anton.hofmann@htl-salzburg.ac.at";		//Empfänger Email Adresse eingeben
+
+
+
+				Properties props = new Properties();					
+				props.put("mail.smtp.starttls.enable", "true");
+				props.put("mail.smtp.auth", "true");
+				props.put("mail.smtp.host", "smtp.gmail.com");				//SMTP-Server aktualisieren
+				props.put("mail.smtp.port", "587");					//richtige Portnummer eingeben
+
+				Session session = Session.getInstance(props,
+						new javax.mail.Authenticator() {
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication(username, password);
+					}
+				});
+
+				try {
+
+					Message message = new MimeMessage(session);
+					message.setFrom(new InternetAddress(username));
+					message.setRecipients(Message.RecipientType.TO,
+							InternetAddress.parse(recipient));
+					message.setSubject("!!!!!");					//Betreff eingeben
+					message.setText("!!!!!");					//Text eingeben
+
+					Transport.send(message);
+
+					System.out.println("Done");
+
+				} catch (MessagingException e) {
+					throw new RuntimeException(e);
+				}
+
+				
+
+
+			}

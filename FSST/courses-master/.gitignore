@@ -1,0 +1,10 @@
+/.project
+.DS_Store
+.vscode/
+DEBUG
+*~
+*.o
+*SOLVED*
+*.exe
+archiv
+build/

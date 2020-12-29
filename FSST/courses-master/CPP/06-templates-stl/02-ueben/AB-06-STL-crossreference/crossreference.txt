@@ -1,0 +1,10 @@
+crossreference.txt
+STL ist die Abkürzung für Standard Template Library. 
+Sie ist eine komplexe Sammlung von Templateklassen und 
+Templatefunktionen, welche viele bekannte und häufig 
+gebrauchte Algorithmen und Datenstrukturen kapseln. 
+Man findet in ihr zum Beispiel Vektoren 
+(das sind dynamische Arrays), Listen, Stacks, 
+sowie Such- und Sortieralgorithmen. 
+Die Standard Template Library ist seit 
+1994 ein Teil von C++.

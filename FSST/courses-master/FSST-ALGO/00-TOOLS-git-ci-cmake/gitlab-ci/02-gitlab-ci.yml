@@ -1,0 +1,11 @@
+# Run our first test inside CI
+# Make results of builds downloadable
+
+test:
+  script: cat file1.txt file2.txt | grep -q 'Hello world'
+package:
+  script: cat file1.txt file2.txt | gzip > packaged.gz
+  artifacts:
+    paths:
+      - packaged.gz
+

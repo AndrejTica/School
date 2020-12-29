@@ -1,0 +1,22 @@
+================================================================================
+Wiederholung: f_bmi.c
+================================================================================
+Das Programm soll:
++ eine geeignete Datenstruktur definieren
++ die Datei input.txt in ein Array laden
++ die fehlenden Werte berechnen
++ die Datei output.txt beschreiben
+
+Hinweis Aufbau: input.txt
+	klasse,vorname,nachname,gewicht,groesse
+
+
+Beispiel: input.txt
+3
+4cheli,anton,hofmann,70,170
+4cheli,beta,hofmann,80,180
+4cheli,gamma,hofmann,90,190
+
+
+Inhalt der Datei output.txt:
+klasse,maxgewicht,mingewicht,maxgroesse,mingroesse,maxbmi,minbmi, durchschnittsgewicht,durchschnittsgroesse,durchschnittsbmi

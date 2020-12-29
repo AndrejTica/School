@@ -1,0 +1,69 @@
+﻿NAME:											KLASSE:			DATUM:
+=============================================================================
+
+
+AUFGABE   : (  ) arrHatDoppelte
+-----------------------------------------------------------------------------
+	Fülle die Lücken im Programm. 
+	Die Methode „arrHatDoppelte“ soll überprüfen, ob im Array Elemente
+	doppelt bzw. mehrfach vorkommen. Schreibe die Methode „arrHatDoppelte“.
+
+
+	public _______________ arrHatDoppelte(______________)
+	{
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	}
+	
+	public static void main(String[] args) 
+	{
+		int[] arr = {1,2,3,4,5};
+		
+		boolean hatDoppelte= arrHatDoppelte(arr);
+		
+		System.out.println( "arr hat doppelte: " + hatDoppelte );
+	}

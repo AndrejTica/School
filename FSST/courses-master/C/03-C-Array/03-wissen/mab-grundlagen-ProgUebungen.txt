@@ -1,0 +1,118 @@
+mab-c-grundlagen: ProgrammierÜbungen
+--------------------------------------------------------------------------------
+
+Fragen:
+--------------------------------------------------------------------------------
+Beantworten Sie folg. Fragen: (Operatoren, Kontrollstrukturen)
+	1. Was bewirken die Operatoren ++ und -- ? 
+	Was müssen Sie bei ihrer Verwendung beachten ?
+	  
+	2. Welchen Wert erhält x bei folgendem Ausdruck:
+		2.1.   x= c>='0' && c <= '9';
+		2.2.   x= 1 && 2;
+		2.3.   x= 1 & 2;
+		2.4.   int x,y,z;
+		         x=2;y=1;z=0;
+		         /* Setzen Sie die Klammern entsprechend ihrer Priorität. */
+		         x= x || !y && z;    
+
+	3. Welche Ausgaben bewirkt folgendes Programm ?
+
+	#include <stdio.h>
+	int main() {
+		int x,y,z;
+		x=y=0;
+
+		while (y<10)++y; x+=y;
+		printf("%d %d\n",x,y);
+		
+		for (x=0, y=1000; y>1; x++,y/=10)
+		   printf("%d %d\n",x,y);
+		
+		if (x=3)
+		  y+=10;
+		else
+		  y+=100;
+
+		for (x=0; x < 10; x+=2);
+		  printf("%d %d\n",x,y);
+
+		return 0;  
+	}
+
+
+
+
+Aufgabe 1 (Kontrollstrukturen): (mycat.c)
+--------------------------------------------------------------------------------
+	Schreiben Sie folg. Programm so um, dass jede Ausgabezeile mit der 
+	Zeilennummer (6stelliges Feld) beginnt:
+	//mycat.c  Eingabe nach Ausgabe
+	#include <stdio.h>
+	int main(){
+		int ch;
+		while ( (ch= fgetc(stdin)) != EOF)
+			fputc(ch, stdout);
+
+		return 0;
+
+	}
+
+	Aufruf: mycat.exe < eingabedatei.txt
+
+	Eingabedatei: eingabedatei.txt
+	Ein recht bekanntes Spiel ist das Nimm-Spiel (mit zwei m): 
+	Es werden z.B. 20 Münzen auf den Tisch gelegt, und die beiden Spieler 
+
+	Ausgabe:
+	1     Ein recht bekanntes Spiel ist das Nimm-Spiel (mit zwei m): 
+	2     Es werden z.B. 20 Münzen auf den Tisch gelegt, und die beiden Spieler 
+
+
+
+
+Aufgabe 2 (Arrays, Zeichensatz): (mywc.c)
+--------------------------------------------------------------------------------
+	Schreiben Sie folgendes Programm so um, dass zusätzlich die Häufigkeit 
+	der eingebenen Zeichen ('a' bis 'z'   und  'A' bis 'Z') ermittelt und
+	 ausgegeben wird.
+
+	/* Eingabezeilen, -worte und -zeichen zaehlen */
+	#include <stdio.h>
+	#define YES 1
+	#define NO 0
+	int main(){
+	int c, nl, nw, nc, inword;inword = NO;nl = nw = nc = 0;
+	while ((c=fgetc(stdin)) != EOF) {++nc;if (c == '\n')++nl;
+	if (c==' ' || c=='\n' || c=='\t')inword = NO;else if (inword == NO) {
+	inword = YES;++nw;}}printf("%d %d %d\n",nl,nw,nc);return 0;}
+
+Aufgabe 3 : (celsius.c)
+--------------------------------------------------------------------------------
+	Gegeben sei folg. Programm
+	/* Umwandlung von Fahrenheit in Celsius für f = 0, 20, ..., 300 */
+	#include <stdio.h>
+	int main(){
+	int lower,upper,step;
+	float fahr,celsius;
+	lower = 0;  	/* untere Grenze der Temperaturtabelle */
+	upper = 300; 	/*obere Grenze */
+	step = 20;   	/*Schrittweite */
+
+	fahr = lower;
+	while (fahr <= upper) {
+		celsius = (5.0/9.0) * (fahr-32.0);
+		printf ("%4.0f %6.1f\n",fahr,celsius);
+		fahr = fahr + step;
+		}
+	return 0;
+	}
+	Ändern Sie es so ab, dass die Tabelle in der folgenden Form erscheint:
+
+	Fahrenheit : Celsius
+	----------------------
+		    xxx.  :  xxx.x
+		    xxx.  :  xxx.x
+		      ...
+
+

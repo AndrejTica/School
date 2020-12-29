@@ -1,0 +1,102 @@
+MAB-REGEX-examples-regexr.com.txt (6)   Name: 						Date:
+================================================================================
+Beachte: (?:    ) ist eine sog. non-matching group.
+	D.h. der Inhalt der Gruppe dient zum Erkennen des Textes. 
+	Wird aber bei der Gruppenbildung nicht verwendet. Siehe Anhang unten.
+Beachte: \b   \b
+	Word boundary. Mathes a word bound like whitespace , punctuation, ...
+
+0. (0) Gegeben ist der REGEX.
+--------------------------------------------------------------------------------
+(?:\d*\.)?\d+
+Unterstreichen Sie die 'gematchten' Textpassagen.
+10rats + .36geese = 3.14cows
+--       ---        ----
+
+1. (1) Gegeben ist der REGEX.
+--------------------------------------------------------------------------------
+([A-Z])\w+
+Unterstreichen Sie die 'gematchten' Textpassagen.
+Edit the Expression & Text to see matches.
+
+
+2. (1) Gegeben ist der REGEX.
+--------------------------------------------------------------------------------
+\btest(er|ing|ed|s)?\b
+Unterstreichen Sie die 'gematchten' Textpassagen.
+that tested test is testing the tester's tests
+
+
+3. (1) Gegeben ist der REGEX.
+--------------------------------------------------------------------------------
+\b\d{3}[-.]?\d{3}[-.]?\d{4}\b
+Unterstreichen Sie die 'gematchten' Textpassagen.
+p:444-555-1234 f:246.555.8888 m:1235554567  k:(800)-555-2468
+  
+
+4. (1) Gegeben ist der REGEX.
+--------------------------------------------------------------------------------
+[a-zA-Z]+
+Unterstreichen Sie die 'gematchten' Textpassagen.
+RegEx is tough, but useful.
+
+
+5. (1) Gegeben ist der REGEX.
+--------------------------------------------------------------------------------
+(?:#|0x)?(?:[0-9A-F]{2}){3,4}
+Unterstreichen Sie die 'gematchten' Textpassagen.
+#FF006C 99AAB7FF 0xF0F73611
+
+
+6. (1) Gegeben ist der REGEX.
+--------------------------------------------------------------------------------
+\b\w{4}\b
+Unterstreichen Sie die 'gematchten' Textpassagen.
+drink beer, it's very nice!
+
+
+
+
+ 
+Anhang: zu (?: ) no matching group
+----------------------------------
+Aus: http://stackoverflow.com/questions/3512471/what-is-a-non-capturing-group
+
+Consider the following text:
+
+http://stackoverflow.com/
+http://stackoverflow.com/questions/tagged/regex
+
+Now, if I apply the regex below over it...
+
+(http|ftp)://([^/\r\n]+)(/[^\r\n]*)?
+
+... I would get the following result:
+
+Match "http://stackoverflow.com/"
+     Group 1: "http"
+     Group 2: "stackoverflow.com"
+     Group 3: "/"
+
+Match "http://stackoverflow.com/questions/tagged/regex"
+     Group 1: "http"
+     Group 2: "stackoverflow.com"
+     Group 3: "/questions/tagged/regex"
+
+But I don't care about the protocol -- I just want the host and path of the URL. 
+So, I change the regex to include the non-capturing group (?:).
+
+(?:http|ftp)://([^/\r\n]+)(/[^\r\n]*)?
+
+Now, my result looks like this:
+
+Match "http://stackoverflow.com/"
+     Group 1: "stackoverflow.com"
+     Group 2: "/"
+
+Match "http://stackoverflow.com/questions/tagged/regex"
+     Group 1: "stackoverflow.com"
+     Group 2: "/questions/tagged/regex"
+
+See? The first group has not been captured. The parser uses it to match the 
+text, but ignores it later, in the final result.

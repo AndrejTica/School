@@ -1,0 +1,60 @@
+* Timer
+
+- wenn gestartet, füührt er nach einer bestimmten delay-Zeit die Funktion doSomething() aus.
+
+#+begin_src java
+  private javax.swing.Timer timer;  
+
+  private int delay=1000; // 1 sec
+
+
+  public void startTimer(){		
+    timer= new javax.swing.Timer(
+      delay,
+
+      new java.awt.event.ActionListener(){
+        public void actionPerformed (java.awt.event.ActionEvent e){
+          doSomething();
+        }					
+      }
+    );
+		
+    timer.start();		
+  }
+
+#+end_src
+
+
+
+* Tastatureingaben, Cursortasten
+
+- Werden z.B. vom Spieler gemacht. Hier werden meist kleine Änderungen gemacht.
+
+#+begin_src java
+
+  ....
+  jButtonStart.addKeyListener(new java.awt.event.KeyAdapter() {
+    public void keyPressed(java.awt.event.KeyEvent e) {
+        switch (e.getKeyCode()) {
+          case java.awt.event.KeyEvent.VK_UP: 
+            spieler.up();
+            break;
+          case java.awt.event.KeyEvent.VK_DOWN: 
+            spieler.down();
+            break;
+          case java.awt.event.KeyEvent.VK_RIGHT: 
+            // Timer soll schneller schalten
+            if (delay>=5) delay -=5;
+              timer.setDelay(delay);
+            break;
+				                     
+          case java.awt.event.KeyEvent.VK_LEFT: 
+            // Timer soll langsamer schalten
+            delay +=5;
+            timer.setDelay(delay);
+            break;
+        }
+      }
+    });
+#+end_src
+

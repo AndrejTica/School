@@ -1,0 +1,38 @@
+mab: java-string (6)__name:________________________datum:__________
+
+1 (3) ______________________________________________________________
+Programmieren Sie folg. Funktion/Methode:
+
+// @param s enthält den Text in der Form (10,20,30,40)
+// @return der die Anzahl der Vorkommnisse von value in
+// 			s zurückgibt.
+int getCount(String s, int value){
+	???????????????
+
+}
+
+
+
+2 (3) ______________________________________________________________
+Programmieren Sie folg. Funktion/Methode:
+
+
+// @param s enthält den Text in der Form 
+//			usernname:pwd:name:home-Verzeichnis:shell
+//			Beispiel:
+//			hofmann:*:Anton Hofmann:/home/hofmann:/bin/bash
+// @return ein String, der nur die vewendete shell enthält
+String getShellName(String url){
+	???????????????????
+}
+
+Hinweise:
+String substring(int begin, int end) throws
+	StringIndexOutOfBoundsException
+String[] split(String s)
+int indexOf(String s)
+int indexOf(String s, int fromIndex)
+int lastIndexOf(String s)
+String toLowerCase()
+String toUpperCase()
+String replace(char oldchar, char newchar)

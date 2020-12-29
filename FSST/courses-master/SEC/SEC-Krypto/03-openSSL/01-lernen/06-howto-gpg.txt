@@ -1,0 +1,51 @@
+# GPG (GNU Privacy Guard)
+------------------------------------
+
+<http://www.online-tutorials.net/security/gnupg-gpg-tutorial/tutorials-t-69-124.html>
+
+
+## install
+apt-get install gnupg
+gpg --help
+
+
+## Keys erzeugen
+gpg --gen-key
+
+
+## Widerrufs-Zertifikat erzeugen
+(umask 077 && gpg --gen-revoke <USERID> > gpg-revoke.txt)
+
+
+
+## Public-Key exportieren/importieren
+gpg --export -a Anton Hofmann > public_key_Ahofmann.key 
+gpg --import public_key_Ahofmann.key
+
+
+
+## Public-KEYS anzeigen
+gpg --list-public-keys
+gpg --list-keys
+
+## Private-Key anzeigen
+gpg --list-secret-keys
+
+
+## Schlüssel-Informationen/Fingerprint 
+gpg --fingerprint anton.hofmann@htl-salzburg.ac.at
+gpg --fingerprint 0A444677
+gpg -kvc hofmann
+
+
+## weiters
+gpg --keyid-format 0xlong --verify tails-i386-2.9.1.iso.sig tails-i386-2.9.1.iso
+gpg --import tails-signing.key
+
+gpg --keyid-format 0xlong --verify tails-i386-2.9.1.iso.sig tails-i386-2.9.1.iso
+
+gpg --keyring=/usr/share/keyrings/debian-keyring.gpg --export zack@upsilon.cc | gpg --import
+
+gpg --keyid-format 0xlong --check-sigs A490D0F4D311A4153E2BB7CADBB802B258ACD84F
+gpg --lsign-key A490D0F4D311A4153E2BB7CADBB802B258ACD84F
+

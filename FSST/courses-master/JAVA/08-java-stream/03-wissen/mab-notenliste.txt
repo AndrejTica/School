@@ -1,0 +1,29 @@
+﻿mab: streams-notenliste.txt
+-------------------------------------------------------------------------
+
+f_notenliste.java
+Gegeben ist die Datei mit dem Namen notenliste.txt, mit folgendem Aufbau 
+	Anzahl der Datensätze
+	Name,Fach,Note
+	Name,Fach,Note
+	...
+	
+	Hier ein Beispiel:
+	notenliste.txt
+	3
+	Hofmann,AINF2,5
+	Mustermann,IKT2,1
+	Wiese,TINF,2
+	
+
+Schreiben Sie ein Programm, das 
+	diese Datei öffnet und 
+	zeilenweise einliest und
+	auf die Konsole folgendes ausgibt
+	Anzahl Note-1: X
+	Anzahl Note-2: X
+	Anzahl Note-3: X
+	Anzahl Note-4: X
+	Anzahl Note-5: X
+	Durchschnitt: X
+	

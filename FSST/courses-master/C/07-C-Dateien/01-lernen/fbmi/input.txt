@@ -1,0 +1,4 @@
+3
+4cheli,anton,hofmann,70,170
+4cheli,beta,hofmann,80,180
+4cheli,gamma,hofmann,90,190

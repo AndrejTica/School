@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Javascript: Flaeche</title>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> 
+</head>
+
+
+<body class="w3-padding-16 w3-margin">
+
+
+
+<div class="w3-row">
+	<div class="w3-col" style="width:10%">
+	<a href="programming.html" class="w3-btn w3-blue">back</a>
+	</div>
+
+
+<div class="w3-col"  style="width:80%">
+<!-- MAIN ...................................................................... -->
+<div class="w3-card4 w3-border">
+
+
+
+<!-- Aufgabe ............................................................................. -->
+<header class="w3-container w3-blue">
+	<h1>Aufgabe: Flaeche</h1>
+</header>
+
+<div class="w3-container">
+<p>Lies laenge und breite. Berechne die Fläche des Rechtecks.</p>
+
+
+
+<hr>
+<!-- Struktogramm ....................................................................... -->
+<div class="w3-container w3-green"><h3>Struktogramm</h3></div>
+	<img src="img/strukto-01-flaeche.png" alt="Fläche Struktogramm" class="w3-center">
+
+
+
+<hr>
+<!-- Code ............................................................................. -->
+<div class="w3-container w3-green"><h3>Code</h3></div>
+	<div class="w3-container w3-code jsHigh">
+		<pre>
+function calc(){
+	console.log("calc called");
+	
+	var slaenge= document.getElementById("laenge").value;
+	var sbreite= document.getElementById("breite").value;
+	var flaenge= parseFloat(slaenge);
+	var fbreite= parseFloat(sbreite);
+	
+	var flaeche= flaenge * fbreite;
+	
+	var sout= "Flaeche= " + flaeche;
+	
+	
+	document.getElementById("ausgabe").innerHTML = "<b>" + sout + "</b>";
+	
+	console.log(sout);
+}
+		</pre>
+</div>
+
+
+
+<hr>
+<!-- Eingabe ............................................................................. -->
+ <div class="w3-container w3-green"><h3>Eingabe</h3></div>
+
+  <label class="w3-text-teal"><b>laenge</b></label>
+  <input class="w3-input w3-border w3-light-grey" id="laenge" value="10" type="text">
+
+  <label class="w3-text-teal"><b>breite</b></label>
+  <input class="w3-input w3-border w3-light-grey" id="breite" value="10" type="text">
+  <br>
+  <button class="w3-btn w3-teal" onclick="calc();">calculate</button>
+
+
+
+<hr>
+<!-- Ausgabe ............................................................................. -->
+<div class="w3-container w3-green"><h3>Ausgabe</h3></div>
+
+<p class="w3-text-teal" id="ausgabe">...Ausgabe...</p>
+
+
+</div>
+</div>
+
+
+
+<footer class="w3-container w3-blue">
+  <h5>Javascript Tutorial A.Hofmann, 2018</h5>
+</footer>
+
+
+
+<script>
+function calc(){
+	console.log("calc called");
+	
+	var slaenge= document.getElementById("laenge").value;
+	var sbreite= document.getElementById("breite").value;
+	var flaenge= parseFloat(slaenge);
+	var fbreite= parseFloat(sbreite);
+	
+	var flaeche= flaenge * fbreite;
+	
+	var sout= "Flaeche= " + flaeche;
+	
+	
+	document.getElementById("ausgabe").innerHTML = "<b>" + sout + "</b>";
+	
+	console.log(sout);
+}
+</script>
+
+</div>
+
+<div class="w3-col"  style="width:10%">
+</div>
+
+</div>
+
+
+<script src="https://www.w3schools.com/lib/w3codecolor.js"></script>
+
+<script>
+w3CodeColor();
+</script>
+
+</body>
+</html>

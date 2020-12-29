@@ -1,0 +1,26 @@
+================================================================================
+mab-files-tore.txt
+================================================================================
+
+AUFGABE: mab-files-tore.c
+--------------------------------------------------------------------------------
+* Gegeben ist die Datei tore.txt (s.u.)
+* Lesen Sie die Datei ein und 
+* geben Sie die Anzahl der Tore aus, die bei der Partie mit den meisten Toren
+	gefallen sind.
+
+Bsp: 9
+ 
+Hinweise:
+	BufferedReader, FileReader,
+	String input, Integer.parseInt(), 
+	close, split, readline(), while, != null,
+	int summe=0
+
+
+tore.txt
+--------------------------------------------------------------------------------
+groedig:salzburg:0:0
+frankfurt:stuttgart:4:5
+gladbach:bayer:0:0
+real:barca:3:1

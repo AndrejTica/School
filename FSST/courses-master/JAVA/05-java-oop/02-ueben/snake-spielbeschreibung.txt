@@ -1,0 +1,58 @@
+﻿SNAKE:
+==========================================================
+
+1. Spielbeschreibung, Spielanleitung und Spielsteuerung
+	Spielbeschreibung:
+	Die Schlange befindet sich in einem Spielfeld. 
+	Das Spielfeld ist begrenzt durch Mauersteine.
+	Es gibt nur einen Ausgang.
+	Im Spielfeld befinden sich Äpfel und Mauersteine.
+	
+	
+	Spielanleitung: 	
+	Ziel des Spieles ist es, Äpfel zu sammeln.
+	Die Schlange muss die Äpfel auf dem Spielfeld fressen. 
+	Mit jedem gefressenem Apfel wächst die Schlange.
+	
+	Die Schlange darf sich nicht selber berühren und 
+	auch nicht gegen die Wand laufen oder gegen einen 
+	Mauerstein im Spielfeld. Denn dann ist das Spiel beendet.
+	
+		
+	
+	Spielsteuerung:
+	Starten mit Klick auf den Start-Button.
+	Die Schlange wird mit den Pfeiltasten gesteuert.
+
+
+2. Klassen
+	Klassenname:
+	private member:
+	public methoden:
+	
+	Klassenname:
+	private member:
+	public methoden:
+	
+	...
+	
+3. Animation (s. SpielFirstGame)
+	Timer (Delay)
+		actionGame()
+		repaint()
+		
+	paint()
+		zeichnet das Spielfeld
+		Snake.repaint()
+
+	actionGame()
+		snake.move()
+		...
+
+
+4. Userinteraktion
+	KeyPressed()
+		if up
+			snake.setDirection(up)
+		...
+

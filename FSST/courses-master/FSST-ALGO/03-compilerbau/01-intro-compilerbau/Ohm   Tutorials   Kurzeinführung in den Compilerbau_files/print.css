@@ -1,0 +1,202 @@
+body { 
+	background-color: #ffffff;
+	width: 640px;
+	color: #000000; 
+	font-size: 14px;
+	font-family: Georgia, Times Roman, serif; 
+}
+#wikitext {
+	line-height: 1.3em;
+}
+#wikitext sub, #wikitext sup { line-height: 0; }
+dt {
+	font-weight: bold;
+}
+a.createlink:link {
+	color: #444444; 
+}
+a.createlink:visited {
+	color: #444444; 
+}
+a.createlink:hover {
+	color: #ff2222;
+}
+a.wikilink:hover { 
+	color: #444444; 
+	text-decoration: underline;
+}
+a:link {
+	color: #444444; 
+	font-weight: bold; 
+	text-decoration: none; 
+}
+a:visited {
+	color: #444444; 
+	font-weight: bold; 
+	text-decoration: none; 
+}
+.body pre, #wikitext pre {
+	line-height: 1.25;
+	font-size: 80%;
+	overflow: auto;
+	width: 85%;
+	margin: 1em auto;
+	padding: 1em;
+	border: dotted 1px #aaa;
+	background-color: #f6f6f6;
+	color: #037;
+}
+div.sourceblocktext {
+	width: 85%;
+	margin: 1em auto;
+	margin-top: 1em;
+ 	padding: 1em;
+	border: 1px dotted #aaa;
+	background-color: #f6f6f6;
+	color: #000;
+}
+div.sourceblocktext .c {
+	font-family: monospace;
+	line-height: 1.25;
+	font-size: 80%;
+}
+div.sourceblocktext .nu0 {color: #000;}
+div.sourceblocktext .nu16 {color: #000;}
+div.sourceblocktext .nu19 {color: #000;}
+div.sourceblocktext .br0 {color: #666;}
+div.sourceblocktext .sy0 {color: #037;}
+div.sourceblocktext .st0 {color: #c00;}
+div.sourceblocktext .es1 {color: #f70;}
+div.sourceblocktext .co2 {color: #0a0;}
+div.sourceblocktext .kw1 {color: #037; font-weight: bold;}
+div.sourceblocktext .kw2 {color: #037;}
+div.sourceblocktext .kw3 {color: #037;}
+div.sourceblocktext .kw4 {color: #44f;}
+div.sourceblocktext .coMULTI {color: #888; font-style: italic;}
+div.sourceblocklink {
+	display: none;
+}
+table {
+	text-align: center;
+	color: #fff;
+	background-color: #666;
+	border: 0px;
+	border-collapse: collapse;
+	border-spacing: 0px;
+}
+table td {
+	background-color: #ccc;
+	color: #000;
+	padding: 4px;
+	border: 1px #fff solid;
+}
+table th {
+	background-color: #666;
+	color: #fff;
+	font-weight: bold;
+	padding: 4px;
+}
+div#printhead p#wikisubtitle {
+	display: none;
+}
+div#printfoot {
+	margin-top: 10px;
+	border-top: 5px solid #a0a0a0;
+	padding-top: 5px;
+	font-size: smaller;
+}
+div#printfoot p {
+	display: none;
+}
+h1 { font-family: sans-serif; }
+h1#printheader {
+	font-size: 32px;
+	padding-bottom: 5px;
+	border-bottom: 5px solid #a0a0a0;
+	margin-bottom: 15px;
+}
+div#publish {
+	margin-left: 50px;
+}
+div#publish h1 {
+	margin-top: 40px;
+	padding-bottom: 5px;
+	border-bottom: 3px solid #a0a0a0;
+	margin-bottom: 15px;
+}
+div.pagehead1 {
+	margin-left: -50px;
+	margin-top: 50px;
+	line-height: 2.0em;
+	page-break-before: always;
+}
+div.pagehead2 {
+	margin-left: -20px;
+}
+div.pagehead3 {
+	margin-left: -10px;
+}
+div#endnotes h1 {
+	margin-top: 50px;
+	padding-bottom: 5px;
+	border-bottom: 3px solid #a0a0a0;
+	margin-bottom: 15px;
+}
+div#endnotes ol {
+	font-size: 12px;
+}
+div#headtext { margin-bottom: 15px; }
+div#foottext { margin-top: 15px; }
+span.section { color: #a0a0a0; }
+h2 {
+	font-family: sans-serif; 
+	margin-top: 30px;
+	font-size: 24px;
+	font-weight: bold;
+	padding-bottom: 3px;
+	border-bottom: 2px solid #a0a0a0;
+	margin-bottom: 10px;
+}
+h3 {
+	font-family: sans-serif; 
+	margin-top: 20px;
+	font-size: 18px;
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+h4 {
+	margin-top: 10px;
+	font-size: 14px;
+	font-weight: bold;
+	font-style: italic;
+	font-family: Georgia, Times Roman, serif; 
+	margin-bottom: 10px;
+}
+h5:after {
+#	content: ". ";
+	content: " ";
+}
+h5 {
+	display: run-in;
+	font-size: 14px;
+	font-weight: bold;
+	font-family: Georgia, Times Roman, serif; 
+}
+p#wikisubtitle {
+	margin-top: 20px;
+	border-top: 3px solid #a0a0a0;
+	font-family: sans-serif;
+	font-size: 18px;
+	font-weight: bold;
+	padding-bottom: 10px;
+}
+p.notes:before {
+	content: "Notes: ";
+	font-style: italic;
+}
+p.notes {
+	border: 1px dotted #a0a0a0;
+	padding: 10px;
+	font-size: 14px;
+	line-height: 175%;
+}

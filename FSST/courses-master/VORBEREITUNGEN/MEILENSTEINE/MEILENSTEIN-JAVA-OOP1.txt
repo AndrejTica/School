@@ -1,0 +1,96 @@
+﻿MEILENSTEIN-JAVA-OOP1.txt
+===========================================================================
+
+
+AUFGABE    : (   ) OOP1-COMPLEX
+---------------------------------------------------------------------------
+	Erstellen Sie die Klasse Complex, sodass folgendes Programm funktioniert:
+	
+		Complex a= new Complex(3.0, 2.0);
+		Complex b= new Complex(a);
+		Complex c;
+	
+		c= a.add(b);	
+		System.out.println ("c= " + c.toString());
+
+
+	Die Ausgabe muss dann wie folgt aussehen:
+	c= [6.0 + 4.0 j]
+		
+ANTWORT:
+	public class Complex{ 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	}
+	
+
+
+AUFGABE    : (   ) OOP1-BRUCH
+---------------------------------------------------------------------------
+	Erstellen Sie die Klasse Bruch, sodass folgendes Programm funktioniert:
+	
+		Bruch a= new Bruch(3.0, 2.0);
+		Bruch b= new Bruch(a);
+		Bruch c;
+	
+		c= a.mul(b);	
+		System.out.println ("c= " + c.toString());
+
+
+	Die Ausgabe muss dann wie folgt aussehen:
+	c= [6.0 / 4.0]
+		
+ANTWORT:
+	public class Bruch{ 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	}
+	
+
+
+
+AUFGABE   : (  ) OOP1-PUNKT
+---------------------------------------------------------------------------
+	Erstellen Sie die Klasse PUNKT, sodass folgendes Programm funktioniert:
+	
+		Punkt a= new Punkt(0, 200);   // x, y Koordinaten
+		Punkt b= new Punkt(a);
+		Punkt c;
+	
+		c= a.add(b);	// addiert die Koordinaten	
+		System.out.println ("c= " + c.toString());
+
+
+	Die Ausgabe muss dann wie folgt aussehen:
+	c= [0,400]
+		
+ANTWORT:
+	public class Punkt{ 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	}
+	

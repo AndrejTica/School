@@ -1,0 +1,47 @@
+* Taskmanager
+- [X] Given file *tasklist.txt*
+#+BEGIN_SRC bash
+4
+2019.12.13 TODO cpp training
+2019.12.14 DOING finish homework taskmanager.cpp
+2019.12.08 DONE Football at 7:00 pm
+2020.01.15 QUIZ cpp and oop
+#+END_SRC
+
+
+- [X] Create folder: taskmanager-SCHOOL
+- [X] The folder contains:
+  - [X] taskmanagment.exe
+  - [X] tasklist.txt
+
+
+- [X] create
+  - [X] main.cpp
+  - [X] taskmanager.h/.cpp
+  - [X] task.h/.cpp
+
+
+- [X] Usage of taskmanager.exe
+  - [X] taskmanager.exe list
+  - [X] taskmanager.exe list TODO
+  - [X] taskmanager.exe del #
+  - [X] taskmanager.exe add "2019.12.24 TODO get present for susi"
+
+- Example
+#+BEGIN_SRC bash
+$> taskmanagement.exe list
+lists content of tasklist.txt with preceded Number of task
+1 2019.12.13 TODO cpp training
+2 2019.12.14 DOING finish homework taskmanager.cpp
+3 2019.12.08 DONE Football at 7:00 pm
+4 2020.01.15 QUIZ cpp and oop
+#+END_SRC
+
+#+BEGIN_SRC plantuml :file img/taskmanager.png
+class Taskmanager
+class Task
+Taskmanager o- Task : has many
+#+END_SRC
+
+#+attr_latex: :width 100px :height 80px
+[[file:img/taskmanager.png]]

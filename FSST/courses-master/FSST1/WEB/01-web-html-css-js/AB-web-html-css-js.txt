@@ -1,0 +1,49 @@
+Arbeitsauftrag-01: web-html-css-js
+----------------------------------
+Dauer: 2 Termine
+
+
+1. Entpacken Sie: 
+   - web-html-css-js.zip
+
+2. Lesen Sie:
+   - 01-html-basic/01.AWB_html-kurzreferenz_wieners.pdf  
+   - 01-html-basic/02.AWB_html-arbeitsblatt_wieners.pdf
+   
+3. Erstellen/Ergänzen Sie:
+   - web-html-css-js/01-html-basic/A03.html-ok.html
+   - web-html-css-js/01-html-basic/A04.textausrichtung.html
+   - web-html-css-js/01-html-basic/A05.cover.html
+
+4. Lesen Sie:
+   - 02-html-css-inhaltsverzeichnis/03.AWB_html-handout_wieners.pdf
+   - 02-html-css-inhaltsverzeichnis/04.AWB_html-arbeitsblatt-II_wieners.pdf
+  
+5. Erstellen/Ergänzen Sie:
+   - web-html-css-js/02-html-css-inhaltsverzeichnis/B01.inhaltsverzeichnis.html
+   - web-html-css-js/02-html-css-inhaltsverzeichnis/B01.inhaltsverzeichnis-zusatz.html
+
+5. Lesen Sie:
+   - 03-css/05.AWB_css-handout_wieners.pdf
+   - 03-css/06.AWB_css-uebungsblatt_wieners.pdf
+
+6. Erstellen/Ergänzen Sie:
+  - web-html-css-js/03-css/CSS01.html
+  - web-html-css-js/03-css/style.css
+
+  
+ABGABE-01: web-html-css-js
+--------------------------
+- Termin: wird im Unterricht bekannt gegeben.
+
+- Dateiname: VORNAME-NACHNAME-web.zip
+  - muss folg. Dateien enthalten:
+  1. A03.html-ok.html
+  2. A04.textausrichtung.html
+  3. A05.cover.html
+  4. B01.inhaltsverzeichnis.html
+  5. B01.inhaltsverzeichnis-zusatz.html
+  6. CSS01.html
+  7. style.css
+  
+Viel Erfolg!

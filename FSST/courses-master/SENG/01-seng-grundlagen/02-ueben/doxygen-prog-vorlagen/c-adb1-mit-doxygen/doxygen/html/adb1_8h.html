@@ -1,0 +1,257 @@
+<!-- This comment will put IE 6, 7 and 8 in quirks mode -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>ADB1: /Users/ahofmann/home/htl/ab/4tinf/aufgaben/03-adb-bsearch-qsort-btree/adb1/adb1.h-Dateireferenz</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javaScript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css"/>
+</head>
+<body onload='searchBox.OnSelectItem(0);'>
+<!-- Erzeugt von Doxygen 1.6.1 -->
+<script type="text/javascript"><!--
+var searchBox = new SearchBox("searchBox", "search",false,'Suchen');
+--></script>
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul>
+      <li><a href="index.html"><span>Hauptseite</span></a></li>
+      <li><a href="pages.html"><span>Zusätzliche&nbsp;Informationen</span></a></li>
+      <li><a href="annotated.html"><span>Datenstrukturen</span></a></li>
+      <li class="current"><a href="files.html"><span>Dateien</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <img id="MSearchSelect" src="search/search.png"
+             onmouseover="return searchBox.OnSearchSelectShow()"
+             onmouseout="return searchBox.OnSearchSelectHide()"
+             alt=""/>
+        <input type="text" id="MSearchField" value="Suchen" accesskey="S"
+             onfocus="searchBox.OnSearchFieldFocus(true)" 
+             onblur="searchBox.OnSearchFieldFocus(false)" 
+             onkeyup="searchBox.OnSearchFieldChange(event)"/>
+        <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="tabs">
+    <ul>
+      <li><a href="files.html"><span>Auflistung&nbsp;der&nbsp;Dateien</span></a></li>
+      <li><a href="globals.html"><span>Datei-Elemente</span></a></li>
+    </ul>
+  </div>
+</div>
+<div class="contents">
+<h1>/Users/ahofmann/home/htl/ab/4tinf/aufgaben/03-adb-bsearch-qsort-btree/adb1/adb1.h-Dateireferenz</h1>
+<p><a href="adb1_8h_source.html">gehe zum Quellcode dieser Datei</a></p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td colspan="2"><h2>Datenstrukturen</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_a_d_b___i_d_x.html">ADB_IDX</a></td></tr>
+<tr><td colspan="2"><h2>Makrodefinitionen</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="adb1_8h.html#a3e937c42922f7601edb17b747602c471">MAXLINE</a>&nbsp;&nbsp;&nbsp;128</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="adb1_8h.html#ae4e29e84cea10f0c94f0f89ac1d090e8">MAXELEMENTS</a>&nbsp;&nbsp;&nbsp;1024</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="adb1_8h.html#a714b2485a6dd312e37226e1f833728a9">MAXFILE</a>&nbsp;&nbsp;&nbsp;128</td></tr>
+<tr><td colspan="2"><h2>Funktionen</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="adb1_8h.html#a8e7157ccae731571df635df607009cb1">adb_open</a> (const char *filename)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="adb1_8h.html#ace316c0b59acbaedc419d0fd1fa58034">adb_list</a> (FILE *fp)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="adb1_8h.html#af49e0d691dff3ac95da2cf92828223ee">adb_get_email</a> (const char *nickname, char *email)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="adb1_8h.html#afa6cdd276335f77030dabfbb6d9b51ce">adb_close</a> (void)</td></tr>
+</table>
+<hr/><a name="_details"></a><h2>Ausführliche Beschreibung</h2>
+<p>Adressbuchverwaltung: ADB1 Indexsequentieller Zugriff auf die Daten <br/>
+ Die Index-Tabelle besteht aus nickname/offset-Elementen, die sortiert sind und beim Zugriff wird durch die binre Suche (nach nickname) der offset fr den seek in der Datei ermittlet.</p>
+<dl class="author"><dt><b>Autor:</b></dt><dd>Anton Hofmann </dd></dl>
+<dl class="date"><dt><b>Datum:</b></dt><dd>31.10.2009</dd></dl>
+<dl class="version"><dt><b>Version:</b></dt><dd>1.0</dd></dl>
+<dl class="see"><dt><b>Siehe auch:</b></dt><dd>Arbeitsblatt: Sortieren und Suchen</dd></dl>
+<p>Die Funktionsdeklarationen von ADB1 Adressbuchverwaltung: ADB1 Indexsequentieller ZUgriff auf die Daten Die Index-Tabelle besteht aus nickname/offset-Elementen, die sortiert sind und beim Zugriff wird durch die binre Suche (nach nickname) der offset fr den seek in der Datei ermittlet.</p>
+<dl class="author"><dt><b>Autor:</b></dt><dd>Anton Hofmann </dd></dl>
+<dl class="date"><dt><b>Datum:</b></dt><dd>31.10.2009</dd></dl>
+<dl class="version"><dt><b>Version:</b></dt><dd>1.0</dd></dl>
+<dl class="see"><dt><b>Siehe auch:</b></dt><dd>Arbeitsblatt: Sortieren und Suchen</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Noch zu erledigen:</a></b></dt><dd>Fertig programmieren</dd></dl>
+<dl class="bug"><dt><b><a class="el" href="bug.html#_bug000001">Fehler:</a></b></dt><dd>derzeit keiner bekannt</dd></dl>
+<dl class="warning"><dt><b>Warnung:</b></dt><dd>Diese bung ist Pflicht </dd></dl>
+<hr/><h2>Makro-Dokumentation</h2>
+<a class="anchor" id="ae4e29e84cea10f0c94f0f89ac1d090e8"></a><!-- doxytag: member="adb1.h::MAXELEMENTS" ref="ae4e29e84cea10f0c94f0f89ac1d090e8" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MAXELEMENTS&nbsp;&nbsp;&nbsp;1024</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a714b2485a6dd312e37226e1f833728a9"></a><!-- doxytag: member="adb1.h::MAXFILE" ref="a714b2485a6dd312e37226e1f833728a9" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MAXFILE&nbsp;&nbsp;&nbsp;128</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a3e937c42922f7601edb17b747602c471"></a><!-- doxytag: member="adb1.h::MAXLINE" ref="a3e937c42922f7601edb17b747602c471" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MAXLINE&nbsp;&nbsp;&nbsp;128</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<hr/><h2>Dokumentation der Funktionen</h2>
+<a class="anchor" id="afa6cdd276335f77030dabfbb6d9b51ce"></a><!-- doxytag: member="adb1.h::adb_close" ref="afa6cdd276335f77030dabfbb6d9b51ce" args="(void)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void adb_close </td>
+          <td>(</td>
+          <td class="paramtype">void&nbsp;</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>schliesst die Datei </p>
+<dl><dt><b>Parameter:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>void</em>&nbsp;</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Rückgabe:</b></dt><dd>void </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="af49e0d691dff3ac95da2cf92828223ee"></a><!-- doxytag: member="adb1.h::adb_get_email" ref="af49e0d691dff3ac95da2cf92828223ee" args="(const char *nickname, char *email)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void adb_get_email </td>
+          <td>(</td>
+          <td class="paramtype">const char *&nbsp;</td>
+          <td class="paramname"> <em>nickname</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&nbsp;</td>
+          <td class="paramname"> <em>email</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>gibt die entsprechende email-adresse aus zuerst wird in der index-tabelle binr nach nickname gesucht dann wird mittels des entsprechenden offset aus der Email-Adressdatenbankdatei die email-adresse ermittelt </p>
+<dl><dt><b>Parameter:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>nickname</em>&nbsp;</td><td></td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>email</em>&nbsp;</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Rückgabe:</b></dt><dd>void </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ace316c0b59acbaedc419d0fd1fa58034"></a><!-- doxytag: member="adb1.h::adb_list" ref="ace316c0b59acbaedc419d0fd1fa58034" args="(FILE *fp)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void adb_list </td>
+          <td>(</td>
+          <td class="paramtype">FILE *&nbsp;</td>
+          <td class="paramname"> <em>fp</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>gibt eine Liste {nickname :: emailadresse CRLF} auf FILE* aus </p>
+<dl><dt><b>Parameter:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fp</em>&nbsp;</td><td>der Ausgabestrom </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Rückgabe:</b></dt><dd>void </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a8e7157ccae731571df635df607009cb1"></a><!-- doxytag: member="adb1.h::adb_open" ref="a8e7157ccae731571df635df607009cb1" args="(const char *filename)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int adb_open </td>
+          <td>(</td>
+          <td class="paramtype">const char *&nbsp;</td>
+          <td class="paramname"> <em>filename</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>ffnet die Email-Adressdatenbankdatei <br/>
+erstellt eine Index-Tabelle mit folg. Aufbau <br/>
+nickname | Beginn des Datensatzes in der Email-Adressdatenbankdatei <br/>
+nickname | Beginn des Datensatzes in der Email-Adressdatenbankdatei <br/>
+sortiert die Index-Tabelle nach nickname </p>
+<dl><dt><b>Parameter:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>filename</em>&nbsp;</td><td>der Dateiname </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Rückgabe:</b></dt><dd>int gibt die Anzahl der gelesenen Datenzätze zurück, </dd>
+<dd>
+-1 im Fehlerfall; 1 OK </dd></dl>
+
+</div>
+</div>
+</div>
+<!--- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&nbsp;</span>Alle</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&nbsp;</span>Datenstrukturen</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&nbsp;</span>Dateien</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&nbsp;</span>Funktionen</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&nbsp;</span>Variablen</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&nbsp;</span>Makrodefinitionen</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<hr size="1"/><address style="text-align: right;"><small>Erzeugt am Tue Oct 13 22:55:07 2009 für ADB1 von&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
+</body>
+</html>

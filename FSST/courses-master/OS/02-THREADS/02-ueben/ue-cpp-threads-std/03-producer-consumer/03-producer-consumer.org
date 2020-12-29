@@ -1,0 +1,221 @@
+* Producer-Consumer
+
+- see [[https://en.wikipedia.org/wiki/Producer%E2%80%93consumer_problem][producer-consumer]]
+	
+In computing, the *producer–consumer problem* is a classic example of a multi-process synchronization problem. The problem describes two processes, the producer and the consumer, who share a common, fixed-size buffer used as a queue. 
+
+- The producer's job is to generate data, put it into the buffer, and start again. 
+- At the same time, the consumer is consuming the data (i.e., removing it from the buffer), one piece at a time.
+- The problem is to make sure that the producer won't try to add data into the buffer if it's full and that the consumer won't try to remove data from an empty buffer.
+
+[[file:../img/producer-consumer.png]]
+
+First Step is to create class FIFO that store integer values and throws overfow/underflow exceptions.
+
+[[file:../img/fifo-uml.png]]
+
+* 09-test-fifo.cpp, fifo.h: Die Klasse FIFO
+- Erstellen Sie die Klasse FIFO (fifo.h), sodass das folgende Programm funktioniert.
+
+#+BEGIN_SRC cpp -n
+/*
+g++ 09-test-fifo.cpp -o 09-test-fifo.exe -lpthread
+*/
+
+#include <iostream>
+#include <cassert>
+using namespace  std;
+
+#include "fifo.h"
+
+// ====================================================
+// TESTS f. class FIFO
+// ====================================================
+int main(){
+// ----------------------------------------------------
+	{
+	FIFO fifo(5); // 5 Elemente haben Platz
+	assert(fifo.isEmpty() && "Test: isEmpty()");
+	}
+// ----------------------------------------------------
+	{
+		FIFO fifo(5); // 5 Elemente haben Platz
+		fifo.enqueue(1);
+		fifo.enqueue(2);
+		fifo.enqueue(3);
+		fifo.enqueue(4);
+		fifo.enqueue(5);
+		assert(fifo.isFull() && "Test: isFull()");
+	}
+// ----------------------------------------------------
+	{
+		FIFO fifo(5); // 5 Elemente haben Platz
+		fifo.enqueue(1);
+		int val= fifo.dequeue();
+		assert(val==1 && "Test: enqueue and dequeue");
+		assert(fifo.isEmpty() && "Test: isEmpty()");
+	}
+// ----------------------------------------------------
+	{
+		try{
+			FIFO fifo(5); // 5 Elemente haben Platz
+			int val= fifo.dequeue();
+
+			assert(false && "fail: underflow_exception ");
+
+		} catch(underflow_error& e){
+			// should come here
+		}
+	}
+// ----------------------------------------------------
+	{
+		try{
+			FIFO fifo(5); // 5 Elemente haben Platz
+			fifo.enqueue(1);
+			fifo.enqueue(2);
+			fifo.enqueue(3);
+			fifo.enqueue(4);
+			fifo.enqueue(5);
+
+			fifo.enqueue(6);
+
+			assert(false && "fail: overflow_exception ");
+
+		} catch(overflow_error& e){
+			// should come here
+		}
+	}
+// ----------------------------------------------------
+	cout << "All tests passed ok ..." << endl;
+	return 0;
+}
+#+END_SRC
+
+
+Here are some figures to see how class FIFO works.
+
+[[file:../img/fifo-isempty.png]]
+[[file:../img/fifo-enqueue1.png]]
+[[file:../img/fifo-enqueue2.png]]
+[[file:../img/fifo-enqueue3.png]]
+[[file:../img/fifo-isfull.png]]
+[[file:../img/fifo-dequeue.png]]
+
+
+Here is fifo.h
+#+BEGIN_SRC cpp -n
+/*
+ * fifo.h
+ */
+
+===ENTER CODE===
+
+#+END_SRC
+
+
+* Producer/Consumer FIFO synchronized
+- Synchronized FIFOs don't use exceptions if the buffer is full or empty, because they just have to wait for another producer/consumer process/thread to take/put an item into the FIFO.
+
+- This kind of waiting can be implemented using so called *condition variables*.
+
+- A condition variable manages a list of threads waiting until another thread notify them. Each thread that wants to wait on the condition variable has to acquire a lock first. The lock is then released when the thread starts to wait on the condition and the lock is acquired again when the thread is awakened.
+
+- A very good example is a concurrent FIFO (cylic Buffer). Here finish the implementation of a Bounded Buffer using condition variables:
+
+
+* 10-fifo-threadsafe.cpp
+- code fifo-threadsafe.h to get the following code runnable.
+
+#+BEGIN_SRC cpp -n
+/*
+10-fifo-threadsafe.cpp
+g++ 10-fifo-threadsafe.cpp -o 10-fifo-threadsafe.exe -lpthread
+*/
+
+#include <iostream>
+#include <thread>
+using namespace std;
+
+#include "fifo-threadsafe.h"
+
+// --------------------------------------
+class Producer{
+private:
+  FIFO *fifo;
+
+public:
+  Producer(FIFO *fifo) { this->fifo = fifo; }
+
+  void produce() {
+    for (int i = 1; i <= 5000; i++) {
+      cout << "PRODUCER: enqueue " << i << endl;
+      fifo->enqueue(i);
+    }
+  }
+
+  void operator()() { produce(); }
+};
+
+
+// --------------------------------------
+class Consumer {
+private:
+  FIFO *fifo;
+
+public:
+  Consumer(FIFO *fifo) { this->fifo = fifo; }
+
+  void consume() {
+    for (int i = 1; i <= 5000; i++)
+      cout << "\t\t\t\tCONSUMER: dequeue " << fifo->dequeue() << endl;
+  }
+  void operator()() { consume(); }
+};
+
+
+// --------------------------------------
+int main(int argc, char *argv[]) {
+
+  FIFO *fifo = new FIFO(5);
+
+  Producer producer(fifo);
+  Consumer consumer(fifo);
+
+  thread thread_producer(producer);
+  thread thread_consumer(consumer);
+
+  thread_producer.join();
+  thread_consumer.join();
+
+  return 0;
+}
+#+END_SRC
+
+
+- see here fifo-threadsafe.h
+
+#+BEGIN_SRC cpp -n
+/*
+ * fifo-threadsafe.h
+ */
+
+===ENTER CODE===
+
+#+END_SRC
+
+
+
+* Summary
+- see [[https://baptiste-wicht.com/posts/2012/03/cp11-concurrency-tutorial-part-2-protect-shared-data.html][shared data]]
+
+- [[http://www.cplusplus.com/reference/condition_variable/condition_variable/][condition variable]]
+
+- mutual exclusion:
+Mutex is the basic class for enforcing mutual exclusion. A thread locks a mutex in order to gain access to a shared resource. If a second thread tries to lock the mutex while it is already locked, the second thread will be put to sleep until the first thread completes its task and unlocks the mutex.
+
+- condition variables:
+Condition-variables synchronizes threads not by enforcing mutual exclusion
+but by providing a condition variable. While the other primitives make threads wait until a resource is unlocked, condition-variable makes threads wait until a particular condition has been met. To allow the waiting threads to proceed, call notify_one() to wake one randomly selected thread or notify_all() to wake them all simultaneously.
+
+- producer-consumer:
+We guard all accesses to the FIFO::begin, FIFO::end variable with a mutex. In addition, the cv.wait() function accepts a mutex as its argument. This mutex is unlocked before the thread is put to sleep and locked when the thread wakes up. Furthermore, the transition from the locked state to the wait state is atomic, to prevent race conditions from occurring.

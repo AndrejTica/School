@@ -1,0 +1,133 @@
+﻿MEILENSTEIN-C-DS-ALGO.txt   (20)
+=======================================================================
+Name:										Datum:
+
+
+1) (9) Es gilt: (sizeof(int) == 4	sizeof(*)== 4	sizeof(double)==8 )
+------------------------------------------------------------------------
+	Wieviel Speicherplatz braucht dann:
+	int* x;
+	double* d;
+	int f[10];
+	int f();
+	int *f();
+	int (*f)();
+	int f[10];
+	int *f[10];
+	int (*f)[10];
+	
+
+2) (2) vervollständigen Sie bitt:
+------------------------------------------------------------------------
+	int* a= (??????????)malloc(10);
+	if (a==?????????){
+		perror("No Ram");exit(1);	
+	}
+
+3) (4) 
+------------------------------------------------------------------------
+	int rekBinSearch(int key, int* a, int left, int right){
+		?????????????
+	}
+
+4) (5)
+------------------------------------------------------------------------
+(1) Definieren Sie einen Knoten (SLISTNODE) für eine einfach gekettete Liste, 
+	die als data-Komponenten eine Variable (Achtung: Kein Zeiger) des  
+	Datentyps TPERSON (mit den Komponenten: char name[80]; int persnr) enthält.
+(1) Definieren Sie einen Listen-Header (SLIST_HEADER) für eine einfach gekettete 
+	Liste mit Zeigern auf den ersten und auf den letzten Listenknoten. 
+	Zudem soll die Anzahl der in der Liste gespeicherten Elemente vorhanden sein.
+	
+(3) Vervollständigen Sie folgende Funktion:  
+	Am Beginn der Liste Knoten eintragen 
+	void insertFirst (SLIST_HEADER* aList, TPERSON value){
+	    SLISTNODE *newPtr;   
+	    if ((newPtr= ( ............) malloc (sizeof (.............)))!= NULL)
+		{ 
+		   	 	newPtr->data= ........
+		   	 	
+	            newPtr->next= ........
+	
+	            aList->First= newPtr;
+	            if (aList->Len ................) /* -- erster Eintrag ? */
+	            
+	            	aList->...........= ........;
+	
+	
+	            ......................++;
+	     } //end if
+	} //end insertFirst
+
+
+
+
+
+
+
+
+
+
+MEILENSTEIN-C-DS-ALGO.txt (20)
+=======================================================================
+Name:										Datum:
+
+1) (9) Es gilt: (sizeof(int) == 4	sizeof(*)== 4	sizeof(double)==8 )
+------------------------------------------------------------------------
+	Wieviel Speicherplatz braucht dann:
+	int* x;
+	double* d;
+	int f[10];
+	int f();
+	int *f();
+	int (*f)();
+	int f[10];
+	int *f[10];
+	int (*f)[10];
+	
+
+2) (2) vervollständigen Sie bitt:
+------------------------------------------------------------------------
+	int* a= (??????????)malloc(10);
+	if (a==?????????){
+		perror("No Ram");exit(1);	
+	}
+
+3) (4) 
+------------------------------------------------------------------------
+	int postorder(BNODE* tree, FILE* fp){
+		?????????????
+	}
+
+
+4) (5)
+------------------------------------------------------------------------
+(1) Definieren Sie einen Knoten (NODE) für eine doppelt gekettete Liste, 
+	die als data-Komponenten eine int-Variable (Achtung: Kein Zeiger) enthält.
+(1) Definieren Sie einen Listen-Header (HEADER) für eine doppelt gekettete 
+	Liste mit Zeigern auf den ersten und auf den letzten Listenknoten. 
+	Zudem soll die Anzahl der in der Liste gespeicherten Elemente vorhanden sein.
+	
+(3) Vervollständigen Sie folgende Funktion: Am Beginn einer einfach geketteten
+	Liste einen Knoten löschen.
+	
+	void  deleteFirst(HEADER* aList){
+	NODE *temp;
+	
+	   if (aList->__________________ > _________)   /* Liste nicht leer */
+	     {
+	     
+	     temp= ______________________________;
+	     	
+	     aList->First= _________________________;
+	     aList->Len--;
+	
+	
+	     if (aList->________________________ == 0) /* Wenn die Liste leer ist */
+	     
+
+	       aList->_____________= __________________________;
+	
+	     free( (void *) temp);         /* Knoten freigeben */
+	     }
+	}

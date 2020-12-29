@@ -1,0 +1,13 @@
+* Tensorflow tutorial mit google colab
+(weil nichts zu installieren ist)
+i- https://colab.research.google.com/github/tensorflow/docs/blob/master/site/en/r2/tutorials/quickstart/beginner.ipynb#scrollTo=rX8mhOLljYeM
+
+
+
+
+
+ 
+
+http://www.mt-ag.info/2018/11/14/einstieg-in-neuronale-netze-mit-keras/
+https://colab.research.google.com/github/tensorflow/docs/blob/master/site/en/r2/tutorials/quickstart/beginner.ipynb
+

@@ -1,0 +1,717 @@
+﻿1. (Sect. 7) How do I read a file containing ASCII numbers?
+<antwort>
+     [*] There are several ways to do this. Here is one way. Let's assume
+     your file is called "C:\work\mydata.txt" and it contains lines like:
+
+         135   7512   3659814  328   1 54829
+         68522 19982810  38
+
+     i.e. lines contain several ASCII strings that are numbers separated by
+     spaces.
+     The code fragment is as follows:
+
+     //  Open the file with
+     RandomAccessFile f = new RandomAccessFile("c:\\work\\datafile.txt", "r");
+
+     // read an entire line from it
+     String s= f.readLine();
+
+     // get some methods to break up a line into tokens
+     StringTokenizer st = new StringTokenizer(s);
+
+     // extract the next int from the line
+     i = Integer.parseInt(st.nextToken());
+
+     We use a RandomAccessFile because that supports the readLine() method
+     directly. An alternative would be to instantiate a FileReader, and wrap
+     a BufferedReader around it. Putting it all together, including the
+     exception handling in the event the file is missing, the code looks
+     like:
+
+     import java.io.*;
+     import java.util.*;
+     public class c  {
+         public static void main(String args[]) {
+           try {
+             RandomAccessFile f = new RandomAccessFile
+                                             ("datafile.txt", "r");
+             String s;
+             while ( (s=f.readLine()) != null )  {
+                 System.out.println("read: "+s);
+
+                 StringTokenizer st = new StringTokenizer(s);
+                 int i=0;
+                 while (st.hasMoreTokens()) {
+                    i = Integer.parseInt(st.nextToken());
+                    // i now holds the next int on the line
+                    // could also use Double.parseDouble(), etc.
+
+                    System.out.print(" "+ i);
+                 }
+                 System.out.println();
+             }
+
+           } catch (Exception e) {System.out.println("Excpn: "+e); }
+           // file I/O, from book "Just Java" by Peter van der Linden
+         }
+     }
+
+     See also the next question on how to read data interactively.
+
+</antwort>
+2. (Sect. 7) How do I read a String/int/boolean/etc from the keyboard?
+<antwort>
+
+     [*] The easiest way is to pick up the source for the 100% pure Java
+     class EasyIn from http://www.afu.com/ (same place as this FAQ). Compile
+     it with your code and use it like this:
+
+     EasyIn easy = new EasyIn();
+
+     int i = easy.readInt(); // gets an int from System.in
+     boolean b = easy.readBoolean(); // gets a boolean from System.in
+     double d = easy.readDouble(); // gets a double from System.in
+
+
+     ... etc.
+
+     EasyIn is free, comes with source, and you can do what you like with
+     it, including improve it, and send me back the results.
+
+     If, instead, you want to "roll your own" code (why?!), in JDK 1.0.2
+
+     java.io.DataInputStream in = new java.io.DataInputStream(System.in);
+     String s = in.readLine();
+
+
+     One way in JDK 1.1:
+
+     java.io.BufferedReader in =
+      new java.io.BufferedReader( new InputStreamReader(System.in));
+
+     String s = in.readLine();
+
+
+     Once you have the token in a String, it is easy to parse it into one of
+     the other types, as shown earlier in the FAQ. Yes, it is bone-headed,
+     as it makes the simplest case of keyboard I/O unnecessarily
+     complicated. A bug was filed with Javasoft to record this problem, but
+     don't count on this being fixed any time soon.
+
+</antwort>
+3. (Sect. 7) Why do I have trouble with System.out.println()?
+<antwort>
+
+     [*] Check the spelling. The last two characters are the letters "ell
+     enn" not "one enn".
+
+     The name of the method stands for "print line", since it prints a
+     String and goes to the next line, rather than staying on the same line
+     as System.out.print() does. Yes, the name is yet another Java naming
+     inconsistency, since the input equivalent is readLine(), not readln().
+
+</antwort>
+4. (Sect. 7) How do I write to the serial port on my PC using Java?
+<antwort>
+
+     [*] There is a platform-independent serial port API introduced in JDK
+     1.2. You can download the documentation by registering with the Java
+     Developer Connection (it's free, http://java.sun.com) and browsing
+     http://java.sun.com/jdc/earlyAccess/communications.html.
+
+     For systems prior to JDK 1.2, read on. At least two companies have
+     written a library to drive the port. See
+        o http://www.sc-systems.com has a library for Windows 95, WindowsNT,
+          OS/2, Macintosh PPC, Solaris Sparc, Linux x86, FreeBSD x86, HP/UX
+          PA-RISC, and possibly others too.
+        o http://www.cd.com/portio
+        o In addition, there is a Unix serial port utility available with
+          source at http://jarvi.ezlink.com/rxtx/ It's free under the GPL,
+          and works on Linux, Irix, Solaris, Windows 95, and NT.
+
+     While not helpful to typical home users, there is an alternative
+     portable COM port solution for Java 1.1 and even 1.0. Buy your COM
+     ports in the form of "terminal servers". Using a COM port is now as
+     easy as connecting to it with a Socket. Port parameters can be changed
+     programatically using SNMP for most terminal servers (but this is never
+     necessary when a modern modem or other fixed-rate equipment is
+     attached). Any networked box can serve as a terminal server - even
+     Win95 - with a simple native server application for that box, but
+     buying an actual firmware based hardware box is much easier.
+
+     Furthermore, your Win95 native applications can now share the COM ports
+     (and any attached modems) via a Win95 product called "Dial-out IP" at
+     http://www.tactical-sw.com/.
+
+     If the port exists as a pathname in the filesystem, you can open it as
+     a file and read/write. You can also print text this way by writing to
+     "prn" or "lpt1" on a pc, and "/dev/something" on Unix. Writing a
+     formfeed at the end of the file is essential on Windows 95. Here is
+     some sample code:
+
+     // class that opens the printer as a file
+     // and writes "Hello World" to it
+
+     import java.io.*;
+     public class lpt {
+         public static void main (String[] argv) {
+             try {
+                 FileOutputStream os = new FileOutputStream("LPT1");
+                 //wrap stream in "friendly" PrintStream
+                 PrintStream ps = new PrintStream(os);
+
+                 //print text here
+                 ps.println("Hello world!");
+
+                 //form feed -- this is important
+                 //Without the form feed, the text will simply sit
+                 // in print buffer until something else gets printed.
+                 ps.print("\f");
+                 //flush buffer and close
+                 ps.close();
+             } catch (Exception e) {
+                 System.out.println("Exception occurred: " + e);
+             }
+         }
+     }
+
+
+     If you wish to change the characteristics of the port (e.g. baud rate,
+     parity, etc.), not just read/write data, Java currently offers no
+     portable way to do this. You will need to use one of the packages
+     mentioned above or some native code or a system command.
+
+</antwort>
+5. (Sect. 7) How do I append to a file?
+<antwort>
+
+     [*] There are two ways. JDK 1.1 introduced new constructors for two of
+     the output classes that allowed you to set a boolean flag:
+
+     public FileWriter(String fileName, boolean append) throws IOException
+     public FileOutputStream(String name, boolean append) throws IOException
+
+
+     Another way is to do this:
+
+     RandomAccessFile fd = new RandomAccessFile(file,"rw");
+     fd.seek(fd.length());
+
+
+     Then write using fd. Note that the latter method does not take
+     advantage of the "append" mode present in many operating systems (such
+     as all Unixes). Such a difference may make a difference with multiple
+     processes or threads appending to the same output file. This can happen
+     frequently, even if not intended by the programmer, e.g. with logfiles
+     in multitasking environments.
+
+</antwort>
+6. (Sect. 7) Is it possible to lock a file using Java ?
+<antwort>
+
+     [*] JDK 1.2 introduces the ability to lock a file (indirectly) using
+     the File class. Use createTempFile() with delete on exit. Prior
+     releases of Java do not feature an API to lock a file or regions within
+     a file. Code that needs to do this must take one of four approaches:
+       1. Implement an advisory locking scheme using features that Java does
+          have (synchronized methods). This allows you to lock files against
+          use by other Java code running in the same JVM.
+
+       2. Use the atomic operation File.createNewFile(), and mark it as
+          deleteOnExit(). Have all processes (Java and non-Java) follow the
+          same protocol: if the create operation succeeded, you have the
+          lock. To give up the lock, you either delete the file or exit the
+          JVM.
+
+          Note that this may fail if the file is remotely mounted using NFS
+          version 2. (There's a window of opportunity bewteen the LOOKUP to
+          see if it's already there, and the CREATE if it's not). However,
+          NFS version 3 does guarantee exclusive create of remotely mounted
+          files, and is not subject to this race condition failure.
+
+       3. Make calls to native code to issue the locking ioctls. This
+          approach is not portable, but gives you a shot at having your
+          locks respected by legacy code in non-Java programs using standard
+          locking ioctls.
+
+       4. Push the work to a central server. Since socket connection
+          requests arrive in a single queue on the server, this can be used
+          to serialize lock requests. There might be some merit in copying
+          the NFS lockd protocol for a general approach. Rolling your own
+          simple version for a specific application is pretty easy. A
+          database would be better off locking records or fields, not byte
+          offsets. In theory, the server socket approach would make it
+          easier to perform automatic cleanup of a lock on abrupt VM process
+          failure, e.g. by asking "are you still alive?" to the lock holder
+          occasionally.
+
+</antwort>
+7. (Sect. 7) How do I make the keyboard beep in Java?
+<antwort>
+
+     [*] In JDK 1.1, java.awt.Toolkit has the method beep(). The pre-1.1
+     alternative of
+
+     System.out.print("\07");
+     System.out.flush();
+
+     (the ASCII BEL character) doesn't work on Macs, but does on some other
+     platforms. Java doesn't support the C abstraction of '\a' for an alert
+     character.
+
+</antwort>
+8. (Sect. 7) How do you do file I/O from an applet?
+<antwort>
+
+     [*] For security reasons, untrusted applets accessed across the network
+     are restricted from doing certain operations, including I/O. This
+     prevents rogue applets from sending out your private data, or deleting
+     it. A trusted (signed) applet can perform these operations (JDK 1.1
+     on).
+
+     The simplest approach for server-side I/O is to use the Linlyn class
+     available from http://www.afu.com. This is free software under the GNU
+     license, and uses FTP to move files between an applet and the server.
+     It is suitable for low-volume non-critical use like keeping a
+     high-score file. The Linlyn class has a very simple application
+     programmer interface.
+
+        o The following suggestion is for server-side input.
+
+          You can read a file on the server if you can create a URL
+          referencing the file. Then open a stream, then use any of the
+          stream-based methods to read.
+
+          This allows reading but not writing. It requires an http daemon
+          running on the server, which will usually be the case.
+
+          try{
+             URL url = new URL("http://somewhere.com/test.txt");
+           // or URL url = new URL( getDocumentBase(), filename);
+             BufferedReader in = new BufferedReader(
+                                   new InputStreamReader(
+                                      url.openStream() ) );
+             String s = in.readLine(); //read till you get a null line.
+             } catch(MalformedURLException e){
+                     System.out.println("URLException:"+e);
+             } catch(IOException e){
+                     System.out.println("IOException:"+e);
+             }
+          }
+
+
+          You cannot write a file on the server this way.
+        o The following suggestions are for server-side output.
+
+          It absolutely requires the cooperation of the server to allow an
+          applet to write a file to the server. This cooperation may take
+          any of several forms:
+             + FTP server
+             + File server (webnfs or custom written)
+             + Listening on a socket for data from applets
+             + CGI script
+             + Java RMI (remote method invocation)
+             + JDBC process
+
+          In particular:
+             + FTP code. Use the Linlyn class mentioned above.
+             + WebNFS. This is an evolution of the NFS (Network File System)
+               to make file resources visible in browsers. More information
+               at http://www.sun.com/webnfs
+             + Open a socket back to the server and read/write the data.
+               Have a process on the server that listens for socket
+               connections from applets and does the requisite I/O. This
+               does I/O on the server.
+             + Or use a CGI script or servlet on the server to write when
+               browsed.
+
+        o The following suggestions are for client-side I/O. Use a trusted
+          applet (see section on security). This will permit local I/O
+          without any of the restraints mentioned above. In this regard, the
+          appletviewer and many other browsers regard applets loaded from a
+          local filesystem (rather than across the net) as being more
+          trustworthy, and perhaps even allowed to do I/O.
+        o The simplest form of output is probably for the applet to connect
+          to the mailserver port on the server, and prompt the user to enter
+          his email address. Then email him the data to save locally if he
+          wishes. If a small amount of data he can later enter it by
+          cut-and-paste into the applet when he next invokes it.
+        o Or use a browser that has a security policy that is configured to
+          allow file I/O (such as Sun's appletviewer).
+        o Read this article
+          http://www.javareport.com/html/features/archive/9802/somers.shtml
+          for an introduction to the basics.
+
+</antwort>
+9. (Sect. 7) What are Resources files and how do they work?
+<antwort>
+
+     [*] In Java 1.1 and above, a resource file is a file that your code
+     should be able to access no matter where it was loaded from: the local
+     file system, via http, or some other means. This is a different concept
+     than system resources. See question (TBD) for more information about
+     system resources. (Volunteer sought to write answer on system resource
+     files).
+
+     There are two ways to specify resources.
+        o using an absolute path name, such as
+          "/myPackage/resourcedir/myResource.txt"
+          With an absolute path name, the resource file is actually relative
+          to the classpath.
+        o using a relative path such as "dir/myResource.txt".
+          If you specify a relative path, then the file is found relative to
+          where the class loader found the package of the Class that is
+          loading the resource. The consequence of this is that relative
+          resource files can only be in the same directory as your class
+          file or in a directory below.
+     If you want to access resources from an unsigned applet, use relative
+     resources.
+
+     There are a couple of methods to get at resources, including methods in
+     the java.lang.Class and java.lang.Classloader. It uses the class loader
+     because that code knew where to find the class on the filesystem. If
+     the resource file is nearby, it can be found the same way. One simple
+     method to get a stream for a resource for a particular class, say
+     Mypackage.MyClass, is as follows:
+
+     String relativePath = "resourceDir/somefile.txt";
+     String absolutePath = "/somePackage/somefile.txt";
+     InputStream in=Mypackage.MyClass.class.getResourceAsStream(relativePath);
+
+     If the class cannot be loaded, "in" would be assigned a null value.
+     Otherwise, you can use the inputStream just as any other.
+
+     A brief note about the syntax used above. In java 1.1 and above, a
+     java.lang.Class object for a particular class can be acquired by
+     appending .class to the class's name. Though it looks like every object
+     has a static member variable, this is not actually the case.
+
+     When using resources with Netscape, be aware of the Netscape
+     restrictions that:
+        o Netscape does not implement the getResource() methods in
+          java.lang.Class and java.lang.ClassLoader, but only
+          getResourceAsStream() methods.
+        o All resources must be in a Jar/archive file
+        o Resource files must have a Netscape-approved extension, or you
+          must call certain functions before hand. See the following for
+          details:
+          http://developer.netscape.com/docs/technote/java/getresource/getresource.html
+     Internet Explorer does not seem to have these restrictions.
+
+     One final "gotcha" is that jpgStream.available() (wrongly) returns 1
+     when .gif files in the .jar file are compressed! Some people now create
+     a .jar file in two steps, essentially:
+
+             jar cvf x.jar *.class
+             jar uf0 x.jar *.gif
+
+     This ensures .gifs are not compressed, and hence that available()
+     doesn't lie to you. David Alex Lamb stumbled onto this after wondering
+     why his .gif files looked bad, then realized that compression of a .gif
+     might throw away detail. The conjecture is that available() returns 1
+     because it has to block to do uncompression.
+
+</antwort>
+12. (Sect. 7) How do I make I/O faster? My file copy program is slow.
+<antwort>
+
+     [*] This is the purpose of BufferedInputStream. It is a flaw in Java
+     that buffered I/O is not the default, with a flag or different
+     constructor to turn it off. I/O is the second worst designed package in
+     Java, after the Date class. ,
+
+</antwort>
+13. (Sect. 7) How do I do formatted I/O of floating point numbers?
+<antwort>
+
+     [*] Use the class java.text.NumberFormat.
+
+     Or use http://www.newbie.net/sharky/lava/. Or use Cay Horstmann's
+     http://www.horstmann.com/corejava/Format.java
+     Although many utilities claim to handle all varieties of C's printf, as
+     far as has been found, this is the only one to correctly handle the
+     equivalent of %e in printf.
+
+     See also the standard packages java.text.DecimalFormat and
+     java.text.NumberFormat
+</antwort>
+14. (Sect. 7) How do I read numbers in exponential format in Java?
+<antwort>
+
+     [*] The program below (written by Steve Chapel) uses StreamTokenizer to
+     read data from the standard input and recognizes doubles in exponential
+     format (e.g. -1.23e-45).
+
+     import java.io.*;
+
+     public class ReadExponential {
+         public static void main(String argv[]) {
+             DataInputStream in = new DataInputStream(System.in);
+             StreamTokenizer st = new StreamTokenizer(in);
+             try {
+                 while (st.nextToken() != StreamTokenizer.TT_EOF) {
+                     switch (st.ttype) {
+
+        case StreamTokenizer.TT_NUMBER:
+                  double num = st.nval;
+                  int exp = 0;
+                  st.ordinaryChars('\0', ' ');
+                  st.nextToken();
+                  st.whitespaceChars('\0', ' ');
+                  if (st.ttype == StreamTokenizer.TT_WORD &&
+                      Character.toUpperCase(st.sval.charAt(0)) == 'E') {
+                      try {
+                         exp = Integer.parseInt(st.sval.substring(1));
+                      } catch (NumberFormatException e) {
+                         st.pushBack();
+                      }
+                  } else if (st.ttype < 0 || st.ttype > ' ')
+                      st.pushBack();
+                  System.out.println("Num " + num * Math.pow(10, exp));
+                  break;
+         case StreamTokenizer.TT_WORD:
+                  System.out.println("Word " + st.sval);
+                  break;
+         default:
+                  System.out.println("Char '" + (char) st.ttype + "'");
+                  break;
+              } // end switch
+          }  // end while
+        } catch (IOException e) {
+          System.out.println("IOException: " + e);
+        }
+      } // end main
+     }
+</antwort>
+16. (Sect. 7) How do I delete a directory in Java?
+<antwort>
+
+     [*] JDK 1.0 did not support directory removal. JDK 1.1 supports
+     directory removal with the method:
+          public boolean delete() in class java.io.File
+
+     Make sure you don't have any open streams in the directory you're
+     trying to remove. Do a close() on all streams, even if the underlying
+     file is gone.
+</antwort>
+17. (Sect. 7) How do I tell how much disk space is free in Java?
+<antwort>
+
+     [*] There currently aren't any good Java APIs for system introspection.
+     There is no Java way to control processes, or look at system resources.
+     You can use Runtime.getRuntime().exec() to do "df" on unix or "dir" on
+     Windows right now.
+
+     Alternatively, check out JConfig:
+     http://www.tolstoy.com/samizdat/jconfig.html
+     JConfig is a cross-platform library that fills in many of the gaps in
+     the core Java API, and makes it possible to work with files, processes,
+     file types, video monitors, etc. in a much more Windows- and
+     Mac-friendly manner.
+</antwort>
+18. (Sect. 7) How do I get a directory listing of the root directory C:\ on a PC?
+<antwort>
+
+     [*] The obvious approach of calling File.list("C:\"); does not work.
+     There are two reasons why this fails. First, slash is an escape
+     character in Java, so if you want a literal slash, you have to repeat
+     it. Second, you need to give the name of the directory, i.e. dot.
+     Putting this together, either of the following calls will work
+
+     File.list("C:\\.");
+
+
+     or
+
+     File.list("C:/.");
+
+
+     Note: a file separator of "/" works just as well as "\" in most Windows
+     programs and library calls. It is an artifact of DOS's origin's as a
+     ripped-off port of CP/M. When Microsoft bought the rights to DOS from
+     Seattle Computer Products (what, you didn't know Microsoft didn't
+     develop DOS? They didn't even own the rights to DOS at the time the
+     contracted with IBM to supply DOS for the PC) they were buying software
+     which was an unauthorized port of the CP/M operating system.
+
+     CP/M didn't have directories, so it didn't use pathname separators. The
+     forward slash "/" was already used for giving options to CP/M commands,
+     so "\" was pressed into service as the DOS pathname separator, but the
+     DOS shell was taught to understood "/" for compatibility with other
+     OS's. See also JConfig in Q6.15.
+
+</antwort>
+19. (Sect. 7) What is the difference between the various ZIP formats: ZIP, GZIP, and PKZIP?
+<antwort>
+
+     [*] Zip is an archive file format, popularized on PCs, that contains
+     multiple compressed files.
+     GZIP comes from Gnu. It is essentially a one file subset of the Zip
+     format. You can't put a whole directory into a GZIP archive, just a
+     single file. It's intended for compressing a tarball of many files.
+     PKZIP is a set of commercially available programs that create Zip
+     files. All three use the deflate compression format, which is based on
+     the LZ77 algorithm. This compression is also used by the ZLIB library
+     and hence the PNG graphics file format (which uses ZLIB). PNG -
+     Portable Network Graphics - provides a patent-free replacement for GIF
+     and TIFF.
+
+     An alternative compression technology, LZW compression, is encumbered
+     by Unisys's patent. LZW is used in GIF files and by the Unix compress
+     command. Luckily, as well as being free from patent restrictions, LZ77
+     also gives better compression than LZW. LZW is the initial letters of
+     the last names of the three computer scientists who developed the
+     algorithm (Lempel, Ziv, Welch).
+
+     The basic classes (all in java.util.zip) that read LZ77 Zip format are
+     Deflater and Inflater. These are used by the stream classes
+     DeflaterOutputStream and InflaterInputStream. The java.util.zip classes
+     GZIPInputStream and ZipInputStream inherit from InflaterInputStream.
+
+     PKZIP is a commercial program for DOS, Windows, and OS/2, sold by
+     PKWARE Their FAQ, at http://www.pkware.com/zipgfaq.html, specifically
+     says
+          "Because PKWARE has dedicated the .ZIP file format to the public
+          domain, it is possible for other people to write programs which
+          can read .ZIP files. NOTE THAT THE PKZIP, PKUNZIP, PKSFX PROGRAMS
+          AND THEIR ASSOCIATED SOURCE CODE AND SUPPORT PROGRAMS ARE THE
+          EXCLUSIVE PROPERTY OF PKWARE INC. AND ARE NOT PUBLIC DOMAIN
+          SOFTWARE PROGRAMS.
+
+     The "other people" PKZIP's FAQ refers to is the InfoZIP project, a
+     group of public-minded programmers spread over the world producing free
+     software that works on most ANSI C compilers and platforms. See
+          http://www.cdrom.com/pub/infozip/.
+
+     Jar files are in ZIP format, but are not as complete as a full
+     filesystem archive format since file permissions are not saved. Some
+     versions of WinZip are known to be inadequate for processing the full
+     PKZIP format. Use InfoZIP instead.
+</antwort>
+20. (Sect. 7) How can I use characters other than ASCII in Java?
+<antwort>
+
+     [*] Search for the article titled "Adding Fonts to the Java Runtime" or
+     visit:
+     http://java.sun.com/products/jdk/1.2/docs/guide/internat/fontprop.html
+
+     The article explains how to add fonts to Sun's JDK 1.2 using the
+     font.properties file. [If anyone has summarised the information, please
+     send it in].
+</antwort>
+21. (Sect. 7) I did a read from a Buffered stream, and I got fewer bytes than I specified.
+<antwort>
+
+     [*] This is the way that BufferedInputStream works up to and including
+     the current release. The behavior is so unintuitive that it really
+     represents a bug. Javasoft has "resolved" the bug by writing comments
+     in the program so that the broken behavior is in the range of legal
+     outcomes. Ugh.
+
+     When you instantiate a buffered input stream, you can specify the size
+     of buffer it should use. Let's call this the internal buffer. When you
+     call read() you can say how many bytes to read. Let's call this the
+     request. If the request is smaller than the internal buffer and not a
+     multiple of the internal buffer, then the last read returns only the
+     odd bytes left in the internal buffer! The more reasonable and
+     intuitive behavior would be for the internal buffer to be refilled, so
+     that the whole request can be granted.
+
+     For example, if you create a BufferedInputStream with an internal
+     buffer of 1000 bytes, and try to read 512 byte chunks, your first read
+     will return 512 bytes, but your second read will only return
+     (1000-512), or 488, bytes. (Assuming that the file has at least that
+     many bytes in it). The following code illustrates the problem.
+
+     // troubleshooting by Tov Are Jacobsen
+     import java.io.*;
+     class filebug {
+         public static void main(String args[])
+                       throws FileNotFoundException, IOException  {
+         BufferedInputStream bis =
+            new BufferedInputStream(
+            new FileInputStream("test.txt"), 1000 );
+         byte[] buf = new byte[2000];
+         int numread;
+         System.out.println( "Available: "+bis.available() );
+         while (true) {
+             numread = bis.read(buf,0,512);
+             if (numread<0) break;
+             System.out.println( "got "+numread
+                                +", avail:"+ bis.available());
+         }
+       }
+     }
+
+
+     Of course, a valid reason for getting less than you asked for is that
+     you asked for more data than is actually available in the Stream, e.g.
+     you requested 512 bytes from a file that only contains 40 bytes. In
+     general, there are no guarantees about how much data is returned for a
+     given buffered input stream read request. To avoid this problem, push a
+     DataInputStream on top of your buffered stream. Then you can call
+     readFully(), which will do what you want.
+
+     A similar "got less than I asked for" occurs when reading a socket.
+     Network protocols frequently packetize data and send it across in
+     bursts. Nothing is lost of course, and you are always told how many
+     bytes you actually got. You will get the remaining bytes on a
+     subsequent read. This happens regardless of the language used. Be sure
+     to check the "amount of data returned" when using the read(byte[], int,
+     int) method of BufferedInputStream, or when reading from a socket.
+
+     Another problem with java.io.InputStream.read(byte[], int, int) is that
+     it catches and ignores IOExceptions. Instead, these exceptions should
+     be passed on to the caller. Ace programmer Jef Poskanzer, jef@acme.com,
+     has a version to do this at
+     http://www.acme.com/java/software/Acme.Utils.html. See Jef's read() and
+     readFully() routines.
+</antwort>
+22. (Sect. 7) How do I redirect the System.err stream to a file?
+<antwort>
+
+     [*] You cannot assign a new FileOutputStream to System.err, as it is
+     final. Instead use the System.setErr() library call, like this:
+
+     FileOutputStream err = new FileOutputStream("stderr.log");
+     PrintStream errPrintStream = new PrintStream(err);
+     System.setErr(errPrintStream);
+
+
+     This was introduced with JDK 1.1. There is also a corresponding setIn()
+     for redirecting standard in, and a setOut() for standard out.
+
+     Note that you will get a compiler warning about a deprecated construct
+     when you do this. PrintStreams are deprecated in favor of PrintWriters,
+     which handle Unicode properly. The PrintStream is marked as deprecated
+     by marking all its constructors as deprecated. There is no way to
+     create the PrintStream needed to redirect System.err or System.out
+     without triggering the deprecated warning.
+</antwort>
+23. (Sect. 7) What are the values for the Unicode encoding schemes?
+<antwort>
+
+     [*] If you review the String constructor with this signature
+
+         String(byte[] bytes, String encoding)
+
+     you can see that one argument is a value for the encoding scheme that
+     the conversion of 8-bit bytes to 16-bit Unicode chars is to use.
+
+     There are three: "Unicode", "UnicodeBig" and "UnicodeLittle". The first
+     one expects the first two bytes of your data to be a Byte Order Mark,
+     FEFF or FFFE, which specifies whether the data is in little-endian or
+     big-endian order. If there isn't a BOM but you already know the
+     endianness, you can use "UnicodeBig" or "UnicodeLittle" directly.
+
+     There is also a Sun document at
+     http://java.sun.com/products/jdk/1.1/docs/guide/intl/encoding.doc.html
+     with some related information (not much).
+
+     There is another Sun document at
+     http://java.sun.com/products/jdk/1.1/intl/html/intlspec.doc7.html which
+     shows the table of encodings. There is a new system property called
+     "file.encoding" which translates between codes known to Java like
+     "Cp1252", and locale encoding names like "Windows Western Europe /
+     Latin-1"
+</antwort>

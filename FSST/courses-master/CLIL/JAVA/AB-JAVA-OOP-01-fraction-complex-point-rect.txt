@@ -1,0 +1,168 @@
+--------------------------------------------------------------------------------
+AB-JAVA-OOP-01-fraction-complex-point-rect.txt
+--------------------------------------------------------------------------------
+<https://gitlab.com/4me/courses/blob/master/CLIL/JAVA/AB-JAVA-OOP-01-fraction-complex-point-rect.txt>
+
+Topic: 
+	class, object, private/public, 
+	constructor/destructor, getter/setter
+
+
+OOP-Fraction (java)
+--------------------------------------------------------------------------------
+	Create the class Fraction so that the following code works.
+	
+		Fraction a= new Fraction(3.0, 2.0);
+		Fraction b= new Fraction(a);
+		Fraction c;
+	
+		c= a.mul(b);	
+		System.out.println ("c= " + c.toString());
+		
+	The output should be:
+	c= [9.0 / 4.0]
+		
+
+SOLUTION: (use nominator and denominator)
+	public class Fraction { 
+
+
+
+OOP-Complex (java)
+--------------------------------------------------------------------------------
+	Create the class Complex so that the following code works.
+
+		Complex a= new Complex(3.0, 2.0);
+		Complex b= new Complex(a);
+		Complex c;
+	
+		c= a.add(b);	
+		System.out.println ("c= " + c.toString());
+		
+
+	The output should be:
+	c= [6.0 + 4.0 j]
+		
+		
+SOLUTION: (use realPart and imaginaryPart)
+	public class Complex{ 
+	
+
+
+OOP-Point (java)
+--------------------------------------------------------------------------------
+	Create the class Point so that the following code works.
+
+		Point a= new Point(0, 200);   // x-coordinate, y-coordinate
+		Point b= new Point(a);
+		Point c;
+	
+		c= a.add(b);	// add the coordinate-values	
+		System.out.println ( "c= " + c.toString());
+
+
+	The output should be:
+	c= [0,400]
+		
+SOLUTION: (use x and y)
+	public class Point{ 
+
+
+
+OOP-Rectangle (java)
+--------------------------------------------------------------------------------
+	Create the class Rectangle so that the following code works.
+
+		Rectangle a= new Rectangle(5, 3);   // length, width
+		Rectangle b= new Rectangle(a);
+		int area;
+	
+		area= a.getArea();
+		
+		System.out.println ( "a= " + a.toString());
+
+
+	The output should be:
+	c= [15]
+	*****
+	*****
+	*****
+
+		
+SOLUTION: (use length and with)
+	public class Rectangle{ 
+
+
+
+
+OOP-Rectangle-static (java)
+--------------------------------------------------------------------------------
+	Create the class Rectangle so that the following code works.
+
+
+		Rectangle meadow= new Rectangle();
+		Rectangle forest= new Rectangle(20, 5); // length, width
+
+		System.out.println ( "My MEADOW: ");
+		System.out.println ( meadow.toString() );
+
+		System.out.println ("My FOREST: ");
+		System.out.println (forest.toString() );
+
+
+		// ----------------- static members/methods
+		System.out.println ( "My total property: " );
+		System.out.println ( Rectangle.getQuantity() + " Rectangle-Objects");
+
+
+		System.out.println ();
+		System.out.println ( "I want to buy an island!");
+		Rectangle island= new Rectangle();
+
+		System.out.println ( "My total property is now: ");
+		System.out.println ( Rectangle.getQuantity() + " Rectangle-Objects");
+
+
+		System.out.println ();
+		System.out.println ( "Now i am selling the island");;
+		Rectangle.sellIt();
+		// or island.sellIt();
+		
+		island=null;
+
+		System.out.println ( "My total property is now: " );
+		System.out.println ( Rectangle.getQuantity() + " Rectangle-Objects");
+
+
+		System.out.println ();
+		System.out.println ();
+	
+THE Output should be:
+My MEADOW: 
+[50]
+**********
+**********
+**********
+**********
+**********
+
+My FOREST: 
+[100]
+********************
+********************
+********************
+********************
+********************
+
+My total property: 
+2 Rectangle-Objects
+
+I want to buy an island!
+My total property is now: 
+3 Rectangle-Objects
+
+Now i am selling the island
+My total property is now: 
+2 Rectangle-Objects
+
+

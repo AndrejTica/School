@@ -1,0 +1,50 @@
+* Diplomarbeiten an der Elektronik-Abteilung
+
+- Anton Hofmann, 2018
+
+* Themenfindung: Überblick
+
+- [[http://www.diplomarbeiten-bbs.at/abschlussarbeit-und-diplomarbeit]]
+
+  - Einzelarbeit
+  - Gruppenarbeit
+
+* Themenfindung: Vorbereitungsphase
+
+- [[http://www.diplomarbeiten-bbs.at/zeitschiene/vorbereitungsphase]]
+
+Diese Übersicht schlüsselt die einzelnen Aufgaben in der Vorbereitungsphase auf. Sie dient der Orientierung und kann sich je nach Schulart unterscheiden.
+
+** 4. Jahrgang - 7. Semester 
+   - Oktober bis Dezember
+
+	 - *Information der Schüler/innen* über rechtliche und organisatorische (schularten- und standortspezifische) Rahmenbedingungen zur Diplomarbeit, zum Beispiel in welchen Gegenständen / Gegenstandskombinationen / Ausbildungsschwerpunkten / Fachrichtungen die Diplomarbeit geschrieben werden kann
+	 - [[https://gitlab.com/4me/courses/blob/master/LA-DA/aktuell/DA-Handreichung-HofA.md]]
+		   
+	 - Schulung der Schüler/innen (Recherchieren, Zitieren, Urheberrecht, empirische Methoden, Dokumentationsarbeit/Projektmanagement, Präsentieren)
+
+   - Jänner
+
+	 - Überlegungen zur *Themenfindung und Teambildung* in Absprache mit möglichen Betreuungslehrpersonen, Schüler/innen
+	 - Überlegungen zu möglichen *externen Kooperationspartnern*
+
+** 4. Jahrgang - 8. Semester
+   - Februar bis Juni
+
+       - *Themenfestlegung* gemäß § 8 Abs. 1 PrüfOrd. BHS, BA (spätestens jedoch in den ersten drei Wochen der letzten Schulstufe)
+       - *Teambildung*
+       - Auswahl einer bzw. mehrerer *Betreuungslehrperson(en)*
+       - Im Falle einer Kooperationspartnerschaft: Unterzeichnung einer Kooperationsvereinbarung
+       - Bei Bedarf: Erstellung und Unterzeichnung eines Projektauftrags sowie Erstellung ausgewählter Projektmanagementmethoden zum Projektstart
+       - Absprache einer möglichen "Themenverbindlichkeit" vor Schulschluss, damit die Schüler/innen in den Sommerferien erste Vorarbeiten zur Diplomarbeitserstellung erbringen können
+
+Auch wenn im 7. und 8. Semester Vorarbeiten zur Diplomarbeitserstellung geleistet werden, gilt die gesetzliche Genehmigungsfrist nach § 8 Ab. 2 PrüfOrd. BHS, BA.
+
+* Themenfindung: Beispiel: DA-Antrag "Carnected"
+
+- [[https://htlsalzburg.sharepoint.com/:b:/g/elektronikbiomed/ETIdHGzSGHJNimjtEZqJK5sBhWpqs7QRY1kmZNye5aAe8w?e=1groKK]]
+
+
+* Themenfindung: Aufgabe: DA-Themenfindung erstellen
+
+- DA_THEMENFINDUNG_2018-19_4AHEL_Name1_Name2_Name3_Projektkuerzel.docx

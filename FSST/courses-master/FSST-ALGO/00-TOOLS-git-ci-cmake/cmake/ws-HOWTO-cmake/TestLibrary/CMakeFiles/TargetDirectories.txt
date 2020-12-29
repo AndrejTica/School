@@ -1,0 +1,3 @@
+/home/ahofmann/ws-HOWTO-cmake/TestLibrary/CMakeFiles/rebuild_cache.dir
+/home/ahofmann/ws-HOWTO-cmake/TestLibrary/CMakeFiles/libtest.dir
+/home/ahofmann/ws-HOWTO-cmake/TestLibrary/CMakeFiles/edit_cache.dir

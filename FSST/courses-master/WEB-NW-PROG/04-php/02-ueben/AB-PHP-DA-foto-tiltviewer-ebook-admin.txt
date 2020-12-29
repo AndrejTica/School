@@ -1,0 +1,141 @@
+﻿AB-PHP-DA-foto-tiltviewer-ebook-admin.txt
+================================================================
+
+
+Aufgabe: DA4web: HTL-Diplomarbeiten im Internet
+----------------------------------------------------------------
+zZ: www.htl-innovativ.at
+
+PROJEKT: DA
+	1. (alle) Tabelle erzeugen und Daten einspielen
+		Tabellenstruktur: siehe unten
+		
+	2. DA erfassen by student (WEB)
+
+	3. DA annehmen/ablehnen by Prof (WEB)
+
+	4. DA search - simple/full (WEB)
+
+	5. DA Admin by (Access, xdev, WEB)
+		Laden Sie die DA-Datenbank und erstellen Sie eine vollständige
+		Anwendung zur Verwaltung (erfassen, anzeigen, berichte, ...)
+		der Daten.
+
+
+
+Aufgabe: DA-foto
+----------------------------------------------------------------
+Vorlage: DA-foto.zip
+
+Ordner/Dateien: 
+	DA-foto/index.php
+	DA-foto/bilder/foto-####.jpg
+	
+Erstellen Sie die Datei index.php, die
+alle Dateinamen im Unterordner bilder ermittelt und 
+folgenden Output an den Web-Browser liefert.
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Diplomarbeiten der Elektronik-Abteilung</title>
+</head>
+<body bgcolor="magenta">
+<h1>Diplomarbeiten der Elektronik-Abteilung</h1>
+
+<a href="http://www.htl-innovativ.at/index.php?lang=ger&modul=detail&id=5488">
+<img src="bilder/foto-5488.jpg" width="160" height="120"></a>
+
+<a href="http://www.htl-innovativ.at/index.php?lang=ger&modul=detail&id=5429">
+<img src="bilder/foto-5429.jpg" width="160" height="120"></a>
+....
+
+
+Hinweis: index.php
+<!DOCTYPE html>
+<html>
+<head>
+<title>Diplomarbeiten der Elektronik-Abteilung</title>
+</head>
+<body bgcolor="magenta">
+<h1>Diplomarbeiten der Elektronik-Abteilung</h1>
+
+<?php
+
+// Dateinamen aus dem Unterordner bilder in 
+// ein Array einlesen.
+$d = dir("bilder");
+
+// .... ENTER CODE HERE
+
+// Ausgabe erstellen
+foreach ($arr as $entry) {
+      print "<a href=\"http://www.htl-innovativ.at/index.php?lang=ger&modul=detail&id=$entry\">";
+
+      print "<img src=\"bilder/foto-$entry.jpg\" width=\"160\" height=\"120\">";
+
+      print "</a>";
+   }
+
+?>
+
+Aufgabe: DA-tiltviewer
+----------------------------------------------------------------
+Verwenden Sie http://www.simpleviewer.net/tiltviewer/app/ oder
+eine HTML5 Slideshow, um die Diplomanden und deren Arbeiten im
+Web zu präsentieren.
+
+
++Aufgabe: DA-ebook
+----------------------------------------------------------------
+Laden Sie die DA-Datenbank und erzeugen Sie ein eBook im epub-Format.
+
+
+
+ANHANG: DA Tabellenstruktur
+==================================================================
+
+CREATE TABLE `htl_projekte` (
+  `id` int(11) NOT NULL auto_increment,
+  `titel_ger` varchar(255) NOT NULL default '',
+  `titel_eng` varchar(255) NOT NULL default '',
+  `abstrakt_ger` text NOT NULL,
+  `abstrakt_eng` text NOT NULL,
+  `typ` varchar(20) default NULL,
+  `kat_id` int(11) default NULL,
+  `stichworte_ger` varchar(255) default NULL,
+  `stichworte_eng` varchar(255) default NULL,
+  `jahr` smallint(6) default NULL,
+  `klasse` varchar(50) default NULL,
+  `skz` mediumint(9) NOT NULL default '0',
+  `abteilung` varchar(255) NOT NULL default '',
+  `betreuer` varchar(255) NOT NULL default '',
+  `zus_betreuer` varchar(255) NOT NULL default '',
+  `team` text NOT NULL,
+  `team_leader` varchar(255) NOT NULL default '',
+  `team_mail` varchar(255) NOT NULL default '',
+  `link` varchar(255) default NULL,
+  `thumb` varchar(255) default NULL,
+  `adminlink` varchar(25) default NULL,
+  `schuelerlink` varchar(25) default NULL,
+  `anmerkung` text,
+  `genehmigt` tinyint(4) NOT NULL default '0',
+  `bild` varchar(255) NOT NULL default '',
+  `datei` varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`id`),
+  KEY `i_kat_id` (`kat_id`),
+  FULLTEXT KEY `i_ft_titel_stichworte_ger` (`titel_ger`,`stichworte_ger`),
+  FULLTEXT KEY `i_ft_titel_stichworte_eng` (`titel_eng`,`stichworte_eng`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4372 ;
+
+
+
+db: diplomarbeit
+user: diplomarbeit
+pwd: comein
+tab: htl_projekt
+
+
+
+

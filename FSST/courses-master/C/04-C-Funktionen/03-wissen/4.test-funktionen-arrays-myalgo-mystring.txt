@@ -1,0 +1,64 @@
+﻿c: name:______________________________datum:__________________
+Thema: Arrays, Funktionen
+24 Punkte   00-12:5   13-15:4    16-18:3    19-21:2    22-24:1
+
+1. (4) ________________________________________________________
+1.1. (2) Eine Funktion namens print, die einen String als Parameter 
+	erhält und keinen  Wert zurück gibt, ist
+	a) int print( char string[] ) {
+			printf("%s", string);
+		}
+	b) void print( char string[] ) {
+			printf("Menu choices");
+		}	
+	c)void print( char string[] ) {
+			printf("%s", string);
+		}
+1.2. (2)Ein Funktionsprototype für oben ist
+	a) int print( char [] );
+	b) void print( char [] );
+	c) void print( void );
+	d) int print( void );
+	
+
+2. (8) ________________________________________________________
+2.1.(4)	Was gibt das folgende Programm aus?
+	1.Datei:
+		int i=1;
+		int main(){
+		      int i=2,j;
+		      
+		      for (j=1;j<3;j++){
+		         i=fu(i);
+		         printf("<%i-%i>\n",i,j);
+		      }
+		}
+		
+	2.Datei:
+		int var=9;
+		int fu(int wert){
+			var++;
+			return wert + var; 
+		}
+
+2.2. (2) Was versteht man unter "lokalen static Variablen"?
+2.3. (2) Was versteht man unter "globalen static Variablen"?
+	
+
+3. (4) strInsertLast.c____________________________________________
+	Gegeben ist folg. Funktionsdeklaration
+
+	void myStrInsertLast(char str[], char ch);
+	
+	Programmieren Sie diese Funktion aus. Das Zeichen im Parameter
+	ch soll ans Ende des Arrays str geschrieben werden.
+	
+	
+4. (8) mystrcat __________________________________________________
+	Gegeben ist folg. Funktionsdeklaration
+
+	void mystrcat(char str1[], char str2[]);
+	
+	Programmieren Sie diese Funktion aus. Der Text in str2 soll
+	an den Text in str1 angehängt werden.
+	

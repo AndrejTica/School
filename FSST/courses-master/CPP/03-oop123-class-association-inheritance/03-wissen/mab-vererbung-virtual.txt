@@ -1,0 +1,21 @@
+﻿mab: cpp vererbung, virtual
+----------------------------------------------------------------------------
+
+* protected ?
+
+* Welcher Kontruktor wird zuerst fertig ausgeführt:
+	der oberklasse
+	der unterklasse
+
+* Was ist ein base initializer ? Wozu wird er benötigt ?
+
+* Wozu werden base class pointers verwendet ?
+
+* Warum sollte eine Klasse, die virtuelle Methoden definiert, unbedingt 
+  einen virtuellen Destruktor definieren ?
+
+* Worauf ist bei der Verwendung des Schlüsselwortes protected zu achten ?
+
+* Was ist eine abstrakte Klasse?
+
+* Warum gibt es eigentlich Vererbung, base class pointer?

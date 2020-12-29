@@ -1,0 +1,179 @@
+1. was sind NNs
+- https://www.youtube.com/watch?v=aircAruvnKk
+
+2. Was ist Tensorflow, Begriffe
+- https://github.com/sjchoi86/Tensorflow-101
+
+3. Beispiel: Ziffernerkennung mit tensorflow
+- https://katacoda.com/basiafusinska/courses/tensorflow-getting-started/tensorflow-mnist-beginner
+
+
+
+
+4. Beispiel: Objekt-Erkennung mit opencv,tensorflow,qt
+- https://amin-ahmadi.com/2018/03/15/how-to-create-an-image-classifier-using-qt-opencv-and-tensorflow/
+
+
+* abstract
+- In this post we’re going to learn how to create an image classifier application with a proper GUI that allows the users to choose a camera or a video file as the input and classify the incoming images (video or camera frames) in real time. We’ll be using the power of Qt for cross-platform GUI creation and anything related to visualizing the output and allowing a seamless experience for the user. We’ll also be using TensorFlow and OpenCV to handle the actual classification task, along with accessing cameras and video files.
+
+* Tools
+- opencv-dnn (deep neural network)
+	- https://docs.opencv.org/4.1.1/d2/d58/tutorial_table_of_content_dnn.html
+	- load deep learning models from tensorflow
+	- we’ll use pre-trained TensorFlow models, namely ssd_mobilenet_v1_coco
+
+* Prerequisites
+Make sure to install the latest version
+- Qt5
+- cmake
+- Python
+- Tensorflow
+- OpenCV
+
+* Install
+
+
+* Creating a Qt GUI Project That Uses CMake
+- CMakeList.txt
+- Just make sure to replace “path_to_opencv” with the actual path to your OpenCV installation. That would be the folder where “OpenCVConfig.cmake” and “OpenCVConfig-version.cmake” files exist.
+- /usr/lib/cmake/opencv4/OpenCVConfig.cmake
+- # Specify OpenCV folder, and take care of dependencies and includes
+	set(OpenCV_DIR "/usr/lib/cmake/opencv4")
+	find_package(OpenCV REQUIRED)
+	##ht include_directories(${ OpenCV_INCLUDE_DIRS })   # Not needed for CMake >= 2.8.11
+- ht: keine spaces: 
+	statt add_executable(${ PROJECT_NAME } "main.cpp" "mainwindow.h" "mainwindow.cpp" "mainwindow.ui")
+			add_executable(${PROJECT_NAME} "main.cpp" "mainwindow.h" "mainwindow.cpp" "mainwindow.ui")
+
+
+- main.cpp
+
+- mainwindow.ui download und in Ordner kopieren
+
+- mainwindow.h
+	- cv::dnn::Net tfNetwork;   // deep neural network
+	- QGraphicsScene scene;
+	- QGraphicsPixmapItem pixmap;
+	- bool videoStopped;
+
+	
+- mainwindow.cpp
+	- loading the TensorFlow model and configurations
+	- and then performing detections
+	
+	- the pretrained model is loaded into the network
+	- tfNetwork = readNetFromTensorflow(ui->pbFileEdit->text().toStdString(), ui->pbtxtFileEdit->text().toStdString());
+	
+	-  loading a video or an existing camera on the computer.
+	
+	- loop while reading video frames and processing them, until the video is ended or it is stopped.
+	
+* Getting and Preparing TensorFlow Model
+- download: http://download.tensorflow.org/models/object_detection/ssd_mobilenet_v1_coco_2018_01_28.tar.gz
+
+
+- download: https://github.com/opencv/opencv/blob/master/samples/dnn/tf_text_graph_ssd.py
+- download: tf_text_graph_common.py	
+- https://raw.githubusercontent.com/opencv/opencv/master/samples/dnn/tf_text_graph_ssd.py
+- https://raw.githubusercontent.com/opencv/opencv/master/samples/dnn/tf_text_graph_common.py
+- copy *.py to ws-qt/FSST-ALGOS/AI-Image-Classifier/Image_Classifier/ssd_mobilenet_v1_coco_2018_01_28/
+
+- python tf_text_graph_ssd.py --input frozen_inference_graph.pb --output frozen_inference_graph.pbtxt --config pipeline.config
+
+- Diese Objekte werden erkannt:
+- labels.txt in den Ordner ws-qt/FSST-ALGOS/AI-Image-Classifier/Image_Classifier/ssd_mobilenet_v1_coco_2018_01_28/
+
+1,person
+2,bicycle
+3,car
+4,motorcycle
+5,airplane
+6,bus
+7,train
+8,truck
+9,boat
+10,traffic light
+11,fire hydrant
+13,stop sign
+14,parking meter
+15,bench
+16,bird
+17,cat
+18,dog
+19,horse
+20,sheep
+21,cow
+22,elephant
+23,bear
+24,zebra
+25,giraffe
+27,backpack
+28,umbrella
+31,handbag
+32,tie
+33,suitcase
+34,frisbee
+35,skis
+36,snowboard
+37,sports ball
+38,kite
+39,baseball bat
+40,baseball glove
+41,skateboard
+42,surfboard
+43,tennis racket
+44,bottle
+46,wine glass
+47,cup
+48,fork
+49,knife
+50,spoon
+51,bowl
+52,banana
+53,apple
+54,sandwich
+55,orange
+56,broccoli
+57,carrot
+58,hot dog
+59,pizza
+60,donut
+61,cake
+62,chair
+63,couch
+64,potted plant
+65,bed
+67,dining table
+70,toilet
+72,tv
+73,laptop
+74,mouse
+75,remote
+76,keyboard
+77,cell phone
+78,microwave
+79,oven
+80,toaster
+81,sink
+82,refrigerator
+84,book
+85,clock
+86,vase
+87,scissors
+88,teddy bear
+89,hair drier
+90,toothbrush
+
+* Running the Image Classifier Application
+- run app
+- settings:
+	- enter: frozen_inference_graph.pb
+	- enter: frozen_inference_graph.pbtxt
+	- enter: labels.txt
+-controls
+
+- DONE	
+
+
+

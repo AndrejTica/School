@@ -1,0 +1,210 @@
+From data file: /mnt/home/htl/ab/3ikt/www-neu/4T-02-oop1-klasse-vererbung/CBankVector.jcl
+
+CBankVector
+
+
+// ---------------------------------------------------------------
+// a.hofmann 10.06
+// cbank.h
+// demo: klasse und objekt und container
+// demo: StL-Klasse vector
+// 	Die Konten werden in einem vector gespeichert
+// ---------------------------------------------------------------
+
+#ifndef CBANK_H
+#define CBANK_H  CBANK_H
+
+#include <string>
+#include <iostream>
+
+#include <(1)_________________>
+
+#include "ckonto.h"
+using namespace std;
+
+class CBank {
+	private:
+		(2)_________________<(3)_________________> m_konten;
+		string m_name;
+	public:
+		// Konstruktoren
+		CBank(string powner);
+
+		// Methoden
+		void addKonto(const CKonto& akonto);
+		void removeKonto(const int);
+		
+		void addBetrag(double);
+		void minBetrag(double);
+		
+		void sortKonten();
+
+		// Friends
+		friend ostream& operator<<(ostream&, const CBank&);
+
+		// Destruktor
+		~CBank();
+};
+#endif
+
+// --------------------------------------------------------------------
+// a.hofmann 10.06
+// cbank.cpp
+// demo: klasse und objekt
+// ---------------------------------------------------------------
+
+#include "ckonto.h"
+#include "cbank.h"
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+// Konstruktoren
+CBank::CBank(string pname){
+	m_name= pname;
+}
+
+// Methoden
+void CBank::addKonto(const CKonto& akonto){
+	m_konten.(4)_________________(akonto);
+}
+
+void CBank::removeKonto(const int kontoNR){
+	vector<CKonto>::(5)_________________ it;
+	
+	for (it= m_konten.(6)_________________(); it != m_konten.(7)_________________(); it++){
+		if (it->getNR() == kontoNR){
+			m_konten.(8)_________________(it);
+			return;
+		}
+	}
+}
+
+
+// ......
+
+// friends
+ostream& operator<<(ostream& o, const CBank& e) {
+	double gesamt=0.0;
+    vector<CKonto>::const_iterator it;
+    
+    for (it= (9)_________________(); it != (10)_________________(); it++)
+		gesamt += it->getBetrag();
+        	
+    o<< "... BANK " << e.m_name << " ..." << endl;
+    o<< "... hat " << e.m_konten.(11)_________________();
+    o<< " Konten mit einem Gesamtbetrag von " << gesamt << " Euro." << endl;
+
+    o<< "Hier nun eine Liste der einzelnen Konten:" <<endl;
+    for (it= (12)_________________(); it != (13)_________________(); it++)
+       o<< *((14)_________________);	//Hier wird genutzt, dass CKonto den operator << überschrieben hat
+
+    return o;
+}
+
+
+----------Key----------
+
+CBankVector
+
+
+// ---------------------------------------------------------------
+// a.hofmann 10.06
+// cbank.h
+// demo: klasse und objekt und container
+// demo: StL-Klasse vector
+// 	Die Konten werden in einem vector gespeichert
+// ---------------------------------------------------------------
+
+#ifndef CBANK_H
+#define CBANK_H  CBANK_H
+
+#include <string>
+#include <iostream>
+
+#include <vector>
+
+#include "ckonto.h"
+using namespace std;
+
+class CBank {
+	private:
+		vector<CKonto> m_konten;
+		string m_name;
+	public:
+		// Konstruktoren
+		CBank(string powner);
+
+		// Methoden
+		void addKonto(const CKonto& akonto);
+		void removeKonto(const int);
+		
+		void addBetrag(double);
+		void minBetrag(double);
+		
+		void sortKonten();
+
+		// Friends
+		friend ostream& operator<<(ostream&, const CBank&);
+
+		// Destruktor
+		~CBank();
+};
+#endif
+
+// --------------------------------------------------------------------
+// a.hofmann 10.06
+// cbank.cpp
+// demo: klasse und objekt
+// ---------------------------------------------------------------
+
+#include "ckonto.h"
+#include "cbank.h"
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+// Konstruktoren
+CBank::CBank(string pname){
+	m_name= pname;
+}
+
+// Methoden
+void CBank::addKonto(const CKonto& akonto){
+	m_konten.push_back(akonto);
+}
+
+void CBank::removeKonto(const int kontoNR){
+	vector<CKonto>::iterator it;
+	
+	for (it= m_konten.begin(); it != m_konten.end(); it++){
+		if (it->getNR() == kontoNR){
+			m_konten.erase(it);
+			return;
+		}
+	}
+}
+
+
+// ......
+
+// friends
+ostream& operator<<(ostream& o, const CBank& e) {
+	double gesamt=0.0;
+    vector<CKonto>::const_iterator it;
+    
+    for (it= e.m_konten.begin(); it != e.m_konten.end(); it++)
+		gesamt += it->getBetrag();
+        	
+    o<< "... BANK " << e.m_name << " ..." << endl;
+    o<< "... hat " << e.m_konten.size();
+    o<< " Konten mit einem Gesamtbetrag von " << gesamt << " Euro." << endl;
+
+    o<< "Hier nun eine Liste der einzelnen Konten:" <<endl;
+    for (it= e.m_konten.begin(); it != e.m_konten.end(); it++)
+       o<< *(it);	//Hier wird genutzt, dass CKonto den operator << überschrieben hat
+
+    return o;
+}

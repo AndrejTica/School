@@ -1,0 +1,58 @@
+﻿mab-c-fkt-isZahl-abzaehlreim.txt: 
+--------------------------------------------------------------------------------
+Schleifen und Array und Funktionen
+
+
+1. (2) Zahlenfolge
+--------------------------------------------------------------------------------
+Implementieren Sie eine Funktion istEineZahl() und ein Testprogramm, die für 
+einen ZeichenkettenParameter prüft, ob er eine positive ganze Zahl enthält: 
+Das heißt, die Zeichenkette besteht nur aus Ziffern. 
+
+Das Ergebnis der Methode ist ein logischer Wert. 
+Hier einige Eingabe-Ausgabe-Beispiele:
+	istEineZahl (“2344“) 	liefert 1,
+	istEineZahl (“004002“)  liefert 1,
+	istEineZahl (“23a“) 	liefert 0,
+	istEineZahl (“Fuenf“)	liefert 0.
+
+
+Hinweis:
+	#include <ctype.h>
+	int isdigit( int character );
+	
+	character: der zu überprüfende ASCII Code
+	Return value: 0 für false, ein beliebiger anderer Wert für true
+
+Hinweis:
+	Zeichen (char) werden in Hochkomma notiert ‘a’, ‘6’ und können mittels 
+	der Vergleichsoperatoren miteinander verglichen werden.
+
+
+
+
+2. (3) Abzählreim
+--------------------------------------------------------------------------------
+Entwickeln Sie eine Funktion zum Ermitteln des Siegers bei einem Abzählen.
+
+Die Funktion bekommt die Informationen Kinderanzahl sowie die Anzahl der Silben 
+des Abzählreims übergeben. Das Ergebnis ist eine Zahl, die sagt, welches Kind 
+gewinnt (übrig bleibt). Das Abzählen beginnt mit dem ersten Kind und wird dann 
+nach dem „Rausfliegen“ mit dem nachfolgenden Kind fortgesetzt..
+
+Der Aufruf der Funktion abzaehlen(12,9)  müsste das Ergebnis 2 liefern.
+	(12 Kinder und 9 Silben im Reim)
+
+Hinweise: 
+Man verwende ein Array in der Funktion, in dem für jedes Kind 
+gespeichert ist, ob es noch „drin“ ist oder schon abgezählt wurde. 
+
+Mit kleiner Reimanzahl (1 oder 2) lässt sich die Funktion gut überprüfen. 
+
+
+
+3. (1) Fragen
+------------------------------------------------------------------------------
+Erläutern Sie den Unterschied zwischen den folgenden drei Variablen:
+
+	int i=7; char c=’7’; char s[]= "7";

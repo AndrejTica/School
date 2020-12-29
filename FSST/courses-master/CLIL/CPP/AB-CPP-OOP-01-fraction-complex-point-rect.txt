@@ -1,0 +1,139 @@
+--------------------------------------------------------------------------------
+AB-CPP-OOP-01-fraction-complex-point-rect.txt
+--------------------------------------------------------------------------------
+
+Topic: 
+	class, object, private/public, 
+	constructor/destructor, getter/setter
+
+
+OOP-Fraction (cpp)
+--------------------------------------------------------------------------------
+	Create the class Fraction so that the following code works.
+	
+		Fraction a(3.0, 2.0);
+		Fraction b(a);
+		Fraction c;
+	
+		c= a.mul(b);	
+		cout << "c= " << c.toString() << endl;
+
+	The output should be:
+	c= [9.0 / 4.0]
+		
+
+SOLUTION: (use numerator and denominator)
+	class Fraction { 
+
+
+
+OOP-Complex (cpp)
+--------------------------------------------------------------------------------
+	Create the class Complex so that the following code works.
+
+		Complex a(3.0, 2.0);
+		Complex b(a);
+		Complex c;
+	
+		c= a.add(b);	
+		cout << "c= " << c.toString() << endl;
+
+
+	The output should be:
+	c= [6.0 + 4.0 j]
+		
+		
+SOLUTION: (use realPart and imaginaryPart)
+	class Complex{ 
+	
+
+
+OOP-Point (cpp)
+--------------------------------------------------------------------------------
+	Create the class Point so that the following code works.
+
+		Point a(0, 200);   // x-coordinate, y-coordinate
+		Point b(a);
+		Point c;
+	
+		c= a.add(b);	// add the coordinate-values	
+		cout << "c= " << c.toString() << endl;
+
+
+	The output should be:
+	c= [0,400]
+		
+SOLUTION: (use x and y)
+	class Point{ 
+
+
+
+OOP-Rectangle (cpp)
+--------------------------------------------------------------------------------
+	Create the class Rectangle so that the following code works.
+
+		Rectangle a(5, 3);   // length, width
+		Rectangle b(a);
+		Rectangle c;
+	
+		c= a.getMaxRect(b);	// max length and width
+	
+		cout << "c= " << c.toString() << endl;
+
+
+	The output should be:
+	c= [15]
+	*****
+	*****
+	*****
+
+		
+SOLUTION: (use length and with)
+	class Rectangle{ 
+
+
+
+
+OOP-Rectangle-static (cpp)
+--------------------------------------------------------------------------------
+	Create the class Rectangle so that the following code works.
+
+	#include "rectangle-static.h"
+
+	int main(){
+
+		Rectangle meadow;
+		Rectangle forest(20, 5);
+
+		cout <<"My MEADOW: " <<endl;
+		cout << meadow.toString() << endl;
+
+		cout <<"My FOREST: " <<endl;
+		cout << forest.toString() << endl;
+
+
+		// ----------------- static members/methods
+		cout << endl << "My sole property: " << endl;
+		cout << Rectangle::getCount() << " Rectangle-Objects";
+
+
+		cout << endl;
+		cout << "I want to buy an island!" << endl;
+		Rectangle* island= new Rectangle();
+
+		cout << endl << "My sole property is now: " << endl;
+		cout << Rectangle::getCount() << " Rectangle-Objects";
+
+
+		cout << endl;
+		cout << "Now i am selling the island" << endl;
+		delete 	island;
+
+		cout << endl << "My sole property is now: " << endl;
+		cout << Rectangle::getCount() << " Rectangle-Objects";
+
+
+		cout << endl;
+		cout << endl;
+		return 0;
+	}

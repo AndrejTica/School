@@ -1,0 +1,71 @@
+﻿NAME:											KLASSE:			DATUM:
+=============================================================================
+
+
+AUFGABE   : (  ) OOP1-PUNKT
+-----------------------------------------------------------------------------
+	Erstellen Sie die Klasse PUNKT, sodass folgendes Programm funktioniert:
+	
+		Punkt a= new Punkt(0, 200);   // x, y Koordinaten
+		Punkt b= new Punkt(a);
+		Punkt c;
+	
+		c= a.add(b);	// addiert die Koordinaten	
+		System.out.println ("c= " + c.toString());
+
+
+	Die Ausgabe muss dann wie folgt aussehen:
+	c= [0,400]
+		
+ANTWORT:
+	public class Punkt{ 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+	
+	
+	
+	
+	}

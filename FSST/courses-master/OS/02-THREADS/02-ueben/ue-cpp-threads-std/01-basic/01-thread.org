@@ -1,0 +1,301 @@
+* std::thread
+A multithreaded program contains two or more parts that can run *concurrently*. 
+Each part of such a program is called a thread, and *each thread defines a separate path of execution.*
+
+We will learn how to:
+- start threads
+- check number of processors
+
+
+* 01-thread-func.cpp: Thread erzeugen durch eine Funktion
+
+- Eine herkömmliche Funktion kann als eigener Thread gestartet werden.
+
+#+BEGIN_SRC cpp -n
+/*
+01-thread-func.cpp
+g++ -std=c++11 01-thread-func.cpp -o01-thread-func.exe -lpthread
+*/
+===ENTER CODE===
+#+END_SRC
+
+
+* 02-thread-func-with-args.cpp: Thread erzeugen durch eine Funktion mit Argumenten
+- Der Funktion können auch Parameter übergeben werden.
+ 
+#+BEGIN_SRC cpp -n
+/*
+01-thread-func-with-args.cpp
+g++ -std=c++11 01-thread-func-with-args.cpp -o 01-thread-func-with-args.exe
+-lpthread
+*/
+
+===ENTER CODE===
+
+#+END_SRC
+
+
+* 03-thread-lambda.cpp: Thread erzeugen durch Lambda
+- Für kleinere Aufgaben, verwendet man gerne Lambda-Ausdrücke.
+- [[https://stackoverflow.com/questions/7627098/what-is-a-lambda-expression-in-c11][see: lambda]]
+
+#+BEGIN_SRC cpp -n
+/*
+01-thread-lambda.cpp
+g++ -std=c++11  01-thread-lambda.cpp -o 01-thread-lambda.exe -lpthread
+*/
+
+===ENTER CODE===
+#+END_SRC
+
+
+
+* 04-thread-class.cpp: Thread erzeugen durch eine Klasse
+- Wenn der Thread mit eigenen (gekapselten) Daten arbeiten soll
+
+#+BEGIN_SRC cpp -n
+/*
+01-thread-class.cpp
+g++ -std=c++11 01-thread-class.cpp -o01-thread-class.exe -lpthread
+*/
+
+===ENTER CODE===
+#+END_SRC
+
+
+
+* 05-thread-punkt-strich.cpp: Thread Beispiel
+- Hier sieht man, dass im Hintergrund der Scheduler des Betriebssystems den threads CPU-zeiten zuteilt.
+
+#+BEGIN_SRC cpp -n
+/*
+05-thread-punkt-strich.cpp
+g++ -std=c++11 05-thread-punkt-strich.cpp -o 05-thread-punkt-strich.exe -lpthread
+*/
+===ENTER CODE===
+#+END_SRC
+
+
+* Exkurs: hw-concurrency.cpp: Number of supported concurrent threads ?
+- ist nicht immer zuverläßig
+
+#+BEGIN_SRC cpp -n
+/*
+hw-concurrency.cpp
+g++ -std=c++11 hw-concurrency.cpp -o hw-concurrency.exe -lpthread
+*/
+
+#include <iostream>
+#include <thread>
+
+int main() {
+    std::cout << std::thread::hardware_concurrency() << std::endl;
+    return 0;
+}
+#+END_SRC
+
+
+
+* Exkurs: demo-tlog.cpp: Zeitmessung
+- study,compile and run demo-tlog.cpp
+- see tlog.h
+
+#+BEGIN_SRC bash
+g++ demo-tlog.cpp -o demo-tlog.exe
+./demo-tlog.exe
+#+END_SRC
+
+- file: tlog.h
+#+BEGIN_SRC cpp -n
+// Hilfsklasse zur Zeitmessung ------------------------------
+// usage:
+// TLog::reset();
+// TLog::log("start a thread");
+//  ....
+// TLog::log("done starting a thread");
+// ....
+#pragma once
+
+#include <chrono>
+#include <string>
+using namespace std;
+
+class TLog {
+private:
+  static chrono::steady_clock::time_point start;
+
+  static string getTime() {
+    chrono::duration<double> d = chrono::steady_clock::now() - start;
+    return "[" + std::to_string(d.count()) + " s] ... ";
+  }
+
+public:
+  static void reset() { start = chrono::steady_clock::now(); }
+  static string log(string message) { return TLog::getTime() + message; }
+};
+chrono::steady_clock::time_point TLog::start = chrono::steady_clock::now();
+#+END_SRC
+
+- file: demo-tlog.cpp
+#+BEGIN_SRC cpp
+/*
+g++ demo-tlog.cpp -o demo-tlog.exe
+*/
+#include <iostream>
+using namespace std;
+
+#include "tlog.h"
+
+// --------------------------------------------------------
+int main() {
+
+  cout << "DEMO: Time tracking" << endl<<endl;
+
+  TLog::reset();
+  cout << TLog::log("1. start a first test ...") << endl;
+  cout << TLog::log("waiting for data from FILE(simulate)") << endl;
+  for (size_t i = 0; i < 1000000; i++) {
+    ;
+  }
+  cout << TLog::log("done") << endl<<endl;
+
+  TLog::reset();
+  cout << TLog::log("2. start a second test ...") << endl;
+  cout << TLog::log("waiting for data from FILE(simulate)") << endl;
+  for (size_t i = 0; i < 2000000; i++) {
+    ;
+  }
+  cout << TLog::log("done") << endl;
+
+  cout << endl;
+  return 0;
+}
+
+/*
+output:
+
+DEMO: Time tracking
+
+[0.000014 s] ... 1. start a first test ...
+[0.000085 s] ... waiting for data from FILE(simulate)
+[0.004531 s] ... done
+
+[0.000003 s] ... 2. start a second test ...
+[0.000030 s] ... waiting for data from FILE(simulate)
+[0.009670 s] ... done
+
+*/
+#+END_SRC
+
+
+* 06-thread-vector-summ.cpp: Zeitmessung mit/ohne threads 
+- wir wollen wissen, was schneller ist (multithreading oder doch nur ein main-thread)
+- Die Daten in einem großen int-vector sollen aufsummiert werden.
+- Version 1: mit 2 threads (jeder summiert die Hälfte des Vectors)
+- Version 2: nur der main-thread summiert den gesamten Vector
+
+#+BEGIN_SRC cpp -n
+/*
+06-thread-vector-sum.cpp
+g++ -std=c++11 06-thread-vector-sum.cpp -o 06-thread-vector-sum.exe -lpthread
+*/
+
+===ENTER CODE===
+#+END_SRC
+
+
+
+* 07-async-vector-sum.cpp:
+- threads liefern keinen Wert zurück.
+- async und future dagegen schon
+- sehen Sie im folg. Beispiel die Verwendung von async, future und get()
+
+#+BEGIN_SRC cpp -n
+/*
+07-async-vector-sum.cpp
+g++ -std=c++11 07-async-vector-sum.cpp -o 07-async-vector-sum.exe -lpthread
+*/
+===ENTER CODE===
+#+END_SRC
+
+
+* Fragen:
+
+- Frage: Was berechnet der folg. Code?
+
+#+BEGIN_SRC cpp -n
+// see: https://en.cppreference.com/w/cpp/thread/async
+
+template <typename RandomIt>
+int parallel_sum(RandomIt beg, RandomIt end)
+{
+    auto len = end - beg;
+    if (len < 1000)
+        return std::accumulate(beg, end, 0);
+ 
+    RandomIt mid = beg + len/2;
+    auto handle = std::async(std::launch::async,
+                             parallel_sum<RandomIt>, mid, end);
+    int sum = parallel_sum(beg, mid);
+    return sum + handle.get();
+}
+ 
+int main()
+{
+    std::vector<int> v(10000, 1);
+    std::cout << "The sum is " << parallel_sum(v.begin(), v.end()) << '\n';
+ ....
+
+#+END_SRC
+
+- Frage: Was gibt das folg. Programm aus? 
+- Annahme: main-thread hat id 1 und die folg. threads eine fortlaufende id
+
+#+BEGIN_SRC cpp -n
+/*
+ * g++ demo-thread.cpp -o demo-thread-exe -lpthread
+ */
+#include <iostream>
+#include <thread>
+using namespace std;
+
+class FAQ {
+public:
+  int x_;
+
+  FAQ(int x) {
+    x_ = x;
+    cout << "constructor: x_=" << x_ << ":" << this_thread::get_id() << endl;
+  }
+
+  void operator()() {
+    cout << "thread-begin: x_=" << x_ << ":" << this_thread::get_id() << endl;
+
+    while (x_ < 4) {
+      x_++;
+      cout << "thread-.....: x_=" << x_ << ":" << this_thread::get_id() << endl;
+    }
+  }
+
+private:
+};
+
+int main() {
+  cout << "main-tread-begin: " << this_thread::get_id() << endl;
+  FAQ a(1);
+  thread th_a(a);
+
+  a.x_ = 3; // hat nur für den folg. th_b eine Auswirkung
+  thread th_b(a);
+
+  thread *th_c = new thread(a); // arbeitet auch wie th_b mit a.x_= 4
+  a.x_ = 1000;                  // hat f. die threads keine bedeutung
+
+  th_a.join();
+  th_b.join();
+  th_c->join();
+  delete th_c;
+
+  return 0;
+}
+#+END_SRC

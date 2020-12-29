@@ -1,0 +1,64 @@
+﻿mab: int-struct-qsort.txt
+--------------------------------------------------
+....
+
+typedef struct pers{
+    int persnr;    char name[80];
+}TPERSON;
+
+void ausgabe(int* a, int len);
+void struct_ausgabe(TPERSON* a, int len);
+
+// Vergleichsfunktionen f. qsort
+int int_cmp(const void *a, const void *b);
+int struct_cmp_persnr(const void *a, const void *b);
+
+int main(int argc, char *argv[]){
+    int a[10], i;
+
+    TPERSON wir[5]={
+		{4,"Maxi"}, {44,"Wasi"}, {-4,"Andy"},{1,"Zeppelin"},
+		{99,"Delli"}
+    };
+
+    //int - arry- zufallszahlen reinschreibe
+	.....
+
+    qsort(a, 10, ?????????????, int_cmp);
+    ausgabe(a, 10);
+
+    qsort(wir, 5, ????????????, struct_cmp_persnr);
+    struct_ausgabe(wir, 5);
+    
+    printf("\nSTRUCT-Array sortiert nach name ..................\n");    
+    qsort(???????????????????????);
+    struct_ausgabe(wir, 5);
+    
+    return 0;
+}
+void ausgabe(int* a, int len){
+	...
+}
+
+void struct_ausgabe(TPERSON* a, int len){
+    int i;
+    for (i=0; i< len; i++)
+	  printf("%3i, %-20s\n", a[i].persnr, a[i].name);
+    printf("\n");
+}
+
+int int_cmp(const void *a, const void *b){
+	??????????
+}
+
+int struct_cmp_persnr(const void *a, const void *b){
+    ????????? x= ??????????? a;
+    ????????? y= ??????????? b;
+
+    if(x->persnr == y->persnr)
+		return 0;
+    else if (x->persnr < y->persnr)
+		return -1;
+    else
+		return 1;
+}

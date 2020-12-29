@@ -1,0 +1,28 @@
+﻿mab: intarray::append: (new, delete)
+------------------------------------------------------------------ 
+
+
+1.(6) ____________________________________________________________
+Gegeben: Die Klasse Intarray mit den Membern: int* a; int size;
+
+Beispiel f. den Aufruf:
+  int arr[]= {0,1,2,3,4,5,6,7,8,9};
+  Intarray *ib= new Intarray(10, 99);
+
+  ib->append(arr, 10);
+
+
+Gesucht:
+  void Intarray::append(int* other, int len){
+
+  ?????????????????????????
+
+}
+
+
+2.(6) ____________________________________________________________
+GESUCHT:
+
+	Intarray *iC= new Intarray("daten.txt");
+	
+	

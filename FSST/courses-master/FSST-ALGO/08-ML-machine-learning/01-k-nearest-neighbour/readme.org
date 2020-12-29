@@ -1,0 +1,136 @@
+https://www.analyticsvidhya.com/blog/2018/03/introduction-k-neighbours-algorithm-clustering/
+
+
+
+
+https://data-science-blog.com/blog/2016/04/26/machine-learning-mit-python-tutorial-minimalbeispiel/
+* Die Klassifikation von Daten in Abhängigkeit von anderen Daten
+k-Nearest-Neighbor-Algorithmus (Deutsch:„k-nächste-Nachbarn”),
+
+- python: die scikit-learn Bibliothek für Python, die mehrere Nächste-Nachbarn-Modelle umfasst. 
+
+
+* Mit diesem Minimalbeispiel wollen wir den grundlegenden Algorithmus von Grund auf erlernen. Wir wollen also nicht nur machen, sondern auch verstehen.
+
+
+** Python
+import numpy as numpy
+import matplotlib.pyplot as pyplot
+from mpl_toolkits.mplot3d import Axes3D #Erweiterung für die Matplotlib - siehe: http://matplotlib.org/mpl_toolkits/
+
+Übrigens: Eine Auflistung der wohl wichtigsten Pyhton-Bibliotheken für Datenanalyse und Datenvisualisierung schrieb ich bereits hier.
+
+
+* Schritt 1 – Daten betrachten und Merkmale erkennen
+Der Beispiel-Datensatz enthält Informationen über Immobilien über vier Spalten.
+
+    Quadratmeter: Größe der nutzbaren Fläche der Immobilie in der Einheit m²
+    Wandhoehe: Höhe zwischen Fußboden und Decke innerhalb der Immobilie in der Einheit m
+    IA_Ratio: Verhältnis zwischen Innen- und Außenflächen (z. B. Balkon, Garten)
+    Kategorie: Enthält eine Klassifizierung der Immobilie als “Haus”, “Wohnung” und “Büro”
+
+-------------
+https://developers.google.com/machine-learning/crash-course/ml-intro
+
+-----------
+
+
+
+* KNN: k-Nearest-Neighbor-Algorithmus
+- https://towardsdatascience.com/machine-learning-basics-with-the-k-nearest-neighbors-algorithm-6a6e71d01761
+- k-Nearest-Neighbor-Algorithmus (Deutsch:„k-nächste-Nachbarn”),
+- Für die 
+    - Klassifikation von Daten (labl genannt) in Abhängigkeit von bestimmtten Input-Daten (feature genannt)
+    - Regressions-Analyse: Auf der Grundlage von bestimmten Input-Daten eine Aussage/Prediction machen können.
+
+- Begriffe:
+  - label: Die Sache, die wir vorhersagen wollen (eine abhängige Variable): zB: das Gewicht
+  - feature:  Die Input-Daten zur späteren Vorhersage (unabhängige Variable): zB: Größe, Geschlecht 
+  - Ein Beispiel/Beobachtung: zB: Größe=160 cm und Gechlecht=Frau hat Gewicht= 60.5 kg
+
+
+** Klassifikation vs. Regression
+- Eine Regressions-Analyse vorhersagt kontinuierliche Werte:
+    - Wie teuer ist ein Haus in ....?
+    - Wie hoch ist die Wahrscheinlichkeit, dass es sich um eine spam-mail handelt?
+    - Wir schwer ist die Person, wenn Sie 180 cm und männlich ist?
+- Bei der Regression verwendet man den Mittelwert der K labels
+
+
+- eine Klassifikation vorhersagt diskrete Werte:
+    - Hat der Jugendliche gerne Ananas auf seiner Pizza?
+    - Ist das Tier auf dem Bild ein Hase oder ein Igel?
+- Bei der Klassifikation verwendet man den Modus der K Labels (max. Häufigkeit)
+    
+
+----
+** Fragen
+Suppose you want to develop a supervised machine learning model to predict whether a given email is "spam" or "not spam." Which of the following statements are true?
+1. We'll use unlabeled examples to train the model.
++2. Emails not marked as "spam" or "not spam" are unlabeled examples.
++3. The labels applied to some examples might be unreliable.
+4. Words in the subject header will make good labels.
+
+Features and Labels
+Suppose an online shoe store wants to create a supervised ML model that will provide 
+personalized shoe recommendations to users. That is, the model will recommend certain 
+pairs of shoes to Marty and different pairs of shoes to Janet. Which of the following statements are true?
+1. "Shoe beauty" is a useful feature.
++2. "The user clicked on the shoe's description" is a useful label.
+3. "Shoes that a user adores" is a useful label.
++4. "Shoe size" is a useful feature.
+----
+
+
+** K richtig wählen 
+** Das k bei der Klassifikation
+[[img/KnnClassification.png]]
+
+- Das Bild zeigt, die Klassifikation des grünen Kreises:
+  - wenn k=3 dann rotes Dreieck
+  - wenn k=5 dann blaues Quadrat.
+
+
+- Der Abstand zwischen Punkten/Variablen wird oft als euklidische Distanz (linearer Abstand) gemessen.
+- Es gibt aber auch andere Formen: 
+?????
+
+** Distanzen berechnen
+
+** Regressions-Analysen
+- KNN wird aber auch für sog. Regressions-Analysen verwendet.
+  - unabhängige Variablen(predictor,feature) und abhängige Variablen(label: die geraten werden sollen)
+  - Bsp: Körpergröße bestimmt das Gewicht
+  - Bsp: Quadratmeter,Wandhoehe und Verhältnis von Innen-zu-Aussenfläche bestimmen die Wohnungskategorie (Wohnung,Haus,Büro)
+
+
+
+** Der KNN-Algorithmus
+1. Load the data
+2. Initialize K to your chosen number of neighbors
+3. For each example in the data
+3.1 Calculate the distance between the query example and the current example from the data.
+3.2 Add the distance and the index of the example to an ordered collection
+4. Sort the ordered collection of distances and indices from smallest to largest (in ascending order) by the distances
+5. Pick the first K entries from the sorted collection
+6. Get the labels of the selected K entries
+7. If regression, return the mean of the K labels
+8. If classification, return the mode of the K labels
+
+** KNN-Implementierung
+
+
+
+
+
+
+
+* KNN: recommender systems
+
+* KNN, MNIST, opencv
+- https://gist.github.com/johnhany/a48487dcacdb4c2108e919b421d19cfb
+
+- python: die scikit-learn Bibliothek für Python, die mehrere Nächste-Nachbarn-Modelle umfasst. 
+
+
+    

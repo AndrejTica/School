@@ -1,0 +1,95 @@
+* Sitzplan
+
+- [X] Given: main.cpp
+- [X] create class Schueler
+- [X] create class Sitzplan
+
+#+BEGIN_SRC cpp
+// main.cpp
+#include <iostream>
+using namespace std;
+
+#include "sitzplan.h"
+
+int main(int argc, char *argv[])
+{
+	// schueler
+	string schueler_name;
+	int reihe, spalte;
+
+	// klasse_raum
+	string klasse_raum= "4BHEL_H307";
+
+	Sitzplan* plan= new Sitzplan(klasse_raum);
+
+	// suche nach Schuelernamen
+	cout << "schueler_name (wien)? ";
+	cin >> schueler_name;
+
+	reihe= plan->getReihe(schueler_name);
+	spalte= plan->getSpalte(schueler_name);
+	cout << "reihe: " << reihe << endl;
+	cout << "spalte: " << spalte << endl;
+
+	// suche nach reihe, Spalte
+	cout << "reihe? ";
+	cin>>reihe;
+
+	cout << "spalte? ";
+	cin>>spalte;
+
+	schueler_name= plan->getName(reihe,spalte);
+	cout << schueler_name << endl;
+
+
+	// Notenstand ausgeben
+	//
+	cout << "Notenstand:" << endl;
+	cout << "=============================" << endl;
+	string snoten= plan->getNotenstand(klasse_raum,schueler_name);
+	cout << snoten << endl;
+
+	cout << endl;
+
+	delete plan;
+	return 0;
+}
+#+END_SRC
+
+#+BEGIN_SRC plantuml :file img/sitzplan.png
+class Sitzplan
+{
+private:
+    string name; // filename= name/sitzplan.txt
+    vector<Schueler*> schueler;
+
+public:
+    Sitzplan(string name="unkonwn");
+    ~Sitzplan();
+    string getName(int r, int c);
+    int getReihe(string name);
+    int getSpalte(string name);
+    string getNotenstand(string klasse_raum,string schueler_name);
+}
+
+
+class Schueler
+{
+private:
+    string name;
+    int reihe;
+    int spalte;
+
+public:
+    Schueler(string line="unknown");
+    int getReihe()const {return  reihe;}
+    int getSpalte() const {return spalte;}
+    string getName() const {return name;}
+}
+
+Sitzplan o- Schueler : has many
+
+#+END_SRC
+
+#+latex_attr: :width 8cm :height 120px
+[[file:img/sitzplan.png]]

@@ -1,0 +1,74 @@
+* Aufgabe: Sieb des Eratosthenes
+
+
+[[file:../img/plantuml-prime.png]]
+
+- Primzahlenberechnung nach dem sog. "Sieb des Eratosthenes".
+- Grundprinzip dabei ist, dass jede ungerade Zahl der Reihe nach daraufhin untersucht wird, ob sie Vielfaches einer bereits erkannten Primzahl ist. Wenn das nicht der Fall ist, dann ist sie natürlich prim.
+- Die folgende Lösung stellt für *jede Primzahl einen eigenen Thread* zur Verfügung. D.h. wir erhalten eine Reihe von Threads, die als *Member je eine Primzahl* enthalten.
+- Der Main-thread 
+  - erzeugt die ungeraden Zahlen und 
+  - sendet sie dem nächsten Thread in der Reihe. 
+- Dieser ist für die Primzahl 3 zuständig und filtert demnach alle Zahlen aus, die Vielfache von 3 sind. D.h. er schickt diese Zahl nicht weiter. 
+- Alle anderen Zahlen reicht er an den nächsten Thread weiter, der für die Primzahl 5 zuständig ist, usw. 
+- Jeder Thread erzeugt für die erste Zahl, die er weiterreichen muss (das ist die nächste Primzahl!), dynamisch seinen Nachfolger-Thread. 
+
+
+* 05-sieb-eratosthenes.cpp: Das Main Programm
+#+BEGIN_SRC cpp -n
+/**
+g++ 05-sieb-eratosthenes.cpp -o 05-sieb-eratosthenes.exe -lpthread
+
+
+Architektur:
+- Main-thread -> worker(3) -> worker(5) -> worker(7) -> worker(11) -> ....
+
+Main-thread: ist ein Zahlengenerator.
+- erzeugt einen FIFO (threadsafe) namens buffer_send mit size 1
+- erzeugt ein Worker-Objekt mit
+        - Primzahl 3 und buffer_send
+- erzeugt den Worker-thread für die Primzahl 3
+- schreibt in den FIFO die Zahlen 5,7,9,11,13,...
+        - buffer_send.enqueue(5)
+        - ...
+- schreibt in den FIFO -1 als Ende-Kennung
+- join mit Worker-thread
+- schreibt --- finished --- auf die Konsole
+
+
+worker(prim): Konstruktor
+- bekommt Primzahl (myPrime)
+- bekommt Zeiger auf FIFO (buffer_receive; wurde vom Vorgänger-worker erzeugt)
+
+
+worker (prim): operator()
+- liest vom Vorgänger-worker die Zahl (int zahl= buffer_receive.dequeue())
+- filtert alle Vielfachen von prim
+- wenn kein Vielfaches und es gibt keinen worker_next
+        - erzeugt einen FIFO (threadsafe; buffer_send mit size 1)
+        - erzeugt ein Worker-Objekt mit (next= new Worker(zahl, buffer_send))
+                - Primzahl (zahl)
+                - Zeiger auf buffer_send
+        - erzeugt einen Worker_thread (thread_next= new thread(next))
+- wenn kein Vielfaches und es gibt einen worker_next
+        - sende Zahl an thread_next (buffer_send.enqueue(zahl))
+
+- wenn zahl==-1
+        - gib myPrime aus
+        - join mit thread_next, falls es diesen gibt
+
+*/
+
+===ENTER CODE===
+
+#+END_SRC
+
+
+* worker.h: Der Worker-thread
+
+#+BEGIN_SRC cpp -n
+// worker.h
+
+===ENTER CODE===
+
+#+END_SRC

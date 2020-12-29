@@ -1,0 +1,19 @@
+* howto-create-executable-jar
+
+#+BEGIN_SRC bash
+cd ws-java/43_array/src                                                                                                                                                                                                                          
+
+
+javac main/Array.java 
+
+
+cat > Manifest.txt
+Main-class: main.Array
+
+
+jar cfm PROG.jar Manifest.txt main/*.class
+
+
+java -jar PROG.jar 
+
+#+END_SRC

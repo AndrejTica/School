@@ -1,0 +1,22 @@
+﻿AB-PHP-opendata-hotspot-zamg.txt
+==========================================================================
+
+Aufgabe: opendata-hotspot
+--------------------------------------------------------------------------
+Opendata HotSpot-Datei online laden und mit OpenStreetView anzeigen.
+
+
+	http://data.gv.at/datensatz/?id=4b901b6b-f131-49f7-ba8b-2e3b7bfd4ea6
+	http://www.netzwolf.info/kartografie/openlayers/
+	http://gis.stackexchange.com/questions/34788/
+				create-multiple-vector-layers-by-reading-a-geojson-file-once-in-openlayers
+	
+	http://gis.stackexchange.com/questions/22529/
+	trouble-displaying-geojson-file-in-openlayers
+
+
+Aufgabe: opendata-zamg
+--------------------------------------------------------------------------
+Opendata Wetter-Datei online laden und mit OpenStreetView anzeigen.
+
+	http://data.gv.at/datensatz/?id=9b40a0af-a6fe-47ff-9624-2ea8f40c746f

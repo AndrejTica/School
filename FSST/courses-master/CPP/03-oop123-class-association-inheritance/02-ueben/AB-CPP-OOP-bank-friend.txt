@@ -1,0 +1,84 @@
+================================================================================
+AB-CPP-OOP-bank-friend.txt
+================================================================================
+<pre>
+
+OOP-BankingSystem-friend (cpp)
+--------------------------------------------------------------------------------
+Topic:	a) Friend Classes
+		b) static member
+
+a)	The class Account should implement its constructors as private methods, so 
+	that no one can create Account objects.
+
+	But the class Account declares class Bank as a friend class. This gives the 
+	Bank class access to the private methods of class Account.
+
+	friend class Bank;
+
+	This means that ONLY class bank is able to create Account objects.
+
+b)	Class Account uses a static member to get for each Account obejct a new and
+	unique member accountNumber
+
+	static int nextAccountNumber;
+
+c)	Take care if you use new and delete for creation of Account objects.
+	Especially take a look at delAccount() and the destructor of class bank.
+ 
+
+Account, Bank:
+	create a new project: bankingSystem-friend
+	copy and adapt Account, Bank according the above description.
+
+BankingSystem:
+	Create a main program for testing the classes Account and Bank:
+
+
+	#include "account.h"
+	#include "bank.h"
+	...
+	Bank *myBank;
+	myBank = new Bank("Hofmann unlimited");
+
+	cout << "\n\n"<<endl;
+	cout << "-------------------------------------------------"<<endl;
+	cout << " TEST: STATIC members "<<endl;
+	cout << "-------------------------------------------------"<<endl;
+
+	myBank->addAccount("Anton Hofmann", 100.0);
+	myBank->addAccount("Beta Hofmann", 200.0);
+	myBank->addAccount("Gamma Hofmann",300.0);
+	cout << myBank->toString() << endl;
+
+	cout << "\n\n"<<endl;
+	cout << ".... delete Account: Anton Hofmann and add Account: Omega Hofmann";
+	cout << " Look at the account number!!!"<<endl;
+
+	myBank->delAccount("Anton Hofmann");
+	myBank->addAccount("Omega Hofmann", 900.0);
+
+	cout << myBank->toString() << endl;
+	cout << endl;
+
+
+	cout << "\n\n"<<endl;
+	cout << "-------------------------------------------------"<<endl;
+	cout << " TEST: FRIEND class "<<endl;
+	cout << "-------------------------------------------------"<<endl;
+	cout << " ONLY class bank can create new Account-objects" <<endl;
+
+	Account k1("Anton Hofmann", 123.0); 	// error, because cons is private
+	
+	int accountNr= my->addAccount("Anton Hofmann", 100.0);
+	myBank->getAccount(accountNr).deposit(9000.0);
+
+	cout << myBank->toString() << endl;
+	cout << endl;
+
+
+	delete myBank;
+
+    return 0;
+}
+

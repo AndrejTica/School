@@ -1,0 +1,110 @@
+﻿mab: testen
+--------------------------------------------------------------------------------
+
+1. Sie kennen die Begriffe und können eine richtige Zuordnung durchführen:
+	A) Validation:				B) Verifikation:
+	C) Test:					D) Debugging:
+	
+	1) Warum ist die Software nicht richtig?	2) Ist es die richtige Software?
+	3) Ist die Software richtig?				4) Die Software ist richtig!!!!
+
+2. Problem Individualverantwortung des Programmierers.
+	Seit der letzten Produktabnahme herrscht in der Softwareabteilung 
+	einer Firma äußerst schlechte Stimmung. Man spricht von 
+	Schuldzuweisungen. Zur Problemlösung bittet man Sie, ein Konzept 
+	zum Testen von Software vorzustellen.
+
+3. 
+3.1. Unvorbereitete und undokumentierte Tests sind ????????.
+3.2. Nachzuweisen, dass keine Fehler vorhanden sind, ist 
+		a) nicht Ziel
+		b) Ziel
+		des Softwaretests.
+
+3.3. Die Korrektheit eines Programms kann durch Testen 
+		a) nicht bewiesen 
+		b) bewiesen 
+		werden.
+
+3.4. Statistische Erhebungen in der Softwaretechnik weisen im 
+		Mittel etwa 
+		a) 5 bis 7 Fehler
+		b) 2 bis 3 Fehler
+		c) kein bis 1 Fehler
+		je 1000 Zeilen Code aus.
+
+3.5. Die Testplanung findet 
+		a) nach der
+		b) parallel zur 
+		Softwareentwicklung statt.
+
+3.6. Häufig wird der Modultest durch den 
+		a) Software-Entwickler 
+		b) Qualitätssicherer
+		durchgeführt.
+
+3.7. Black-Box-Tests sind 
+		a) strukturorientierte Tests
+		b) funktionsorientierte Tests
+		und werden meist von
+		c) den Programmiereren
+		d) den Test-Abteilungen
+		durchgeführt.
+		
+3.8. White-Box-Tests sind 
+		a) strukturorientierte Tests
+		b) funktionsorientierte Tests
+		und werden meist von
+		c) den Programmiereren
+		d) den Test-Abteilungen
+		durchgeführt.
+		
+3.9. Beim Black-Box-Test spricht man von Funktionsüberdeckung, wenn 
+		????????????
+	
+
+
+4. Systematischer Test: Spezialisten testen
+	A) Test ist ??????????, Testvorschrift ist vorgängig erstellt
+	B) Programm wird gemäß ??????????? ausgeführt
+	C) Ist-Resultate werden mit Soll-Resultaten ?????????????
+	D) Fehlersuche und -behebung erfolgen ???????????
+	E) Nicht bestandene Tests werden ???????????
+	F) Testergebnisse werden ???????????
+	G) Test endet, wenn vorher definierte ?????????? erreicht sind
+
+
+	1) dokumentiert		2) Testvorschrift	3) wiederholt
+	4) separat			5) geplant			6) Testziele
+	7) verglichen
+
+
+5. Die Testvorschrift wird zu Beginn des Projektes festgelegt, und sie 
+	beinhaltet folgende Elemente:
+		1.???????????
+		2.???????????
+		3.???????????
+		4.???????????
+
+
+6. Debuggen ist ein
+	a) White-Box-Test oder 
+	b) Black-Box-Test?
+
+
+7. Regressionstest ist ein
+	Test gegen 
+	a) die Spezifikation oder 
+	b) gegen vorherige Testergebnisse
+
+
+8. Unterschied Systemtest zu Abnahmetest
+	A) ?????????? zeigt das Fehlen von Fehlern
+	B) ?????????? läuft noch auf der Testumgebung
+
+	1) Systemtest
+	2) Abnahmetest
+
+
+9. Beschreiben Sie anhand des Stack-Beispiels das Testen mit JUnit
+

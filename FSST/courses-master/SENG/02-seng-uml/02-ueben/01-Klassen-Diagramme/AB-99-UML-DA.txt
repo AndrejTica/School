@@ -1,0 +1,37 @@
+﻿UEBUNG: Seng - UML
+-----------------------------------------------------------
+arbeiten Sie im Team
+
+
+Sie beherrschen die grundlegenden Elemente der UML und
+bauen dieses Wissen in Ihre DA ein.
+
+
+1. Aufgabe: Mindmap DA
+-----------------------------------------------------------
+Erstellen Sie ein Mindmap für ihre DA und fügen Sie diese 
+inklusive einer kurzen Beschreibung in ihre DA ein.
+
+ 
+2. Aufgabe: use-case: DA
+-----------------------------------------------------------
+Erstellen Sie zumindest 
+ein typisches Szenario und 
+ein entsprechendes Use-Case Diagramm 
+aus Ihrer DA und fügen Sie dieses Ergebnis in ihre DA ein.
+
+
+3. Aufgabe: Klassendiagramm DA
+-----------------------------------------------------------
+Erstellen Sie ein Klassendiagramm, dass die wichtigsten Klassen 
+Ihrer DA enthält.
+Fügen Sie dieses Klassendiagramm in Ihre DA ein.
+
+
+4. Aufgabe: sequenzdiagramm, kollaborationsdiagramm, ...
+-----------------------------------------------------------
+Entsprechend Ihrer DA verwenden Sie weitere Diagramme um
+a) das Verhalten des Systems
+b) die Verteilung der Systemkomponenten
+zu dokumentieren
+

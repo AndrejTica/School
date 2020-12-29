@@ -1,0 +1,145 @@
+﻿=====================================================================
+== MEILENSTEIN-C-array-fkt-zeiger-struct-file.txt
+=====================================================================
+Inhalt:
+-- MEILENSTEIN-funktionen,arrays
+-- MEILENSTEIN-stack
+-- MEILENSTEIN-Zeiger
+-- MEILENSTEIN-Strukturen,Zeiger
+-- MEILENSTEIN-Programm-FBMI
+-- MEILENSTEIN-Programm-SPAM2
+
+
+
+-- MEILENSTEIN-funktionen,arrays
+=====================================================================
+a) Programmieren Sie die Funktion:
+b) Programmieren Sie ein Testprogramm für die Funktionen:
+
+int pow(int x, int n);
+int fakt(int n);
+
+int checkDoppelte(int a[], int len);
+int getMaxIndex(int a[], int len);
+void sort(int a[], int len);
+
+void delCharAt(char text[], int stelle);
+void insertCharAt(char text[], char ch, int stelle);
+void mystrcpy(char ziel[], char quelle[]);
+
+void removeVowel(char s[]);
+int getZiffernSumme(int zahl);
+void hex2int(char hexziffern[]);
+
+
+-- MEILENSTEIN-stack
+=====================================================================
+gegeben stack.h
+	void init(void);
+		// löscht d. Stack,d.h. stackpointer auf 0 setzen	
+	void push(double value)      ;
+		// legt value auf den Stack,
+		// wenn dieser aber bereits voll ist, wird auf 
+		// stderr Stack voll geschrieben und 
+		// der Wert nicht auf den Stack gelegt.
+	double  pop(void);
+		// gibt den obersten Wert des Stack zurück,
+		// wenn dieser aber bereits leer ist, 
+		// wird auf stderr
+		// Stack leer geschrieben.
+
+gesucht stack.c
+	#include "doubleStack.h"
+	#define STACK_MAX 1024
+		
+	// niemand anderer darf auf diese globale Variable zugreifen.
+	??????????? double dblStack[STACK_MAX];	
+	??????????? int p_stack;	// Der Stackpointer
+	
+	?????????
+
+gesucht Testprogramm: main.c
+	???????????
+
+
+-- MEILENSTEIN-Zeiger
+=====================================================================
+Bringen Sie folgendes Programm strdup.c zum Laufen.
+  #include <stdio.h>
+  ??????????????????
+  char* mystrdup(const char* );
+  
+  int main(){
+	char str[128];
+	char* p;	
+	printf("\nstrdup-test: Bitte einen Text: ");
+	gets(str);
+	p= mystrdup(str);
+	printf("\nmystrdup() lieferte: <%s>\n", p);
+	?????????????????????(p);
+	return 0;
+  }
+
+/*1. schau, wie lange der string in s ist? tipp: int strlen(const char*);
+2. hole speichern vom Betriebssystem: tipp: void* malloc(int);
+3. string s in den neuen Speicher kopieren tipp: 
+   char* strcpy(char* ziel, const char* quelle);
+4. gib neuen speicher mit return zurueck*/
+
+char* mystrdup(const char* s){
+	??????????????????????
+}
+
+-- MEILENSTEIN-Strukturen,Zeiger
+=====================================================================
+Gegeben sei:
+	struct datum{
+		int tag, monat, jahr;
+		char mon_name[4];
+	};
+	typedef struct datum TDATUM;
+	
+	// Funktions-Deklaration
+	TDATUM getDatum(int tag, int monat, int jahr);
+	
+	// Funktions-Aufruf
+	TDATUM heute;
+	heute= getDatum(20,2,2012);
+	
+Gesucht: Funktion getDatum ausprogrammiert
+	??????????? getDatum(?????????????????){
+		?????????????
+	}	
+
+Gesucht: Schreiben Sie getDatum() so um, dass die Rückgabe nicht
+	mittels return, sondern mittels call-by-reference zurückgegeben wird.
+	// Funktions-Deklaration
+	void getDatum(int tag, int monat, int jahr, ?????????????);
+
+// Funktions-Aufruf
+?????????
+
+// Funktion ausprogrammiert
+?????????
+
+
+-- MEILENSTEIN-Programm-FBMI
+=====================================================================
+Das Programm soll:
++ geeignete Datenstruktur/Datentypen/Klasse definieren
++ die Datei input.txt in ein dynamisches Array laden
++ die fehlenden Werte für den BMI (gewicht_kg/(groesse_m*groesse_)
+	berechnen
++ die Datei output.txt beschreiben
+
+Hinweis Aufbau: input.txt
+klasse,vorname,nachname,gewicht,groesse
+
+Beispiel: input.txt
+3
+4cheli,anton,hofmann,70,170
+4cheli,beta,hofmann,80,180
+4cheli,gamma,hofmann,90,190
+
+Inhalt der Datei output.txt:
+klasse,vname,nname,gewicht,groesse,maxbmi

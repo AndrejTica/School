@@ -1,0 +1,29 @@
+# Run our first test inside CI
+# Make results of builds downloadable
+# Run jobs sequentially
+
+
+stages:
+  - compile
+  - test
+  - package
+
+compile:
+  stage: compile
+  script: cat file1.txt file2.txt > compiled.txt
+  artifacts:
+    paths:
+      - compiled.txt
+    expire_in: 20 minutes
+
+test:
+  stage: test
+  script: cat compiled.txt | grep -q 'Hello world'
+
+package:
+  stage: package
+  script: cat compiled.txt | gzip > packaged.gz
+  artifacts:
+    paths:
+      - packaged.gz
+

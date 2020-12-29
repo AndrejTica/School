@@ -1,0 +1,65 @@
+* Schoolclass
+
+#+BEGIN_SRC plantuml :file img/schoolclass-student.png
+title Schoolclass has many Students
+skinparam classAttributeIconSize 0
+
+class Schoolclass {
+-vector<Student*> students
+-string name
+
++Schoolclass(string)
++void addStudent(Student*)
++Student& getMassiest()
++string toString()
+}
+
+class Student {
+-string name
+-double weight
+
++Student(string,double)
++string toString()
+}
+
+Schoolclass o- Student: has many
+
+#+END_SRC
+
+#+attr_latex: :width 8cm :height 120px
+[[file:img/schoolclass-student.png]]
+
+
+- [X] Create classes
+  - [X] Student,
+  - [X] SchoolClass so that the following code works.
+
+#+BEGIN_SRC cpp
+#include <iostream>
+using namespace std;
+
+#include "schoolclass.h"
+#include "stduent.h"
+
+int main(){
+	Student* maxi= new Student("Max Musterman", 70.0);
+	Student* moritz= new Student("Moritz Mustermann", 60.0);
+
+	SchoolClass schoolclass("1A");
+	schoolclass.add(maxi);
+	schoolclass.add(moritz);
+
+	// print class name and all associated students
+	cout << schoolclass.toString() << endl;
+
+	Student* massiest= schoolclass.getMassiest();
+
+	// print name and weight
+	cout << massiest->toString() << endl;
+
+	delete maxi;
+	delete moritz;
+
+	return 0;
+}
+#+END_SRC

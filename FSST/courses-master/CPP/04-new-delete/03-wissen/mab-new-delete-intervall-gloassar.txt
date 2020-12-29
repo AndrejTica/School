@@ -1,0 +1,26 @@
+﻿mab-cpp: new-delete und Vererbung und Aggregation
+------------------------------------------------------------
+			
+			
+mab-CPP (Container, vector):
+------------------------------------------------------------
+Thema: GLOASSAR
+1. Klasse Word (Member: word, description)
+2. Klasse Glossar (Member: vector aus Zeigern vom Typ Word)
+3. 		Methode: void readFromFile(string filename);
+4. 		Methode: string getDescription (string word);
+
+
+
+
+
+
+
+mab-CPP (Vererbung, new-delete):
+------------------------------------------------------------
+Klasse Intervall erbt von Intarray (member: int* a, int size)
+
+1. Intervall* b= new Intervall(-10,10);  // [-10,10]
+2. b->setAt(-5,100);
+
+

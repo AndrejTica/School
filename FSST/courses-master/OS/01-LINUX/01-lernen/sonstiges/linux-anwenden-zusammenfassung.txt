@@ -1,0 +1,247 @@
+﻿================================================================================
+LINUX anwenden
+================================================================================
+<pre>
+01-linux-anwenden.txt
+
+INHALT
+	Arbeiten mit der Shell
+	Übung: Arbeiten mit der Shell - Konfigurationen für das HTL-Netz
+	Übung: SW installieren und testen (portscanner)
+	Permission
+	C,C++ Programme übersetzen
+
+
+--------------------------------------------------------------------------------
+Arbeiten mit der Shell
+--------------------------------------------------------------------------------
+ls,cd,pwd,mkdir,rmdir,cp,mv,rm, more, cat, find
+
+Aufgabe: probieren Sie die folgenden Befehle
+
+Filesystem und Befehle
+	ls
+	ls -l
+	ls -la
+	pwd
+	cd
+	cd /home/informatik
+	cd /etc
+	cd .
+	cd ..
+	mkdir bin
+	rmdir bin
+	mkdir temp
+
+	mkdir ws-c
+	mkdir ws-cpp
+	mkdir ws-java
+
+	cp /etc/passwd temp
+
+	cd temp
+	cp passwd bla
+	rm passwd
+	mv bla /home/informatik
+	cd
+	rm bla
+
+	cat /etc/passwd
+	more /etc/passwd
+		space, enter, f, b, q
+
+	find / -name "passwd"
+
+
+--------------------------------------------------------------------
+Übung: Arbeiten mit der Shell - Konfigurationen für das HTL-Netz
+--------------------------------------------------------------------
+SW-Packet Verwaltung einstellen
+-------------------------------
+
+	cd
+	nano 01proxy-opensourceit
+	Acquire::http::Proxy "http://i.htlcloud.com:2222";
+
+	sudo cp 01proxy-opensourceit /etc/apt/apt.conf.d/
+
+
+	zuhause:
+	sudo rm /etc/apt/apt.conf.d/01proxy-opensourceit
+
+
+
+Netzwerk-Karte einstellen
+--------------------------
+
+cd
+nano interfaces.strasser
+iface lo inet loopback
+
+#auto eth0
+#iface eth0 inet dhcp
+
+auto eth0
+iface eth0 inet static
+	address 192.168.62.112
+	netmask 255.255.255.0
+	broadcast 192.168.62.255
+	network 192.168.62.0
+	gateway 192.168.62.222
+	dns-nameserver 192.168.62.222
+	
+	
+cd
+nano interfaces.dhcp
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet dhcp
+
+cd
+sudo cp interfaces* /etc/network
+ls /etc/network
+cd /etc/network
+sudo mv interfaces interfaces.orig
+sudo ln interfaces.dhcp interfaces
+
+
+cd
+ifconfig
+
+
+--------------------------------------------------------------------------------
+Übung: SW installieren und testen (portscanner)
+--------------------------------------------------------------------------------
+sudo apt-get install nmap
+
+sudo nmap -A localhost
+
+Ermittle die IP-Adresse Deines Laptops und mache einen Portscan
+sudo nmap -A 123.123.123.123
+
+
+
+
+--------------------------------------------------------------------------------
+Permission
+--------------------------------------------------------------------------------
+id, ls -l, /etc/passwd, /etc/group, chmod, chown
+
+	id
+	cd
+	touch bla.txt
+	ls -l
+	chmod g+w bla.txt
+	ls -l
+	chmod o+w bla.txt
+	ls -l
+	chmod 644 bla.txt
+	ls -l
+	chmod 755 bla.txt
+	rm bla.txt
+
+	cp /etc/passwd .
+	ls -l
+	sudo chown root passwd
+	ls -l 
+	sudo chown root:root passwd
+	ls -l
+	sudo rm passwd
+
+	rm bla.txt
+
+
+--------------------------------------------------------------------------------
+C,C++ Programme übersetzen
+--------------------------------------------------------------------------------
+
+übersetzen und linken und starten
+---------------------------------
+gcc prog.c -o prog.exe
+./prog.exe
+
+g++ prog.cpp -o prog.exe
+./prog.exe
+
+
+nur übersetzen nicht linken
+---------------------------
+gcc -c prog.c
+
+
+Mathematik LIB einbinden
+-------------------------
+gcc prog.c -o prog.exe -lm
+
+
+
+Makefile verwenden
+------------------
+http://www.ijon.de/comp/tutorials/makefile.html
+
+#Inhalt der Datei Makefile		
+all:
+	gcc prog.c -o prog.exe
+	
+run:
+	./prog.exe
+clean:
+	rm prog.exe
+	
+
+
+	
+Aufruf: 
+make
+make run	
+	
+
+
+Wenn das Programm aus mehreren c-Dateien
+			oder h-Dateien besteht:
+			Änderungen von prog.c und prog.h sollten 
+			dann ein autom. Übersetzen bewirken:
+			Achtung:
+			Eine gemeine Falle für Anfänger ist, daß die 
+			zweite Zeile mit einem <tab> anfangen muß, und 
+			nicht mit Leerzeichen.
+			
+
+#Inhalt der Datei Makefile		
+prog: prog.c prog.h 
+	gcc prog.c -o prog.exe
+run:
+	./prog.exe
+
+clean:
+	rm prog.exe
+	
+		
+Aufruf: 
+make prog
+make run	
+	
+
+Wenn man viele c-/h-Dateien hat kann man folg. verwenden
+
+#Inhalt der Datei Makefile
+OBJ = datei1.o datei2.o datei3.o datei4.o datei5.o
+
+prog: $(OBJ)
+	gcc prog.c -o prog.exe $(OBJ)
+
+%.o: %.c %.h
+	gcc -c $<
+
+run:
+	./prog.exe
+clean:
+	rm *.exe
+	rm *.o		
+
+Aufruf: 
+make prog
+make run
+make clean
+</pre>

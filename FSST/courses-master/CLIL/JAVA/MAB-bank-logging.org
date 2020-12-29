@@ -1,0 +1,136 @@
+* Bank-streams: Logging
+1. Every bank transaction has to be logged.
+2. This Log-File can be used for backup/recovery.
+
+
+* add 1. Every bank transaction has to be logged.
+- implement in class Bank:
+#+BEGIN_SRC java
+...
+	public Bank(String name){...}
+		
+	public void setLogging(bool){...}
+		// creates logfile
+		// Filename for Logging is BANK_name_DATE.log
+		// (BANK-Hofmann-unlimited-2017-12-24-11-20.log)
+	
+		
+	public void reset(){...}
+		// delete all accounts and 
+		// reset static Account.nextAccountNumber{...}
+
+		
+	public int addAccount(String owner, double value){...}
+		// write to logfile:
+		// ADD:owner:value
+		
+		
+	public void delAccount(String owner){...}
+		// write to logfile:
+		// DEL:owner
+		
+		
+	public void charges(double value){...}
+		// write to logfile:
+		// FORALL:MINUS:value
+		
+
+	public void addInterest(double value){...}
+		// write to logfile:
+		// FORALL:PLUS:value
+
+	public void deposit(String owner, value){...}
+		// write to file
+		// FORONE:owner:PLUS:value
+		
+	public void withdraw(String owner, value){...}
+		// write to file
+		// FORONE:owner:MINUS:value
+		
+	public double getSumDeposits(){...} // returns sum of all accounts
+
+	public String toString(){...}
+...
+#+END_SRC
+
+
+- Test with this code:
+
+#+BEGIN_SRC java 
+// ahofmann, 2018
+// Main.java
+// bank logging: write logfile
+
+// ...
+package test.log;
+
+public class Main{ 
+	public static void main(String[] args){
+		Bank myBank= new Bank("Hofmann-unlimited");
+		myBank.setLogging(true);
+		myBank.reset();
+
+		myBank.addAccount("Anton Hofmann", 100.0);
+		myBank.addAccount("Beta Hofmann", 200.0);
+		myBank.addAccount("Gamma Hofmann",300.0);
+
+		myBank.delAccount("Anton Hofmann");
+		myBank.addAccount("Omega Hofmann", 509.0);
+
+		myBank.addInterest(100.0);
+		myBank.charges(100.0);
+
+		myBank.deposit("Omega Hofmann", 1.0);
+		myBank.withdraw("Omega Hofmann", 10.0);
+
+		System.out.println(myBank->getSumDeposits());
+
+	}
+}
+#+END_SRC
+
+- First, output should be:
+1000.00
+
+- Second, the logfile: /BANK-Hofmann-unlimited-2017-12-24-11-20.log/
+#+BEGIN_SRC 
+ADD:Anton Hofmann:100.00
+ADD:Beta Hofmann:200.00
+ADD:Gamma Hofmann:300.00
+DEL:Anton Hofmann
+ADD:Omega Hofmann:509.00
+FORALL:PLUS:100.00
+FORALL:MINUS:100.00
+FORONE:Omega Hofmann:PLUS:1.00
+FORONE:Omega Hofmann:MINUS:10.00
+#+END_SRC
+
+
+
+* add 2) This Log-File can be used for backup/recovery.
+
+- Test with this code:
+
+#+BEGIN_SRC java
+// ahofmann, 2018
+// Main.java
+// bank logging: recovery with logfile
+
+package test.recover;
+
+public class Main{ 
+	public static void main(String[] args){
+	  Bank myBank = new Bank("Hofmann-unlimited");
+	  myBank.setLogging(false);
+
+
+	  myBank.recovery("BANK-Hofmann-unlimited-2017-12-24-11-20.log");
+
+
+	  System.out.println(myBank.getSumDeposits());
+}
+#+END_SRC
+
+
+- output should be:
+1000.00

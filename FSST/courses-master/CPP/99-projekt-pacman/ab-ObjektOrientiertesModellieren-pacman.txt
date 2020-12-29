@@ -1,0 +1,38 @@
+﻿pacman programmieren
+--------------------------------------------------------
+objekt orientiertes modellieren
+
+
+
+Aufgaben:
+	erstellen Sie das Programm Pacman
+	siehe: 502518-502670-3-modellbildung_pacman_script.pdf
+
+
+Links:
+1. http://www.lehrer-online.de/modellbildung-pacman.php?sid=43831930853662876830409961002400
+2. http://www.kabeleins.at/games_gewinn/arcade_classics/artikel/01832/
+
+
+Hinweis: Spielfeld  (19x23)
+static char* init[24]={ // intern
+    "XXXXXXXXXXXXXXXXXXXXXXX",
+    "Xo.........o.........oX",
+    "X.XXXXXXXXX.XXXXXXXXX.X",
+    "X.X.................X.X",
+    "X.X.XXX.XXXXXXX.XXX.X.X",
+    "X.X...X.........X...X.X",
+    "X.XXX.XXXXX.XXXXX.XXX.X",
+    "X.....................X",
+    "XXXXX.X.XXXoXXX.X.XXXXX",
+    "......X.X.....X.X......",
+    "XXXXX.X.X.XXX.X.X.XXXXX",
+    "X.....X.X.....X.X.....X",
+    "X.XXX.X.XXXoXXX.X.XXX.X",
+    "X.X...X.........X...X.X",
+    "X.X.X.X.XXXXXXX.X.X.X.X",
+    "X.X.X.............X.X.X",
+    "X.X.X.XXXXXXXXXXX.X.X.X",
+    "Xo..X.............X..oX",
+    "XXXXXXXXXXXXXXXXXXXXXXX"
+};

@@ -1,0 +1,65 @@
+mab: linux anwenden ()	name:											date:
+==============================================================================
+
+1. () Mit welchem Befehl ändert man sein Paswort? 
+
+	______________________________________________________________________________
+
+2. () In welcher Datei(inkl. Pfadangabe) sind alle User aufgelistet? 
+
+	______________________________________________________________________________
+
+3. () Wofür steht das Tilde-Zeichen in UNIX-Kommandos? 
+
+	______________________________________________________________________________
+
+4. () Wie lautet der vollständige Pfad ihres Home-Verzeichnisses?
+
+	___________________________________________________________________________
+
+5. () Nennen Sie 3 Unterverzeichnisse, die direkt unterhalb des 
+	Wurzel-Verzeichnisses angeordnet sind und beschreiben Sie deren Aufgabe/Inhalt!
+
+    1. __________________________________________________________________________
+
+    2. __________________________________________________________________________
+
+    3. __________________________________________________________________________
+
+6. () Mit welchem UNIX-Kommando werden versteckte Dateien im Verzeichnis sichtbar?
+
+	______________________________________________________________________________
+
+
+7. () Welche Angaben zeigt das Kommando ls -l?
+
+	______________________________________________________________________________
+
+8. () Kopieren Sie die Dateien fstab aus /etc in Ihr Homeverzeichnis.
+
+	______________________________________________________________________________
+
+9. () Erklären Sie den Begriff File-Permission an diesem Beispiel:  -rwxr-xr-x
+
+    1. __________________________________________________________________________
+
+    2. __________________________________________________________________________
+
+    3. __________________________________________________________________________
+ 
+
+10. () Sie sollen die Datei hello.c mit gcc übersetzen. 
+		Das Programm soll dann hello.exe heissen:
+
+	______________________________________________________________________________
+
+11. () Sie befinden sich in /opt/progs/htl/backup/fsst3. 
+		Wo (ABSOLUTE PFADANGABE) befinden Sie sich nach Anwendung des folg. Befehls?
+		cd ../../ws-codeblocks
+
+	______________________________________________________________________________
+
+12. () Sie sollen den Inhalt der Datei passwd im Verzeichnis /etc ausgeben, 
+	ABER es sollen nur die Zeilen ausgegeben werden, die den Text nobody enthalten:
+
+	_____________________________________________________________________________

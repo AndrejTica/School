@@ -1,0 +1,96 @@
+* class Fraction
+
+- [X] Create class Fraction so that the following code works.
+
+#+BEGIN_SRC plantuml :file img/fraction.png
+class Fraction {
+	private:
+		double numerator;
+		double denominator;
+
+	public:
+		Fraction (double n=1.0, double d=2.0);
+		Fraction (const Fraction& other);
+		Fraction mul(const Fraction& o) const;
+		string toString() const;
+}
+#+END_SRC
+
+#+attr_latex: :width 120px :height 120px
+[[file:img/fraction.png]]
+
+
+- [X] Test your class with this code:
+#+BEGIN_SRC cpp
+#include <iostream>
+using namespace std;
+
+#include "fraction.h"
+
+int main(){
+	Fraction a(3.0, 2.0); //nominator, denominator
+	Fraction b(a);
+	Fraction c;
+
+	c= a.mul(b);
+	cout << "c= " << c.toString() << endl;
+	return 0;
+}
+
+/*
+- The output should be:
+c= [9.0 / 4.0]
+*/
+#+END_SRC
+
+* class Complex
+- [X] Create class Complex so that the following code works.
+
+#+BEGIN_SRC cpp
+#include <iostream>
+using namespace std;
+
+#include "complex.h"
+
+int main(){
+	Complex a(3.0, 2.0); // real, imag
+	Complex b(a);
+	Complex c;
+
+	c= a.add(b);
+	cout << "c= " << c.toString() << endl;
+
+	return 0;
+}
+
+/*
+- The output should be:
+c= [6.0 + 4.0 j]
+*/
+#+END_SRC
+
+* class Point
+- [X] Create class Point so that the following code works.
+
+#+BEGIN_SRC cpp
+#include <iostream>
+using namespace std;
+
+#include "point.h"
+
+int main(){
+	Point a(0, 200);   // x-coordinate, y-coordinate
+	Point b(a);
+	Point c;
+
+	c= a.add(b);	// add the coordinate-values
+	cout << "c= " << c.toString() << endl;
+
+	return 0;
+}
+
+/*
+- The output should be:
+c= [0,400]
+*/
+#+END_SRC

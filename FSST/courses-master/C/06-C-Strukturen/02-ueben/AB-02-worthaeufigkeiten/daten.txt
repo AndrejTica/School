@@ -1,0 +1,15 @@
+Der Inhalt einer beliebigen Textdatei soll hinsichtlich der Häufigkeit der verwendeten Worte analysiert werden. 
+Verwenden Sie zum Zählen ein großes Array (z.B. 5000 Elemente) vom folgenden Typ 
+struct WordCount { 
+	char word[20]; 
+	int count; 
+}; 
+Nach dem Programmstart:
+./worthaeufigkeit.exe < daten.txt
+
+soll zeilenweise eingelesen werden. Die Zerlegung einer Zeile in einzelne Worte soll mit der Funktion zerlegeInWorte aus der vorherigen Aufgabe geschehen. 
+Suchen Sie dann im Array, ob dieses Wort schon vorkommt. Falls dies der Fall ist, so wird der Wortzähler erhöht, ansonsten wird dieses Wort ans Ende der bisherigen Liste angehängt. 
+Konvertieren Sie alle Wörter in Groß- oder Kleinbuchstaben, um eine Trefferstreuung durch Groß-/ Kleinschreibung zu vermeiden. 
+Achten Sie bitte darauf, dass Ihr Programm auch dann noch sinnvoll weiterarbeitet, wenn angenommene Dimensionierungen nicht ausreichen sollten (max. Wortlänge = 20 Zeichen, max. Anzahl unterschiedlicher Wörter=5000) 
+Nach vollständigem Einlesen, sind dann die 20 am häufigsten verwendeten Wörter zusammen mit ihrer Häufigkeit auszugeben.
+der der der der

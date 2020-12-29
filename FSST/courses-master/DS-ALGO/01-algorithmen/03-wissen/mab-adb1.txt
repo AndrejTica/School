@@ -1,0 +1,44 @@
+﻿mab-ADB1:
+------------------------------------------------------------
+
+1. ---------------------------------------------------------
+fgets(), ftell(), fseek(), fopen()
+	a) Beschreibe die obigen Funktionen:
+	b) gib die jeweilige Funktionsdeklaration an:
+
+
+
+2. ---------------------------------------------------------
+definieren Sie den Strukturtyp TGLOSSAR, der aus
+	folgenden Komponenten besteht:
+		a) wort
+		b) position der zum Wort gültigen Beschreibung
+
+
+3. ---------------------------------------------------------
+gegeben sei die Datei: glossar.txt
+	SUCHEN
+	<desc>
+	Es gibt die seq. Suche und
+	die binäre Suche ...
+	...
+	</desc>
+	SORTIEREN
+	<desc>
+	...
+	</desc>
+	
+	Programmieren Sie die Funktion 
+		a) int g_open(const char*  filename);
+			// wie beim adb1-Beispiel
+			liest wort und offset und speichert diese
+			in der indextabelle
+			sortiert diese indexabelle
+			
+		b) void g_print(const char* word, FILE* f):
+			// wie beim adb1-Beispiel
+			sucht in der indextabelle bei gegebenem word
+			nach dem offset,
+			positioniert den Filepointer zur Dateistelle
+			und gibt word und beschreibung aus.
+			

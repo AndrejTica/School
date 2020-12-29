@@ -1,0 +1,110 @@
+# C,C++ Programme (unter Linux) übersetzen
+========================================================
+
+
+## übersetzen und linken und starten
+------------------------------------
+
+gcc prog.c -o prog.exe
+./prog.exe
+
+
+g++ prog.cpp -o prog.exe
+./prog.exe
+
+
+## nur übersetzen nicht linken
+------------------------------
+gcc -c prog.c
+
+
+## Mathematik LIB einbinden
+--------------------------
+gcc prog.c -o prog.exe -lm
+
+
+
+## Makefile erstellen
+---------------------
+* siehe: http://www.ijon.de/comp/tutorials/makefile.html
+
+
+
+#
+#Inhalt der Datei Makefile
+#
+all:
+	gcc prog.c -o prog.exe
+	
+run:
+	./prog.exe
+clean:
+	rm prog.exe
+	
+
+
+## Makefile verwenden
+---------------------
+make
+make run	
+
+
+
+	
+## Auch das ist wichtig:
+------------------------
+# Wenn das Programm aus mehreren c-Dateien
+#			oder h-Dateien besteht:
+#			Änderungen von prog.c und prog.h sollten 
+#			dann ein autom. Übersetzen bewirken:
+#			Achtung:
+#			Eine gemeine Falle für Anfänger ist, daß die 
+#			zweite Zeile mit einem <tab> anfangen muß, und 
+#			nicht mit Leerzeichen.
+#			
+#
+
+
+#
+#Inhalt der Datei Makefile
+#
+prog: prog.c prog.h 
+	gcc prog.c -o prog.exe
+run:
+	./prog.exe
+
+clean:
+	rm prog.exe
+
+	
+		
+* Aufruf: 
+make prog
+make run	
+	
+
+## Wenn man viele c-/h-Dateien hat kann man folg. verwenden
+-----------------------------------------------------------
+
+#
+#Inhalt der Datei Makefile
+#
+OBJ = datei1.o datei2.o datei3.o datei4.o datei5.o
+
+prog: $(OBJ)
+	gcc prog.c -o prog.exe $(OBJ)
+
+%.o: %.c %.h
+	gcc -c $<
+
+run:
+	./prog.exe
+clean:
+	rm *.exe
+	rm *.o	
+
+
+* Aufruf: 
+make prog
+make run
+make clean

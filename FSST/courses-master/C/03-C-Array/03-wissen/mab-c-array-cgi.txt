@@ -1,0 +1,12 @@
+﻿mab: char-Array: cgi.c
+---------------------------------------------------------------------------
+
+1. ------------------------------------------------------------------------
+Aufgabenstellung:
++ Definieren Sie ein char-Array namens str mit genau 128 Elementen.
++ Lesen Sie von der Tastatur einen Text ein der folgenden Aufbau hat:
+	der Text muss das Zeichen = enthalten. (ZB. nachname=meier). 
++ Nach der Eingabe, bestimmen Sie die Anzahl der Zeichen vor dem =
+	und die Anzahl der Zeichen nach dem =
++ Geben Sie diesen beiden Werte aus
+

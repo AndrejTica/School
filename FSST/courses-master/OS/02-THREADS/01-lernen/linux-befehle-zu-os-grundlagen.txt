@@ -1,0 +1,14 @@
+Beispiel:
+mkfifo /tmp/bla; ls -l /tmp/bla
+shell2: cat /tmp/bla
+shell1: cat /etc/passwd > /tmp/bla
+
+Beispiel:
+sudo vi /etc/syslog.conf .... *.* |/dev/xconsole
+sudo /etc/init.d/sysklogd restart
+shell1: cat /dev/xconsole
+shell2: su - 
+shell2: logger "Dies ist ein Test f. syslog und named pipe /dev/xconsole"
+
+Beispiel:
+cat /etc/passwd | cut -d":" -f1 | sort > usernames.txt

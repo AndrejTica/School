@@ -1,0 +1,71 @@
+﻿=====================================================================
+== MEILENSTEIN-JAVA-array-fkt-klasse-string-stream.txt
+=====================================================================
+Inhalt:
+-- MEILENSTEIN-funktionen,arrays,String
+-- MEILENSTEIN-stack
+-- MEILENSTEIN-Programm-FBMI
+
+
+-- MEILENSTEIN-funktionen,arrays,Strings
+=====================================================================
+a) Programmieren Sie die Funktion:
+b) Programmieren Sie ein Testprogramm für die Funktionen:
+
+int pow(int x, int n);
+int fakt(int n);
+
+int checkDoppelte(int a[], int len);
+int getMaxIndex(int a[], int len);
+void sort(int a[], int len);
+
+String removeVowel(String s);
+int getZiffernSumme(int s);
+int hex2int(String hexziffern);
+
+
+-- MEILENSTEIN-stack
+=====================================================================
+gegeben Stack-Methoden aus MyStack.java
+	void init(void);
+		// löscht d. Stack,d.h. stackpointer auf 0 setzen	
+	void push(double value);
+		// legt value auf den Stack,
+		// wenn dieser aber bereits voll ist, wird auf 
+		// stderr Stack voll geschrieben und 
+		// der Wert nicht auf den Stack gelegt.
+	double  pop(void);
+		// gibt den obersten Wert des Stack zurück,
+		// wenn dieser aber bereits leer ist, 
+		// wird auf stderr
+		// Stack leer geschrieben.
+
+gesucht die obigen Methoden ausprogrammiert. Verwende:
+	// niemand anderer darf auf diese globale Variable zugreifen.
+	??????????? double dblStack= new double[1024];	
+	??????????? int p_stack;	// Der Stackpointer
+	
+gesucht Testprogramm: Main.java
+	???????????
+
+
+-- MEILENSTEIN-Programm-FBMI
+=====================================================================
+Das Programm soll:
++ geeignete Datenstruktur/Datentypen/Klasse definieren
++ die Datei input.txt in ein dynamisches Array laden
++ die fehlenden Werte für den BMI (gewicht_kg/(groesse_m*groesse_m)
+	berechnen
++ die Datei output.txt beschreiben
+
+Hinweis Aufbau: input.txt
+klasse,vorname,nachname,gewicht,groesse
+
+Beispiel: input.txt
+3
+4cheli,anton,hofmann,70,170
+4cheli,beta,hofmann,80,180
+4cheli,gamma,hofmann,90,190
+
+Inhalt der Datei output.txt:
+klasse,vname,nname,gewicht,groesse,maxbmi

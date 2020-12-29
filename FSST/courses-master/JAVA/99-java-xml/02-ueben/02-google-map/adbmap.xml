@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<tourist>
+<markers>
+<nickname>Altstadtkeller</nickname>
+<email>keine@email</email>
+<comment>Altstadtkeller Rudolfskai 27 Salzburg >+43 (522) 849-68...</comment>
+<address>www.salzburg.com</address>
+<lat>47.799636</lat>
+<lng>13.047558</lng>
+</markers>
+<markers>
+<nickname>Braustuebl</nickname>
+<email>keine@email</email>
+<comment>Augustiner Brewery (Brustbl) Lindhofstrasse 7 Salzburg >+43 (662) 431-24...</comment>
+<address>www.salzburg.com</address>
+<lat>47.806122</lat>
+<lng>13.033068</lng>
+</markers>
+<markers>
+<nickname>Glockenspiel</nickname>
+<email>keine@email</email>
+<comment>Bell Ringing (Glockenspiel) Mozartplatz 1 Salzburg...</comment>
+<address>www.salzburg.com</address>
+<lat>47.798598</lat>
+<lng>13.049177</lng>
+</markers>
+<markers>
+<nickname>Residenzplatz</nickname>
+<email>keine@email</email>
+<comment>Bishops Residence Residenzplatz 1 Salzburg >+43 (662) 8042-269...</comment>
+<address>www.salzburg.com</address>
+<lat>47.79842</lat>
+<lng>13.04662</lng>
+</markers>
+<markers>
+<nickname>Carolino Augusteum</nickname>
+<email>keine@email</email>
+<comment>Carolino Augusteum Museum Museumsplatz 6 Salzburg >+43 (662) 841-134...</comment>
+<address>www.salzburg.com</address>
+<lat>47.801617</lat>
+<lng>13.039575</lng>
+</markers>
+<markers>
+<nickname>Dom</nickname>
+<email>keine@email</email>
+<comment>Cathedral (Dom) Residenzplatz Salzburg >+43 (662) 844-18...</comment>
+<address>www.salzburg.com</address>
+<lat>47.797888</lat>
+<lng>13.045741</lng>
+</markers>
+</tourist>

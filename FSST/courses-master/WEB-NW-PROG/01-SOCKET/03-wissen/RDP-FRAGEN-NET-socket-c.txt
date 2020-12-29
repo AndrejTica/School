@@ -1,0 +1,442 @@
+AUFGABENSTELLUNG: NET-basic und NET-socket-c
+==============================================================================
+1. Erstellen Sie einen Kurz-Vortrag zum Thema 
+	"Grundlagen der Netzwerk-Programmierung"
+	und verwenden Sie die in der ANLAGE NET-FRAGEN
+	gestellten Fragen als Orientierungshilfe.
+	
+
+	
+ANLAGE NET-FRAGEN:
+------------------------------------------------------------------------------
+() Das OSI-Referenz Modell hat ___________ Ebenen.
+
+() Das TCP/IP Referenzmodell hat _________ Ebenen.
+
+() TCP/IP-Referenzmodell hat u.a. die Applikationsebene. 
+    In dieser werden folgende Ebenen des OSI-Referenzmodelles vereint:
+
+
+
+() Wie lautet die vollständge Fachbezeichnung für die Abkürungen:
+    RFC: ________________________________________________
+    TCP: ________________________________________________
+    UDP: ________________________________________________
+    DNS: ________________________________________________
+
+
+() Welche Information liefern die Befehle:
+	ipconfig/ifconfig
+	
+	
+	
+	netstat
+	
+	
+	
+	
+	nslookup
+
+
+
+
+() Welche Ebene des OSI-Referenzmodelles verwendet:
+	Segment  wird verwendet von Ebene _______________
+	Message  wird verwendet von Ebene _______________
+	Datagram wird verwendet von Ebene _______________
+	Stream   wird verwendet von Ebene _______________
+	Packet   wird verwendet von Ebene _______________
+
+
+() Beschreiben Sie die Unterschiede von TCP zu UDP.
+    a) TCP-Eigenschaften:
+
+
+
+
+    b) UDP-Eigenschaften
+
+
+() IP-Funktionen sind (richtige ankreuzen):
+	o Definieren von Data-Streams
+	o Routing
+	o Fragmentierung und Zusammensetzen von Datagrammen
+	o verbindungsorientiertes Protokoll
+	o nochmaliges Senden von verloren gegangenen Datagrammen
+	o Definieren eines Adressierungsschemas
+
+() Geben Sie 2 versch. Beispiele (class) für IP-Adressen 
+    für den privaten Gebrauch:
+
+    1. _________________________________
+
+    2. _________________________________
+
+
+
+() Wahr oder falsch:
+wahr|falsch
+o   |   o	Im IP-Header findet man die IP-Nummern von Sender u. Empfänger
+o   |   o	Eine IP-Adresse identifiziert keinen bestimmten Computer [Host],
+			sondern eine Verbindung zwischen einem Computer [Host] und einem Netz.
+
+o   |   o	Eine IP-Adresse, bei der alle Hostbits auf 1 gesetzt sind, 
+			identifiziert das Netz selbst. 
+
+o   |   o	Eine IP-Adresse, bei der alle Host-Bytes den Wert 0 haben, ist 
+			eine Broadcast-Adresse.
+o   |   o	Source- und Destination Port sind im TCP-Header vorhanden
+o   |   o	
+
+
+() Gegeben ist eine IPv4-Adresse = 10.43.8.67/24
+	a) Wie lautet hier die Netzmaske= ________________________________________
+	b) Wie lautet die Anzahl der Hostadressen 
+		(ohne Broadcast und ohne Netzadresse)= _______________________________
+
+
+() Bei TCP bedeutet
+	a) zuverlässig, dass ______________________
+	
+	b) verbindungsorientiert, dass ______________
+	
+	c) Bytestrom-Semantik, dass ___________________
+	
+
+() Bei UDP bedeutet
+	a) unzuverlässig, dass _______________________
+	
+	b) verbindungslos, dass ______________________
+
+
+() Nenne Funktionen zur Namensauflösung
+
+
+
+() Welche Komponenten findet man in struct hostent
+
+
+
+
+() struct in_addr enthält:
+
+
+
+
+() struct sockaddr_in enthält:
+
+
+
+() Füge folgende Begriffe ein:
+	well-known socket
+	Connection socket
+	sendet Request
+	Server
+	Client
+	service process
+	kommunizieren
+
+    1. Server erzeugt und horcht an einem ____________ socket
+    
+    2. Client erzeugt einen ____________ socket
+
+    3. Client sendet einen __________ an den ____________ socket
+
+    4. Server akzeptiert den request und erzeugt einen service process
+
+    5. ein ________________ socket wird für den _________________ erzeugt
+
+    6. Client und Server kommunizieren mittels des _______________ sockets
+
+() Die Funktionen socket kann folgende Argumente haben:
+    o AF_INET
+    o SOCK_STREAM oder ________________
+
+
+() Wie lauten die Dienste zu den well-known Port Nummern und 
+
+	a) Dienst: http   Portnummer: ____
+
+	b) Dienst: ssh    Portnummer: _____
+
+	c) Dienst: _____  Portnummer: 443
+
+	d) Dienst: smtp   Portnummer: _____
+
+
+() Warum braucht man htons(), ....
+
+
+() Auf welcher OSI-Ebene befinden sich diese Funktionen?
+
+
+
+() Tragen Sie die Funktionen in der richtigen Reihenfolge auf der 
+    Client bzw. Server-Seite ein. 
+
+Client					Server
+
+___________________________________________________
+
+___________________________________________________
+      
+___________________________________________________
+
+___________________________________________________
+
+___________________________________________________
+
+___________________________________________________
+
+___________________________________________________
+
+___________________________________________________
+
+___________________________________________________
+
+	•  socket()
+    •  bind() 
+    •  listen()      
+    •  connect() 
+    •  accept()
+    •  write()
+    •  read()
+    •  close()
+    
+() Welche Funktion wartet auf einen Request?
+
+
+() Tragen Sie SOCK_DGRAM bzw SOCK_STREAM an den richtigen Stellen ein. 
+int read (int sd, char* buf, int len);
+	Wenn die übertragene Nachricht länger ist, als in len angegeben wurde, 
+	bleiben die restlichen Daten im Nachrichtenspeicher erhalten 
+	
+	(Dies gilt nur bei ________________________ ). 
+	D.h. bei erneutem Aufruf von read() werden die restlichen Daten aus dem 
+	Nachrichtenspeicher gelesen. Dies bedeutet, dass man mit 
+	folgender Anweisung einen Nachrichtenspeicher vollständig auslesen kann:
+
+	do {
+		anz= read(sd, buffer, 128);
+		...
+	}while (anz > 0);
+
+	Bei __________________ ist dies nicht der Fall, d.h. nach erfolgtem read() 
+	werden evtl. verbleibende Daten im Nachrichtenspeicher verworfen.
+
+
+() int read (int sd, char* buf, int len);
+	o ist blockierend
+	o ist nicht blockierend
+
+() Die folgenden Zeilen findet man
+	o beim Server
+	o beim Client
+
+	name.sin_family	= AF_INET;
+	name.sin_port	= htons(0);		
+	name.sin_addr.s_addr= INADDR_ANY;
+
+() int read (int sd, char* buf, int len);
+    a) liefert -1, wenn ___________
+    
+    b) liefert 0, wenn ____________
+    
+    c) liefert 256, wenn __________
+
+
+
+() Gegeben ist der HTTP-REQUEST:
+	GET /index.html HTTP/1.1CRLF
+	Host: www.host.at
+
+	Q1: (1) Ist dieser Request im
+		o HTTP-HEADER		
+		o HTTP-BODY
+
+	Q2: (2) Wie sieht eine mögliche http-konforme Antwort aus?
+
+
+
+
+	Q3: (1) Wodurch werden HTTP-Header und HTTP-Body getrennt?
+
+			___________________________________________________________
+
+
+()	Q1: Wie lautet die IP-Adresse v. localhost? _______________________
+
+	Q2: RFC ist die Abkürzung für _____________________________________
+
+
+() Gegeben: char buf[512], filename[512];
+			strcpy(buf, "GET /index.html HTTP/1.1\r\n");
+
+Gesucht:	Zeigen Sie den C-Programmcode um in das Array filename den 
+			Dateinamen index.html zu bringen.(Der Dateiname index.html
+			ist hier beliebig gewählt)
+
+
+
+
+
+
+
+
+() Welche Funktion(en) des Socket-API erhalten folgende Parameter?
+	int socket, len;
+	struct sock_addr_in adddr;
+
+	Parameter						Funktion(en)
+	(AF_INET, SOCK_STREAM,0)   		____________________________________
+
+	(socket, &addr, sizeof(addr)) 	____________________________________
+
+	(socket, 5)						____________________________________
+
+	(socket, &addr, &len);			____________________________________
+
+
+() Welche Funktion liefert einen sogenannten Connection-Socket zurück?
+
+	_____________________________________
+
+	
+	
+() Welche Funktionen des Socket-API werden in einem portscanner 
+	verwendet?
+
+
+
+() Gib ein typisches Beispiel eines Server-Programmes, das das Socket-API
+	verwendet.
+	Verwende dabei die folgenden Parameterlisten als Hilfe:
+		(AF_INET, SOCK_STREAM,0)
+		(socket, &addr, sizeof(addr))
+		(socket, 5)
+		(socket, &addr, &len)
+		(socket,buf,sizeof(buf))
+
+	// 1. Variablen definieren
+	int socket;
+	char buf[512];
+
+	____________________________________________________
+
+	socket= socket(______________________________);
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+() Ordne folg. Begriffe den 7 Schichten des OSI-Modells zu...........
+		_3_ <- ICMP
+		___ <- Three-Way-Handshake/TCP
+		___ <- htons()
+		___ <- IP-Adresse
+		___ <- FTP
+		___ <- Port-Adresse
+		___ <- telnet
+		___ <- HTTP
+
+
+
+() Wie heisst die Struktur zur Namensauflösung? _________________________
+() 192.168.xx.xx sind IP-Adressen, die __________________________________
+
+() Erstelle ein Struktogramm für einen TCP-basierenden Server, 
+	der Daten vom Client liest und gleich wieder an diesen zurück schreibt.
+	Verwende dabei die Funktionen aus dem Socket-API.
+
+
+
+()) Netzwerk
+	a) Welche Adresse hat einen Bezug zum Endgerät?
+	b) Welche Adresse hat einen Bezug zum Prozess?
+	c) In Gateways bzw. Routern finden wir welche Ebenen des OSI-Modelles?
+	d) Wie lautet die IP-Adresse von localhost?
+	e) Welche Adresse hat
+	
+		48 Bit______________ 
+
+		16 Bit______________ 
+
+		32 Bit______________
+
+
+
+
+() aus dem fileserver_port80.c
+	char buf[256];
+	int len= read(sd,buf,sizeof(buf));
+	if (len==-1){
+	
+	
+	}else if (len==0){
+	
+	
+	
+	
+	}else{
+	
+	
+	
+	}
+
+() wenn beim fileserver_port80.c Programm, die geforderte Datei 
+	nicht geöffnet werden kann, sendet man 
+	folgendes an den HTTP-Client:
+	
+	
+	
+	
+	
+	
+	
+() Gegeben ist der HTTP-REQUEST:
+	GET /index.html HTTP/1.1CRLF
+	Host: www.host.at
+
+	Zeigen Sie den C-code, um die geforderte Datei
+	a) zu öffnen und
+	b) an den Client (Verwende die Socket-Variable sd) zu senden
+	c) die Verbindung zu schliessen.
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+() Die Aufgabe des portscanner.c Programmes ist:
+
+
+
+
+
+
+() Auf welche Weise erhält das portscanner.c Programm die
+	a) zu untersuchenden IP-Adressen?
+	b) zu untersuchenden PORT-Nummern?
+	
+	
+
+
+
+

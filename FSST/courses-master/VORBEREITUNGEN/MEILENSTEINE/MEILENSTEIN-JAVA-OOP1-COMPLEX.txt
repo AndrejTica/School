@@ -1,0 +1,70 @@
+﻿NAME:											KLASSE:			DATUM:
+=============================================================================
+
+AUFGABE    : (   ) OOP1-COMPLEX
+-----------------------------------------------------------------------------
+	Erstellen Sie die Klasse Complex, sodass folgendes Programm funktioniert:
+	
+		Complex a= new Complex(3.0, 2.0);
+		Complex b= new Complex(a);
+		Complex c;
+	
+		c= a.add(b);	
+		System.out.println ("c= " + c.toString());
+
+
+	Die Ausgabe muss dann wie folgt aussehen:
+	c= [6.0 + 4.0 j]
+		
+ANTWORT:
+	public class Complex{ 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	}

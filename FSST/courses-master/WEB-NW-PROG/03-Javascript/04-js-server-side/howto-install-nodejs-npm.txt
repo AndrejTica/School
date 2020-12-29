@@ -1,0 +1,65 @@
+#========================================================================
+#howto-install-nodejs-npm.txt
+#========================================================================
+
+SUPER
+http://www.nodecloud.org/
+http://www.nodebeginner.org/
+
+
+#------------------------------------------------------------------------
+#install nodejs
+#------------------------------------------------------------------------
+sudo apt-get update
+sudo apt-get install -y python-software-properties python g++ make
+sudo apt-get install nodejs
+sudo apt-get install nodejs-legacy
+node --version
+
+
+#------------------------------------------------------------------------
+#install npm
+#------------------------------------------------------------------------
+sudo apt-get install npm
+npm config set registry http://registry.npmjs.org/
+
+sudo npm -g install npm
+
+sudo npm -g install sm
+sudo npm -g install node-rest-client
+sudo npm -g install express
+sudo npm install -g nodeclipse
+
+
+
+
+--------------------------------------------------------------------
+INSTALL CLOUD9
+--------------------------------------------------------------------
+* see: https://github.com/ajaxorg/cloud9/
+* tip: dont use shared folder
+
+
+sudo apt-get install -y build-essential g++ curl libssl-dev apache2-utils git libxml2-dev
+
+cd
+mkdir GIT
+cd GIT
+ 
+git clone https://github.com/ajaxorg/cloud9.git
+cd cloud9
+sudo npm install
+
+
+* start cloud9
+cd
+cd GIT/
+mkdir ws-cloud9
+../cloud9/bin/cloud9.sh -w . -l 0.0.0.0
+
+* use cloud9
+http://localhost:3131
+
+
+*see also: http://dotnetdavid.wordpress.com/2013/09/16/beaglebone-black-cloud9-and-bonescript-install-guide/
+

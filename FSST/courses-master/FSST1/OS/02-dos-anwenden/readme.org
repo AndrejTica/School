@@ -1,0 +1,5 @@
+* ÜBUNG: DOS-Befehle anwenden
+
+- AUFGABE:
+  - Editieren Sie die Datei 02-AB-dos-anwenden.html und
+  - geben Sie zu den angegeben Linux-Befehlen die entsprechenden DOS-Befehle ein.

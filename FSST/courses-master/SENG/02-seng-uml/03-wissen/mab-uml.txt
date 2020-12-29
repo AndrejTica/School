@@ -1,0 +1,59 @@
+﻿mab: Seng - UML
+-----------------------------------------------------------
+arbeiten Sie im Team
+
+Einführung: Klassendiagramme
+Versuchen Sie die folgenden Beispiele in UML Diagrammen 
+aufzuzeichnen:
+
+
+1.A. Assoziation
+-----------------------------------------------------------
+Aufgabe:
+Ein Graphikprogramm wird von einem oder keinem Benutzer benützt. 
+Genau ein Benutzer benötigt ein Graphikprogramm.
+
+
+1.B. Assoziation
+-----------------------------------------------------------
+Aufgabe:
+Ein Betriebsystem ist auf genau 1 Computer installiert. 
+Auf einem Computer sind 1 oder mehrere Betriebsysteme installiert.
+
+
+
+
+2.A. Aggregation
+-----------------------------------------------------------
+Aufgabe:
+Eine Graphikdokument besteht aus beliebig vielen Bitmap-Grafik. 
+Eine Bitmapgrafik gehört genau zu 1 Dokument.
+
+
+2.B. Aggregation
+-----------------------------------------------------------
+Aufgabe:
+Ein Computer besteht aus 0 oder beliebig vielen SCSI Kontrollern, 
+mindestens aus einem Prozessor, maximal 2 Prozessoren. 
+Eine SCSI Karte ist maximal in einem Computer installiert.
+Ein Prozessor wird in maximal einem Computer installiert.
+
+
+
+
+3.A. Komposition
+-----------------------------------------------------------
+Aufgabe:
+Eine Hochschule besteht aus einer oder beliebig vielen Abteilungen. 
+Eine Abteilung gehört genau einer Fachhochschule an. Eine Abteilung 
+besteht aus mindestens 3 Klassen. 
+Eine Klasse gehört zu genau 1 Abteilung. 
+Eine Klasse an der HSR besteht aus mindestens 10, maximal 30
+Studierenden. Ein Studierender gehört genau zu einer Klasse.
+
+
+3.B. Komposition
+-----------------------------------------------------------
+Aufgabe:
+Ein Bankkonto besteht aus einem oder beliebigen Buchungssätzen. 
+Ein Buchungssatz gehört genau zu 1 Konto.

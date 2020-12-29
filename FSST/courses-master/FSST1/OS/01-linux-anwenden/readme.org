@@ -1,0 +1,13 @@
+* LINUX anwenden
+- use shell commands
+
+* Teil 1: L/S
+1. L/S: /FSST1/OS/01-linux-anwenden/01-linux-anwenden-light.org
+
+* Teil 2: S/S
+2. S/S: /FSST1/OS/01-linux-anwenden/02-AB-linux-anwenden.pdf
+
+* ABGABE: NAME.txt
+
+* Tipps:
+1. S/S: /FSST1/OS/01-linux-anwenden/01-linux-anwenden.pdf

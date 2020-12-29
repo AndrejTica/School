@@ -1,0 +1,57 @@
+﻿String[] ids;
+String idList;
+
+// IDs einlesen
+idList= JOptionPane.showInputDialog("IDs", "4886,4909,4910,4911,4912,4914,4915,4916,4918,4922");
+ids= idList.split(",");
+
+// PRO ID
+for(String dir: ids){
+	// Ordner pro ID erstellen
+	// output/####
+	new File("output/"+dir).mkdir();
+
+	//lade Daten aus htl-innovativ
+	try
+	{
+		
+		
+		  // PROXY
+		  System.setProperty("http.proxyHost","tmg-z2.htl.org") ;
+		  System.setProperty("http.proxyPort", "8080") ;
+		  
+									  
+		  Authenticator.setDefault(new Authenticator() {
+			  protected PasswordAuthentication getPasswordAuthentication() {
+				  
+				  // pwd lesen
+				  JPasswordField passwordField = new JPasswordField(10);
+				  passwordField.setEchoChar('*');
+				  JOptionPane.showMessageDialog ( null, passwordField, "Enter password", JOptionPane.OK_OPTION );
+				  char[] chars = passwordField.getPassword();
+				  String pwd = new String(chars);
+
+				  
+				return new
+				   PasswordAuthentication("htl\\ahofmann",pwd.toCharArray());
+			}});
+		 
+		  
+		  // Verbindung aufbauen
+		  URL u = new URL("http://www.htl-innovativ.at/index.php?lang=&modul=detail&id=" + dir);
+		  HttpURLConnection con = (HttpURLConnection) u.openConnection();
+		  
+		  // Daten lesen
+			Reader is = new InputStreamReader( con.getInputStream() );
+			BufferedReader in = new BufferedReader( is );
+			String html="";								
+			for ( String s; ( s = in.readLine() ) != null; ){
+				System.out.println( s );
+				html+= s + "\n";
+			}
+			textArea.setText(html);
+			
+			
+			in.close();
+			.....
+			

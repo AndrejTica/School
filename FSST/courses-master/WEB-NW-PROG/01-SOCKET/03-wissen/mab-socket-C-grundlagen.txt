@@ -1,0 +1,18 @@
+mab-socket-C-grundlagen.txt (6)
+======================================================================
+Sie sollen aus einer monolithischen Adressverwaltung eine 
+Client/Server – Lösung entwickeln.
+
+1. Geben Sie einen kurzen Einblick in die Grundlagen der 
+	Netzwerkprogrammierung 
+
+	(OSI-Modell, IP, TCP,UDP, Namensauflösung, Portadressen)
+
+2. Zeigen Sie den generellen Ablauf beim Server und beim Client und 
+	ordnen Sie die entsprechenden Funktionen des SOCKET-API zu. 
+	(accept(), bind(), close(), listen(), read(), socket(), write())
+
+3. struct hostent, struct sockaddr_in, struct in_addr
+	sind Datenstrukturen, die bei der Netzwerkprogrammierung 
+	Verwendung finden. Gehen Sie auf die jeweiligen Komponenten ein.
+

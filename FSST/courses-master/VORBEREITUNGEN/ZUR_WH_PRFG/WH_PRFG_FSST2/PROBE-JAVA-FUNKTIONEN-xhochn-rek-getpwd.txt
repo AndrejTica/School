@@ -1,0 +1,65 @@
+mab-java-fkt-xhochn-rek-getpwd.txt
+===========================================================================
+
+1. (2) x_hoch_n iterativ berechnen
+---------------------------------------------------------------------------
+X hoch n= x*x* .....*x   (Es wird also n-mal x 'aufmultipliziert')
+Erstellen Sie die folg. Funktion
+
+public static __________________ x_hoch_n(int x, int n){
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+2. (2) x_hoch_n rekursiv berechnen
+---------------------------------------------------------------------------
+
+x hoch n = 1, wenn n == 0
+x hoch n = x* x hoch n-1
+
+
+public static __________________ x_hoch_n_rekursiv(int x, int n){
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+3. (3) getpasswd
+---------------------------------------------------------------------------
+Erstelle Sie das folg. Programm:
+
+public class MAB_getpasswd{
+	public static void main(String[] args){
+		String charSet="abcdefghijklmnopqrstuvwxyz0123456789,.;:-#+!?";
+
+		String password;
+
+		password= MyAlgos.getPasswd(charSet,8); // 8 Zeichen langes pwd
+
+		System.out.println("password= " + password);
+
+	}
+}
+Hint: 
+String s;
+char[] arr= s.toCharArray() oder  char ch= s.charAt(0);
+Random rnd= new Random(); int number= rnd.nextInt(s.length);

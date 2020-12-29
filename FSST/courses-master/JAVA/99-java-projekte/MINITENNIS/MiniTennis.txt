@@ -1,0 +1,73 @@
+* http://edu4java.com/en/game/game0-en.html
+
+- JFrame
+
+- Game extends JPanel
+	- paint()
+	
+	
+- Game-LOOP und Animation(move)
+	- while
+		move
+		paint
+
+		
+- Ball/Sprite u. x,y und dx,dy
+
+
+- Exkurs: Keyboard/KeyListener
+	- Bsp. lesen 
+
+	
+- Racquet/Sprite u. KeyListener
+	- Konstruktor f. Game/JPanel
+		- addKeyListener(new KeyListener() {...
+			-keyPressed ... Racquet.keyPressed
+			-keyReleased ... Racquet.keyReleased
+			
+	- Racquet:
+		- keyPressed, 
+		- keyReleased
+
+- GameOver u. Collision (rectangle ... intersect)
+	- Racquet.getBounds, 
+	- Racquet.getTopY
+	- Ball.getBounds
+	- Ball.Collision
+	- Ball.move calls
+		- Collision
+		- gameOver
+	
+	
+- Exkurs: SoundTest
+	- URL url = SoundTest.class.getResource("back.wav");
+	
+	
+- class Sound
+	- Game:
+		- Game():
+			- Sound.BACK.loop()
+		- gameOver() {
+			- Sound.BACK.stop();
+			- Sound.GAMEOVER.play();
+	- Ball:
+		- move:
+			- if (changeDirection) 
+				Sound.BALL.play();
+		
+
+- Punctuation u. Speed:
+	- Game:
+		- int speed=1;
+		- getScore() return speed-1
+		- paint: g2d.drawString(String.valueOf(getScore()), 10, 30);
+	- Ball/Racquet: xa= game.speed
+	
+	
+- export: runnable jar file
+	- META-INF/MANIFEST.MF
+		- Main-Class:Hello
+		
+	- export: runnable jar
+	
+		

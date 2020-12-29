@@ -1,0 +1,522 @@
+* Project Company
+
+- [X] Inheritance
+- [X] Polmorphism
+
+- what we will implement
+[[file:img/uml-company.png]]
+
+- What you should know
+  - *baseclass*
+	 - aka "super class". Shares all its members with its subclasses.
+	 - We call this *reuseability*.
+  - *subclass*
+	 - gets all members of its baseclass(es) and implements additional
+	 - so called "subclass specific members".
+	 - Inherited members can be overridden by the subclass.
+  - private, public, protected:
+	 - private members can only be accessed by the class itself.
+	 - proteced members can be accessed by the class and all its subclasses.
+	 - public members can be accessed by every class.
+
+  - baseclass pointer
+	 - ???????? INSERT YOUR Answer here.????????????
+  - abstract class
+	 - ???????? INSERT YOUR Answer here.????????????
+  - virtual
+	 - ???????? INSERT YOUR Answer here.????????????
+  - polymorphism,
+	 - ???????? INSERT YOUR Answer here.????????????
+
+
+* class Person - A base class
+- [X] create baseclass *Person* that holds name and age of a person.
+- [X] person.h, person.cpp
+
+#+BEGIN_SRC cpp
+#include <string>
+using namespace std;
+
+#ifndef PERSON_H
+#define PERSON_H
+
+class Person{
+	private:
+	    // Private member. Nobody can access this member
+	   int age;
+
+	   // Protected member.
+	   // Only subclasses can access this member
+	protected:
+	    string name;
+
+	public:
+	   // cons
+	   Person(int age, string name);
+
+	   // getter/setter
+	   int getAge() const;
+
+	   string toString() const;
+};
+#endif
+#+END_SRC
+
+- [X] - create a small test-program: main.cpp
+
+#+BEGIN_SRC cpp
+#include <cassert>
+#include <cstdlib>
+#include <iostream>
+using namespace std;
+
+#include "person.h"
+
+int main(){
+	 Person ich(25, "Max Mustermann");
+
+	cout << "\nSTART testing class Person: "; system("date");
+
+   // assert - abort the program if assertion is false
+	assert(ich.getAlter()==25 && "error: ich.getAlter()");
+	assert(ich.toString()=="[Max Mustermann(25 Jahre)]" && "error: ich.toString()");
+
+	cout << "... All Tests are OK ..."<<endl;
+	cout << "END testing expression: "<<endl; system("date");
+
+	cout << endl;
+	return 0;
+}
+#+END_SRC
+
+
+
+* class Worker - A first subclass
+- create subclass *Worker* that inherits all members from its baseclass Person.
+
+#+BEGIN_SRC plantuml :file img/person-worker.png
+skinparam classAttributeIconSize 0
+class Person {
+ #string name
+ -int age
+ +Person(...)
+ +int getAge()const
+}
+
+class Worker {
+ -int hours
+ -double wage
+ +Worker(...)
+ +double getWage() const
+ +string toString() const
+}
+
+Person <|-- Worker
+#+END_SRC
+
+#+attr_latex: :width 100px :height 133px
+[[file:img/person-worker.png]]
+
+- subclass Worker
+#+BEGIN_SRC cpp
+#include <string>
+#include "person.h"
+
+#ifndef WORKER_H
+#define WORKER_H
+
+class Worker : public Person {
+	private:
+	    int hours;
+	    double wage;
+
+	public:
+	    // cons
+	    Worker( int age, string name,
+			    int hours, double wage );
+
+	    // getter/setter
+		 // Question: is this really necessary?????
+	    int getAge() const;
+
+	    string toString()const;
+
+	    double getWage() const;
+};
+#endif
+#+END_SRC
+
+
+* Test - Person, Worker
+- test your classes with main.cpp
+
+#+BEGIN_SRC cpp
+// main.cpp
+// Person
+//     Worker
+
+#include <iostream>
+#include "worker.h"
+using namespace std;
+
+int main(int argc, char *argv[]){
+	Worker* me;
+
+	me= new Worker(80, "Jack Oldman", 40, 50.0);
+
+	cout<< "\n********************************************" << endl;;
+	cout<< me->toString()<< endl;
+
+	cout<< "My age: " << me->getAge()<< endl;;
+ 	cout<< "My wage: " << me->getWage()<< endl;;
+
+	delete me;
+
+
+	cout<< "\n********************************************" << endl;;
+	Worker you(20, "George Jungman", 20, 25.0);
+
+	cout<< you.toString()<< endl;
+
+	cout<< "Your age: " << you.getAge()<< endl;;
+	cout<< "Your wage: " << you.getWage()<< endl;;
+
+
+	cout << endl<<endl;
+
+	return 0;
+}
+#+END_SRC
+
+
+* Seller, Manager - Add two subclasses
+- [X] create class Seller as a subclass of Worker
+- [X] create class Manager as a subclass of Person
+- [X] test your classes
+
+#+BEGIN_SRC plantuml :file img/person-worker-seller-manager.png
+skinparam classAttributeIconSize 0
+class Person {
+ #string name
+ -int age
+ +Person(...)
+ +int getAge() const
+}
+
+class Worker {
+ -int hours
+ -double wage
+ +Worker(...)
+ +double getWage() const
+ +string toString() const
+}
+
+class Seller{
+ -int numberOfSales
+ -double price;
+ +Seller(...)
+ +double getWage() const
+ +string toString() const
+}
+
+class Manager{
+ -double fixum
+ +Manager(...)
+ +double getWage() const
+ +string toString() const
+}
+
+Person <|-- Manager
+Person <|-- Worker
+Worker <|-- Seller
+#+END_SRC
+
+#+attr_latex: :width 200px :height 240px
+[[file:img/person-worker-seller-manager.png]]
+
+
+- Seller: "is a Worker"
+  - double getWage()const // like a Worker plus numberOfSales*price
+- Manager: "is a Person"
+  - double getWage()const // return fixedSalary
+
+
+* Test - Person,Worker,Seller,Manager
+
+#+BEGIN_SRC cpp
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+#include "person.h"
+#include "worker.h"
+#include "manager.h"
+#include "seller.h"
+
+int main(int argc, char *argv[]) {
+
+	// 1. create some  Worker-, Seller-, Manager-Objects
+	Worker *worker1= new Worker(50, "WorkerMaxi", 20, 100.0);
+	Manager *manager1= new Manager(40, "ManagerMaxi", 10.0);
+	Seller *seller1= new Seller(40, "SellerMaxi", 40, 100.0, 10, 9.0);
+
+	cout << "*** The Persons *****************************************" << endl;
+	cout << worker1->toString() << endl;
+	cout << manager1->toString() << endl;
+	cout << seller1->toString() << endl;
+
+
+	cout << "*** The payroll *****************************************" << endl;
+	double payroll= worker1->getWage();
+	payroll += seller1.getWage();
+	payroll += manager1.getWage();
+
+	cout << "The Payroll is " ;
+	cout << fixed << setw(6) << setprecision(2)<< payroll << endl<<endl;
+
+	// clean
+	delete worker1;
+	delete seller1;
+	delete manager1;
+	delete company1;
+
+	return 0;
+}
+#+END_SRC
+
+* Polymorphism: Company - A container class
+- create class *Company* which holds all Worker-, Seller-, Manager-Objects
+- it uses a vector which contains the so called *baseclass-pointers*.
+- this baseclass-pointer is of type Person* but
+- it actually *points to the different Worker-, Seller-, Manager-Objects*
+
+#+BEGIN_SRC plantuml :file img/person-worker-seller-manager-company.png
+skinparam classAttributeIconSize 0
+abstract class Person {
+ #string name
+ -int age
+ +Person(...)
+ +int getAge() const
+}
+
+class Worker {
+ -int hours
+ -double wage
+ +Worker(...)
+ +double getWage() const
+ +string toString() const
+}
+
+class Seller{
+ -int numberOfSales
+ -double price;
+ +Seller(...)
+ +double getWage() const
+ +string toString() const
+}
+
+class Manager{
+ -double fixum
+ +Manager(...)
+ +double getWage() const
+ +string toString() const
+}
+
+class Company{
+ -string name
+ -vector<Person*> employee
+ +Company(...)
+ +void addEmployee(Person*)
+ +double computePayroll() const
+ +string toString() const
+}
+
+Person -o Company : works for >
+Person <|-- Manager : is a
+Person <|-- Worker :  is a
+Worker <|-- Seller :  is a
+
+#+END_SRC
+
+#+attr_latex: :width 220px :height 220px
+[[file:img/person-worker-seller-manager-company.png]]
+
+
+
+#+BEGIN_SRC cpp
+#ifndef COMPANY_H
+#define COMPANY_H
+
+#include <vector>
+using namespace std;
+#include "person.h"
+
+class Company {
+
+private:
+    vector<Person*>  employee;
+    string name;
+
+public:
+    Company (string name);
+
+    void addEmployee(Person* p);
+    void removeEmployee(int age);
+
+    double getPayroll() const;
+
+    string toString() const;
+};
+#endif
+#+END_SRC
+
+
+
+
+* Test Company
+- add to baseclass Person
+#+BEGIN_SRC cpp
+double getWage()const { return 0.0;}
+#+END_SRC
+
+- test your classes with the following code
+
+#+BEGIN_SRC cpp
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+#include "person.h"
+#include "worker.h"
+#include "manager.h"
+#include "seller.h"
+
+#include "company.h"
+
+int main(int argc, char *argv[]) {
+
+	// 1. create some  Worker-, Seller-, Manager-Objects
+	Worker *worker1= new Worker(50, "WorkerMaxi", 20, 100.0);
+	Manager *manager1= new Manager(40, "ManagerMaxi", 10.0);
+	Seller *seller1= new Seller(40, "SellerMaxi", 40, 100.0, 10, 9.0);
+
+	// 2. create the company
+	Company* company1= new Company("IT unlimited");
+
+	// 3. add Employees
+	company1->addEmployee(worker1);
+	company1->addEmployee(manager1);
+	company1->addEmployee(seller1);
+
+	cout << "*** The Company *****************************************" << endl;
+	cout << company1->toString() << endl;
+
+
+	cout << "*** The payroll *****************************************" << endl;
+	double payroll= company1->getPayroll();
+
+	cout << "The Payroll is " ;
+	cout << fixed << setw(6) << setprecision(2)<< payroll << endl<<endl;
+
+
+	delete worker1;
+	delete seller1;
+	delete manager1;
+	delete company1;
+
+	return 0;
+}
+#+END_SRC
+
+
+
+- [X] Question: What is the calculated payroll?
+
+
+* Person - A baseclass becomes an abstract class
+- to fix the problem of calculating the wrong payroll you have to
+- define getWage() as a *pure virtual method*.
+- this changes baseclass Person to an *abstract class*.
+
+#+BEGIN_SRC cpp
+virtual double getWage() const =0;
+#+END_SRC cpp
+
+- note:
+  - you *cannot create objects from an abstract class*.
+  - abstract classes are *used to define a common interface for all subclasses*.
+  - the so called baseclass-pointer of an abstract baseclass is very often
+  - used *in container classes to hold many objects from different classes*.
+  - But keep in mind, these objects have to share the same abstract base class.
+
+
+- test your classes with the following code
+  - person.h, person.cpp
+  - worker.h, worker.cpp
+  - seller.h, seller.cpp
+  - manager.h, manager.cpp
+  - company.h, company.cpp
+  - main.cpp
+
+#+BEGIN_SRC cpp
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+#include "person.h"
+#include "worker.h"
+#include "cmanager.h"
+#include "seller.h"
+
+#include "company.h"
+
+int main(int argc, char *argv[]) {
+
+	// 1. create some  Worker-, Seller-, Manager-Objects
+	Worker *worker1= new Worker(50, "WorkerMaxi", 20, 100.0);
+	Manager *manager1= new Manager(40, "ManagerMaxi", 10.0);
+	Seller *seller1= new Seller(40, "SellerMaxi", 40, 100.0, 10, 9.0);
+
+	// 2. create the company
+	Company* company1= new Company("IT unlimited");
+
+	// 3. add Employees
+	company1->addEmployee(worker1);
+	company1->addEmployee(manager1);
+	company1->addEmployee(seller1);
+
+	cout << "*** The Company *****************************************" << endl;
+	cout << company1->toString() << endl;
+
+
+	cout << "*** The payroll *****************************************" << endl;
+	double payroll= company1->getPayroll();
+
+	cout << "The Payroll is " ;
+	cout << fixed << setw(6) << setprecision(2)<< payroll << endl<<endl;
+
+
+	delete worker1;
+	delete seller1;
+	delete manager1;
+	delete company1;
+
+	return 0;
+}
+#+END_SRC
+
+
+* DIY method: removeEmployee()
+- write and test method
+#+BEGIN_SRC cpp
+void removeEmployee(string name);
+#+END_SRC
+
+* DIY class Coder
+- create class Coder  as a subclass of Person.
+  - double getwage() const
+	 - double pricePerLine;
+	 - int numberOfLines;
+
+- add an object of Coder to company1
+- test your code

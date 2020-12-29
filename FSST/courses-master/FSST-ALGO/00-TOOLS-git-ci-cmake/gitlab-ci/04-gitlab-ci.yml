@@ -1,0 +1,41 @@
+# Run our first test inside CI
+# Make results of builds downloadable
+# Run jobs sequentially
+# Learning which Docker image to use
+
+image: alpine
+
+stages:
+   - compile
+   - test
+   - package
+
+compile:
+   stage: compile
+   script: cat file1.txt file2.txt > compiled.txt
+   artifacts:
+      paths:
+         - compiled.txt
+   expire_in: 20 minutes
+test:
+   stage: test
+   script: cat compiled.txt | grep -q 'Hello world'
+
+pack-gz:
+   stage: package
+   script: cat compiled.txt | gzip > packaged.gz
+   artifacts:
+   paths:
+      - packaged.gz
+
+pack-iso:
+   stage: package
+   before_script:
+      - echo "ipv6" >> /etc/modules
+      - apk update
+      - apk add xorriso
+   script:
+      - mkisofs -o ./packaged.iso ./compiled.txt
+   artifacts:
+   paths:
+      - packaged.iso

@@ -1,0 +1,53 @@
+# howto-hash.txt
+-------------------------------------------------------------------
+* Hinweis: Hash-Algorithmen <https://de.wikipedia.org/wiki/SHA-2>
+
+
+## Kleine Änderung im Original bewirkt große Änderung im Hash-Code
+$>echo "Hello" |sha256sum          
+66a045b452102c59d840ec097d59d9467e13a3f34f6494e539ffd32c1bb35f18  -
+
+$>echo "Hallo" |sha256sum             
+78fca7a0dbd0325b8f77333c82fb1ba2a5cbf9e90284bd24e91cb58ac1d6232f  -
+
+## Hash-code für readme.txt
+$>sha256sum readme.txt
+3849ce34f74ba0e03ffbd771fd8849dbd97453f3c5b1aa22ca8e351c5cf10b20 readme.txt
+
+
+
+## Beispiel: ubuntu-ISO hash-codes
+http://releases.ubuntu.com/16.04.1/SHA256SUMS
+4bcec83ef856c50c6866f3b0f3942e011104b5ecc6d955d1e7061faff86070d4 *ubuntu-16.04-desktop-amd64.iso
+b20b956b5f65dff3650b3ef4e758a78a2a87152101a04ea1804f993d8e551ceb *ubuntu-16.04-desktop-i386.iso
+b8b172cbdf04f5ff8adc8c2c1b4007ccf66f00fc6a324a6da6eba67de71746f6 *ubuntu-16.04-server-amd64.img
+b8b172cbdf04f5ff8adc8c2c1b4007ccf66f00fc6a324a6da6eba67de71746f6 *ubuntu-16.04-server-amd64.iso
+8d52f3127f2b7ffa97698913b722e3219187476a9b936055d737f3e00aecd24d *ubuntu-16.04-server-i386.img
+8d52f3127f2b7ffa97698913b722e3219187476a9b936055d737f3e00aecd24d *ubuntu-16.04-server-i386.iso
+dc7dee086faabc9553d5ff8ff1b490a7f85c379f49de20c076f11fb6ac7c0f34 *ubuntu-16.04.1-desktop-amd64.iso
+cea23ae1ce57e7ee2495b74cc232358523d8d0a754a3aa3dd7d8f9d55408f5ae *ubuntu-16.04.1-desktop-i386.iso
+29a8b9009509b39d542ecb229787cdf48f05e739a932289de9e9858d7c487c80 *ubuntu-16.04.1-server-amd64.img
+29a8b9009509b39d542ecb229787cdf48f05e739a932289de9e9858d7c487c80 *ubuntu-16.04.1-server-amd64.iso
+62fc3e810c7631fbbd45d9c960ec749fc1eb66e5c56039423e3e94a5391a437a *ubuntu-16.04.1-server-i386.img
+62fc3e810c7631fbbd45d9c960ec749fc1eb66e5c56039423e3e94a5391a437a *ubuntu-16.04.1-server-i386.iso
+
+
+
+## openssl: file.txt unterschreiben und anschliessend verifizieren,
+##			d.h. a) ein signature.sign mit dem privatekey erzeugen
+##          b) signature.sign mit dem publickey verfizieren
+-------------------------------------------------------------------
+
+### To sign a file using SHA-256 with binary file output:
+openssl dgst -sha256 -sign privatekey.pem -out signature.sign file.txt
+
+### To verify a signature:
+openssl dgst -sha256 -verify publickey.pem \
+      -signature signature.sign file.txt
+
+
+
+### To create a hex-encoded message digest of a file:
+openssl dgst -sha256 -hex file.txt
+
+

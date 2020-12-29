@@ -1,0 +1,541 @@
+* shell Scripting
+- [[https://linuxconfig.org/bash-scripting-tutorial-for-beginners][bash-scripting]]
+
+
+* Bash Shell Scripting Definition
+- bash: command language interpreter
+- shell:  macro processor which allows for an interactive or non-interactive command execution.
+- Scripting: automatic commands execution 
+
+- for system administrator
+
+
+* first commands
+- erstellen Sie die Datei script-01.sh (Kopieren Sie den Text unten ohne die Zeilen #+BEGIN_SRC ... und #+END_SRC ...)
+- setzen Sie das execute-Recht: chmod u+x script-01.sh
+- starten Sie das Script mit: ./script-01.sh
+
+#+BEGIN_SRC bash
+#!/bin/bash
+echo "********************"
+echo "*** script-01.sh ***"
+echo "********************"
+echo ""
+date
+cal
+pwd
+ls -l
+echo $SHELL
+echo $USER
+#+END_SRC
+
+
+
+* File Names and Permissions
+- erzeugen und starten Sie die folgende Datei: script-02.sh
+
+#+BEGIN_SRC bash
+#/bin/bash
+echo "********************"
+echo "*** script-02.sh ***"
+echo "********************"
+echo ""
+cd
+mkdir bash-scripting
+cd bash-scripting
+pwd
+cd
+pwd
+cd /
+pwd
+ls
+cd ~/bash-scripting
+pwd
+cp /etc/passwd .
+ls -l
+cat passwd
+more passwd
+rm passwd
+#+END_SRC
+
+
+
+* Simple Backup Bash Shell Script
+- erzeugen und starten Sie die folgende Datei: script-02-backup.sh
+
+#+BEGIN_SRC bash
+#!/bin/bash
+#/bin/bash
+echo "***************************"
+echo "*** script-03-backup.sh ***"
+echo "***************************"
+echo ""
+tar -czf /tmp/myhome_directory.tar.gz /home/NAME
+#+END_SRC
+
+
+* Variablen
+- script-04-welcome.sh
+- script-05-backup.sh
+
+#+BEGIN_SRC bash
+#!/bin/bash
+echo "***************************"
+echo "*** script-04-welcome.sh ***"
+echo "***************************"
+echo ""
+
+greeting="Welcome"
+user=$(whoami)
+day=$(date +%A)
+
+echo "$greeting back $user! Today is $day, which is the best day of the entire week!"
+echo "Your Bash shell version is: $BASH_VERSION. Enjoy!"
+#+END_SRC
+
+
+
+#+BEGIN_SRC bash
+#!/bin/bash
+# This bash script is used to backup a user's home directory to /tmp/.
+
+echo "***************************"
+echo "*** script-05-backup.sh ***"
+echo "***************************"
+echo ""
+
+user=$(whoami)
+input=/home/$user
+output=/tmp/${user}_home_$(date +%Y-%m-%d_%H%M%S).tar.gz
+
+tar -czf $output $input 2> /dev/null
+echo "Backup of $input completed! Details about the output backup file:"
+ls -l $output
+#+END_SRC
+
+
+
+* Input, Output and Error Redirections
+
+#+BEGIN_SRC 
+> ..... stdout
+2> .... stderr
+&> .... both
+#+END_SRC
+
+
+
+
+* Functions
+
+#+BEGIN_SRC bash
+#!/bin/bash
+# This bash script is used to backup a user's home directory to /tmp/.
+echo "***************************"
+echo "*** script-06-backup.sh ***"
+echo "***************************"
+echo ""
+
+user=$(whoami)
+input=/home/$user
+output=/tmp/${user}_home_$(date +%Y-%m-%d_%H%M%S).tar.gz
+
+# The function total_files reports a total number of files for a given directory. 
+function total_files {
+        find $1 -type f | wc -l
+}
+
+# The function total_directories reports a total number of directories
+# for a given directory. 
+function total_directories {
+        find $1 -type d | wc -l
+}
+
+tar -czf $output $input 2> /dev/null
+
+echo -n "Files to be included:"
+total_files $input
+echo -n "Directories to be included:"
+total_directories $input
+
+echo "Backup of $input completed!"
+
+echo "Details about the output backup file:"
+ls -l $output
+#+END_SRC
+
+
+
+
+
+* Numeric and String Comparisons
+- script-07-compare.sh
+
+#+BEGIN_SRC bash
+
+#!/bin/bash
+echo "***************************"
+echo "*** script-07-compare.sh ***"
+echo "***************************"
+echo ""
+
+string_a="UNIX"
+string_b="GNU"
+
+echo "Are $string_a and $string_b strings equal?"
+[ $string_a = $string_b ]
+echo $?
+
+num_a=100
+num_b=100
+
+echo "Is $num_a equal to $num_b ?" 
+[ $num_a -eq $num_b ]
+echo $?
+
+#+END_SRC
+
+
+
+- $? ... result of prev. command
+
+- summary comparison
+
+#+BEGIN_SRC example
+Description | 	Numeric Comparison  | 	String Comparison   |
+-------------------------------------------------------------
+less than   |   	-lt 	        |           <           |
+greater than|    	-gt 	        |           >           |
+equal 	    |       -eq             |       	=           |
+not equal   | 	    -ne 	        |           !=          |
+less or eq. |    	-le 	        |           N/A         |
+greater or equal 	-ge             |        	N/A         |
+-------------------------------------------------------------
+Shell comparison example: 	
+[ 100 -eq 50 ]; echo $? 	[ "GNU" = "UNIX" ]; echo $?
+#+END_SRC
+
+
+* Conditional Statements
+- script-08-if-else.sh
+- script-09-backup.sh
+
+#+BEGIN_SRC bash
+#!/bin/bash
+echo "****************************"
+echo "*** script-08-if-else.sh ***"
+echo "****************************"
+echo ""
+
+num_a=400
+num_b=200
+
+if [ $num_a -lt $num_b ]; then
+    echo "$num_a is less than $num_b!"
+else
+    echo "$num_a is greater than $num_b!"
+fi
+
+#+END_SRC
+
+
+- script-09-backup.sh
+
+#+BEGIN_SRC bash
+#!/bin/bash
+echo "***************************"
+echo "*** script-09-backup.sh ***"
+echo "***************************"
+echo ""
+
+user=$(whoami)
+input=/home/$user
+output=/tmp/${user}_home_$(date +%Y-%m-%d_%H%M%S).tar.gz
+
+function total_files {
+        find $1 -type f | wc -l
+}
+
+function total_directories {
+        find $1 -type d | wc -l
+}
+
+function total_archived_directories {
+        tar -tzf $1 | grep  /$ | wc -l
+}
+
+function total_archived_files {
+        tar -tzf $1 | grep -v /$ | wc -l
+}
+
+tar -czf $output $input 2> /dev/null
+
+src_files=$( total_files $input )
+src_directories=$( total_directories $input )
+
+arch_files=$( total_archived_files $output )
+arch_directories=$( total_archived_directories $output )
+
+echo "Files to be included: $src_files"
+echo "Directories to be included: $src_directories"
+echo "Files archived: $arch_files"
+echo "Directories archived: $arch_directories"
+
+if [ $src_files -eq $arch_files ]; then
+        echo "Backup of $input completed!"
+        echo "Details about the output backup file:"
+        ls -l $output
+else
+        echo "Backup of $input failed!"
+fi
+#+END_SRC
+
+
+
+
+
+* Positional Parameters
+- script-10-parameter.sh
+
+#+BEGIN_SRC bash
+#!/bin/bash
+echo "***************************"
+echo "*** script-10-parameter.sh ***"
+echo "***************************"
+echo ""
+
+echo $1 $2 $4
+echo $#
+echo $*
+#+END_SRC
+
+liefert folg.
+#+BEGIN_SRC example
+./script-10-parameter.sh arg1 arg2 arg3 arg4 arg5
+arg1 arg2 arg4
+5
+arg1 arg2 arg3 arg4 arg5
+#+END_SRC
+
+
+* Argumente/Parameter
+- script-11-backup.sh
+
+#+BEGIN_SRC bash
+#!/bin/bash
+# This bash script is used to backup a user's home directory to /tmp/.
+echo "***************************"
+echo "*** script-11-backup.sh ***"
+echo "***************************"
+echo ""
+
+
+if [ -z $1 ]; then 
+        # wenn Argument $1 leer ist, dann ermittle den user
+        user=$(whoami) 
+else
+        if [ ! -d "/home/$1" ]; then
+                echo "Requested $1 user home directory doesn't exist."     
+                exit 1
+        fi
+        user=$1
+fi 
+
+input=/home/$user              
+output=/tmp/${user}_home_$(date +%Y-%m-%d_%H%M%S).tar.gz
+
+function total_files {         
+        find $1 -type f | wc -l                                               
+}
+function total_directories {   
+        find $1 -type d | wc -l                        
+} 
+function total_archived_directories { 
+        tar -tzf $1 | grep  /$ | wc -l
+}
+function total_archived_files {
+        tar -tzf $1 | grep -v /$ | wc -l               
+} 
+
+tar -czf $output $input 2> /dev/null
+
+src_files=$( total_files $input )
+src_directories=$( total_directories $input )
+arch_files=$( total_archived_files $output )
+arch_directories=$( total_archived_directories $output )
+
+echo "Files to be included: $src_files"
+echo "Directories to be included: $src_directories"
+echo "Files archived: $arch_files"
+echo "Directories archived: $arch_directories"
+
+if [ $src_files -eq $arch_files ]; then
+        echo "Backup of $input completed!"
+        echo "Details about the output backup file:"
+        ls -l $output
+else
+        echo "Backup of $input failed!"
+fi
+#+END_SRC
+
+Ihr aktuelles Home-Verzeichnis sichern Sie mit
+#+BEGIN_SRC bash
+./script-11-backup.sh
+#+END_SRC
+
+Das Verzeichnis des users informatik sichern Sie mit
+#+BEGIN_SRC bash
+./script-11-backup.sh informatik
+#+END_SRC
+
+Sollte es den User informatik nicht geben, wird auch dies richtg erkannt.
+
+
+
+* Bash Loops
+
+- for loop
+
+#+BEGIN_SRC bash
+#!/bin/bash
+
+for i in 1 2 3; do
+    echo $i
+done
+#+END_SRC
+
+- while loop
+
+#+BEGIN_SRC bash
+#!/bin/bash
+  
+counter=0
+while [ $counter -lt 3 ]; do
+    let counter+=1
+    echo $counter
+done
+#+END_SRC
+
+
+- until loop
+
+#+BEGIN_SRC bash
+#!/bin/bash
+  
+counter=6
+until [ $counter -lt 3 ]; do
+    let counter-=1   # let evaluates math. expression and stores the result
+    echo $counter
+done
+#+END_SRC
+
+
+
+* Loops
+- script-12-backup.sh
+
+#+BEGIN_SRC bash
+#!/bin/bash    
+# This bash script is used to backup a user's home directory to /tmp/.
+echo "***************************"
+echo "*** script-12-backup.sh ***"
+echo "***************************"
+echo ""
+
+function backup {
+    
+    if [ -z $1 ]; then
+    	user=$(whoami)
+    else 
+    	if [ ! -d "/home/$1" ]; then
+    		echo "Requested $1 user home directory doesn't exist."
+    		exit 1
+    	fi
+    	user=$1
+    fi 
+    
+    input=/home/$user
+    output=/tmp/${user}_home_$(date +%Y-%m-%d_%H%M%S).tar.gz
+    
+    function total_files {
+    	find $1 -type f | wc -l
+    }
+    
+    function total_directories {
+    	find $1 -type d | wc -l
+    }
+    
+    function total_archived_directories {
+    	tar -tzf $1 | grep  /$ | wc -l
+    }
+    
+    function total_archived_files {
+    	tar -tzf $1 | grep -v /$ | wc -l
+    }
+    
+    tar -czf $output $input 2> /dev/null
+    
+    src_files=$( total_files $input )
+    src_directories=$( total_directories $input )
+    
+    arch_files=$( total_archived_files $output )
+    arch_directories=$( total_archived_directories $output )
+    
+    echo "########## $user ##########"
+    echo "Files to be included: $src_files"
+    echo "Directories to be included: $src_directories"
+    echo "Files archived: $arch_files"
+    echo "Directories archived: $arch_directories"
+    
+    if [ $src_files -eq $arch_files ]; then
+    	echo "Backup of $input completed!"
+    	echo "Details about the output backup file:"
+    	ls -l $output
+    else
+    	echo "Backup of $input failed!"
+    fi
+}
+    
+for directory in $*; do
+    backup $directory 
+done;
+#+END_SRC
+
+
+- sehen Sie hier einen möglichen Aufruf
+
+#+BEGIN_SRC example
+$ ./script-12-backup.sh linuxconfig damian
+########## linuxconfig ##########
+Files to be included: 27
+Directories to be included: 4
+Files archived: 27
+Directories archived: 4
+Backup of /home/linuxconfig completed!
+Details about the output backup file:
+-rw-r--r-- 1 linuxconfig linuxconfig 236173 Oct 23 10:22 /tmp/linuxconfig_home_2017-10-23_102229.tar.gz
+########## damian ##########
+Files to be included: 3
+Directories to be included: 1
+Files archived: 3
+Directories archived: 1
+Backup of /home/damian completed!
+Details about the output backup file:
+-rw-r--r-- 1 linuxconfig linuxconfig 2140 Oct 23 10:22 /tmp/damian_home_2017-10-23_102230.tar.gz
+#+END_SRC
+
+
+
+
+* Übung: script-12-backup.sh  verbessern
+
+The current script does not check for the existence of user directories 
+prior to the backup function execution. This can lead to unforeseen consequences. 
+Do you think that you would be able to create your own improved copy of the 
+backup script by defining a separate loop to check the existence of all 
+user directories before the backup for loop is reached? 
+Your for loop will exit the script's execution if any of the user directories 
+on the supplied list does not exist.
+
+* links
+[[https://www.gnu.org/software/bash/manual/html_node/][bash manual]]

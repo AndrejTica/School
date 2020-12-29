@@ -1,0 +1,87 @@
+MEILENSTEIN-CPP-stack-vector.txt
+--------------------------------------------------------------------------
+
+Erstelle Die Klasse Stack (stack.h und stack.cpp) zur Speicherung von 
+int-Werten unter Verwendung der Klasse vector aus der STL.
+
+Folgendes Programm soll funktionieren:
+....
+#include "stack.h"
+
+int main(){
+	Stack stack;
+	
+	for (int i=0; i < 10; i++)
+		stack.push(i);
+
+	cout << "Der Stackinhalt mittels toString()" << endl;
+	cout << stack.toString();
+	
+	cout << "Der Stackinhalt mittels top() und pop()" << endl; 		
+	while (!stack.isEmpty()){
+		cout << stack.top();
+		stack.pop();
+	}
+
+	return 0;
+}
+
+
+Hinweis: Die Klasse vector aus der STL
+#include <string>
+#include <vector>
+#include <iostream>
+using namespace std;
+
+int main(){
+    vector<int> iVector;
+    vector<string> sVector;
+
+    // Iterator, um auf vector-elemente
+    // lesend und schreibend zugreifen zu können
+    vector<int>::iterator it;
+    vector<string>::iterator st;
+
+    // Iterator, um auf vector-elemente
+    // NUR lesend zugreifen zu können
+    vector<int>::const_iterator cit;
+    vector<string>::const_iterator cst;
+
+    iVector.push_back(1);
+    iVector.push_back(2);
+    iVector.push_back(3);
+
+    sVector.push_back("eins");
+    sVector.push_back("zwei");
+    sVector.push_back("drei");
+
+    cout << "\nSTL: vector Beispiele .............." << endl<<endl;
+
+    // Elementweiser Zugriff
+    cout << iVector[0] << endl;
+    cout << sVector[0] << endl;
+
+    for (it= iVector.begin(); it!= iVector.end(); it++)
+        cout << *it << endl;
+
+    for (st= sVector.begin(); st!= sVector.end(); st++)
+        cout << *st << endl;
+
+    cout<< "Size von SVector: " << sVector.size() << endl;
+
+    // löschen
+    st= sVector.begin();
+    st++;
+    sVector.erase(st);
+    cout<< "Size von SVector (nach erase): " << sVector.size() << endl;
+
+    // const Iterator demonstration
+    for (cst= sVector.begin(); cst!= sVector.end(); cst++)
+        cout << *cst << endl;
+
+
+	// Das letzte Element wird gelöscht
+	sVector.pop_back(); 
+
+    return 0;
+}

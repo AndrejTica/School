@@ -1,0 +1,76 @@
+﻿WISSEN/TEST
+-------------------------------------------------------------------
+01-ALGORITHMEN
+
+
+1. Sie kennen die versch. Typen von Sortieralgorithmen:
+	A) Internes Sortieren		B) Externes Sortieren
+	C) Vergleichendes Sortieren	D) Stabiles Sortieren
+	
+	Fügen Sie A,B,C,D richtig ein:
+	_________ Sortieren findet innerhalb des RAMs statt. Dabei werden 
+		meist Daten an das Programm geschickt und werden sortiert 
+		wieder ausgegeben.
+	 
+	_________ Sortieren - hier werden externe Speicherquellen 
+		(Festplatte, Streamer, Tape ...) verwendet. Während des 
+		externen Sortierens werden zahlreiche Lese- und 
+		Schreibzugriffe auf externe Quellen ausgeführt. 
+		Externes Sortieren wird genutzt, wenn die Daten zum 
+		Sortieren nicht auf einmal im RAM verarbeitet werden können. 
+	
+	_________ Sortieren - dabei wird häufig ein Schlüssel zum 
+		Sortieren verwendet. Dieser Schlüssel besteht meist nur aus
+		einem kleinen Teil der Daten, der zum Auffinden der 
+		gesamten Daten dient. 
+	
+	_________ - stabil wird sortiert, wenn z.B. eine Arbeitnehmerliste,
+		die nach Alphabet sortiert ist, nach Gehalt sortiert wird, 
+		ohne dass dabei die alphabetische Liste durcheinander gerät.
+
+
+2. Wie nennt man diesen Algorithmus
+	Suche das kleinste Element im Array und vertausche es mit dem ersten. 
+	Suche das nächste kleine Element und vertausche es mit dem zweiten. 
+	...
+	
+	
+3. Der Vorteil von "_________ Sort" liegt darin, dass jedes Element höchstens 
+	einmal bewegt wird. 
+
+
+4. Gegeben ist folg. Programmauszug für das Sortieren in einem Int-Array
+	namens a[]. Die Variable anzahl enthaelt die Anzahl der Arrayelemente:
+
+    int help, fertig, i;
+	fertig=0;
+	while (fertig = 0){
+	   fertig= 1;
+	   for (i=0; i< anzahl; i++) {
+	      if (a[i] > a[i+1]) {
+	          a[i]= help;
+	          a[i]= a[i+1];
+	          a[i+1]= help;
+	          fertig= 1;
+	      }
+	   }
+	}
+	
+	Es befinden sich 4 Fehler im Programm. Welche?
+
+
+5. Welche Sortierverfahren haben ein quadrtisches Laufzeitverhalten.
+
+6. Erstellen Sie einen rekursiven Algorithmus für:
+	X hoch n
+	n fakultaet
+	
+7. qsort:partition
+	Beschreibe das Arbeiten der Funktion partition().
+	 
+8. qsort:partition
+	Beschreibe das Arbeiten der Funktion partition().	
+	wenn die Werte im Array bereits 
+	a) aufsteigend 
+	b) absteigend
+	sortiert sind?

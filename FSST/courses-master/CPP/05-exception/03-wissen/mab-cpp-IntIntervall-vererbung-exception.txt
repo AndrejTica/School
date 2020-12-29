@@ -1,0 +1,61 @@
+﻿mab-intervall: new/delete, vererbung, exception
+-------------------------------------------------------------------
+
+#include <iostream>
+using namespace std;
+// ------------------ Basis - Klasse
+class IntArray{
+    private: 
+        int size; 
+    protected:
+        int* a;
+    public: 
+        IntArray(){
+                size=100;
+                a= new int [size];
+        }
+        IntArray(int len){
+                size=len;
+                a= new int [size];
+        }
+        ~IntArray(){
+                ?????????????;
+        }
+};  
+
+// ------------------ Unter - Klasse
+class IntIntervall : public IntArray {
+    private:
+        int l; int r;
+    public:
+        IntIntervall(int left, int right){
+			??????????
+		}
+		void setAt(int i, int value) ???????? {
+            ????????????
+        }        
+       string toString() const{
+		     ??????????
+       }
+};
+
+// ------------------ Test - Programm
+int main(int argc, char *argv[]) {
+  IntIntervall iv(-10,10);
+
+  for (int i=-10; i<=10; i++)
+    iv.setAt(i, i);
+
+  iv.setAt(-10,-1000);
+  iv.setAt(10,1000);
+	
+  try{
+	iv.setAt(-9999, 5);
+  }catch(????????????? ex){
+	cerr << ex.toString() << endl;
+  }
+	
+  cout << iv.toString() << endl;
+  
+  return 0;
+}

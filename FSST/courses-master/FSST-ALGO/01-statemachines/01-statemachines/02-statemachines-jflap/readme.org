@@ -1,0 +1,22 @@
+* Zustands-Automaten
+
+* Ziele
+- Zustandsdiagramme erstellen können
+- Finite Automaten (DEA), Mealy- und Moore-Machine
+- Studiere die Beispiele (ungerade,wortfolge,halt)
+- Löse die RDP-Aufgaben: Bezeichner und Email	
+
+
+* 01-JFLAP-ungerade-wortfolge-halt (demo)
+- JFLAP starten und erklären
+- *.c mit //ENTER CODE here
+- Im pdf sind die Lösungen
+
+
+* (Code)
+- RDP-AUFGABE_01_email-akzeptor/email.c
+- RDP-AUFGABE_02_bezeichner-akzeptor/bezeichner.c
+
+
+* Lösung
+- FSST-ALGO/02-patternmatching_statemachines/02-statemachines-jflap/01-AUTOMATEN-MUSTERERKENNUNG_ungerade-wortfolge-halt-bezeichner-email-SOLVED.odt

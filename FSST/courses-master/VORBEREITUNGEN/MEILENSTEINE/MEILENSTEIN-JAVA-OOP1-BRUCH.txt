@@ -1,0 +1,71 @@
+﻿NAME:											KLASSE:			DATUM:
+=============================================================================
+
+AUFGABE    : (   ) OOP1-BRUCH
+-----------------------------------------------------------------------------
+	Erstellen Sie die Klasse Bruch, sodass folgendes Programm funktioniert:
+	
+		Bruch a= new Bruch(3.0, 2.0);
+		Bruch b= new Bruch(a);
+		Bruch c;
+	
+		c= a.mul(b);	
+		System.out.println ("c= " + c.toString());
+
+
+	Die Ausgabe muss dann wie folgt aussehen:
+	c= [6.0 / 4.0]
+		
+ANTWORT:
+	public class Bruch{ 
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	}

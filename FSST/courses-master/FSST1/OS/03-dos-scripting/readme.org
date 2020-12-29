@@ -1,0 +1,6 @@
+* ÜBUNG: DOS und Linux scripting
+
+* Aufgabe 1: 01-dos-scripting
+1. Studieren Sie die Datei 01-readme-dos-scripting.pdf
+2. Studieren Sie die Datei meine-aufgaben.txt
+3. Vervollständigen Sie und testen Sie die Batch-Datei meine-aufgaben.bat

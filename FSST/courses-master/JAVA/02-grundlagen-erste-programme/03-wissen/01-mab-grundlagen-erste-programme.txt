@@ -1,0 +1,7 @@
+﻿MAB: grundlagen-erste-programme.txt
+----------------------------------------------------------------
+
+TODO
+Was gibt das Programm aus
+
+Gegeben folg. Formel 

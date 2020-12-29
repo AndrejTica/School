@@ -1,0 +1,142 @@
+﻿========================================================================
+DA-Teilbeurteilungen
+========================================================================
+A.Hofmann, 01.2014
+
+
+------------------------------------------------------------------------
+01-DA-Antrag_DA-Themenfindung-okt
+------------------------------------------------------------------------
+	Wie oft musste der Antrag editiert werden?
+	Genauigkeit
+	Formulierung
+	Schnelligkeit der Themenfindung, Aufgabeneinteilung
+	 
+------------------------------------------------------------------------
+02-Review1-nov
+------------------------------------------------------------------------
+	Die Dokumentation:
+		Wer ist Doku-Beauftragter?
+		Werden die Richtlinien/Dokumentvorlagen verwendet?
+		Gibt es bereits eine ausdruckbare(gemeinsame) Dokumentation?
+		
+		Projekttagebuch
+		Besprechungs-Protokolle
+		Pflichtenheft
+		Fachteil: 
+			Inhaltsverzeichnis
+				Teil A: Theoretische vertiefende Grundlagen
+				Teil B: Bezug zum Produkt
+			Literaturverzeichnis, Zitierregeln
+		
+	Das Produkt: 
+		SOLL-IST-Vergleich (s. Pflichtenheft, Netz/Terminplan)
+			Was muss geändert werden?
+		Probleme und Lösungsansätze
+		
+	
+------------------------------------------------------------------------
+03-Praesentation1-dez
+------------------------------------------------------------------------
+	Beurteilungskriterien: 
+		AV-WALTERS-Kriterien_Praesentation.pdf
+
+	
+------------------------------------------------------------------------
+04-Review2-jan
+------------------------------------------------------------------------
+	wie Review 1
+
+	Fachteil:
+		Erste Kapitel: Einführung, ...
+
+	HTL-innovativ: Erfassung bei www.htl-innovativ.at
+		Gruppenfoto
+		4-stellige Projektnummer
+		
+------------------------------------------------------------------------
+05-Praesentation2_tdot-jan
+------------------------------------------------------------------------
+	Engagement bei der Vorbereitung
+	Engagement bei der Präsentation
+	
+
+------------------------------------------------------------------------
+06-Review3-maerz
+------------------------------------------------------------------------
+	wie Review 2
+
+	Fachteil: Bezug zum Produkt
+	
+	
+------------------------------------------------------------------------
+07-Review4-april
+------------------------------------------------------------------------
+	wie Review 3
+	
+	V1.0 zur Kontrolle abgeben:
+		Produkt
+		DA (inkl Fachteile)
+		
+	Matura: Schwerpunktfach 1. Frage 
+		
+
+
+------------------------------------------------------------------------
+08-Präsentation3_abschluss-mai
+------------------------------------------------------------------------
+s. Walters
+	AV-WALTERS-Kriterien_Praesentation.pdf
+
+
+------------------------------------------------------------------------
+09-Gesamtbeurteilung-mai
+------------------------------------------------------------------------
+AV-WALTERS-DA_Beurteilung.xls
+
+
+=======================================================================
+Kriterien allgemein
+=======================================================================
+siehe Walters: 
+	AV-WALTERS-BeurteilungskriterienDiplomarbeit.pdf
+	AV-WALTERS-DA_Beurteilung.xls
+	AV-WALTERS-Kriterien_Praesentation.pdf
+		
+insbes.:
+* Selbständigkeit
+* Genauigkeit in der Ausführung
+* Formulierungen
+* Fachlich analytisches Vermögen
+* Fachlich inhaltliche Kompetenz
+
+* Strukturiertes/planerisches Vorgehen
+* Zuverlässigkeit/Termintreue
+* Weitblick
+* Einsatz v. modernen Tools
+* Minimalist?
+
+
+=======================================================================
+Fachteil-Kriterein
+=======================================================================
+
+5 wenn, ....
+
+4 wenn, nur einen Aneinanderreihung von Zitaten, die
+in sich NICHT einmal AUFBAUEN (roter Faden, Begriffe
+müssen dem Leser bekannt gemacht werden)
+KEINE dazupassenden Beispiele
+
+3 wenn, nur einen Aneinanderreihung von Zitaten, die
+in sich aber aufbauend (roter Faden, Begriffe
+müssen dem Leser bekannt gemacht werden)
+KEINE aus dem eigenen PROJEKT dazupassenden Beispiele
+
+2 wenn, nur einen Aneinanderreihung von Zitaten, die
+in sich AUFBAUEND(roter Faden, Begriffe
+müssen dem Leser bekannt gemacht werden)
+aus dem PROJEKT dazupassende Beispiele
+
+1 wie 2 aber mit
+DEUTLICHEN eigenständigen Texten.

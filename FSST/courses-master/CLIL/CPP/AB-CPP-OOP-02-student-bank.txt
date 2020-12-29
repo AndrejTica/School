@@ -1,0 +1,630 @@
+================================================================================
+AB-CPP-OOP-02-student-bank.txt
+================================================================================
+
+Topic: 
+	Association/Aggregation/HasA - Relationship between classes
+
+
+
+================================================================================
+OOP-student (cpp)
+================================================================================
+	Create the classes Student, SchoolClass so that the following code works.
+
+	...
+	Student maxi("Max Musterman", 70.0);
+	Student moritz("Moritz Mustermann", 60.0);
+	...
+	
+	SchoolClass schoolclass("1AHELI");
+	schoolclass.add(maxi);
+	schoolclass.add(moritz);
+	...
+	
+	// print class name and all associated students
+	cout << schoolclass.toString() << endl;
+
+	
+	Student massiest= schoolclass.getMassiest();
+
+	// print name and weight
+	cout << massiest.toString() << endl;
+	...
+
+
+SOLUTION: 
+	class Student:
+		...
+		constructor
+		toString()
+		getWeight()
+ 
+	class ClassRoom
+		...
+		constructor
+		add()
+		toString()
+		getMassiest()
+
+
+
+		
+================================================================================
+OOP-bank (cpp)
+================================================================================
+
+Account:
+	Create a class Account with the following structure.
+	Member: 
+		int m_number; 
+		string m_owner; 
+		double m_amount; 
+	Methods (consider the parameters and return values): 
+		Constructor / Destructor 
+		Getter and setter methods
+		toString() 
+		withdraw() 
+		deposit() 
+
+	Write a short program for testing the class.
+
+Bank:
+	Write a class Bank and add Account as class member: 
+		string m_name; 
+		Account* m_accounts; 
+
+	Methods (consider the parameters and return values): 
+		Constructor / Destructor 
+		Getter and setter methods
+		toString() 
+		addAccount(), delAccount()
+		addInterest() 
+		charges() 
+
+
+BankingSystem:
+	Create a main program for testing the classes Account and Bank:
+
+	...
+	Bank myB("Hofmann Unlimited"); 
+
+	Account a1("Anton Hofmann",1000.0); 
+	Account a2("Beta Hofmann", 1000.0); 
+	Account a3("Gamma Hofmann",1000.0); 
+
+	myB.addAccount(a1); 
+	myB.addAccount(a2); 
+	myB.addAccount(a3);
+
+	cout << "The Bank: BEFORE calculating the charges *********" << endl; 
+	cout << myB.toString() << endl; 
+
+	myB.charges(10.0); 
+	cout << "The Bank: AFTER calculating the charges *********" << endl; 
+	cout << myB.toString() << endl;
+
+	myB.addInterest(5.0); 
+	cout << "The Bank: AFTER adding the interest *********" << endl; 
+	cout << myB.toString()  << endl; 
+
+	myB.delAccount(a3); 
+	cout << "The Bank: AFTER deleting a3 (Gamma Hofmann) *********" << endl; 
+	cout << myB.toString() << endl << endl; 
+	...
+    
+
+
+================================================================================
+OOP-Bank-friend (cpp)
+================================================================================
+Topic:
+	a) Friend Classes
+	b) static member
+
+a)	The class Account should implement its constructors as private methods, so 
+	that no one can create Account objects.
+
+	But the class Account declares class Bank as a friend class. This gives the 
+	Bank class access to the private methods of class Account.
+
+	friend class Bank;
+
+	This means that ONLY class bank is able to create Account objects.
+
+b)	Class Account uses a static member to get for each Account obejct a new and
+	unique member accountNumber
+
+	static int nextAccountNumber;
+
+c)	Take care if you use new and delete for creation of Account objects.
+	Especially take a look at delAccount() and the destructor of class bank.
+ 
+
+Account, Bank:
+	create a new project: bankingSystem-friend
+	copy and adapt Account, Bank according the above description.
+
+BankingSystem:
+	Create a main program for testing the classes Account and Bank:
+
+
+	#include "account.h"
+	#include "bank.h"
+	...
+	Bank *myBank;
+	myBank = new Bank("Hofmann unlimited");
+
+	cout << "\n\n"<<endl;
+	cout << "-------------------------------------------------"<<endl;
+	cout << " TEST: STATIC members "<<endl;
+	cout << "-------------------------------------------------"<<endl;
+
+	myBank->addAccount("Anton Hofmann", 100.0);
+	myBank->addAccount("Beta Hofmann", 200.0);
+	myBank->addAccount("Gamma Hofmann",300.0);
+	cout << myBank->toString() << endl;
+
+	cout << "\n\n"<<endl;
+	cout << ".... delete Account: Anton Hofmann and add Account: Omega Hofmann";
+	cout << " Look at the account number!!!"<<endl;
+
+	myBank->delAccount("Anton Hofmann");
+	myBank->addAccount("Omega Hofmann", 900.0);
+
+	cout << myBank->toString() << endl;
+	cout << endl;
+
+
+	cout << "\n\n"<<endl;
+	cout << "-------------------------------------------------"<<endl;
+	cout << " TEST: FRIEND class "<<endl;
+	cout << "-------------------------------------------------"<<endl;
+	cout << " ONLY class bank can create new Account-objects" <<endl;
+
+	Account k1("Anton Hofmann", 123.0); 	// error, because cons is private
+	
+	int accountNr= myBank->addAccount("Anton Hofmann", 100.0);
+	myBank->getAccount(accountNr).deposit(9000.0);
+
+	cout << myBank->toString() << endl;
+	cout << endl;
+
+
+	delete myBank;
+
+    return 0;
+}
+
+
+
+
+================================================================================
+Bank-streams: Logging
+==============================================================================
+a) Every bank transaction has to be logged.
+b) This Log-File can be used for backup/recovery.
+
+
+add a) Every bank transaction has to be logged.
+------------------------------------------------------------------------------
+implement in class Bank:
+	Bank(string name);
+		
+	void setLogging(bool);
+		// creates logfile
+		// Filename for Logging is BANK_name_DATE.log
+		// (BANK-Hofmann-unlimited-2017-12-24-11-20.log)
+	
+	
+	~Bank();
+		// closes logfile
+	
+	void reset();
+		// delete all accounts and 
+		// reset static Account::nextAccountNumber;
+
+		
+	int addAccount(string owner, double value);
+		// write to logfile:
+		// ADD:owner:value
+		
+		
+	void delAccount(string owner);
+		// write to logfile:
+		// DEL:owner
+		
+	
+	Account& getAccount(int nr);
+	
+	void charges(double value);
+		// write to logfile:
+		// FORALL:MINUS:value
+		
+
+	void addInterest(double value);
+		// write to logfile:
+		// FORALL:PLUS:value
+
+	void deposit(string owner, value);
+		// write to file
+		// FORONE:owner:PLUS:value
+		
+	void withdraw(string owner, value);
+		// write to file
+		// FORONE:owner:MINUS:value
+		
+	double getSumDeposits(); // returns sum of all accounts
+
+	string toString();
+	
+
+Test with this code:
+-------------------------
+// ahofmann, 2017
+// main.cpp
+// bank logging: write logfile
+
+#include <iostream>
+using namespace std;
+
+#include "bank.h"
+ 
+int main(){
+	Bank* myBank;
+	myBank = new Bank("Hofmann-unlimited");
+	myBank->setLogging(true);
+	myBank->reset();
+
+	myBank->addAccount("Anton Hofmann", 100.0);
+	myBank->addAccount("Beta Hofmann", 200.0);
+	myBank->addAccount("Gamma Hofmann",300.0);
+
+	myBank->delAccount("Anton Hofmann");
+	myBank->addAccount("Omega Hofmann", 509.0);
+
+	myBank->addInterest(100.0);
+	myBank->charges(100.0);
+
+	myBank->deposit("Omega Hofmann", 1.0);
+	myBank->withdraw("Omega Hofmann", 10.0);
+
+	cout << myBank->getSumDeposits() <<endl;
+
+	delete myBank;
+
+	return 0;
+}
+
+First, output should be:
+1000.00
+
+Second, the logfile: BANK-Hofmann-unlimited-2017-12-24-11-20.log
+ADD:Anton Hofmann:100.00
+ADD:Beta Hofmann:200.00
+ADD:Gamma Hofmann:300.00
+DEL:Anton Hofmann
+ADD:Omega Hofmann:509.00
+FORALL:PLUS:100.00
+FORALL:MINUS:100.00
+FORONE:Omega Hofmann:PLUS:1.00
+FORONE:Omega Hofmann:MINUS:10.00
+
+
+
+
+add b) This Log-File can be used for backup/recovery.
+-----------------------------------------------------
+Test with this code:
+-------------------
+// ahofmann, 2017
+// main.cpp
+// bank logging: recovery with logfile
+
+#include <iostream>
+using namespace std;
+
+#include "bank.h"
+ 
+int main(){
+	Bank* myBank;
+	myBank = new Bank("Hofmann-unlimited");
+	myBank->setLogging(false);
+
+
+	myBank->recovery("BANK-Hofmann-unlimited-2017-12-24-11-20.log");
+
+	
+	cout << myBank->getSumDeposits() <<endl;
+
+	delete myBank;
+
+	return 0;
+}
+
+output should be:
+1000.00
+
+
+Hint: 
+	double f = 1234.123456789012345;
+	cout.setf(ios::scientific, ios:: floatfield);
+	cout.precision(4);
+	cout<< f << endl; //1.2341e+03
+	cout.setf(ios::fixed, ios::floatfield);
+	cout.precision(4);
+	cout<< f << endl;  //1234.1234	
+
+
+
+
+Hint: split
+	string s="ABC:123:def";
+	string split;
+
+	istringstream is(s);
+	getline(is, split, ':');
+	cout << split;
+
+	getline(is, split, ':');
+	cout << split;
+
+	getline(is, split, ':');
+	cout << split;
+
+
+Hint: Filehandling
+
+	/**
+	* http://www.cplusplus.com/reference/ios/ios/exceptions/
+	* Get/set exceptions mask
+	*/
+
+	// ios::exceptions
+	#include <iostream>     // std::cerr
+	#include <fstream>      // std::ifstream
+
+	using namespace std;
+
+	int main () {
+		std::ifstream file;
+		string sinput;
+
+		// set exception mask
+		file.exceptions ( std::ifstream::failbit | std::ifstream::badbit );
+
+		try {
+			file.open ("test.txt");
+
+
+			while (!file.eof()) {
+				// zeichenweise mit: file.get();
+
+				// wortweise lesen mit: file >> sinput
+
+				// zeilenweise lesen mit: std::getline
+				std::getline(file, sinput, '\n');
+				cout << sinput << endl;
+			}
+
+			file.close();
+		}
+		catch (std::ifstream::failure e) {
+			std::cerr << "Exception opening/reading/closing file\n";
+		}
+
+		return 0;
+	}
+
+
+
+	
+================================================================================
+Bank-Test-prepare
+================================================================================
+Given: main.cpp
+
+// ahofmann 2015
+// main.cpp
+
+#include <iostream>
+using namespace std;
+
+#include "bank.h"
+#include "account.h"
+
+
+int main(){
+	Bank *myBank;
+	myBank = new Bank("Hofmann unlimited");
+
+	cout << "\n\n"<<endl;
+	cout << "-------------------------------------------------"<<endl;
+	cout << " TEST: STATIC members "<<endl;
+	cout << "-------------------------------------------------"<<endl;
+
+
+	myBank->addAccount("Anton Hofmann", 100.0);
+	myBank->addAccount("Beta Hofmann", 200.0);
+	myBank->addAccount("Gamma Hofmann", 300.0);
+
+	cout << myBank->toString() << endl;
+
+
+	cout << "\n\n"<<endl;
+	cout << ".... delete Account: Anton Hofmann and add Account: Omega Hofmann";
+	cout << " Look at the account number!!!"<<endl;
+
+	myBank->delAccount("Anton Hofmann");
+	myBank->addAccount("Omega Hofmann", 900.0);
+
+	cout << myBank->toString() << endl;
+	cout << endl;
+
+
+	cout << "\n\n"<<endl;
+	cout << "-------------------------------------------------"<<endl;
+	cout << " TEST: FRIEND class "<<endl;
+	cout << "-------------------------------------------------"<<endl;
+	cout << " ONLY class bank can create new Account-objects" <<endl;
+
+//	Account k1("Anton Hofmann", 123.0); 	// error, because cons is private
+	
+	int accountNr= myBank->addAccount("Anton Hofmann", 100.0);
+	myBank->getAccount(accountNr).deposit(9000.0);
+
+	cout << myBank->toString() << endl;
+	cout << endl;
+
+
+	cout << "-------------------------------------------------"<<endl;
+	cout << " TEST: Prepare "<<endl;
+	cout << "-------------------------------------------------"<<endl;
+
+	cout << "... 1. double d= myBank->getMaxAccount().getAmount(); "<<endl;
+	double d= myBank->getMaxAccount().getAmount();
+	cout << "...    Maximal amount = " << d << endl <<endl;
+
+	cout << "... 2. double d= myBank->getMaxAccount().getAmount(); "<<endl;
+	d= myBank->getStandardDeviation();
+	cout << "...    Standard Deviation = " << d << endl << endl;
+	
+	cout << "... 3. myBank->delAccount(myBank->getAverageAmount()); "<<endl;
+	cout << "...    delete all Account having less then the average amount"<<endl;
+	cout << "...    Average Amount= " << myBank->getAverageAmount() << endl<<endl;
+	myBank->delAccount(myBank->getAverageAmount());
+	
+	cout << myBank->toString() << endl;
+	cout << endl;
+	
+	d= myBank->getStandardDeviation();
+	cout << "Standard Deviation = " << d << endl << endl;
+	
+	delete myBank;
+
+	return 0;
+}
+
+
+
+The output should be:
+./main.exe
+--- ooOoo ---
+
+
+
+-------------------------------------------------
+ TEST: STATIC members 
+-------------------------------------------------
+
+Bank: Hofmann unlimited
+...Account-owner: Anton Hofmann
+...Account-number: 1
+...Account-amount: 100
+
+...Account-owner: Beta Hofmann
+...Account-number: 2
+...Account-amount: 200
+
+...Account-owner: Gamma Hofmann
+...Account-number: 3
+...Account-amount: 300
+
+
+
+
+
+
+.... delete Account: Anton Hofmann and add Account: Omega Hofmann Look at the account number!!!
+Account destructor ...
+
+Bank: Hofmann unlimited
+...Account-owner: Beta Hofmann
+...Account-number: 2
+...Account-amount: 200
+
+...Account-owner: Gamma Hofmann
+...Account-number: 3
+...Account-amount: 300
+
+...Account-owner: Omega Hofmann
+...Account-number: 4
+...Account-amount: 900
+
+
+
+
+
+
+
+-------------------------------------------------
+ TEST: FRIEND class 
+-------------------------------------------------
+ ONLY class bank can create new Account-objects
+
+Bank: Hofmann unlimited
+...Account-owner: Beta Hofmann
+...Account-number: 2
+...Account-amount: 200
+
+...Account-owner: Gamma Hofmann
+...Account-number: 3
+...Account-amount: 300
+
+...Account-owner: Omega Hofmann
+...Account-number: 4
+...Account-amount: 900
+
+...Account-owner: Anton Hofmann
+...Account-number: 5
+...Account-amount: 9100
+
+
+
+
+-------------------------------------------------
+ TEST: Prepare 
+-------------------------------------------------
+... 1. double d= myBank->getMaxAccount().getAmount(); 
+...    Maximal amount = 9100
+
+... 2. double d= myBank->getMaxAccount().getAmount(); 
+...    Standard Deviation = 3747.92
+
+... 3. myBank->delAccount(myBank->getAverageAmount()); 
+...    delete all Account having less then the average amount
+...    Average Amount= 2625
+
+Account destructor ...
+Account destructor ...
+Account destructor ...
+
+Bank: Hofmann unlimited
+...Account-owner: Anton Hofmann
+...Account-number: 5
+...Account-amount: 9100
+
+
+
+
+Standard Deviation = 0
+
+Account destructor ...
+--- ooOoo ---
+
+
+Hint: vector.erase();
+	After vector.erase(); decrement iterator
+
+Hint: Standard Deviation
+https://en.wikipedia.org/wiki/Standard_deviation
+
+...In statistics, the standard deviation is a measure that is used to 
+quantify the amount of variation of a set of data values.
+
+A standard deviation close to 0 indicates that the data points tend to be 
+very close to the mean (also called the expected value) of the set, while 
+
+a high standard deviation indicates that the data points are spread out 
+over a wider range of values.
+

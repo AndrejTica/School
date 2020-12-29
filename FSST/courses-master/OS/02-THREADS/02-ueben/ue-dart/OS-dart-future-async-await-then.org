@@ -1,0 +1,147 @@
+* Future bei Dart
+
+- Dart is single threaded
+
+- Problem: Long running jobs bei UI-Main-Thread 
+
+- Solution 1: Future with async, await
+- Solution 2: Future with then
+
+
+* Example 1: String downloadFile()
+#+BEGIN_SRC dart num
+// =====================================================
+// String
+// =====================================================
+void main() {
+  print("main: before printfile ...");
+  printFile();
+  print("main: after printfile ...");
+}
+
+void printFile(){
+  String content= downloadFile();
+  print("The content of the file is ...$content"); 
+}
+
+String downloadFile(){
+  return "MY SECRET FILE CONTENT";
+}
+
+/*
+main: before printfile ...
+The content of the file is ...MY SECRET FILE CONTENT
+main: after printfile ...
+*/
+#+END_SRC
+
+
+* Example 2: Future<String> downloadFile()
+#+BEGIN_SRC dart
+// =====================================================
+// Future<String>
+// =====================================================
+void main() {
+  print("main: before printfile ...");
+  printFile();
+  print("main: after printfile ...");
+}
+
+void printFile(){  
+  //String content= downloadFile();
+  Future<String> content= downloadFile();
+  print("The content of the file is ...$content"); 
+}
+
+Future<String> downloadFile(){
+  // return "MY SECRET FILE CONTENT";
+  Future<String> result;
+  result= Future.delayed(
+						Duration(seconds: 6), 
+						() => "MY SECRET FILE CONTENT");
+  return result;
+}
+
+/*
+main: before printfile ...
+The content of the file is ...Instance of '_Future<String>'
+main: after printfile ...
+*/
+#+END_SRC
+
+
+* Example 3: void printFile() async, await downloadFile()
+#+BEGIN_SRC dart
+// =====================================================
+// Future<String> with async , await
+// =====================================================
+void main() {
+  print("main: before printfile ...");
+  printFile();
+  print("main: after printfile ...");
+}
+
+//void printFile(){  
+void printFile() async {  
+  //Future<String> content= downloadFile();
+
+  String content= await downloadFile();
+  print("The content of the file is ...$content"); 
+}
+
+Future<String> downloadFile(){
+  Future<String> result;
+  result= Future.delayed(
+    					Duration(seconds: 6), 
+    					() => "MY SECRET FILE CONTENT");
+  return result;
+}
+
+
+/*
+main: before printfile ...
+main: after printfile ...
+The content of the file is ...MY SECRET FILE CONTENT
+*/
+#+END_SRC
+
+- Note: await downloadFile() *returns a String* (i.e. the file content) 
+- ~String content= await downloadFile();~
+
+
+* Example 4: void printFile() then
+#+BEGIN_SRC dart
+// =====================================================
+// Future<String> with then
+// =====================================================
+void main() {
+  print("main: before printfile ...");
+  printFile();
+  print("main: after printfile ...");
+}
+
+//void printFile() async {  
+void printFile() {  
+  //String content= await downloadFile();
+  //print("The content of the file is ...$content"); 
+
+  Future<String> content= downloadFile();
+  content.then( (resultString) => 
+               print("The content of the file is ...$resultString") );
+}
+
+Future<String> downloadFile(){
+  Future<String> result;
+  result= Future.delayed(
+    					Duration(seconds: 6), 
+    					() => "MY SECRET FILE CONTENT");
+  return result;
+}
+
+
+/*
+main: before printfile ...
+main: after printfile ...
+The content of the file is ...MY SECRET FILE CONTENT
+*/
+#+END_SRC

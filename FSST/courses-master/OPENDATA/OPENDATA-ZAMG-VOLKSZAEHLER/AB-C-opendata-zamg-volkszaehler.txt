@@ -1,0 +1,107 @@
+================================================================================
+AUFGABE: OPEN DATA und ZAMG
+================================================================================
+
+
+PROGRAMM-NAME: opendata-zamg2vz.c
+
+* Laden Sie die Datei tawes1h.csv von http://www.zamg.ac.at/ogd/
+	Hinweis: Verwenden Sie wget bzw. curl bzw. ....
+		zB: system("wget http://www.zamg.ac.at/ogd/ -O tawes1h.csv");
+
+* Lesen Sie die Datei tawes1h.csv ein und geben Sie folgendes auf die Konsole aus:
+	PROGRAMM: opendata-zamg2vz.c	
+	NAME: Max Musterschüler
+
+	DATUM: ..... (aus tawes1h.csv)
+	ZEIT: ...... (tawes1h.csv)
+	MAX-TEMP: ...Ort...
+	MIN-TEMP: ...Ort... 
+	AVG-TEMP: ....
+
+
+* Tragen Sie die Channel (s.o.) bei http://demo.volkszaehler.org/frontend ein.
+	zB: system("wget \"http://demo.volkszaehler.org/frontend/?uuid=245dd830-b5b7-11e3-904a-73dde2ae6d47\" --quiet --delete-after");
+
+
+* Tragen Sie zu den Channel die aktuelle Temperatur ein:
+	zB: system("wget \"http://demo.volkszaehler.org/middleware.php/data/98fd2600-b4bb-11e3-afa6-fd34350f1281.json?operation=add&value=15\" --delete-after");
+
+
+
+
+
+--------------------------------------------------------------------------------
+HINWEIS: tawes1h.csv
+--------------------------------------------------------------------------------
+"Station";"Name";"Höhe m";"Datum";"Zeit";"T °C";"TP °C";"RF %";"WR °";"WG km/h";"WSR °";"WSG km/h";"N l/m²";"LDred hPa";"LDstat hPa";"SO %"
+11010;"Linz/Hörsching";298;"08-09-2014";"19:00";23,9;14,7;56;130;5,4;;7,6;0;1014;978,5;100
+11012;"Kremsmünster";383;"08-09-2014";"19:00";21,8;15,2;67;45;1,8;30;6,5;0;1014,2;969,9;73
+11022;"Retz";320;"08-09-2014";"19:00";22,7;14,8;61;137;4,7;127;7,6;0;1014,2;977,8;31
+11035;"Wien/Hohe Warte";203;"08-09-2014";"19:00";21,7;15,1;62;80;7,2;86;10,4;0;1014,9;990,9;94
+11036;"Wien/Schwechat";183;"08-09-2014";"19:00";22,5;16,8;70;120;5,4;;11,2;0;1015;994,3;94
+11101;"Bregenz";424;"08-09-2014";"19:00";23,3;16,5;66;176;9,7;194;15,8;0;1014;964,8;96
+11121;"Innsbruck";579;"08-09-2014";"19:00";20,9;14,3;66;150;9,7;151;19,1;0;1015;949,1;29
+11126;"Patscherkofel";2247;"08-09-2014";"19:00";10,2;7,2;82;279;2,2;322;10,1;0;;780;22
+11130;"Kufstein";495;"08-09-2014";"19:00";21,2;16,7;76;208;4,3;208;9,4;0;1014;958,4;15
+11150;"Salzburg";430;"08-09-2014";"19:00";24,3;14;53;320;3,6;;11,2;0;1013,7;963,7;98
+11155;"Feuerkogel";1618;"08-09-2014";"19:00";14,4;10,4;78;283;7,6;291;16,9;0;;840,4;47
+11157;"Aigen im Ennstal";640;"08-09-2014";"19:00";18,5;15,1;81;55;6,8;49;18;0;1014,7;941,1;40
+11171;"Mariazell";866;"08-09-2014";"19:00";18,8;11,9;65;307;2,2;345;11,9;0;1015;918,7;98
+11190;"Eisenstadt";184;"08-09-2014";"19:00";20,5;16,9;80;349;6,5;72;14;0;1014,8;993,7;72
+11204;"Lienz";659;"08-09-2014";"19:00";20,1;14;69;278;11,5;;19,8;0;1014,8;939,8;23
+11240;"Graz/Flughafen";340;"08-09-2014";"19:00";20,8;15,4;71;130;5,4;;14,8;0;1015,5;974;79
+11244;"Bad Gleichenberg";280;"08-09-2014";"19:00";20,3;;80;340;2,5;208;11,2;0;1016;984,8;63
+11265;"Villacher Alpe";2140;"08-09-2014";"19:00";10,3;8,8;91;220;7,6;215;17,3;0;;788,5;100
+11331;"Klagenfurt/Flughafen";447;"08-09-2014";"19:00";22,3;15,3;65;22;4,3;105;11,9;0;1014,6;963,5;80
+11343;"Sonnblick";3105;"08-09-2014";"19:00";2,9;2,8;100;11;10,8;27;17,6;0,2;;702,9;3
+11389;"St. Pölten";270;"08-09-2014";"19:00";23,8;15,6;60;49;4,3;65;11,5;0;1014,7;984,1;100
+
+
+
+--------------------------------------------------------------------------------
+HINWEIS: CHANNEL hinzufügen bei http://demo.volkszaehler.org/frontend/
+--------------------------------------------------------------------------------
+# Salzburg  
+http://demo.volkszaehler.org/frontend/?uuid=98fd2600-b4bb-11e3-afa6-fd34350f1281
+
+
+
+
+--------------------------------------------------------------------------------
+HINWEIS: CHANNEL-Liste (UUID) für http://demo.volkszaehler.org/frontend/
+--------------------------------------------------------------------------------
+# Salzburg  
+http://demo.volkszaehler.org/frontend/?uuid=98fd2600-b4bb-11e3-afa6-fd34350f1281
+# Bregenz  
+http://demo.volkszaehler.org/frontend/?uuid=c1b717a0-b5b6-11e3-a58c-ef8aeeeb51dc
+# Linz/Hörsching     
+http://demo.volkszaehler.org/frontend/?uuid=2cc3ce40-b5b8-11e3-ae7a-c5e4bb8633c9
+# Retz
+http://demo.volkszaehler.org/frontend/?uuid=c803b980-b5b6-11e3-9f74-152449a53762
+# Kremsmünster       
+http://demo.volkszaehler.org/frontend/?uuid=0684e4a0-b5b8-11e3-a70f-edd61321fe02
+# "Wien/Hohe Warte"  
+http://demo.volkszaehler.org/frontend/?uuid=c34283a0-b5b6-11e3-a4ac-0b13b97cbac0
+# Wien/Schwechat     
+http://demo.volkszaehler.org/frontend/?uuid=d54447a0-b5b6-11e3-846a-b7388ef567a1
+# Bregenz     	
+http://demo.volkszaehler.org/frontend/?uuid=c1b717a0-b5b6-11e3-a58c-ef8aeeeb51dc
+# Kufstein        	
+http://demo.volkszaehler.org/frontend/?uuid=147578f0-b5b7-11e3-9c82-85cc4f734eef
+# Feuerkogel       	
+http://demo.volkszaehler.org/frontend/?uuid=1293ac50-b5b8-11e3-8d38-ad9f6f0d5630
+# Innsbruck        	
+http://demo.volkszaehler.org/frontend/?uuid=c256ebd0-b5b6-11e3-907e-c78475285974
+# Patscherkofel   	
+http://demo.volkszaehler.org/frontend/?uuid=245dd830-b5b7-11e3-904a-73dde2ae6d47
+
+
+
+--------------------------------------------------------------------------------
+HINWEIS: TEMP für einen bestimmten CHANNEL eintragen
+--------------------------------------------------------------------------------
+# 20 Grad für Salzburg
+http://demo.volkszaehler.org/middleware.php/data/98fd2600-b4bb-11e3-afa6-fd34350f1281.json?operation=add&value=20
+
+
