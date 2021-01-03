@@ -10,7 +10,7 @@ int main()
 {
 /*
 ========================================================
-Pointer/reference
+Pointer/referenceÃŸ
 ========================================================
 */
     cout << "Pointer/Reference "<< endl;
@@ -29,8 +29,8 @@ Pointer/reference
 
     *pt = 17;
 
-    cout << "Nach veränderung durch pointer ist x jetzt " << x << endl;
-    cout << "Nach veränderung durch pointer ist x jetzt " << *pt << endl;
+    cout << "Nach verï¿½nderung durch pointer ist x jetzt " << x << endl;
+    cout << "Nach verï¿½nderung durch pointer ist x jetzt " << *pt << endl;
 
     *pt = *pt+100;
 
@@ -64,22 +64,22 @@ Pointers, Arrays, Strings
     ptr= &element[0];                                         //oder ptr=element; now ptr is pretty much the same as the array
 
 
-    cout << "Adresse für element[0]= " << ptr <<endl;
-    cout << "Wert für element[0]= " << *ptr << endl;
-    cout << "Adresse für element[1]= " << ptr+9 <<endl;
-    cout << "Wert für element[1]= " << *ptr+1 << endl;      // 2nd element
+    cout << "Adresse fï¿½r element[0]= " << ptr <<endl;
+    cout << "Wert fï¿½r element[0]= " << *ptr << endl;
+    cout << "Adresse fï¿½r element[1]= " << ptr+9 <<endl;
+    cout << "Wert fï¿½r element[1]= " << *ptr+1 << endl;      // 2nd element
 
     cout << " " << endl;
 
-    cout << "Adresse für element[0]= " << element <<endl;   //nur arrayname ist gleichzeitig ein zeiger auf das erste element des arrays
-    cout << "Wert für element[0]= " << *element << endl;
-    cout << "Adresse für element[1]= " << element+1 <<endl;
-    cout << "Wert für element[1]= " << *(element+1) << endl;
+    cout << "Adresse fï¿½r element[0]= " << element <<endl;   //nur arrayname ist gleichzeitig ein zeiger auf das erste element des arrays
+    cout << "Wert fï¿½r element[0]= " << *element << endl;
+    cout << "Adresse fï¿½r element[1]= " << element+1 <<endl;
+    cout << "Wert fï¿½r element[1]= " << *(element+1) << endl;
 
     cout << " " << endl;
 
-    cout << "Adresse für element[1]= " << &ptr[1] <<endl;
-    cout << "Wert für element[1]= " << ptr[1] << endl;
+    cout << "Adresse fï¿½r element[1]= " << &ptr[1] <<endl;
+    cout << "Wert fï¿½r element[1]= " << ptr[1] << endl;
 
     cout << "=================================" << endl;
 
@@ -94,7 +94,7 @@ Pointers, Arrays, Strings
     for (int i=0; i < 5; i++)
         example[i] = 3;                                     //wenn wir ein element bearbeiten, dereferencieren wir praktisch die addresse an der stelle 2
                                                             //Unser pointer zeigt auf ein integer (4bytes).
-                                                            //wir haben ein int array, also 5 mal 4 bytes. Für den pointer also 5 adressen auf die er zeigt
+                                                            //wir haben ein int array, also 5 mal 4 bytes. Fï¿½r den pointer also 5 adressen auf die er zeigt
                                                             //wenn wir index 2 bearbeiten wollen, wird der pointer um 2 stellen nach rechts geshiftet
                                                             //adressen unterscheiden sich immer um 1 byte
                                                             //der compiler muss nur wissen, welcher datentyp in der adresse ist.
@@ -103,8 +103,8 @@ Pointers, Arrays, Strings
     cout << example[2]  << endl;
     *(ptrr + 2) = 6;
     cout << example[2]  << endl;
-    *((int*)((char*)ptrr + 8)) = 11;                        //2 * 4: wir haben int array (4byte) pro stelle, bei char pointer (1byte) müssen wir also um 4 mal nach
-                                                            // rechts gehen um auf den nächsten index zu kommen. bei 2 indexe also um 8 mal nach rechts
+    *((int*)((char*)ptrr + 8)) = 11;                        //2 * 4: wir haben int array (4byte) pro stelle, bei char pointer (1byte) mï¿½ssen wir also um 4 mal nach
+                                                            // rechts gehen um auf den nï¿½chsten index zu kommen. bei 2 indexe also um 8 mal nach rechts
     cout << example[2]  << endl;
 
      cout << "=================================" << endl;
@@ -115,10 +115,10 @@ Pointers, Arrays, Strings
      char y1[] = "Hallo1";
      cout << y1  << endl;                                   //wir geben den pointer aus??
 
-     char* y2 = "Hallo2";                                   //wie können wir einen pointer einfach ein wert zuweisen das keine adresse ist?
+     char* y2 = "Hallo2";                                   //wie kï¿½nnen wir einen pointer einfach ein wert zuweisen das keine adresse ist?
      cout << y2  << endl;
 
-     char* y3;                                              //wie können wir einen pointer einfach ein wert zuweisen das keine adresse ist?
+     char* y3;                                              //wie kï¿½nnen wir einen pointer einfach ein wert zuweisen das keine adresse ist?
      y3 = "Hallo3";
      cout << y3  << endl;
 
