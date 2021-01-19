@@ -1,0 +1,46 @@
+# depslib dependency file v1.0
+1611072211 source:/home/andrej/Documents/LastSchoolYear/FSST/cpp_ws_codeblocks/Observer_fan/fussballverein.cpp
+	"fussballverein.h"
+
+1611072213 /home/andrej/Documents/LastSchoolYear/FSST/cpp_ws_codeblocks/Observer_fan/fussballverein.h
+	"observable.h"
+	<string>
+
+1611067801 /home/andrej/Documents/LastSchoolYear/FSST/cpp_ws_codeblocks/Observer_fan/observable.h
+	"observer.h"
+	<vector>
+
+1611077313 /home/andrej/Documents/LastSchoolYear/FSST/cpp_ws_codeblocks/Observer_fan/observer.h
+	<iostream>
+
+1611080779 source:/home/andrej/Documents/LastSchoolYear/FSST/cpp_ws_codeblocks/Observer_fan/main.cpp
+	<iostream>
+	"fanclub.h"
+	"presseagentur.h"
+	"fussballverein.h"
+
+1611077309 /home/andrej/Documents/LastSchoolYear/FSST/cpp_ws_codeblocks/Observer_fan/fanclub.h
+	"observer.h"
+	"observable.h"
+	<string>
+
+1611077307 /home/andrej/Documents/LastSchoolYear/FSST/cpp_ws_codeblocks/Observer_fan/presseagentur.h
+	"observer.h"
+	"observable.h"
+	<string>
+
+1611077311 source:/home/andrej/Documents/LastSchoolYear/FSST/cpp_ws_codeblocks/Observer_fan/observer.cpp
+	"observer.h"
+	"observable.h"
+
+1611077316 source:/home/andrej/Documents/LastSchoolYear/FSST/cpp_ws_codeblocks/Observer_fan/presseagentur.cpp
+	"presseagentur.h"
+	"fussballverein.h"
+
+1611080365 source:/home/andrej/Documents/LastSchoolYear/FSST/cpp_ws_codeblocks/Observer_fan/observable.cpp
+	"observable.h"
+
+1611080381 source:/home/andrej/Documents/LastSchoolYear/FSST/cpp_ws_codeblocks/Observer_fan/fanclub.cpp
+	"fanclub.h"
+	"fussballverein.h"
+
