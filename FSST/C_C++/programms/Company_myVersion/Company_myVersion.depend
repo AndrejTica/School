@@ -1,0 +1,42 @@
+# depslib dependency file v1.0
+1609978229 source:/home/andrej/Documents/LastSchoolYear/FSST/cpp_ws_codeblocks/Company_myVersion/person.cpp
+	"person.h"
+
+1610058619 /home/andrej/Documents/LastSchoolYear/FSST/cpp_ws_codeblocks/Company_myVersion/person.h
+	<string>
+	<vector>
+
+1610056694 source:/home/andrej/Documents/LastSchoolYear/FSST/cpp_ws_codeblocks/Company_myVersion/worker.cpp
+	"worker.h"
+
+1610057984 /home/andrej/Documents/LastSchoolYear/FSST/cpp_ws_codeblocks/Company_myVersion/worker.h
+	"person.h"
+
+1610995318 source:/home/andrej/Documents/LastSchoolYear/FSST/cpp_ws_codeblocks/Company_myVersion/seller.cpp
+	"seller.h"
+
+1610057269 /home/andrej/Documents/LastSchoolYear/FSST/cpp_ws_codeblocks/Company_myVersion/seller.h
+	"worker.h"
+
+1610058281 source:/home/andrej/Documents/LastSchoolYear/FSST/cpp_ws_codeblocks/Company_myVersion/main.cpp
+	<iostream>
+	<iomanip>
+	"person.h"
+	"worker.h"
+	"Manager.h"
+	"seller.h"
+	"company.h"
+
+1610057223 /home/andrej/Documents/LastSchoolYear/FSST/cpp_ws_codeblocks/Company_myVersion/Manager.h
+	"person.h"
+
+1610057896 /home/andrej/Documents/LastSchoolYear/FSST/cpp_ws_codeblocks/Company_myVersion/company.h
+	<vector>
+	"person.h"
+
+1610058310 source:/home/andrej/Documents/LastSchoolYear/FSST/cpp_ws_codeblocks/Company_myVersion/company.cpp
+	"company.h"
+
+1610995156 source:/home/andrej/Documents/LastSchoolYear/FSST/cpp_ws_codeblocks/Company_myVersion/Manager.cpp
+	"Manager.h"
+
